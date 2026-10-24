@@ -4,156 +4,337 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>CryptoPriceTicker.com | Live Crypto Prices — Zero Login, 100% Private</title>
-  <meta name="description" content="Real-time WebSocket cryptocurrency price ticker, liquidity tracker, and private local portfolio. Zero login required, no account walls, instant Kali terminal & dark themes." />
+  <meta name="description" content="Real-time Dual-WebSocket cryptocurrency price ticker, DePIN & AI sector tracker, and private local portfolio. Zero login required, instant Kali terminal & dark themes." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://cryptopriceticker.com/" />
   <style>
     :root, [data-theme="kali"] {
       --bg-primary: #050709;
-      --bg-secondary: #0a0e14;
-      --bg-tertiary: #101722;
+      --bg-secondary: #0a0f14;
+      --bg-tertiary: #111923;
       --bg-hover: rgba(0, 255, 102, 0.06);
       --text-primary: #00ff66;
-      --text-secondary: #6bd999;
-      --text-muted: #3d7a5a;
+      --text-secondary: #80e5aa;
+      --text-muted: #4b8868;
       --accent: #268bee;
       --accent-glow: rgba(38, 139, 238, 0.28);
-      --border: #152920;
+      --border: #172d22;
       --up: #00ff66;
-      --up-bg: rgba(0, 255, 102, 0.16);
-      --down: #ff3355;
-      --down-bg: rgba(255, 51, 85, 0.18);
+      --up-bg: rgba(0, 255, 102, 0.24);
+      --up-row: rgba(0, 255, 102, 0.09);
+      --down: #ff3b5c;
+      --down-bg: rgba(255, 59, 92, 0.26);
+      --down-row: rgba(255, 59, 92, 0.09);
       --sponsor-bg: rgba(38, 139, 238, 0.08);
       --font-main: 'JetBrains Mono', 'Fira Code', Consolas, Menlo, monospace;
     }
     [data-theme="slate"] {
-      --bg-primary: #12161f;
-      --bg-secondary: #1b212d;
-      --bg-tertiary: #242c3d;
+      --bg-primary: #0f131a;
+      --bg-secondary: #171d27;
+      --bg-tertiary: #202836;
       --bg-hover: rgba(255, 255, 255, 0.04);
-      --text-primary: #eef2f8;
-      --text-secondary: #9aa7bd;
-      --text-muted: #64728c;
-      --accent: #26a69a;
-      --accent-glow: rgba(38, 166, 154, 0.25);
-      --border: #2a3346;
-      --up: #2ebd85;
-      --up-bg: rgba(46, 189, 133, 0.16);
-      --down: #f6465d;
-      --down-bg: rgba(246, 70, 93, 0.16);
-      --sponsor-bg: rgba(240, 185, 11, 0.07);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.24);
+      --border: #263042;
+      --up: #10b981;
+      --up-bg: rgba(16, 185, 129, 0.25);
+      --up-row: rgba(16, 185, 129, 0.08);
+      --down: #f43f5e;
+      --down-bg: rgba(244, 63, 94, 0.25);
+      --down-row: rgba(244, 63, 94, 0.08);
+      --sponsor-bg: rgba(245, 158, 11, 0.08);
       --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     [data-theme="oled"] {
       --bg-primary: #000000;
       --bg-secondary: #08080a;
       --bg-tertiary: #121216;
-      --bg-hover: rgba(153, 69, 255, 0.08);
+      --bg-hover: rgba(20, 241, 149, 0.07);
       --text-primary: #ffffff;
       --text-secondary: #a1a1aa;
       --text-muted: #52525b;
       --accent: #14f195;
-      --accent-glow: rgba(20, 241, 149, 0.22);
+      --accent-glow: rgba(20, 241, 149, 0.24);
       --border: #1f1f26;
       --up: #14f195;
-      --up-bg: rgba(20, 241, 149, 0.15);
+      --up-bg: rgba(20, 241, 149, 0.26);
+      --up-row: rgba(20, 241, 149, 0.09);
       --down: #ff2e63;
-      --down-bg: rgba(255, 46, 99, 0.16);
-      --sponsor-bg: rgba(153, 69, 255, 0.08);
+      --down-bg: rgba(255, 46, 99, 0.26);
+      --down-row: rgba(255, 46, 99, 0.09);
+      --sponsor-bg: rgba(153, 69, 255, 0.1);
       --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     [data-theme="light"] {
-      --bg-primary: #f4f6f9;
+      --bg-primary: #f8fafc;
       --bg-secondary: #ffffff;
-      --bg-tertiary: #edf1f7;
+      --bg-tertiary: #f1f5f9;
       --bg-hover: rgba(15, 23, 42, 0.035);
       --text-primary: #0f172a;
       --text-secondary: #475569;
       --text-muted: #94a3b8;
       --accent: #0284c7;
-      --accent-glow: rgba(2, 132, 199, 0.15);
+      --accent-glow: rgba(2, 132, 199, 0.18);
       --border: #e2e8f0;
       --up: #059669;
-      --up-bg: rgba(5, 150, 105, 0.12);
+      --up-bg: rgba(5, 150, 105, 0.2);
+      --up-row: rgba(5, 150, 105, 0.07);
       --down: #e11d48;
-      --down-bg: rgba(225, 29, 72, 0.12);
-      --sponsor-bg: rgba(2, 132, 199, 0.05);
+      --down-bg: rgba(225, 29, 72, 0.2);
+      --down-row: rgba(225, 29, 72, 0.07);
+      --sponsor-bg: rgba(2, 132, 199, 0.06);
       --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
       background-color: var(--bg-primary);
       color: var(--text-primary);
       font-family: var(--font-main);
       font-size: 13.5px;
-      line-height: 1.4;
+      line-height: 1.45;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
     a { color: inherit; text-decoration: none; }
     button, input { font-family: inherit; font-size: inherit; color: inherit; background: none; border: none; outline: none; }
     button { cursor: pointer; }
     .tabular { font-variant-numeric: tabular-nums; }
     .container { max-width: 1440px; margin: 0 auto; padding: 0 14px; }
-    .top-utility-bar { background: var(--bg-secondary); border-bottom: 1px solid var(--border); font-size: 11.5px; padding: 6px 0; }
-    .utility-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .status-cluster { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-    .ws-indicator { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--up); }
-    .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--up); box-shadow: 0 0 8px var(--up); animation: pulse 1.6s infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.25); opacity: 0.55; } }
+
+    /* Top Utility Bar */
+    .top-utility-bar { background: var(--bg-secondary); border-bottom: 1px solid var(--border); font-size: 11.5px; padding: 7px 0; }
+    .utility-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .status-cluster { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .ws-indicator { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--up); }
+    .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--up); box-shadow: 0 0 10px var(--up); animation: radarPulse 1.2s infinite ease-in-out; }
+    @keyframes radarPulse {
+      0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 6px var(--up); }
+      50% { transform: scale(1.35); opacity: 0.55; box-shadow: 0 0 14px var(--up); }
+    }
     .zero-login-pill { background: var(--bg-tertiary); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; color: var(--text-secondary); font-weight: 600; }
+    .live-tick-pill { background: var(--bg-tertiary); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; color: var(--accent); font-weight: 700; transition: transform 0.15s ease; }
+
     .theme-switcher { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .theme-btn { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-secondary); }
+    .theme-btn { padding: 4px 9px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-secondary); transition: all 0.15s ease; }
+    .theme-btn:hover { border-color: var(--accent); color: var(--text-primary); transform: translateY(-1px); }
     .theme-btn.active { border-color: var(--accent); background: var(--accent-glow); color: var(--text-primary); }
-    .main-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 12px 0; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+
+    /* Live Incoming Trade Tape */
+    .live-tape-bar { background: var(--bg-tertiary); border-bottom: 1px solid var(--border); padding: 5px 0; font-size: 11.5px; overflow: hidden; }
+    .tape-inner { display: flex; align-items: center; gap: 14px; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+    .tape-inner::-webkit-scrollbar { display: none; }
+    .tape-item { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 4px; background: var(--bg-secondary); border: 1px solid var(--border); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    .tape-item.flash-up { border-color: var(--up); background: var(--up-bg); }
+    .tape-item.flash-down { border-color: var(--down); background: var(--down-bg); }
+
+    /* Sticky Main Header */
+    .main-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 12px 0; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-logo { width: 34px; height: 34px; border-radius: 6px; background: linear-gradient(135deg, var(--accent), var(--up)); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; color: #050709; }
-    .brand-title { font-size: 17px; font-weight: 800; }
+    .brand-logo { width: 34px; height: 34px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--up)); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: #050709; flex-shrink: 0; box-shadow: 0 0 14px var(--accent-glow); }
+    .brand-title { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+    .brand-sub { font-size: 11px; color: var(--text-muted); display: block; }
+
     .header-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex: 1; justify-content: flex-end; }
-    .search-box { position: relative; min-width: 220px; max-width: 320px; flex: 1; }
-    .search-box input { width: 100%; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 7px 28px 7px 30px; color: var(--text-primary); font-size: 12.5px; }
-    .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+    .search-box { position: relative; min-width: 185px; max-width: 280px; flex: 1; }
+    .search-box input { width: 100%; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 7px 26px 7px 30px; color: var(--text-primary); font-size: 12.5px; transition: border-color 0.15s ease; }
+    .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+    .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 12px; pointer-events: none; }
+
     .btn-group { display: inline-flex; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-    .btn-group button { padding: 6px 10px; font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+    .btn-group button { padding: 6px 10px; font-size: 12px; font-weight: 700; color: var(--text-secondary); transition: 0.15s; }
     .btn-group button.active { background: var(--accent); color: #ffffff; }
-    .action-btn { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 6px 11px; font-size: 12px; font-weight: 600; color: var(--text-primary); }
+
+    .action-btn { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px; padding: 6px 11px; font-size: 12px; font-weight: 700; color: var(--text-primary); display: inline-flex; align-items: center; gap: 5px; transition: 0.15s; }
+    .action-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+    /* Sponsor Slot */
+    .sponsor-top-banner { margin: 12px 0 4px; min-height: 44px; background: var(--sponsor-bg); border: 1px dashed var(--accent); border-radius: 8px; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .sponsor-badge { background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.4px; }
+    .sponsor-cta { background: var(--up); color: #050709; font-weight: 800; font-size: 11.5px; padding: 5px 12px; border-radius: 4px; white-space: nowrap; transition: transform 0.15s ease; }
+    .sponsor-cta:hover { transform: scale(1.03); }
+
+    /* Summary Cards */
     .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); gap: 12px; margin: 12px 0; }
     .summary-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
     .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-weight: 700; font-size: 13px; }
     .card-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 12.5px; }
     .card-label { color: var(--text-secondary); }
     .card-val { font-weight: 700; }
+
+    /* Sector Filter Pills */
     .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
-    .sector-pills { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
-    .pill-btn { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 6px 11px; font-size: 12px; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+    .sector-pills { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+    .sector-pills::-webkit-scrollbar { display: none; }
+    .pill-btn { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: var(--text-secondary); white-space: nowrap; transition: all 0.15s ease; }
+    .pill-btn:hover { border-color: var(--accent); color: var(--text-primary); }
     .pill-btn.active { background: var(--accent-glow); color: var(--text-primary); border-color: var(--accent); }
+
+    /* Ticker Table & High-Visibility Flash Animations */
     .table-wrapper { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; overflow-x: auto; margin-bottom: 24px; }
     table { width: 100%; border-collapse: collapse; text-align: right; }
-    th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 11.5px; font-weight: 700; text-transform: uppercase; padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 11.5px; font-weight: 700; text-transform: uppercase; padding: 11px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none; }
+    th:hover { color: var(--text-primary); }
     th.col-left, td.col-left { text-align: left; }
-    tr.coin-row { border-bottom: 1px solid var(--border); }
+    tr.coin-row { border-bottom: 1px solid var(--border); transition: background-color 0.25s ease; }
     tr.coin-row:hover { background-color: var(--bg-hover); }
     td { padding: 10px; vertical-align: middle; white-space: nowrap; }
-    .price-cell { font-weight: 700; border-radius: 4px; padding: 4px 7px; display: inline-block; }
-    .tick-up { background-color: var(--up-bg) !important; color: var(--up) !important; }
-    .tick-down { background-color: var(--down-bg) !important; color: var(--down) !important; }
+
+    @keyframes flashGreenCell {
+      0% { background-color: var(--up-bg); color: var(--up); transform: scale(1.05); box-shadow: 0 0 12px var(--up-bg); }
+      100% { background-color: transparent; transform: scale(1); box-shadow: none; }
+    }
+    @keyframes flashRedCell {
+      0% { background-color: var(--down-bg); color: var(--down); transform: scale(1.05); box-shadow: 0 0 12px var(--down-bg); }
+      100% { background-color: transparent; transform: scale(1); box-shadow: none; }
+    }
+    @keyframes rowSweepUp {
+      0% { background-color: var(--up-row); }
+      100% { background-color: transparent; }
+    }
+    @keyframes rowSweepDown {
+      0% { background-color: var(--down-row); }
+      100% { background-color: transparent; }
+    }
+
+    .price-cell {
+      font-weight: 800;
+      border-radius: 5px;
+      padding: 4px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid transparent;
+      will-change: transform, background-color;
+    }
+    .tick-up {
+      animation: flashGreenCell 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--up) !important;
+      border-color: var(--up);
+    }
+    .tick-down {
+      animation: flashRedCell 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--down) !important;
+      border-color: var(--down);
+    }
+    .row-flash-up { animation: rowSweepUp 0.65s ease-out; }
+    .row-flash-down { animation: rowSweepDown 0.65s ease-out; }
+
+    .tick-arrow { font-size: 10px; display: inline-block; width: 10px; text-align: center; }
+
     .coin-identity { display: flex; align-items: center; gap: 9px; }
-    .coin-icon { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-tertiary); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; border: 1px solid var(--border); }
-    .coin-symbol { font-weight: 800; font-size: 13.5px; }
+    .coin-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-tertiary); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10.5px; border: 1px solid var(--border); flex-shrink: 0; color: var(--accent); }
+    .coin-symbol { font-weight: 800; font-size: 13.5px; display: flex; align-items: center; gap: 5px; }
     .coin-name { font-size: 11px; color: var(--text-muted); display: block; }
-    .bag-input { width: 78px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; text-align: right; font-size: 12px; color: var(--text-primary); }
-    .bag-val { display: block; font-size: 10.5px; color: var(--up); margin-top: 2px; }
-    .pct-pill { display: inline-block; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .sector-tag { font-size: 9.5px; padding: 1px 4px; border-radius: 3px; background: var(--bg-tertiary); color: var(--text-secondary); border: 1px solid var(--border); font-weight: 600; }
+
+    .icon-action { color: var(--text-muted); font-size: 14px; padding: 4px 5px; border-radius: 4px; line-height: 1; transition: transform 0.15s ease; }
+    .icon-action:hover { color: var(--text-primary); background: var(--bg-tertiary); transform: scale(1.15); }
+    .icon-action.fav-active { color: #ff3366; }
+    .icon-action.pin-active { color: var(--accent); }
+
+    .bag-input { width: 82px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; padding: 5px 6px; text-align: right; font-size: 12px; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+    .bag-input:focus { border-color: var(--accent); }
+    .bag-val { display: block; font-size: 10.5px; color: var(--up); margin-top: 2px; font-weight: 700; min-height: 14px; }
+
+    .pct-pill { display: inline-block; padding: 3px 7px; border-radius: 4px; font-weight: 700; font-size: 12px; min-width: 64px; text-align: right; }
     .pct-up { color: var(--up); background: var(--up-bg); }
     .pct-down { color: var(--down); background: var(--down-bg); }
+
+    .sparkline-svg { width: 92px; height: 28px; overflow: visible; display: inline-block; vertical-align: middle; }
+    .spark-dot { animation: radarPulse 1.4s infinite; }
+
+    .trade-btn { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 9px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-block; transition: 0.15s; }
+    .trade-btn:hover { border-color: var(--up); color: var(--up); transform: translateY(-1px); }
+    tr.sponsored-row { background: var(--sponsor-bg); border-bottom: 1px solid var(--border); }
+
+    /* Modal */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+    .modal-backdrop.open { display: flex; }
+    .modal-box { background: var(--bg-secondary); border: 1px solid var(--accent); border-radius: 10px; max-width: 520px; width: 100%; padding: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+    .code-snippet { width: 100%; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-family: monospace; font-size: 11.5px; color: var(--text-primary); margin: 10px 0; word-break: break-all; }
+
+    footer { border-top: 1px solid var(--border); padding: 20px 0 36px; color: var(--text-muted); font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+    @media (max-width: 768px) {
+      .hide-mobile { display: none; }
+      td, th { padding: 8px 5px; }
+      .brand-sub { display: none; }
+      .bag-input { width: 64px; }
+      .price-cell { padding: 3px 5px; }
+    }
   </style>
 </head>
 <body>
+
   <div class="top-utility-bar">
     <div class="container utility-inner">
       <div class="status-cluster">
-        <span class="ws-indicator"><span class="pulse-dot"></span><span id="wsStatusText">LIVE STREAM: CONNECTED</span></span>
-        <span class="zero-login-pill">🔒 ZERO-LOGIN LOCAL STORAGE</span>
+        <span class="ws-indicator"><span class="pulse-dot"></span><span id="wsStatusText">LIVE STREAM: MULTI-EXCHANGE</span></span>
+        <span class="live-tick-pill tabular" id="tickCounterPill">⚡ TICKS: 0</span>
+        <span class="zero-login-pill">🔒 ZERO-LOGIN STORAGE</span>
       </div>
+      <div class="theme-switcher">
+        <button class="theme-btn active" data-set-theme="kali">KALI GREEN</button>
+        <button class="theme-btn" data-set-theme="slate">SLATE</button>
+        <button class="theme-btn" data-set-theme="oled">OLED</button>
+        <button class="theme-btn" data-set-theme="light">LIGHT</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="live-tape-bar">
+    <div class="container tape-inner" id="liveTapeContainer"></div>
+  </div>
+
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="#" class="brand">
+        <div class="brand-logo">⚡</div>
+        <div>
+          <span class="brand-title">CryptoPriceTicker<span style="color:var(--accent)">.com</span></span>
+          <span class="brand-sub">Real-Time Coinbase &amp; Binance WebSocket Ticker • Zero Login</span>
+        </div>
+      </a>
+      <div class="header-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Filter coins ('/' to focus)..." autocomplete="off" />
+        </div>
+        <div class="btn-group" id="currencySwitcher">
+          <button class="active" data-currency="USD">USD $</button>
+          <button data-currency="BTC">BTC ₿</button>
+          <button data-currency="ETH">ETH Ξ</button>
+        </div>
+        <button class="action-btn" id="syncBagBtn">💾 Sync Bag</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="sponsor-top-banner">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="sponsor-badge">SPONSORED</span>
+        <span style="font-weight:600;">Trade Bitcoin, Solana &amp; 250+ Assets with Instant Lightning Network Withdrawals.</span>
+      </div>
+      <a href="#trade-partner" class="sponsor-cta" rel="noopener sponsored">Claim Bonus →</a>
+    </div>
+
+    <section class="cards-grid">
+      <div class="summary-card">
+        <div class="card-header"><span>🌐 Market Pulse</span><span style="font-size:11px;color:var(--up);" id="lastTickTime">Streaming Live</span></div>
+        <div class="card-row"><span class="card-label">Market Cap</span><span class="card-val tabular" id="globalMcap">$2.78T</span></div>
+        <div class="card-row"><span class="card-label">24h Spot Volume</span><span class="card-val tabular" style="color:var(--up)" id="globalVol">$94.2B</span></div>
+        <div class="card-row"><span class="card-label">Liquidity ±2%</span><span class="card-val tabular" style="color:var(--accent)" id="globalLiq">$7.42B</span></div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-header"><span>🔥 Top 24h Movers</span><span style="font-size:11px;co</div>
       <div class="theme-switcher">
         <button class="theme-btn active" data-set-theme="kali">KALI GREEN</button>
         <button class="theme-btn" data-set-theme="slate">SLATE</button>
