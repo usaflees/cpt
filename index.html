@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="kali">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  
+  <!-- PRIMARY SEO: Built around Zero-Login, Speed & Real-Time Ticker Keywords -->
+  <title>CryptoPriceTicker.com | Live Crypto Prices — Zero Login, 100% Private</title>
+  <meta name="description" content="Real-time WebSocket cryptocurrency price ticker, liquidity tracker, and private local portfolio. Zero login required, no account walls, instant Kali terminal & dark themes." />
+  <meta name="keywords" content="crypto price ticker, live cryptocurrency prices, no login crypto portfolio, real time bitcoin ticker, websocket crypto prices, livecoinwatch alternative, private crypto watchlist, DePIN token prices" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://cryptopriceticker.com/" />
+
+  <!-- OpenGraph / Social Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CryptoPriceTicker.com — Live Crypto Prices (Zero Login Required)" />
+  <meta property="og:description" content="Ultra-fast real-time crypto price ticker with 100% private browser-stored watchlist, portfolio tracker, FDV unlock warnings, and Kali Terminal mode." />
+  <meta property="og:url" content="https://cryptopriceticker.com/" />
+
+  <!-- JSON-LD Structured Data for Search Engines -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CryptoPriceTicker.com",
+    "url": "https://cryptopriceticker.com",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Real-time cryptocurrency price ticker, liquidity monitor, and zero-login local portfolio tracker."
+  }
+  </script>
+
+  <style>
+    /* ==========================================================================
+       1. THEME ENGINE (KALI TERMINAL, LCW SLATE, OLED BLACK, DAYLIGHT)
+       ========================================================================== */
+    :root, [data-theme="kali"] {
+      --bg-primary: #050709;
+      --bg-secondary: #0a0e14;
+      --bg-tertiary: #101722;
+      --bg-hover: rgba(0, 255, 102, 0.06);
+      --text-primary: #00ff66;
+      --text-secondary: #6bd999;
+      --text-muted: #3d7a5a;
+      --accent: #268bee; /* Kali Linux Blue */
+      --accent-glow: rgba(38, 139, 238, 0.28);
+      --border: #152920;
+      --up: #00ff66;
+      --up-bg: rgba(0, 255, 102, 0.16);
+      --down: #ff3355;
+      --down-bg: rgba(255, 51, 85, 0.18);
+      --sponsor-bg: rgba(38, 139, 238, 0.08);
+      --font-main: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      --scanline-opacity: 0.03;
+    }
+
+    [data-theme="slate"] {
+      /* Inspired by LiveCoinWatch Dark Navy/Slate */
+      --bg-primary: #12161f;
+      --bg-secondary: #1b212d;
+      --bg-tertiary: #242c3d;
+      --bg-hover: rgba(255, 255, 255, 0.04);
+      --text-primary: #eef2f8;
+      --text-secondary: #9aa7bd;
+      --text-muted: #64728c;
+      --accent: #26a69a;
+      --accent-glow: rgba(38, 166, 154, 0.25);
+      --border: #2a3346;
+      --up: #2ebd85;
+      --up-bg: rgba(46, 189, 133, 0.16);
+      --down: #f6465d;
+      --down-bg: rgba(246, 70, 93, 0.16);
+      --sponsor-bg: rgba(240, 185, 11, 0.07);
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --scanline-opacity: 0;
+    }
+
+    [data-theme="oled"] {
+      --bg-primary: #000000;
+      --bg-secondary: #08080a;
+      --bg-tertiary: #121216;
+      --bg-hover: rgba(153, 69, 255, 0.08);
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --accent: #14f195;
+      --accent-glow: rgba(20, 241, 149, 0.22);
+      --border: #1f1f26;
+      --up: #14f195;
+      --up-bg: rgba(20, 241, 149, 0.15);
+      --down: #ff2e63;
+      --down-bg: rgba(255, 46, 99, 0.16);
+      --sponsor-bg: rgba(153, 69, 255, 0.08);
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --scanline-opacity: 0;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f4f6f9;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #edf1f7;
+      --bg-hover: rgba(15, 23, 42, 0.035);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent: #0284c7;
+      --accent-glow: rgba(2, 132, 199, 0.15);
+      --border: #e2e8f0;
+      --up: #059669;
+      --up-bg: rgba(5, 150, 105, 0.12);
+      --down: #e11d48;
+      --down-bg: rgba(225, 29, 72, 0.12);
+      --sponsor-bg: rgba(2, 132, 199, 0.05);
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --scanline-opacity: 0;
+    }
+
+    /* ==========================================================================
+       2. CORE RESET & ULTRA-FAST LAYOUT RULES
+       ========================================================================== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      font-size: 13.5px;
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    /* Subtle CRT scanline effect exclusively in Kali Terminal Mode */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      opacity: var(--scanline-opacity);
+      z-index: 9999;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      outline: none;
+    }
+    button { cursor: pointer; }
+    .tabular { font-variant-numeric: tabular-nums; }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 14px;
+    }
+
+    /* ==========================================================================
+       3. TOP LIVE MARQUEE RIBBON & ZERO-LOGIN STATUS BAR
+       ========================================================================== */
+    .top-utility-bar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      font-size: 11.5px;
+      padding: 6px 0;
+    }
+    .utility-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .status-cluster {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .ws-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      color: var(--up);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--up);
+      box-shadow: 0 0 8px var(--up);
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.25); opacity: 0.55; }
+    }
+    .zero-login-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Prominent Theme Switcher Buttons */
+    .theme-switcher {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      border: 1px solid var(--border);
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+    }
+    .theme-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+    .theme-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+      color: var(--text-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .theme-btn-kali {
+      background: #050709;
+      color: #00ff66;
+      border-color: #268bee;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .theme-btn-slate {
+      background: #1b212d;
+      color: #eef2f8;
+      border-color: #2ebd85;
+    }
+    .theme-btn-oled {
+      background: #000000;
+      color: #14f195;
+      border-color: #3f3f46;
+    }
+    .theme-btn-light {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+
+    /* ==========================================================================
+       4. MAIN NAVIGATION & SEARCH BAR
+       ========================================================================== */
+    .main-header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--up));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 16px;
+      color: #050709;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .search-box {
+      position: relative;
+      min-width: 220px;
+      max-width: 320px;
+      flex: 1;
+    }
+    .search-box input {
+      width: 100%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 28px 7px 30px;
+      color: var(--text-primary);
+      font-size: 12.5px;
+      transition: border-color 0.15s;
+    }
+    .search-box input:focus {
+      border-color: var(--accent);
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .search-shortcut {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .btn-group {
+      display: inline-flex;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .btn-group button {
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      transition: all 0.12s;
+    }
+    .btn-group button.active {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .action-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .action-btn:hover {
+      border-color: var(--accent);
+      background: var(--bg-hover);
+    }
+
+    /* ==========================================================================
+       5. NATIVE MONETIZATION SLOTS (CLEAN, HIGH-CONVERTING, NON-BLOAT)
+       ========================================================================== */
+    .sponsor-top-banner {
+      margin: 12px 0 4px;
+      background: var(--sponsor-bg);
+      border: 1px dashed var(--accent);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .sponsor-badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .sponsor-cta {
+      background: var(--up);
+      color: #050709;
+      font-weight: 800;
+      font-size: 11.5px;
+      padding: 5px 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* ==========================================================================
+       6. TOP SUMMARY CARDS (MATCHING LIVECOINWATCH OVERVIEW + ZERO-LOGIN BAG)
+       ========================================================================== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .summary-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      font-size: 12.5px;
+    }
+    .card-label { color: var(--text-secondary); }
+    .card-val { font-weight: 700; }
+
+    /* ==========================================================================
+       7. FILTER PILLS & CONTROLS BAR
+       ========================================================================== */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+    .sector-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .sector-pills::-webkit-scrollbar { display: none; }
+    .pill-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      transition: all 0.12s;
+    }
+    .pill-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+    .pill-btn.active {
+      background: var(--accent-glow);
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+
+    /* ==========================================================================
+       8. HIGH-SPEED DATA TABLE & TICK ANIMATIONS
+       ========================================================================== */
+    .table-wrapper {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+    }
+    th {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    th:hover { color: var(--text-primary); }
+    th.col-left, td.col-left { text-align: left; }
+    
+    tr.coin-row {
+      border-bottom: 1px solid var(--border);
+      transition: background-color 0.32s ease;
+    }
+    tr.coin-row:hover {
+      background-color: var(--bg-hover);
+    }
+    td {
+      padding: 10px 10px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    /* Lightweight GPU-friendly price flash animations */
+    .price-cell {
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 4px 7px;
+      display: inline-block;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+    .tick-up {
+      background-color: var(--up-bg) !important;
+      color: var(--up) !important;
+    }
+    .tick-down {
+      background-color: var(--down-bg) !important;
+      color: var(--down) !important;
+    }
+
+    .coin-identity {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .coin-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 11px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .coin-symbol {
+      font-weight: 800;
+      font-size: 13.5px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .coin-name {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .icon-action {
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 2px 4px;
+      transition: color 0.15s, transform 0.15s;
+    }
+    .icon-action:hover {
+      color: var(--text-primary);
+      transform: scale(1.15);
+    }
+    .icon-action.fav-active { color: #ff3366; }
+    .icon-action.pin-active { color: var(--accent); }
+    .icon-action.alert-active { color: #f59e0b; }
+
+    /* Zero-Login Inline Bag Input */
+    .bag-input {
+      width: 78px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 6px;
+      text-align: right;
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+    .bag-input:focus {
+      border-color: var(--accent);
+      background: var(--bg-primary);
+    }
+    .bag-val {
+      display: block;
+      font-size: 10.5px;
+      color: var(--up);
+      margin-top: 2px;
+    }
+
+    /* FDV / Circulating Supply Bar */
+    .supply-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+    .supply-bar-bg {
+      width: 68px;
+      height: 5px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .supply-bar-fill {
+      height: 100%;
+      background: var(--accent);
+    }
+    .supply-bar-fill.low-float {
+      background: var(--down); /* Warns user of heavy VC unlock risk (<40% circulating) */
+    }
+
+    .pct-pill {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .pct-up { color: var(--up); background: var(--up-bg); }
+    .pct-down { color: var(--down); background: var(--down-bg); }
+
+    .trade-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: all 0.15s;
+    }
+    .trade-btn:hover {
+      border-color: var(--up);
+      color: var(--up);
+    }
+
+    /* Native Sponsored Table Row (#0) */
+    tr.sponsored-row {
+      background: var(--sponsor-bg);
+      border-bottom: 1px solid var(--border);
+      font-size: 12.5px;
+    }
+
+    /* ===================
