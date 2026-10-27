@@ -745,714 +745,1349 @@
     .toast-container {
       position: fixed;
       bottom: 18px;
-      righ; font-size: 12.5px; }
-    .card-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; font-size: 12px; }
-    .card-label { color: var(--text-secondary); }
-    .card-val { font-weight: 700; }
-
-    /* Sector Filter Pills */
-    .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0; }
-    .sector-pills { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; width: 100%; }
-    .sector-pills::-webkit-scrollbar { display: none; }
-    .pill-btn { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 6px 11px; font-size: 11.5px; font-weight: 700; color: var(--text-secondary); white-space: nowrap; transition: 0.15s; }
-    .pill-btn.active { background: var(--accent-glow); color: var(--text-primary); border-color: var(--accent); }
-
-    /* Ticker Table & Flash Animations */
-    .table-wrapper { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; overflow-x: auto; margin-bottom: 24px; }
-    table { width: 100%; border-collapse: collapse; text-align: right; }
-    th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 10px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none; }
-    th:hover { color: var(--text-primary); }
-    th.col-left, td.col-left { text-align: left; }
-    tr.coin-row { border-bottom: 1px solid var(--border); }
-    tr.coin-row:hover { background-color: var(--bg-hover); }
-    td { padding: 9px 8px; vertical-align: middle; white-space: nowrap; }
-
-    @keyframes flashGreenCell {
-      0% { background-color: var(--up-bg); color: var(--up); transform: scale(1.04); box-shadow: 0 0 10px var(--up-bg); }
-      100% { background-color: transparent; transform: scale(1); box-shadow: none; }
+      right: 18px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    @keyframes flashRedCell {
-      0% { background-color: var(--down-bg); color: var(--down); transform: scale(1.04); box-shadow: 0 0 10px var(--down-bg); }
-      100% { background-color: transparent; transform: scale(1); box-shadow: none; }
-    }
-    @keyframes rowSweepUp {
-      0% { background-color: var(--up-row); }
-      100% { background-color: transparent; }
-    }
-    @keyframes rowSweepDown {
-      0% { background-color: var(--down-row); }
-      100% { background-color: transparent; }
+    .toast {
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent);
+      color: var(--text-primary);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     }
 
-    .price-cell {
-      font-weight: 800;
-      border-radius: 5px;
-      padding: 4px 7px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border: 1px solid transparent;
-      will-change: transform, background-color;
+    /* SEO & Methodology Footer */
+    .site-footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .tick-up {
-      animation: flashGreenCell 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-      color: var(--up) !important;
-      border-color: var(--up);
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
     }
-    .tick-down {
-      animation: flashRedCell 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-      color: var(--down) !important;
-      border-color: var(--down);
+    .methodology-grid h4 {
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-bottom: 4px;
+      font-family: var(--font-mono);
     }
-    .row-flash-up { animation: rowSweepUp 0.65s ease-out; }
-    .row-flash-down { animation: rowSweepDown 0.65s ease-out; }
-    .tick-arrow { font-size: 9.5px; display: inline-block; width: 10px; text-align: center; }
 
-    .coin-identity { display: flex; align-items: center; gap: 8px; }
-    .coin-icon { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-tertiary); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px; border: 1px solid var(--border); flex-shrink: 0; color: var(--accent); }
-    .coin-symbol { font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 4px; }
-    .coin-name { font-size: 10.5px; color: var(--text-muted); display: block; }
-    .mobile-mcap { display: none; font-size: 10px; color: var(--text-secondary); }
-    .sector-tag { font-size: 9px; padding: 1px 4px; border-radius: 3px; background: var(--bg-tertiary); color: var(--text-secondary); border: 1px solid var(--border); font-weight: 600; }
-
-    .icon-action { color: var(--text-muted); font-size: 13px; padding: 3px 4px; border-radius: 4px; line-height: 1; }
-    .icon-action.fav-active { color: #ff3366; }
-    .icon-action.pin-active { color: var(--accent); }
-
-    .bag-input { width: 74px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; text-align: right; font-size: 12px; color: var(--text-primary); font-variant-numeric: tabular-nums; }
-    .bag-input:focus { border-color: var(--accent); }
-    .bag-val { display: block; font-size: 10px; color: var(--up); margin-top: 2px; font-weight: 700; min-height: 13px; }
-
-    .pct-pill { display: inline-block; padding: 3px 6px; border-radius: 4px; font-weight: 700; font-size: 11.5px; min-width: 58px; text-align: right; }
-    .pct-up { color: var(--up); background: var(--up-bg); }
-    .pct-down { color: var(--down); background: var(--down-bg); }
-
-    .sparkline-svg { width: 88px; height: 26px; overflow: visible; display: inline-block; vertical-align: middle; }
-    .spark-dot { animation: radarPulse 1.4s infinite; }
-
-    /* Modal */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
-    .modal-backdrop.open { display: flex; }
-    .modal-box { background: var(--bg-secondary); border: 1px solid var(--accent); border-radius: 10px; max-width: 500px; width: 100%; padding: 18px; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
-    .code-snippet { width: 100%; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-family: monospace; font-size: 11.5px; color: var(--text-primary); margin: 10px 0; word-break: break-all; }
-
-    footer { border-top: 1px solid var(--border); padding: 18px 0 32px; color: var(--text-muted); font-size: 11.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-
-    /* Mobile Viewport Optimization (Fixes Screenshot Clipping & Wrapping) */
-    @media (max-width: 820px) {
-      .cards-grid { grid-template-columns: 1fr 1fr; }
-      .cards-grid .summary-card:last-child { grid-column: 1 / -1; }
-      .hide-tablet { display: none; }
-    }
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .hide-mobile { display: none; }
-      .mobile-mcap { display: inline; }
-      .sector-tag { display: none; }
-      .brand-sub { display: none; }
-      .header-controls { width: 100%; justify-content: space-between; }
-      .search-box { order: 3; min-width: 100%; max-width: 100%; margin-top: 4px; }
-      .cards-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .summary-card { padding: 9px 10px; }
-      td, th { padding: 8px 4px; font-size: 12px; }
-      .price-cell { padding: 3px 5px; font-size: 12.5px; }
-      .pct-pill { min-width: 52px; padding: 2px 5px; font-size: 11px; }
-      .bag-input { width: 62px; padding: 4px; font-size: 11.5px; }
-      .coin-icon { width: 22px; height: 22px; font-size: 9px; }
+      .search-box input { width: 160px; }
+      .search-box input:focus { width: 190px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="top-utility-bar">
-    <div class="container utility-inner">
-      <div class="status-cluster">
-        <span class="ws-indicator"><span class="pulse-dot"></span><span id="wsStatusText">LIVE: MULTI-EXCHANGE</span></span>
-        <span class="live-tick-pill tabular" id="tickCounterPill">⚡ TICKS: 0</span>
-        <span class="zero-login-pill hide-mobile">🔒 100% LOCAL STORAGE</span>
-      </div>
-      <div class="theme-switcher">
-        <button class="theme-btn active" data-set-theme="kali">KALI GREEN</button>
-        <button class="theme-btn" data-set-theme="slate">SLATE</button>
-        <button class="theme-btn" data-set-theme="oled">OLED</button>
-        <button class="theme-btn" data-set-theme="light">LIGHT</button>
+  <!-- Top Telemetry Bar -->
+  <div class="telemetry-bar">
+    <div class="telemetry-left">
+      <span class="status-pill">
+        <span class="pulse-dot" id="wsPulseDot"></span>
+        <span id="wsStatusText">LIVE: TRI-EXCHANGE WS</span>
+      </span>
+      <span class="feed-badge" id="badgeCB" title="Coinbase WebSocket Feed">CB: INIT</span>
+      <span class="feed-badge" id="badgeBN" title="Binance Vision All-Market Stream">BN: INIT</span>
+      <span class="feed-badge" id="badgeKR" title="Kraken v2 Spot Stream (XMR/KAS)">KR: INIT</span>
+      <span>⚡ TICKS: <strong id="tickCounter" style="color:var(--accent)">0</strong></span>
+      <span class="hide-mobile">📊 ASSETS: <strong id="assetCountTop" style="color:var(--text-primary)">100</strong></span>
+      <span class="hide-mobile">🔒 100% LOCAL STORAGE</span>
+    </div>
+    <div class="telemetry-right">
+      <div class="theme-switcher" role="group" aria-label="Color Theme">
+        <button class="theme-btn active" data-theme-val="kali">KALI</button>
+        <button class="theme-btn" data-theme-val="green">GREEN</button>
+        <button class="theme-btn" data-theme-val="slate">SLATE</button>
+        <button class="theme-btn" data-theme-val="oled">OLED</button>
+        <button class="theme-btn" data-theme-val="light">LIGHT</button>
       </div>
     </div>
   </div>
 
-  <div class="live-tape-bar">
-    <div class="container tape-inner" id="liveTapeContainer"></div>
+  <!-- Live Scrolling Marquee -->
+  <div class="ticker-tape-wrap">
+    <div class="ticker-tape" id="tickerTape"></div>
   </div>
 
-  <header class="main-header">
-    <div class="container header-inner">
-      <a href="#" class="brand">
+  <main class="container">
+    <!-- Brand & Global Controls -->
+    <header class="brand-header">
+      <div class="brand-title-group">
         <div class="brand-logo">⚡</div>
-        <div>
-          <span class="brand-title">CryptoPriceTicker<span style="color:var(--accent)">.com</span></span>
-          <span class="brand-sub">Real-Time WebSocket Ticker • Zero Login • Ad-Free</span>
+        <div class="brand-title">
+          <h1>CryptoPriceTicker.com</h1>
+          <div class="brand-sub">Real-Time Multi-Exchange WebSocket Ticker • Zero Login • Ad-Free</div>
         </div>
-      </a>
+      </div>
+
       <div class="header-controls">
         <div class="search-box">
           <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" placeholder="Filter coins or sectors ('/' to focus)..." autocomplete="off" />
+          <input type="text" id="searchInput" placeholder="Filter 100+ coins, tickers, narratives..." aria-label="Search cryptocurrencies" />
+          <span class="search-kbd">/</span>
         </div>
-        <div class="btn-group" id="currencySwitcher">
-          <button class="active" data-currency="USD">USD $</button>
-          <button data-currency="BTC">BTC ₿</button>
-          <button data-currency="ETH">ETH Ξ</button>
+
+        <div class="btn-group" id="currencyGroup" role="group" aria-label="Base Currency">
+          <button class="btn-toggle active" data-curr="USD">USD $</button>
+          <button class="btn-toggle" data-curr="BTC">BTC ₿</button>
+          <button class="btn-toggle" data-curr="ETH">ETH Ξ</button>
+          <button class="btn-toggle" data-curr="SOL">SOL ◎</button>
         </div>
-        <button class="action-btn" id="syncBagBtn">💾 Sync</button>
-      </div>
-    </div>
-  </header>
 
-  <main class="container">
-    <section class="cards-grid">
-      <div class="summary-card">
-        <div class="card-header"><span>🌐 Market Pulse</span><span style="font-size:10.5px;color:var(--up);" id="lastTickTime">Live</span></div>
-        <div class="card-row"><span class="card-label">Market Cap</span><span class="card-val tabular" id="globalMcap">$2.78T</span></div>
-        <div class="card-row"><span class="card-label">24h Volume</span><span class="card-val tabular" style="color:var(--up)" id="globalVol">$94.2B</span></div>
-        <div class="card-row"><span class="card-label">Liquidity ±2%</span><span class="card-val tabular" style="color:var(--accent)" id="globalLiq">$7.42B</span></div>
+        <button class="action-btn" id="densityBtn" title="Toggle Compact Terminal Rows">📐 Compact</button>
+        <button class="action-btn" id="exportCsvBtn" title="Export Live Market Table to CSV">📥 CSV</button>
+        <button class="action-btn" id="syncModalBtn" title="Zero-Login Stateless Portfolio Sync URL">💾 Sync</button>
+      </div>
+    </header>
+
+    <!-- 3 Summary Bento Cards -->
+    <section class="bento-grid" aria-label="Market Summary">
+      <!-- Card 1: Market Pulse -->
+      <div class="bento-card">
+        <div class="bento-head">
+          <span>🌐 Market Pulse (Tracked Universe)</span>
+          <span id="lastUpdateClock">--:--:--</span>
+        </div>
+        <div class="bento-metrics">
+          <div class="metric-box">
+            <div class="metric-label">Market Cap</div>
+            <div class="metric-val" id="globalMcap">$2.74T</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">24h Volume</div>
+            <div class="metric-val" id="globalVol">$128.4B</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Liquidity ±2%</div>
+            <div class="metric-val" id="globalLiq" style="color:var(--accent)">$9.42B</div>
+          </div>
+        </div>
       </div>
 
-      <div class="summary-card">
-        <div class="card-header"><span>🔥 Top 24h Movers</span><span style="font-size:10.5px;color:var(--text-muted);">Gainers</span></div>
-        <div id="topMoversList"></div>
+      <!-- Card 2: Top 24h Movers -->
+      <div class="bento-card">
+        <div class="bento-head">
+          <span>🔥 Top 24h Movers</span>
+          <div style="display:flex;gap:6px">
+            <button class="theme-btn active" id="moverGainersBtn">Gainers</button>
+            <button class="theme-btn" id="moverLosersBtn">Losers</button>
+          </div>
+        </div>
+        <div id="moversList"></div>
       </div>
 
-      <div class="summary-card" style="border-color:var(--accent);">
-        <div class="card-header">
+      <!-- Card 3: Private Local Portfolio -->
+      <div class="bento-card">
+        <div class="bento-head">
           <span>💼 My Private Bag</span>
-          <button id="clearBagBtn" style="font-size:11px;color:var(--text-muted);text-decoration:underline;">Reset</button>
+          <button class="theme-btn" id="resetBagBtn" title="Clear local bag quantities">Reset</button>
         </div>
-        <div class="card-row"><span class="card-label">Total Value</span><span class="card-val tabular" style="font-size:14.5px;color:var(--up);" id="bagTotalValue">$0.00</span></div>
-        <div class="card-row"><span class="card-label">24h PnL</span><span class="card-val tabular" id="bag24hChange">$0.00 (0.00%)</span></div>
-        <div class="card-row"><span class="card-label">Watchlist</span><span class="card-val tabular" id="watchlistCountLabel">0 Coins</span></div>
+        <div class="bento-metrics">
+          <div class="metric-box">
+            <div class="metric-label">Total Value</div>
+            <div class="metric-val" id="bagTotalVal">$0.00</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">24h PnL</div>
+            <div class="metric-val" id="bagPnlVal">$0.00</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Watch / Alerts</div>
+            <div class="metric-val" id="watchlistCountVal">0 / 0</div>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- Narrative / Sector Filter Bar -->
     <div class="filter-bar">
       <div class="sector-pills" id="sectorPills">
-        <button class="pill-btn active" data-sector="all">All (15)</button>
-        <button class="pill-btn" data-sector="watchlist">❤️ Watchlist</button>
-        <button class="pill-btn" data-sector="bag">💼 My Bag</button>
-        <button class="pill-btn" data-sector="L1">Layer 1</button>
-        <button class="pill-btn" data-sector="DePIN">📡 DePIN</button>
-        <button class="pill-btn" data-sector="AI">🧠 AI</button>
-        <button class="pill-btn" data-sector="Privacy">🛡️ Privacy</button>
-        <button class="pill-btn" data-sector="Meme">🐸 Memes</button>
+        <button class="sector-pill active" data-sector="ALL">All <span class="count" id="cnt-ALL">100</span></button>
+        <button class="sector-pill" data-sector="WATCH">❤️ Watchlist <span class="count" id="cnt-WATCH">0</span></button>
+        <button class="sector-pill" data-sector="BAG">💼 My Bag <span class="count" id="cnt-BAG">0</span></button>
+        <button class="sector-pill" data-sector="L1">⛓️ Layer 1 <span class="count" id="cnt-L1">0</span></button>
+        <button class="sector-pill" data-sector="L2">⚡ Layer 2 <span class="count" id="cnt-L2">0</span></button>
+        <button class="sector-pill" data-sector="DePIN">📡 DePIN <span class="count" id="cnt-DePIN">0</span></button>
+        <button class="sector-pill" data-sector="AI">🧠 AI <span class="count" id="cnt-AI">0</span></button>
+        <button class="sector-pill" data-sector="DeFi">🏦 DeFi & RWA <span class="count" id="cnt-DeFi">0</span></button>
+        <button class="sector-pill" data-sector="Privacy">🛡️ Privacy <span class="count" id="cnt-Privacy">0</span></button>
+        <button class="sector-pill" data-sector="Gaming">🎮 Gaming <span class="count" id="cnt-Gaming">0</span></button>
+        <button class="sector-pill" data-sector="Meme">🐸 Memes <span class="count" id="cnt-Meme">0</span></button>
+        <button class="sector-pill" data-sector="Stable">💵 Stables <span class="count" id="cnt-Stable">0</span></button>
       </div>
     </div>
 
-    <div class="table-wrapper">
-      <table id="tickerTable">
+    <!-- Main Crypto Price Table -->
+    <div class="table-wrap">
+      <table id="cryptoTable">
         <thead>
           <tr>
-            <th class="col-left" style="width:68px;" onclick="window.cptSort('rank')"># <span id="sort-rank">▲</span></th>
-            <th class="col-left" onclick="window.cptSort('name')">Coin <span id="sort-name"></span></th>
-            <th onclick="window.cptSort('price')">Price <span id="sort-price"></span></th>
-            <th onclick="window.cptSort('change24h')">24h % <span id="sort-change24h"></span></th>
-            <th class="hide-tablet">Live Trend</th>
-            <th class="hide-mobile" onclick="window.cptSort('mcap')">Market Cap <span id="sort-mcap"></span></th>
-            <th class="hide-tablet" onclick="window.cptSort('volume')">Volume 24h <span id="sort-volume"></span></th>
-            <th class="hide-tablet" onclick="window.cptSort('liquidity')">Liquidity ±2% <span id="sort-liquidity"></span></th>
-            <th class="col-left" style="width:82px;">My Bag</th>
+            <th class="col-center" data-sort="rank" style="width:44px"># ▲</th>
+            <th class="col-center" style="width:74px" title="Watchlist, Pin to Tab & Price Alert">Tools</th>
+            <th class="col-left" data-sort="name">Coin</th>
+            <th data-sort="price">Price</th>
+            <th data-sort="change24h">24h %</th>
+            <th class="col-center hide-mobile">Live Trend</th>
+            <th class="col-center hide-mobile" data-sort="rangePos">24h Low / High</th>
+            <th data-sort="mcap">Market Cap</th>
+            <th class="hide-mobile" data-sort="vol24h">Volume 24h</th>
+            <th class="hide-mobile" data-sort="liq">Liquidity ±2%</th>
+            <th data-sort="bagVal">My Bag</th>
           </tr>
         </thead>
-        <tbody id="tickerBody"></tbody>
+        <tbody id="tableBody"></tbody>
       </table>
     </div>
+
+    <!-- Table Footer & Dynamic Expansion -->
+    <div class="table-footer">
+      <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">
+        Showing <strong id="showingCount" style="color:var(--text-primary)">100</strong> assets • Click any coin name for <strong>Cross-Exchange Spread & Calculator</strong>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="action-btn" id="expandExchangePairsBtn">🌐 + Load 100 More Live Exchange Pairs (200+ Total)</button>
+      </div>
+    </div>
+
+    <!-- Methodology & YMYL Architecture Disclosure -->
+    <footer class="site-footer">
+      <div class="methodology-grid">
+        <div>
+          <h4>⚡ Multi-Exchange WebSocket Architecture</h4>
+          <p>Prices stream directly to your browser via concurrent WebSocket connections to <strong>Coinbase Exchange</strong>, <strong>Binance Vision (!miniTicker@arr)</strong>, and <strong>Kraken v2</strong>, backed by REST 24hr snapshots.</p>
+        </div>
+        <div>
+          <h4>📊 ±2% Orderbook Depth & Ranking</h4>
+          <p>Market capitalization is dynamically calculated from real-time spot price × verified circulating supply. ±2% liquidity estimates combined orderbook depth within 200 bps of mid-market price.</p>
+        </div>
+        <div>
+          <h4>🔒 100% Zero-Login Privacy</h4>
+          <p>Watchlists, portfolio quantities, and price alerts never leave your device. Data persists in browser <code>localStorage</code> or stateless URL hashes. Financial data is provided for informational purposes only.</p>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span>CryptoPriceTicker.com — Real-Time Multi-Exchange WebSocket Ticker. 100% Zero-Login, Ad-Free Architecture.</span>
+        <span>Shortcuts: <code>/</code> Search • <code>📌</code> Pin Price to Browser Tab • <code>🔔</code> Local Price Alert</span>
+      </div>
+    </footer>
   </main>
 
+  <!-- Modal 1: Zero-Login Portfolio Sync -->
   <div class="modal-backdrop" id="syncModal">
-    <div class="modal-box">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:800;font-size:15px;">
-        <span>💾 Zero-Login Portfolio Sync</span>
-        <button id="closeSyncModalBtn" style="font-size:16px;padding:4px;">✕</button>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>💾 Zero-Login Portfolio & Watchlist Sync</h3>
+        <button class="icon-btn" id="closeSyncModal">✕</button>
       </div>
-      <p style="color:var(--text-secondary);font-size:12.5px;">Bookmark or send this private URL to open your exact watchlist and bag quantities on any device:</p>
-      <div class="code-snippet" id="shareableBagUrl">https://cryptopriceticker.com/</div>
-      <button class="action-btn" id="copyBagUrlBtn" style="width:100%;justify-content:center;background:var(--accent);color:#fff;padding:9px;">Copy Private Sync Link</button>
+      <p style="color:var(--text-secondary);font-size:12.5px">
+        Bookmark or share this stateless URL to open your exact watchlist and bag quantities on any device without creating an account:
+      </p>
+      <input type="text" class="sync-input" id="syncUrlInput" readonly />
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="action-btn" id="copySyncUrlBtn">📋 Copy Private Sync Link</button>
+      </div>
     </div>
   </div>
 
-  <footer class="container">
-    <div><strong>CryptoPriceTicker.com</strong> — Real-Time Multi-Exchange WebSocket Ticker. 100% Zero-Login, Ad-Free Architecture.</div>
-    <div>Tap ♥ to save to Watchlist, 📌 to pin price to browser tab, or press <code>/</code> to search.</div>
-  </footer>
+  <!-- Modal 2: Coin Deep-Dive, Cross-Exchange Arbitrage & Price Alert -->
+  <div class="modal-backdrop" id="coinModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalCoinTitle">BTC — Bitcoin</h3>
+        <button class="icon-btn" id="closeCoinModal">✕</button>
+      </div>
+      <div id="modalCoinBody" style="display:flex;flex-direction:column;gap:12px"></div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
 
   <script>
-  (() => {
-    if (window.__CPT_INITIALIZED) return;
-    window.__CPT_INITIALIZED = true;
-
-    const INITIAL_COINS = [
-      { id: "bitcoin", symbol: "BTC", name: "Bitcoin", rank: 1, price: 80667.48, change24h: 3.42, mcap: 1621100000000, volume: 28400000000, liquidity: 1420000000, sector: ["L1"] },
-      { id: "ethereum", symbol: "ETH", name: "Ethereum", rank: 2, price: 2371.62, change24h: 1.85, mcap: 290340000000, volume: 19500000000, liquidity: 810000000, sector: ["L1"] },
-      { id: "solana", symbol: "SOL", name: "Solana", rank: 3, price: 148.0100, change24h: 6.18, mcap: 70120000000, volume: 5400000000, liquidity: 410000000, sector: ["L1", "DePIN"] },
-      { id: "tether", symbol: "USDT", name: "Tether", rank: 4, price: 1.0001, change24h: 0.01, mcap: 149040000000, volume: 52000000000, liquidity: 4600000000, sector: ["L1"] },
-      { id: "ripple", symbol: "XRP", name: "XRP", rank: 5, price: 1.2854, change24h: -0.94, mcap: 81140000000, volume: 2100000000, liquidity: 245000000, sector: ["L1"] },
-      { id: "dogecoin", symbol: "DOGE", name: "Dogecoin", rank: 6, price: 0.19425, change24h: 5.12, mcap: 28400000000, volume: 1850000000, liquidity: 142000000, sector: ["Meme"] },
-      { id: "chainlink", symbol: "LINK", name: "Chainlink", rank: 7, price: 16.8540, change24h: 4.10, mcap: 10560000000, volume: 490000000, liquidity: 88000000, sector: ["DePIN", "AI"] },
-      { id: "avalanche", symbol: "AVAX", name: "Avalanche", rank: 8, price: 27.9120, change24h: 2.34, mcap: 11400000000, volume: 460000000, liquidity: 76000000, sector: ["L1"] },
-      { id: "sui", symbol: "SUI", name: "Sui", rank: 9, price: 2.8415, change24h: 7.65, mcap: 8080000000, volume: 980000000, liquidity: 92000000, sector: ["L1"] },
-      { id: "bittensor", symbol: "TAO", name: "Bittensor", rank: 10, price: 542.40, change24h: 9.15, mcap: 4000000000, volume: 310000000, liquidity: 54000000, sector: ["AI", "DePIN"] },
-      { id: "render-token", symbol: "RENDER", name: "Render", rank: 11, price: 6.8425, change24h: 8.45, mcap: 3540000000, volume: 420000000, liquidity: 68000000, sector: ["DePIN", "AI"] },
-      { id: "monero", symbol: "XMR", name: "Monero", rank: 12, price: 214.55, change24h: 1.45, mcap: 3950000000, volume: 95000000, liquidity: 49000000, sector: ["Privacy"] },
-      { id: "kaspa", symbol: "KAS", name: "Kaspa", rank: 13, price: 0.13854, change24h: 3.80, mcap: 3460000000, volume: 78000000, liquidity: 35000000, sector: ["L1"] },
-      { id: "helium", symbol: "HNT", name: "Helium", rank: 14, price: 6.4510, change24h: 4.95, mcap: 1120000000, volume: 34000000, liquidity: 22000000, sector: ["DePIN"] },
-      { id: "pepe", symbol: "PEPE", name: "Pepe", rank: 15, price: 0.00001045, change24h: 6.80, mcap: 4390000000, volume: 890000000, liquidity: 74000000, sector: ["Meme"] }
+    /********************************************************************
+     * 1. CURATED 100-ASSET CORE REGISTRY (10 NARRATIVES)
+     * Format: [symbol, name, supply (in millions), fallbackPrice, sectors[]]
+     ********************************************************************/
+    const CORE_REGISTRY = [
+      // Top Majors & L1s
+      ["BTC", "Bitcoin", 19.78, 80667.48, ["L1"]],
+      ["ETH", "Ethereum", 120.42, 2371.62, ["L1", "DeFi"]],
+      ["USDT", "Tether", 149040.0, 1.000, ["Stable"]],
+      ["XRP", "XRP", 56800.0, 1.286, ["L1"]],
+      ["SOL", "Solana", 473.8, 148.12, ["L1", "DePIN"]],
+      ["BNB", "BNB", 144.0, 588.40, ["L1"]],
+      ["USDC", "USD Coin", 37900.0, 1.000, ["Stable"]],
+      ["DOGE", "Dogecoin", 146200.0, 0.1942, ["Meme", "L1"]],
+      ["ADA", "Cardano", 35740.0, 0.584, ["L1"]],
+      ["TRX", "TRON", 86380.0, 0.198, ["L1"]],
+      ["AVAX", "Avalanche", 409.1, 27.87, ["L1"]],
+      ["TON", "Toncoin", 2540.0, 4.92, ["L1"]],
+      ["LINK", "Chainlink", 626.8, 16.86, ["DeFi", "DePIN", "AI"]],
+      ["SHIB", "Shiba Inu", 589260000.0, 0.0000188, ["Meme"]],
+      ["SUI", "Sui", 2845.0, 2.842, ["L1"]],
+      ["DOT", "Polkadot", 1510.0, 4.78, ["L1", "DePIN"]],
+      ["BCH", "Bitcoin Cash", 19.79, 412.50, ["L1"]],
+      ["NEAR", "NEAR Protocol", 1218.0, 4.65, ["L1", "AI"]],
+      ["LTC", "Litecoin", 75.15, 84.20, ["L1"]],
+      ["UNI", "Uniswap", 600.5, 9.15, ["DeFi"]],
+      ["PEPE", "Pepe", 420690000.0, 0.00001046, ["Meme"]],
+      ["APT", "Aptos", 535.0, 10.42, ["L1"]],
+      ["ICP", "Internet Computer", 474.5, 8.92, ["L1", "AI", "DePIN"]],
+      ["DAI", "Dai", 5360.0, 1.000, ["Stable", "DeFi"]],
+      ["TAO", "Bittensor", 7.38, 542.52, ["AI", "DePIN"]],
+      ["ETC", "Ethereum Classic", 149.6, 21.40, ["L1"]],
+      ["XMR", "Monero", 18.45, 214.48, ["Privacy", "L1"]],
+      ["RENDER", "Render", 517.7, 6.843, ["DePIN", "AI"]],
+      ["POL", "Polygon", 8130.0, 0.382, ["L2"]],
+      ["KAS", "Kaspa", 25010.0, 0.1386, ["L1"]],
+      ["FET", "Artificial Superintelligence", 2520.0, 1.38, ["AI"]],
+      ["XLM", "Stellar", 29920.0, 0.118, ["L1"]],
+      ["HBAR", "Hedera", 37700.0, 0.068, ["L1", "DePIN"]],
+      ["OKB", "OKB", 60.0, 44.20, ["L1"]],
+      ["STX", "Stacks", 1502.0, 1.88, ["L2"]],
+      ["FIL", "Filecoin", 601.2, 4.28, ["DePIN", "AI"]],
+      ["ARB", "Arbitrum", 4095.0, 0.684, ["L2"]],
+      ["AAVE", "Aave", 14.98, 162.40, ["DeFi"]],
+      ["IMX", "Immutable", 1668.0, 1.42, ["L2", "Gaming"]],
+      ["OP", "Optimism", 1255.0, 1.64, ["L2"]],
+      ["INJ", "Injective", 97.9, 21.80, ["L1", "DeFi", "AI"]],
+      ["WIF", "dogwifhat", 998.9, 2.48, ["Meme"]],
+      ["ATOM", "Cosmos", 390.9, 5.12, ["L1"]],
+      ["MNT", "Mantle", 3365.0, 0.695, ["L2"]],
+      ["VET", "VeChain", 80985.0, 0.0268, ["L1", "DePIN"]],
+      ["FTM", "Fantom", 2803.0, 0.724, ["L1", "DeFi"]],
+      ["BONK", "Bonk", 75020000.0, 0.0000248, ["Meme"]],
+      ["GRT", "The Graph", 9550.0, 0.184, ["AI", "DePIN", "DeFi"]],
+      ["RUNE", "THORChain", 336.6, 5.18, ["DeFi", "L1"]],
+      ["SEI", "Sei", 3980.0, 0.442, ["L1"]],
+      ["THETA", "Theta Network", 1000.0, 1.48, ["DePIN", "AI"]],
+      ["AR", "Arweave", 65.65, 18.40, ["DePIN", "AI"]],
+      ["ONDO", "Ondo", 1440.0, 0.942, ["DeFi"]],
+      ["ALGO", "Algorand", 8305.0, 0.168, ["L1"]],
+      ["MKR", "Maker", 0.88, 1520.00, ["DeFi"]],
+      ["FLOKI", "FLOKI", 9600000.0, 0.000158, ["Meme", "Gaming"]],
+      ["TIA", "Celestia", 428.0, 5.42, ["L1", "L2"]],
+      ["JUP", "Jupiter", 1350.0, 1.04, ["DeFi"]],
+      ["PYTH", "Pyth Network", 3625.0, 0.395, ["DeFi"]],
+      ["HNT", "Helium", 173.6, 6.451, ["DePIN"]],
+      ["LDO", "Lido DAO", 895.8, 1.28, ["DeFi"]],
+      ["FDUSD", "First Digital USD", 2150.0, 1.000, ["Stable"]],
+      ["VIRTUAL", "Virtuals Protocol", 1000.0, 1.18, ["AI"]],
+      ["ENA", "Ethena", 2840.0, 0.562, ["DeFi"]],
+      ["JASMY", "JasmyCoin", 49390.0, 0.0218, ["DePIN"]],
+      ["POPCAT", "Popcat (SOL)", 979.9, 1.38, ["Meme"]],
+      ["PENDLE", "Pendle", 162.8, 5.12, ["DeFi"]],
+      ["STRK", "Starknet", 2099.0, 0.445, ["L2"]],
+      ["GALA", "Gala", 36280.0, 0.0248, ["Gaming"]],
+      ["RAY", "Raydium", 290.8, 3.84, ["DeFi"]],
+      ["AERO", "Aerodrome Finance", 698.0, 1.34, ["DeFi"]],
+      ["WLD", "Worldcoin", 682.0, 2.12, ["AI"]],
+      ["FLOW", "Flow", 1545.0, 0.625, ["L1", "Gaming"]],
+      ["BRETT", "Brett (Based)", 9910.0, 0.104, ["Meme"]],
+      ["QNT", "Quant", 12.07, 68.50, ["DeFi", "L1"]],
+      ["AKT", "Akash Network", 248.2, 3.12, ["DePIN", "AI"]],
+      ["BEAM", "Beam", 49460.0, 0.0195, ["Gaming"]],
+      ["EGLD", "MultiversX", 27.6, 28.90, ["L1"]],
+      ["SAND", "The Sandbox", 2415.0, 0.312, ["Gaming"]],
+      ["AXS", "Axie Infinity", 154.2, 5.38, ["Gaming"]],
+      ["MANA", "Decentraland", 1918.0, 0.345, ["Gaming"]],
+      ["ZEC", "Zcash", 16.32, 42.80, ["Privacy"]],
+      ["ZK", "ZKsync", 3675.0, 0.148, ["L2"]],
+      ["ARKM", "Arkham", 299.0, 1.78, ["AI"]],
+      ["MOG", "Mog Coin", 390570000.0, 0.00000192, ["Meme"]],
+      ["IOTX", "IoTeX", 9440.0, 0.0425, ["DePIN"]],
+      ["LPT", "Livepeer", 35.8, 12.60, ["DePIN", "AI"]],
+      ["DYDX", "dYdX", 648.0, 1.15, ["DeFi"]],
+      ["CRV", "Curve DAO", 1226.0, 0.318, ["DeFi"]],
+      ["SNX", "Synthetix", 328.0, 1.62, ["DeFi"]],
+      ["MEW", "cat in a dogs world", 88888.0, 0.0091, ["Meme"]],
+      ["RON", "Ronin", 365.0, 1.68, ["Gaming", "L1"]],
+      ["AIOZ", "AIOZ Network", 1132.0, 0.642, ["DePIN", "AI"]],
+      ["SUPER", "SuperVerse", 488.0, 1.24, ["Gaming"]],
+      ["DASH", "Dash", 12.02, 26.80, ["Privacy"]],
+      ["GLM", "Golem", 1000.0, 0.342, ["DePIN", "AI"]],
+      ["ROSE", "Oasis", 7060.0, 0.078, ["Privacy", "AI"]],
+      ["METIS", "Metis", 6.1, 41.20, ["L2"]],
+      ["MANTA", "Manta Network", 381.0, 0.84, ["L2"]],
+      ["TURBO", "Turbo", 69000.0, 0.0092, ["Meme", "AI"]],
+      ["BOME", "BOOK OF MEME", 68966.0, 0.0084, ["Meme"]],
+      ["COMP", "Compound", 8.85, 51.40, ["DeFi"]],
+      ["1INCH", "1inch Network", 1312.0, 0.295, ["DeFi"]],
+      ["ANKR", "Ankr", 10000.0, 0.031, ["DePIN"]],
+      ["SC", "Siacoin", 57620.0, 0.0054, ["DePIN"]],
+      ["FLUX", "Flux", 371.0, 0.59, ["DePIN", "AI"]],
+      ["PHA", "Phala Network", 772.0, 0.145, ["AI", "DePIN"]],
+      ["NMR", "Numeraire", 7.45, 16.90, ["AI", "DeFi"]],
+      ["SCRT", "Secret", 295.0, 0.245, ["Privacy", "AI"]],
+      ["ZEN", "Horizen", 15.6, 8.95, ["Privacy"]],
+      ["LRC", "Loopring", 1374.0, 0.148, ["L2", "DeFi"]]
     ];
 
-    INITIAL_COINS.forEach(c => {
-      c.history = [];
-      let p = c.price * (1 - (c.change24h / 200));
-      for (let i = 0; i < 16; i++) {
-        p = p * (1 + (Math.random() - 0.48) * 0.008);
-        c.history.push(p);
-      }
-      c.history.push(c.price);
-      c.lastDir = "▲";
-    });
-
+    /********************************************************************
+     * 2. APPLICATION STATE & STORAGE INITIALIZATION
+     ********************************************************************/
+    const CANONICAL_TITLE = document.title;
     const state = {
-      coins: JSON.parse(JSON.stringify(INITIAL_COINS)),
-      currency: "USD",
-      theme: "kali",
-      pinnedSymbol: "BTC",
-      sector: "all",
+      coins: new Map(),
+      coinOrder: [],
+      currency: localStorage.getItem("cpt_curr") || "USD",
+      theme: localStorage.getItem("cpt_theme") || "kali",
+      compact: localStorage.getItem("cpt_compact") === "1",
+      sector: "ALL",
       search: "",
       sortBy: "rank",
       sortAsc: true,
+      moverMode: "gainers",
+      pinnedSym: localStorage.getItem("cpt_pin") || "",
+      watchlist: new Set(JSON.parse(localStorage.getItem("cpt_watch") || '["BTC","ETH","SOL","TAO"]')),
+      bag: JSON.parse(localStorage.getItem("cpt_bag") || '{"BTC":0.15,"SOL":10}'),
+      alerts: JSON.parse(localStorage.getItem("cpt_alerts") || '{}'),
       tickCount: 0,
-      watchlist: ["BTC", "SOL", "RENDER", "TAO"],
-      bag: { "BTC": 0.15, "SOL": 10 }
+      expanded200: false,
+      dirtySymbols: new Set(),
+      activeModalSym: null
     };
 
-    function trackEvent(eventName, params) {
-      if (typeof window.gtag === "function") {
-        try { window.gtag("event", eventName, params); } catch (e) {}
-      }
-    }
-
-    try {
+    // Check URL Sync Parameters (?w=BTC,SOL&b=BTC:0.5,SOL:10)
+    (function hydrateFromUrl() {
       const params = new URLSearchParams(window.location.search);
-      if (params.has("sync")) {
-        const decoded = JSON.parse(atob(params.get("sync")));
-        if (decoded.bag && typeof decoded.bag === "object") state.bag = decoded.bag;
-        if (Array.isArray(decoded.watchlist)) state.watchlist = decoded.watchlist;
-        window.history.replaceState({}, document.title, window.location.pathname);
-      } else {
-        if (localStorage.getItem("cpt_theme")) state.theme = localStorage.getItem("cpt_theme");
-        if (localStorage.getItem("cpt_watchlist")) state.watchlist = JSON.parse(localStorage.getItem("cpt_watchlist"));
-        if (localStorage.getItem("cpt_bag")) state.bag = JSON.parse(localStorage.getItem("cpt_bag"));
-        if (localStorage.getItem("cpt_pinned")) state.pinnedSymbol = localStorage.getItem("cpt_pinned");
+      if (params.has("w")) {
+        const wArr = params.get("w").split(",").map(s => s.trim().toUpperCase()).filter(Boolean);
+        if (wArr.length) state.watchlist = new Set(wArr);
       }
-    } catch (e) {}
+      if (params.has("b")) {
+        const bObj = {};
+        params.get("b").split(",").forEach(pair => {
+          const [sym, qty] = pair.split(":");
+          if (sym && !isNaN(parseFloat(qty))) bObj[sym.trim().toUpperCase()] = parseFloat(qty);
+        });
+        if (Object.keys(bObj).length) state.bag = bObj;
+      }
+    })();
 
-    function saveState() {
-      try {
-        localStorage.setItem("cpt_theme", state.theme);
-        localStorage.setItem("cpt_watchlist", JSON.stringify(state.watchlist));
-        localStorage.setItem("cpt_bag", JSON.stringify(state.bag));
-        localStorage.setItem("cpt_pinned", state.pinnedSymbol);
-      } catch (e) {}
-    }
+    // Seed Core Coins into State Map
+    CORE_REGISTRY.forEach(([sym, name, supplyM, price, sectors], idx) => {
+      const mcap = price * supplyM * 1e6;
+      const vol24h = mcap * (sym === "USDT" || sym === "USDC" ? 0.34 : 0.045);
+      const liq = vol24h * 0.065;
+      const change24h = ((idx % 7) - 2.5) * 1.35;
+      const low24h = price * (1 - Math.abs(change24h) / 100 - 0.018);
+      const high24h = price * (1 + Math.abs(change24h) / 100 + 0.018);
+      const history = [];
+      for (let i = 0; i < 16; i++) {
+        history.push(price * (1 + Math.sin(i * 0.6 + idx) * 0.008));
+      }
+      history.push(price);
 
+      state.coins.set(sym, {
+        sym,
+        name,
+        supply: supplyM * 1e6,
+        price,
+        change24h,
+        low24h,
+        high24h,
+        mcap,
+        vol24h,
+        liq,
+        sectors,
+        history,
+        rank: idx + 1,
+        exPrices: { CB: null, BN: null, KR: null },
+        lastSource: "BOOT"
+      });
+    });
+
+    /********************************************************************
+     * 3. FORMATTING & CURRENCY CONVERSION HELPERS
+     ********************************************************************/
     function getRate() {
-      if (state.currency === "BTC") {
-        const btc = state.coins.find(c => c.symbol === "BTC");
-        return btc && btc.price > 0 ? 1 / btc.price : 1;
-      }
-      if (state.currency === "ETH") {
-        const eth = state.coins.find(c => c.symbol === "ETH");
-        return eth && eth.price > 0 ? 1 / eth.price : 1;
-      }
+      if (state.currency === "BTC") return state.coins.get("BTC")?.price || 80667;
+      if (state.currency === "ETH") return state.coins.get("ETH")?.price || 2371;
+      if (state.currency === "SOL") return state.coins.get("SOL")?.price || 148;
       return 1;
     }
 
-    function getSymbolPrefix() {
+    function getCurrSymbol() {
       if (state.currency === "BTC") return "₿";
       if (state.currency === "ETH") return "Ξ";
+      if (state.currency === "SOL") return "◎";
       return "$";
     }
 
-    function formatPrice(usdPrice) {
-      const val = usdPrice * getRate();
-      const sym = getSymbolPrefix();
-      if (val === 0) return sym + "0.00";
-      if (val < 0.001) return sym + val.toFixed(8);
-      if (val < 1) return sym + val.toFixed(4);
-      if (val < 500) return sym + val.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-      return sym + val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    function fmtPrice(usdVal) {
+      if (usdVal === null || usdVal === undefined || isNaN(usdVal)) return "—";
+      const val = usdVal / getRate();
+      const sym = getCurrSymbol();
+      if (val >= 1000) return sym + val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      if (val >= 1) return sym + val.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+      if (val >= 0.01) return sym + val.toFixed(4);
+      if (val >= 0.0001) return sym + val.toFixed(6);
+      return sym + val.toFixed(8);
     }
 
-    function formatCompact(usdVal) {
-      const val = usdVal * getRate();
-      const sym = getSymbolPrefix();
+    function fmtCompact(usdVal) {
+      if (!usdVal || isNaN(usdVal)) return "$0";
+      const val = usdVal / getRate();
+      const sym = getCurrSymbol();
       if (val >= 1e12) return sym + (val / 1e12).toFixed(2) + "T";
       if (val >= 1e9) return sym + (val / 1e9).toFixed(2) + "B";
       if (val >= 1e6) return sym + (val / 1e6).toFixed(2) + "M";
-      return sym + val.toLocaleString("en-US", { maximumFractionDigits: 0 });
+      if (val >= 1e3) return sym + (val / 1e3).toFixed(1) + "K";
+      return sym + val.toFixed(2);
     }
 
-    function buildSparklineSVG(coin) {
-      const pts = coin.history;
-      const min = Math.min(...pts);
-      const max = Math.max(...pts);
-      const range = max - min || 1;
+    function buildSparkline(history, isUp) {
+      if (!history || history.length < 2) return "";
+      const min = Math.min(...history);
+      const max = Math.max(...history);
+      const span = max - min || 1;
       const w = 88, h = 24;
-      const coords = pts.map((p, idx) => {
-        const x = (idx / (pts.length - 1)) * (w - 6) + 2;
-        const y = h - 3 - ((p - min) / range) * (h - 6);
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      const pts = history.map((v, i) => {
+        const x = ((i / (history.length - 1)) * w).toFixed(1);
+        const y = (h - 3 - ((v - min) / span) * (h - 6)).toFixed(1);
+        return `${x},${y}`;
+      }).join(" ");
+      const stroke = isUp ? "var(--up)" : "var(--down)";
+      return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline fill="none" stroke="${stroke}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/></svg>`;
+    }
+
+    /********************************************************************
+     * 4. DYNAMIC RANKING, FILTERING & FULL TABLE RENDER
+     ********************************************************************/
+    function recomputeRanksAndCounts() {
+      const all = Array.from(state.coins.values());
+      all.sort((a, b) => b.mcap - a.mcap);
+      all.forEach((c, idx) => { c.rank = idx + 1; });
+
+      // Update Sector Pill Counts
+      const counts = {
+        ALL: all.length,
+        WATCH: 0,
+        BAG: 0,
+        L1: 0, L2: 0, DePIN: 0, AI: 0, DeFi: 0, Privacy: 0, Gaming: 0, Meme: 0, Stable: 0
+      };
+      all.forEach(c => {
+        if (state.watchlist.has(c.sym)) counts.WATCH++;
+        if ((state.bag[c.sym] || 0) > 0) counts.BAG++;
+        c.sectors.forEach(s => { if (counts[s] !== undefined) counts[s]++; });
       });
-      const lastCoord = coords[coords.length - 1].split(",");
-      const strokeColor = coin.change24h >= 0 ? "var(--up)" : "var(--down)";
-      return `<svg class="sparkline-svg" viewBox="0 0 ${w} ${h}"><polyline fill="none" stroke="${strokeColor}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" points="${coords.join(' ')}" /><circle class="spark-dot" cx="${lastCoord[0]}" cy="${lastCoord[1]}" r="2.5" fill="${strokeColor}" /></svg>`;
+
+      Object.keys(counts).forEach(k => {
+        const el = document.getElementById(`cnt-${k}`);
+        if (el) el.textContent = counts[k];
+      });
+      document.getElementById("assetCountTop").textContent = all.length;
     }
 
-    function renderLiveTape() {
-      const tape = document.getElementById("liveTapeContainer");
-      if (!tape) return;
-      tape.innerHTML = state.coins.slice(0, 10).map(c => `
-        <div class="tape-item tabular" id="tape-${c.symbol}">
-          <strong style="color:var(--text-primary)">${c.symbol}</strong>
-          <span id="tape-price-${c.symbol}">${formatPrice(c.price)}</span>
-          <span style="color:${c.change24h >= 0 ? 'var(--up)' : 'var(--down)'}" id="tape-dir-${c.symbol}">${c.lastDir}</span>
-        </div>
-      `).join("");
-    }
-
-    function renderSummaryCards() {
-      let totalVal = 0, weightedChangeUsd = 0, totalMcap = 0, totalVol = 0, totalLiq = 0;
-      state.coins.forEach(c => {
-        totalMcap += c.mcap;
-        totalVol += c.volume;
-        totalLiq += c.liquidity;
-        const qty = parseFloat(state.bag[c.symbol]) || 0;
-        if (qty > 0) {
-          const holdingUsd = qty * c.price;
-          totalVal += holdingUsd;
-          weightedChangeUsd += holdingUsd * (c.change24h / 100);
+    function getFilteredAndSortedCoins() {
+      recomputeRanksAndCounts();
+      const q = state.search.trim().toLowerCase();
+      let list = Array.from(state.coins.values()).filter(c => {
+        if (state.sector === "WATCH" && !state.watchlist.has(c.sym)) return false;
+        if (state.sector === "BAG" && !(state.bag[c.sym] > 0)) return false;
+        if (state.sector !== "ALL" && state.sector !== "WATCH" && state.sector !== "BAG") {
+          if (!c.sectors.includes(state.sector)) return false;
         }
-      });
-
-      document.getElementById("globalMcap").textContent = formatCompact(totalMcap);
-      document.getElementById("globalVol").textContent = formatCompact(totalVol);
-      document.getElementById("globalLiq").textContent = formatCompact(totalLiq);
-      document.getElementById("bagTotalValue").textContent = formatPrice(totalVal);
-      document.getElementById("watchlistCountLabel").textContent = `${state.watchlist.length} Coins`;
-
-      const chgEl = document.getElementById("bag24hChange");
-      const bagPct = totalVal > 0 ? (weightedChangeUsd / totalVal) * 100 : 0;
-      const sign = weightedChangeUsd >= 0 ? "+" : "-";
-      chgEl.textContent = `${sign}${formatPrice(Math.abs(weightedChangeUsd))} (${weightedChangeUsd >= 0 ? "+" : ""}${bagPct.toFixed(2)}%)`;
-      chgEl.style.color = weightedChangeUsd >= 0 ? "var(--up)" : "var(--down)";
-
-      const topMovers = [...state.coins].sort((a, b) => b.change24h - a.change24h).slice(0, 3);
-      document.getElementById("topMoversList").innerHTML = topMovers.map(c => `
-        <div class="card-row">
-          <span class="card-label"><strong style="color:var(--text-primary)">${c.symbol}</strong> <span style="font-size:11px;">${formatPrice(c.price)}</span></span>
-          <span class="card-val tabular" style="color:${c.change24h >= 0 ? 'var(--up)' : 'var(--down)'}">${c.change24h >= 0 ? '+' : ''}${c.change24h.toFixed(2)}%</span>
-        </div>
-      `).join("");
-
-      const pinned = state.coins.find(c => c.symbol === state.pinnedSymbol) || state.coins[0];
-      if (pinned) {
-        document.title = `${pinned.symbol} ${formatPrice(pinned.price)} | CryptoPriceTicker.com`;
-      }
-    }
-
-    function renderTableStructure() {
-      const tbody = document.getElementById("tickerBody");
-      const filtered = state.coins.filter(c => {
-        if (state.sector === "watchlist" && !state.watchlist.includes(c.symbol)) return false;
-        if (state.sector === "bag" && !(parseFloat(state.bag[c.symbol]) > 0)) return false;
-        if (!["all", "watchlist", "bag"].includes(state.sector) && !c.sector.includes(state.sector)) return false;
-        if (state.search) {
-          const q = state.search.toLowerCase();
-          return c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.sector.some(s => s.toLowerCase().includes(q));
+        if (q) {
+          const matchSym = c.sym.toLowerCase().includes(q);
+          const matchName = c.name.toLowerCase().includes(q);
+          const matchSec = c.sectors.some(s => s.toLowerCase().includes(q));
+          return matchSym || matchName || matchSec;
         }
         return true;
-      }).sort((a, b) => {
-        let vA = a[state.sortBy], vB = b[state.sortBy];
-        if (typeof vA === "string") { vA = vA.toLowerCase(); vB = vB.toLowerCase(); }
-        return (vA < vB ? -1 : vA > vB ? 1 : 0) * (state.sortAsc ? 1 : -1);
       });
 
-      ["rank", "name", "price", "change24h", "mcap", "volume", "liquidity"].forEach(col => {
-        const el = document.getElementById(`sort-${col}`);
-        if (el) el.textContent = state.sortBy === col ? (state.sortAsc ? "▲" : "▼") : "";
-      });
-
-      let html = "";
-      filtered.forEach(c => {
-        const isFav = state.watchlist.includes(c.symbol);
-        const isPinned = state.pinnedSymbol === c.symbol;
-        const qty = state.bag[c.symbol] !== undefined ? state.bag[c.symbol] : "";
-        const holdingUsd = (parseFloat(qty) || 0) * c.price;
-        const pctClass = c.change24h >= 0 ? "pct-up" : "pct-down";
-
-        html += `
-          <tr class="coin-row" id="row-${c.symbol}">
-            <td class="col-left tabular">
-              <span style="width:16px;display:inline-block;color:var(--text-muted);font-size:11.5px;">${c.rank}</span>
-              <button class="icon-action ${isFav ? 'fav-active' : ''}" onclick="window.cptWatch('${c.symbol}')">♥</button>
-              <button class="icon-action ${isPinned ? 'pin-active' : ''}" onclick="window.cptPin('${c.symbol}')">📌</button>
-            </td>
-            <td class="col-left">
-              <div class="coin-identity">
-                <div class="coin-icon">${c.symbol.slice(0, 4)}</div>
-                <div>
-                  <span class="coin-symbol">${c.symbol} ${c.sector.map(s => `<span class="sector-tag">${s}</span>`).join("")}</span>
-                  <span class="coin-name">${c.name} <span class="mobile-mcap" id="mobmcap-${c.symbol}">• ${formatCompact(c.mcap)}</span></span>
-                </div>
-              </div>
-            </td>
-            <td class="tabular">
-              <span class="price-cell" id="price-${c.symbol}">
-                <span class="tick-arrow" id="arrow-${c.symbol}" style="color:${c.lastDir === '▲' ? 'var(--up)' : 'var(--down)'}">${c.lastDir}</span>
-                <span id="priceval-${c.symbol}">${formatPrice(c.price)}</span>
-              </span>
-            </td>
-            <td class="tabular"><span class="pct-pill ${pctClass}" id="chg-${c.symbol}">${c.change24h >= 0 ? '+' : ''}${c.change24h.toFixed(2)}%</span></td>
-            <td class="hide-tablet" id="spark-${c.symbol}">${buildSparklineSVG(c)}</td>
-            <td class="hide-mobile tabular" style="font-weight:600;" id="mcap-${c.symbol}">${formatCompact(c.mcap)}</td>
-            <td class="hide-tablet tabular" style="color:var(--text-secondary);" id="vol-${c.symbol}">${formatCompact(c.volume)}</td>
-            <td class="hide-tablet tabular" style="color:var(--accent);" id="liq-${c.symbol}">${formatCompact(c.liquidity)}</td>
-            <td class="col-left tabular">
-              <input type="number" step="any" min="0" class="bag-input" placeholder="0.00" value="${qty}" oninput="window.cptBag('${c.symbol}', this.value)" />
-              <span class="bag-val" id="bagval-${c.symbol}">${holdingUsd > 0 ? formatPrice(holdingUsd) : ''}</span>
-            </td>
-          </tr>
-        `;
-      });
-
-      tbody.innerHTML = html || `<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--text-muted);">No matching coins found.</td></tr>`;
-      renderSummaryCards();
-    }
-
-    function applyLiveTick(symbol, newPrice, newChange24h) {
-      const coin = state.coins.find(c => c.symbol === symbol);
-      if (!coin || !Number.isFinite(newPrice) || newPrice <= 0 || newPrice === coin.price) return;
-
-      const isUp = newPrice > coin.price;
-      const ratio = newPrice / coin.price;
-      coin.price = newPrice;
-      coin.mcap *= ratio;
-      coin.lastDir = isUp ? "▲" : "▼";
-      if (Number.isFinite(newChange24h)) coin.change24h = newChange24h;
-      else coin.change24h += isUp ? 0.01 : -0.01;
-
-      coin.history.push(newPrice);
-      if (coin.history.length > 18) coin.history.shift();
-
-      state.tickCount++;
-      const tickPill = document.getElementById("tickCounterPill");
-      if (tickPill) tickPill.textContent = `⚡ TICKS: ${state.tickCount.toLocaleString()}`;
-
-      const priceCell = document.getElementById(`price-${symbol}`);
-      const priceVal = document.getElementById(`priceval-${symbol}`);
-      const arrowEl = document.getElementById(`arrow-${symbol}`);
-      const rowEl = document.getElementById(`row-${symbol}`);
-
-      if (priceVal && priceCell) {
-        priceVal.textContent = formatPrice(coin.price);
-        if (arrowEl) {
-          arrowEl.textContent = coin.lastDir;
-          arrowEl.style.color = isUp ? "var(--up)" : "var(--down)";
+      const dir = state.sortAsc ? 1 : -1;
+      list.sort((a, b) => {
+        switch (state.sortBy) {
+          case "rank": return (a.rank - b.rank) * dir;
+          case "name": return a.name.localeCompare(b.name) * dir;
+          case "price": return (a.price - b.price) * dir;
+          case "change24h": return (a.change24h - b.change24h) * dir;
+          case "rangePos": {
+            const posA = (a.price - a.low24h) / ((a.high24h - a.low24h) || 1);
+            const posB = (b.price - b.low24h) / ((b.high24h - b.low24h) || 1);
+            return (posA - posB) * dir;
+          }
+          case "mcap": return (a.mcap - b.mcap) * dir;
+          case "vol24h": return (a.vol24h - b.vol24h) * dir;
+          case "liq": return (a.liq - b.liq) * dir;
+          case "bagVal": {
+            const valA = (state.bag[a.sym] || 0) * a.price;
+            const valB = (state.bag[b.sym] || 0) * b.price;
+            return (valA - valB) * dir;
+          }
+          default: return (a.rank - b.rank) * dir;
         }
-        priceCell.classList.remove("tick-up", "tick-down");
-        void priceCell.offsetWidth;
-        priceCell.classList.add(isUp ? "tick-up" : "tick-down");
-      }
-
-      if (rowEl) {
-        rowEl.classList.remove("row-flash-up", "row-flash-down");
-        void rowEl.offsetWidth;
-        rowEl.classList.add(isUp ? "row-flash-up" : "row-flash-down");
-      }
-
-      const chgEl = document.getElementById(`chg-${symbol}`);
-      if (chgEl) {
-        chgEl.textContent = `${coin.change24h >= 0 ? '+' : ''}${coin.change24h.toFixed(2)}%`;
-        chgEl.className = `pct-pill ${coin.change24h >= 0 ? 'pct-up' : 'pct-down'}`;
-      }
-
-      const sparkEl = document.getElementById(`spark-${symbol}`);
-      if (sparkEl) sparkEl.innerHTML = buildSparklineSVG(coin);
-
-      const mcapEl = document.getElementById(`mcap-${symbol}`);
-      if (mcapEl) mcapEl.textContent = formatCompact(coin.mcap);
-
-      const mobMcapEl = document.getElementById(`mobmcap-${symbol}`);
-      if (mobMcapEl) mobMcapEl.textContent = "• " + formatCompact(coin.mcap);
-
-      const bagValEl = document.getElementById(`bagval-${symbol}`);
-      if (bagValEl) {
-        const qty = parseFloat(state.bag[symbol]) || 0;
-        bagValEl.textContent = qty > 0 ? formatPrice(qty * coin.price) : "";
-      }
-
-      const tapeItem = document.getElementById(`tape-${symbol}`);
-      const tapePrice = document.getElementById(`tape-price-${symbol}`);
-      const tapeDir = document.getElementById(`tape-dir-${symbol}`);
-      if (tapeItem && tapePrice && tapeDir) {
-        tapePrice.textContent = formatPrice(coin.price);
-        tapeDir.textContent = coin.lastDir;
-        tapeDir.style.color = isUp ? "var(--up)" : "var(--down)";
-        tapeItem.classList.remove("flash-up", "flash-down");
-        void tapeItem.offsetWidth;
-        tapeItem.classList.add(isUp ? "flash-up" : "flash-down");
-        setTimeout(() => tapeItem.classList.remove("flash-up", "flash-down"), 420);
-      }
-
-      renderSummaryCards();
-      const timeEl = document.getElementById("lastTickTime");
-      if (timeEl) timeEl.textContent = new Date().toLocaleTimeString();
+      });
+      return list;
     }
 
-    // 1. Coinbase Exchange US WebSocket
+    function renderTable() {
+      const list = getFilteredAndSortedCoins();
+      const tbody = document.getElementById("tableBody");
+      document.getElementById("showingCount").textContent = list.length;
+
+      const rowsHtml = list.map(c => {
+        const isFav = state.watchlist.has(c.sym);
+        const isPin = state.pinnedSym === c.sym;
+        const hasAlert = Boolean(state.alerts[c.sym]);
+        const isUp = c.change24h >= 0;
+        const chgSign = isUp ? "+" : "";
+        const qty = state.bag[c.sym] || "";
+        const bagUsd = (state.bag[c.sym] || 0) * c.price;
+        const rangePct = Math.max(2, Math.min(98, ((c.price - c.low24h) / ((c.high24h - c.low24h) || 1)) * 100));
+        const badges = c.sectors.map(s => `<span class="tag-badge">${s}</span>`).join("");
+
+        return `<tr id="row-${c.sym}" data-sym="${c.sym}">
+          <td class="col-center" style="color:var(--text-muted)">${c.rank}</td>
+          <td class="col-center">
+            <button class="icon-btn ${isFav ? 'active-fav' : ''}" onclick="toggleFav('${c.sym}')" title="Save to Watchlist">♥</button>
+            <button class="icon-btn ${isPin ? 'active-pin' : ''}" onclick="togglePin('${c.sym}')" title="Pin Live Price to Browser Tab">📌</button>
+            <button class="icon-btn ${hasAlert ? 'active-alert' : ''}" onclick="openCoinModal('${c.sym}')" title="Set Price Alert / Spread Inspector">🔔</button>
+          </td>
+          <td class="col-left">
+            <div class="coin-cell" onclick="openCoinModal('${c.sym}')">
+              <div class="coin-avatar">${c.sym.slice(0, 4)}</div>
+              <div class="coin-main">
+                <div class="coin-sym-row">
+                  <span class="coin-sym">${c.sym}</span>
+                  ${badges}
+                  <span class="ex-badge" id="src-${c.sym}">${c.lastSource}</span>
+                </div>
+                <span class="coin-name">${c.name}</span>
+              </div>
+            </div>
+          </td>
+          <td id="price-${c.sym}" style="font-weight:700">${fmtPrice(c.price)}</td>
+          <td id="chg-${c.sym}">
+            <span class="chg-pill ${isUp ? 'chg-up' : 'chg-down'}">${chgSign}${c.change24h.toFixed(2)}%</span>
+          </td>
+          <td class="col-center hide-mobile" id="spark-${c.sym}">${buildSparkline(c.history, isUp)}</td>
+          <td class="col-center hide-mobile" id="range-${c.sym}">
+            <div class="range-wrap">
+              <div class="range-labels">
+                <span>${fmtPrice(c.low24h)}</span>
+                <span>${fmtPrice(c.high24h)}</span>
+              </div>
+              <div class="range-track">
+                <div class="range-fill" style="width:${rangePct.toFixed(0)}%"></div>
+              </div>
+            </div>
+          </td>
+          <td id="mcap-${c.sym}">${fmtCompact(c.mcap)}</td>
+          <td class="hide-mobile" id="vol-${c.sym}" style="color:var(--text-secondary)">${fmtCompact(c.vol24h)}</td>
+          <td class="hide-mobile" id="liq-${c.sym}" style="color:var(--accent)">${fmtCompact(c.liq)}</td>
+          <td>
+            <div class="bag-cell">
+              <input type="number" step="any" min="0" class="bag-input" placeholder="0.00" value="${qty}"
+                onchange="updateBagQty('${c.sym}', this.value)" aria-label="${c.sym} bag quantity" />
+              <span class="bag-val" id="bagval-${c.sym}">${bagUsd > 0 ? fmtPrice(bagUsd) : ''}</span>
+            </div>
+          </td>
+        </tr>`;
+      }).join("");
+
+      tbody.innerHTML = rowsHtml;
+      updateSummaryCards();
+      renderTickerTape();
+    }
+
+    /********************************************************************
+     * 5. SUMMARY CARDS, MARQUEE & SEO-SAFE TAB PINNING
+     ********************************************************************/
+    function updateSummaryCards() {
+      let totalMcap = 0, totalVol = 0, totalLiq = 0;
+      let bagTotal = 0, bagPnl24h = 0;
+
+      state.coins.forEach(c => {
+        totalMcap += c.mcap || 0;
+        totalVol += c.vol24h || 0;
+        totalLiq += c.liq || 0;
+        const qty = state.bag[c.sym] || 0;
+        if (qty > 0) {
+          const val = qty * c.price;
+          bagTotal += val;
+          bagPnl24h += val * (c.change24h / 100);
+        }
+      });
+
+      document.getElementById("globalMcap").textContent = fmtCompact(totalMcap);
+      document.getElementById("globalVol").textContent = fmtCompact(totalVol);
+      document.getElementById("globalLiq").textContent = fmtCompact(totalLiq);
+      document.getElementById("lastUpdateClock").textContent = new Date().toLocaleTimeString();
+
+      document.getElementById("bagTotalVal").textContent = fmtPrice(bagTotal);
+      const pnlPct = bagTotal > 0 ? (bagPnl24h / bagTotal) * 100 : 0;
+      const pnlSign = bagPnl24h >= 0 ? "+" : "";
+      const pnlEl = document.getElementById("bagPnlVal");
+      pnlEl.textContent = `${pnlSign}${fmtPrice(bagPnl24h)} (${pnlSign}${pnlPct.toFixed(2)}%)`;
+      pnlEl.style.color = bagPnl24h >= 0 ? "var(--up)" : "var(--down)";
+
+      const alertCount = Object.keys(state.alerts).length;
+      document.getElementById("watchlistCountVal").textContent = `${state.watchlist.size} / ${alertCount} 🔔`;
+
+      // Top Movers
+      const movers = Array.from(state.coins.values())
+        .filter(c => !c.sectors.includes("Stable"))
+        .sort((a, b) => state.moverMode === "gainers" ? b.change24h - a.change24h : a.change24h - b.change24h)
+        .slice(0, 3);
+
+      document.getElementById("moversList").innerHTML = movers.map(m => {
+        const isUp = m.change24h >= 0;
+        return `<div class="mover-row" onclick="openCoinModal('${m.sym}')">
+          <span><strong>${m.sym}</strong> <span style="color:var(--text-muted);font-size:11px">${m.name}</span></span>
+          <span>${fmtPrice(m.price)} <strong style="color:${isUp ? 'var(--up)' : 'var(--down)'}">${isUp ? '+' : ''}${m.change24h.toFixed(2)}%</strong></span>
+        </div>`;
+      }).join("");
+
+      // Update Pinned Title ONLY if user pinned a coin (Prevents Googlebot Title Hijacking)
+      if (state.pinnedSym && !navigator.webdriver) {
+        const pinned = state.coins.get(state.pinnedSym);
+        if (pinned) {
+          const arrow = pinned.change24h >= 0 ? "▲" : "▼";
+          document.title = `${pinned.sym} ${fmtPrice(pinned.price)} ${arrow} | CryptoPriceTicker.com`;
+        }
+      } else {
+        document.title = CANONICAL_TITLE;
+      }
+    }
+
+    function renderTickerTape() {
+      const top16 = Array.from(state.coins.values()).slice(0, 16);
+      const html = top16.map(c => {
+        const isUp = c.change24h >= 0;
+        return `<span class="tape-item" onclick="openCoinModal('${c.sym}')">
+          <span class="tape-sym">${c.sym}</span>
+          <span class="tape-price" id="tape-${c.sym}">${fmtPrice(c.price)}</span>
+          <span style="color:${isUp ? 'var(--up)' : 'var(--down)'}">${isUp ? '▲' : '▼'} ${Math.abs(c.change24h).toFixed(2)}%</span>
+        </span>`;
+      }).join("");
+      document.getElementById("tickerTape").innerHTML = html + html;
+    }
+
+    /********************************************************************
+     * 6. HIGH-PERFORMANCE rAF DIRTY-ROW BATCHING ENGINE
+     * Prevents DOM thrashing when 100+ coins tick simultaneously
+     ********************************************************************/
+    function applyTickUpdate(sym, newPrice, source, opts = {}) {
+      const c = state.coins.get(sym);
+      if (!c || !newPrice || isNaN(newPrice) || newPrice <= 0) return;
+
+      const prevPrice = c.price;
+      c.price = newPrice;
+      c.lastSource = source;
+      if (source === "CB" || source === "BN" || source === "KR") {
+        c.exPrices[source] = newPrice;
+      }
+
+      if (opts.change24h !== undefined && !isNaN(opts.change24h)) c.change24h = opts.change24h;
+      if (opts.high24h && newPrice <= opts.high24h) c.high24h = opts.high24h;
+      if (opts.low24h && newPrice >= opts.low24h) c.low24h = opts.low24h;
+      if (newPrice > c.high24h) c.high24h = newPrice;
+      if (newPrice < c.low24h) c.low24h = newPrice;
+      if (opts.vol24h && opts.vol24h > 0) {
+        c.vol24h = opts.vol24h;
+        c.liq = opts.vol24h * 0.068;
+      }
+
+      c.mcap = c.price * c.supply;
+
+      if (prevPrice !== newPrice) {
+        c.lastDir = newPrice > prevPrice ? "up" : "down";
+        c.history.push(newPrice);
+        if (c.history.length > 20) c.history.shift();
+        state.tickCount++;
+        state.dirtySymbols.add(sym);
+        checkPriceAlert(c, prevPrice, newPrice);
+      }
+    }
+
+    function flushDirtyRows() {
+      if (state.dirtySymbols.size > 0) {
+        document.getElementById("tickCounter").textContent = state.tickCount.toLocaleString();
+
+        state.dirtySymbols.forEach(sym => {
+          const c = state.coins.get(sym);
+          if (!c) return;
+
+          const priceEl = document.getElementById(`price-${sym}`);
+          if (priceEl) {
+            priceEl.textContent = fmtPrice(c.price);
+            priceEl.classList.remove("tick-up", "tick-down");
+            void priceEl.offsetWidth;
+            priceEl.classList.add(c.lastDir === "up" ? "tick-up" : "tick-down");
+          }
+
+          const srcEl = document.getElementById(`src-${sym}`);
+          if (srcEl) srcEl.textContent = c.lastSource;
+
+          const chgEl = document.getElementById(`chg-${sym}`);
+          if (chgEl) {
+            const isUp = c.change24h >= 0;
+            chgEl.innerHTML = `<span class="chg-pill ${isUp ? 'chg-up' : 'chg-down'}">${isUp ? '+' : ''}${c.change24h.toFixed(2)}%</span>`;
+          }
+
+          const sparkEl = document.getElementById(`spark-${sym}`);
+          if (sparkEl) sparkEl.innerHTML = buildSparkline(c.history, c.change24h >= 0);
+
+          const mcapEl = document.getElementById(`mcap-${sym}`);
+          if (mcapEl) mcapEl.textContent = fmtCompact(c.mcap);
+
+          const bagEl = document.getElementById(`bagval-${sym}`);
+          if (bagEl && state.bag[sym] > 0) {
+            bagEl.textContent = fmtPrice(state.bag[sym] * c.price);
+          }
+
+          const tapeEl = document.getElementById(`tape-${sym}`);
+          if (tapeEl) tapeEl.textContent = fmtPrice(c.price);
+        });
+
+        state.dirtySymbols.clear();
+        updateSummaryCards();
+        if (state.activeModalSym) renderCoinModalContent(state.activeModalSym);
+      }
+    }
+    setInterval(() => requestAnimationFrame(flushDirtyRows), 180);
+
+    /********************************************************************
+     * 7. MULTI-SOURCE REST BOOTSTRAP + TRI-EXCHANGE WEBSOCKETS
+     ********************************************************************/
+    let latestBinanceTickers = [];
+
+    async function bootstrapMarketData() {
+      // Source A: Binance Vision 24hr Ticker (US-accessible, CORS-enabled, 2000+ pairs)
+      try {
+        const res = await fetch("https://data-api.binance.vision/api/v3/ticker/24hr");
+        if (res.ok) {
+          const data = await res.json();
+          latestBinanceTickers = data;
+          data.forEach(item => {
+            if (item.symbol.endsWith("USDT")) {
+              const sym = item.symbol.replace("USDT", "");
+              if (state.coins.has(sym)) {
+                applyTickUpdate(sym, parseFloat(item.lastPrice), "BN", {
+                  change24h: parseFloat(item.priceChangePercent),
+                  high24h: parseFloat(item.highPrice),
+                  low24h: parseFloat(item.lowPrice),
+                  vol24h: parseFloat(item.quoteVolume)
+                });
+              }
+            }
+          });
+          renderTable();
+        }
+      } catch (e) { /* Fallback handled below */ }
+
+      // Source B: CoinLore Public API (Covers XMR, KAS, TON, ONDO, etc.)
+      try {
+        const res = await fetch("https://api.coinlore.net/api/tickers/?start=0&limit=100");
+        if (res.ok) {
+          const json = await res.json();
+          if (json && Array.isArray(json.data)) {
+            json.data.forEach(item => {
+              const sym = item.symbol?.toUpperCase();
+              if (state.coins.has(sym)) {
+                const c = state.coins.get(sym);
+                const p = parseFloat(item.price_usd);
+                if (p > 0) {
+                  c.price = p;
+                  c.change24h = parseFloat(item.percent_change_24h) || c.change24h;
+                  c.mcap = parseFloat(item.market_cap_usd) || c.mcap;
+                  c.vol24h = parseFloat(item.volume24) || c.vol24h;
+                  c.liq = c.vol24h * 0.068;
+                }
+              }
+            });
+            renderTable();
+          }
+        }
+      } catch (e) { /* Ignore */ }
+    }
+
+    // WebSocket 1: Coinbase Exchange Spot Feed
     function connectCoinbaseWS() {
+      const badge = document.getElementById("badgeCB");
       try {
         const ws = new WebSocket("wss://ws-feed.exchange.coinbase.com");
         ws.onopen = () => {
+          badge.textContent = "CB: LIVE";
+          badge.classList.add("online");
+          const productIds = Array.from(state.coins.keys()).map(s => `${s}-USD`);
           ws.send(JSON.stringify({
             type: "subscribe",
-            product_ids: ["BTC-USD", "ETH-USD", "SOL-USD", "USDT-USD", "XRP-USD", "DOGE-USD", "LINK-USD", "AVAX-USD", "SUI-USD", "RENDER-USD", "HNT-USD"],
+            product_ids: productIds,
             channels: ["ticker"]
           }));
         };
-        ws.onmessage = (e) => {
-          const msg = JSON.parse(e.data);
-          if (msg.type === "ticker" && msg.product_id && msg.price) {
-            const sym = msg.product_id.split("-")[0];
-            const price = parseFloat(msg.price);
-            const open24 = parseFloat(msg.open_24h);
-            const chg = open24 > 0 ? ((price - open24) / open24) * 100 : undefined;
-            applyLiveTick(sym, price, chg);
-          }
+        ws.onmessage = (ev) => {
+          try {
+            const msg = JSON.parse(ev.data);
+            if (msg.type === "ticker" && msg.product_id && msg.price) {
+              const sym = msg.product_id.replace("-USD", "");
+              const p = parseFloat(msg.price);
+              const open24 = parseFloat(msg.open_24h);
+              const chg = open24 > 0 ? ((p - open24) / open24) * 100 : undefined;
+              applyTickUpdate(sym, p, "CB", {
+                change24h: chg,
+                high24h: parseFloat(msg.high_24h),
+                low24h: parseFloat(msg.low_24h)
+              });
+            }
+          } catch (_) {}
         };
-        ws.onclose = () => setTimeout(connectCoinbaseWS, 3500);
-      } catch (e) {}
+        ws.onclose = () => {
+          badge.textContent = "CB: RETRY";
+          badge.classList.remove("online");
+          setTimeout(connectCoinbaseWS, 4000);
+        };
+      } catch (_) {}
     }
 
-    // 2. Binance Vision Global Market Stream
-    function connectBinanceVisionWS() {
+    // WebSocket 2: Binance Vision All-Market Mini-Ticker Array (!miniTicker@arr)
+    function connectBinanceWS() {
+      const badge = document.getElementById("badgeBN");
       try {
         const ws = new WebSocket("wss://data-stream.binance.vision/ws/!miniTicker@arr");
-        ws.onmessage = (e) => {
-          const arr = JSON.parse(e.data);
-          if (!Array.isArray(arr)) return;
-          arr.forEach(t => {
-            if (t.s && t.s.endsWith("USDT")) {
-              const sym = t.s.replace("USDT", "");
-              const close = parseFloat(t.c);
-              const open = parseFloat(t.o);
-              const chg = open > 0 ? ((close - open) / open) * 100 : undefined;
-              applyLiveTick(sym, close, chg);
-            }
-          });
+        ws.onopen = () => {
+          badge.textContent = "BN: LIVE";
+          badge.classList.add("online");
         };
-        ws.onclose = () => setTimeout(connectBinanceVisionWS, 5000);
-      } catch (e) {}
+        ws.onmessage = (ev) => {
+          try {
+            const arr = JSON.parse(ev.data);
+            if (!Array.isArray(arr)) return;
+            for (let i = 0; i < arr.length; i++) {
+              const t = arr[i];
+              if (t.s && t.s.endsWith("USDT")) {
+                const sym = t.s.slice(0, -4);
+                if (state.coins.has(sym)) {
+                  const close = parseFloat(t.c);
+                  const open = parseFloat(t.o);
+                  const chg = open > 0 ? ((close - open) / open) * 100 : undefined;
+                  applyTickUpdate(sym, close, "BN", {
+                    change24h: chg,
+                    high24h: parseFloat(t.h),
+                    low24h: parseFloat(t.l),
+                    vol24h: parseFloat(t.q)
+                  });
+                }
+              }
+            }
+          } catch (_) {}
+        };
+        ws.onclose = () => {
+          badge.textContent = "BN: RETRY";
+          badge.classList.remove("online");
+          setTimeout(connectBinanceWS, 4000);
+        };
+      } catch (_) {}
     }
 
-    // 3. Continuous High-Frequency Sub-Second Tick Engine
-    setInterval(() => {
-      const picks = 1 + Math.floor(Math.random() * 2);
-      for (let i = 0; i < picks; i++) {
-        const coin = state.coins[Math.floor(Math.random() * state.coins.length)];
-        if (coin) {
-          const vol = coin.symbol === "USDT" ? 0.0001 : 0.0018;
-          const delta = 1 + ((Math.random() - 0.492) * vol);
-          applyLiveTick(coin.symbol, coin.price * delta);
+    // WebSocket 3: Kraken v2 Spot Stream (Covers XMR/USD, KAS/USD, TON/USD, etc.)
+    function connectKrakenWS() {
+      const badge = document.getElementById("badgeKR");
+      try {
+        const ws = new WebSocket("wss://ws.kraken.com/v2");
+        ws.onopen = () => {
+          badge.textContent = "KR: LIVE";
+          badge.classList.add("online");
+          ws.send(JSON.stringify({
+            method: "subscribe",
+            params: {
+              channel: "ticker",
+              symbol: ["XMR/USD", "KAS/USD", "BTC/USD", "ETH/USD", "SOL/USD", "TAO/USD", "TON/USD", "TRX/USD", "ADA/USD", "XRP/USD"]
+            }
+          }));
+        };
+        ws.onmessage = (ev) => {
+          try {
+            const msg = JSON.parse(ev.data);
+            if (msg.channel === "ticker" && Array.isArray(msg.data)) {
+              msg.data.forEach(d => {
+                if (d.symbol && d.last) {
+                  const sym = d.symbol.split("/")[0];
+                  applyTickUpdate(sym, parseFloat(d.last), "KR", {
+                    change24h: parseFloat(d.change_pct),
+                    high24h: parseFloat(d.high),
+                    low24h: parseFloat(d.low)
+                  });
+                }
+              });
+            }
+          } catch (_) {}
+        };
+        ws.onclose = () => {
+          badge.textContent = "KR: RETRY";
+          badge.classList.remove("online");
+          setTimeout(connectKrakenWS, 5000);
+        };
+      } catch (_) {}
+    }
+
+    /********************************************************************
+     * 8. EXPAND TO 200+ LIVE EXCHANGE PAIRS ON DEMAND
+     ********************************************************************/
+    document.getElementById("expandExchangePairsBtn").addEventListener("click", async function() {
+      const btn = this;
+      btn.textContent = "⏳ Fetching Top Liquid Exchange Pairs...";
+      try {
+        if (!latestBinanceTickers.length) {
+          const res = await fetch("https://data-api.binance.vision/api/v3/ticker/24hr");
+          if (res.ok) latestBinanceTickers = await res.json();
         }
+        constleveragedRegex = /(UP|DOWN|BEAR|BULL)USDT$/;
+        const usdtPairs = latestBinanceTickers
+          .filter(t => t.symbol.endsWith("USDT") && !constleveragedRegex.test(t.symbol) && parseFloat(t.quoteVolume) > 4000000)
+          .sort((a, b) => parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume));
+
+        let added = 0;
+        for (const item of usdtPairs) {
+          if (added >= 110) break;
+          const sym = item.symbol.replace("USDT", "");
+          if (!state.coins.has(sym)) {
+            const price = parseFloat(item.lastPrice);
+            const vol = parseFloat(item.quoteVolume);
+            const chg = parseFloat(item.priceChangePercent);
+            const estMcap = vol * 14.5;
+            const estSupply = price > 0 ? estMcap / price : 1e8;
+
+            state.coins.set(sym, {
+              sym,
+              name: `${sym} Spot`,
+              supply: estSupply,
+              price,
+              change24h: chg,
+              low24h: parseFloat(item.lowPrice) || price * 0.96,
+              high24h: parseFloat(item.highPrice) || price * 1.04,
+              mcap: estMcap,
+              vol24h: vol,
+              liq: vol * 0.065,
+              sectors: ["DeFi"],
+              history: [price * 0.99, price * 1.005, price],
+              rank: state.coins.size + 1,
+              exPrices: { CB: null, BN: price, KR: null },
+              lastSource: "BN"
+            });
+            added++;
+          }
+        }
+        renderTable();
+        btn.textContent = `✅ Expanded Universe (${state.coins.size} Live Assets Streaming)`;
+        btn.disabled = true;
+        showToast(`Added ${added} live exchange pairs! Now tracking ${state.coins.size} coins.`);
+      } catch (e) {
+        btn.textContent = "⚠️ Network blocked expansion — Retry";
       }
-    }, 550);
+    });
 
-    // Interactive Handlers
-    window.cptWatch = (sym) => {
-      const idx = state.watchlist.indexOf(sym);
-      if (idx >= 0) state.watchlist.splice(idx, 1);
-      else state.watchlist.push(sym);
-      saveState();
-      renderTableStructure();
-      trackEvent("watchlist_toggle", { symbol: sym });
+    /********************************************************************
+     * 9. USER INTERACTIONS: WATCHLIST, PIN, BAG, ALERTS, MODALS, CSV
+     ********************************************************************/
+    window.toggleFav = function(sym) {
+      if (state.watchlist.has(sym)) state.watchlist.delete(sym);
+      else state.watchlist.add(sym);
+      localStorage.setItem("cpt_watch", JSON.stringify(Array.from(state.watchlist)));
+      renderTable();
     };
-    window.cptPin = (sym) => {
-      state.pinnedSymbol = sym;
-      saveState();
-      renderTableStructure();
-      trackEvent("pin_coin", { symbol: sym });
+
+    window.togglePin = function(sym) {
+      state.pinnedSym = state.pinnedSym === sym ? "" : sym;
+      localStorage.setItem("cpt_pin", state.pinnedSym);
+      renderTable();
+      if (state.pinnedSym) showToast(`📌 Pinned ${sym} live price to your browser tab!`);
     };
-    window.cptBag = (sym, val) => {
+
+    window.updateBagQty = function(sym, val) {
       const num = parseFloat(val);
-      if (!val || isNaN(num) || num <= 0) delete state.bag[sym];
+      if (!num || num <= 0) delete state.bag[sym];
       else state.bag[sym] = num;
-      saveState();
-      const coin = state.coins.find(c => c.symbol === sym);
-      const bagValEl = document.getElementById(`bagval-${sym}`);
-      if (bagValEl && coin) bagValEl.textContent = num > 0 ? formatPrice(num * coin.price) : "";
-      renderSummaryCards();
-      trackEvent("bag_update", { symbol: sym });
-    };
-    window.cptSort = (col) => {
-      if (state.sortBy === col) state.sortAsc = !state.sortAsc;
-      else { state.sortBy = col; state.sortAsc = col === "rank" || col === "name"; }
-      renderTableStructure();
+      localStorage.setItem("cpt_bag", JSON.stringify(state.bag));
+      renderTable();
     };
 
+    // Coin Deep-Dive & Cross-Exchange Spread Modal
+    window.openCoinModal = function(sym) {
+      state.activeModalSym = sym;
+      renderCoinModalContent(sym);
+      document.getElementById("coinModal").classList.add("open");
+    };
+
+    function renderCoinModalContent(sym) {
+      const c = state.coins.get(sym);
+      if (!c) return;
+      document.getElementById("modalCoinTitle").textContent = `${c.sym} — ${c.name} (#${c.rank})`;
+
+      const cbP = c.exPrices.CB ? fmtPrice(c.exPrices.CB) : "—";
+      const bnP = c.exPrices.BN ? fmtPrice(c.exPrices.BN) : "—";
+      const krP = c.exPrices.KR ? fmtPrice(c.exPrices.KR) : "—";
+
+      const validEx = Object.values(c.exPrices).filter(v => v && v > 0);
+      let spreadPct = 0;
+      if (validEx.length >= 2) {
+        const maxP = Math.max(...validEx);
+        const minP = Math.min(...validEx);
+        spreadPct = ((maxP - minP) / minP) * 100;
+      }
+
+      const turnover = c.mcap > 0 ? ((c.vol24h / c.mcap) * 100).toFixed(2) : "0.00";
+      const curAlert = state.alerts[sym] || "";
+
+      document.getElementById("modalCoinBody").innerHTML = `
+        <div class="bento-metrics">
+          <div class="metric-box">
+            <div class="metric-label">Coinbase Spot</div>
+            <div class="metric-val">${cbP}</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Binance Spot</div>
+            <div class="metric-val">${bnP}</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Kraken Spot</div>
+            <div class="metric-val">${krP}</div>
+          </div>
+        </div>
+        <div class="bento-metrics">
+          <div class="metric-box">
+            <div class="metric-label">Cross-Exchange Spread</div>
+            <div class="metric-val" style="color:var(--accent)">${spreadPct > 0 ? spreadPct.toFixed(3) + '%' : 'Single Feed'}</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">24h Vol / MCap Turnover</div>
+            <div class="metric-val">${turnover}%</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">24h Intraday Range</div>
+            <div class="metric-val" style="font-size:11px">${fmtPrice(c.low24h)} – ${fmtPrice(c.high24h)}</div>
+          </div>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border);padding:10px;border-radius:6px">
+          <div class="metric-label" style="margin-bottom:6px">🔔 Set Zero-Login Browser Price Alert (USD Target)</div>
+          <div style="display:flex;gap:8px">
+            <input type="number" step="any" id="alertTargetInput" class="bag-input" style="width:100%;text-align:left;padding:6px 8px"
+              placeholder="Enter USD target price (e.g. ${(c.price * 1.05).toFixed(2)})" value="${curAlert}" />
+            <button class="action-btn" onclick="saveCoinAlert('${c.sym}')">Save Alert</button>
+            ${curAlert ? `<button class="action-btn" onclick="clearCoinAlert('${c.sym}')">Clear</button>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    window.saveCoinAlert = function(sym) {
+      const val = parseFloat(document.getElementById("alertTargetInput").value);
+      if (val > 0) {
+        state.alerts[sym] = val;
+        localStorage.setItem("cpt_alerts", JSON.stringify(state.alerts));
+        showToast(`🔔 Alert set for ${sym} at $${val}`);
+        renderTable();
+        renderCoinModalContent(sym);
+      }
+    };
+
+    window.clearCoinAlert = function(sym) {
+      delete state.alerts[sym];
+      localStorage.setItem("cpt_alerts", JSON.stringify(state.alerts));
+      renderTable();
+      renderCoinModalContent(sym);
+    };
+
+    function checkPriceAlert(coin, oldPrice, newPrice) {
+      const target = state.alerts[coin.sym];
+      if (!target) return;
+      const crossedUp = oldPrice < target && newPrice >= target;
+      const crossedDown = oldPrice > target && newPrice <= target;
+      if (crossedUp || crossedDown) {
+        delete state.alerts[coin.sym];
+        localStorage.setItem("cpt_alerts", JSON.stringify(state.alerts));
+        playAlertBeep();
+        showToast(`🚨 ALERT TRIGGERED: ${coin.sym} crossed $${target} (Now $${newPrice.toFixed(4)})!`);
+      }
+    }
+
+    function playAlertBeep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.25);
+      } catch (_) {}
+    }
+
+    function showToast(msg) {
+      const wrap = document.getElementById("toastContainer");
+      const div = document.createElement("div");
+      div.className = "toast";
+      div.textContent = msg;
+      wrap.appendChild(div);
+      setTimeout(() => div.remove(), 4500);
+    }
+
+    /********************************************************************
+     * 10. EVENT LISTENERS & INITIALIZATION
+     ********************************************************************/
+    // Theme Switcher
     function applyTheme(t) {
       state.theme = t;
       document.documentElement.setAttribute("data-theme", t);
-      document.querySelectorAll("[data-set-theme]").forEach(b => b.classList.toggle("active", b.getAttribute("data-set-theme") === t));
-      saveState();
-      trackEvent("theme_switch", { theme: t });
+      localStorage.setItem("cpt_theme", t);
+      document.querySelectorAll("[data-theme-val]").forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-theme-val") === t);
+      });
     }
+    document.querySelectorAll("[data-theme-val]").forEach(btn => {
+      btn.addEventListener("click", () => applyTheme(btn.getAttribute("data-theme-val")));
+    });
 
-    document.querySelectorAll("[data-set-theme]").forEach(btn => btn.addEventListener("click", () => applyTheme(btn.getAttribute("data-set-theme"))));
-    document.querySelectorAll("#currencySwitcher button").forEach(btn => {
+    // Base Currency Switcher
+    document.querySelectorAll("[data-curr]").forEach(btn => {
       btn.addEventListener("click", () => {
-        state.currency = btn.getAttribute("data-currency");
-        document.querySelectorAll("#currencySwitcher button").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderLiveTape();
-        renderTableStructure();
+        state.currency = btn.getAttribute("data-curr");
+        localStorage.setItem("cpt_curr", state.currency);
+        document.querySelectorAll("[data-curr]").forEach(b => b.classList.toggle("active", b === btn));
+        renderTable();
       });
     });
-    document.querySelectorAll("#sectorPills .pill-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        state.sector = btn.getAttribute("data-sector");
-        document.querySelectorAll("#sectorPills .pill-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderTableStructure();
-        trackEvent("sector_filter", { sector: state.sector });
+
+    // Sector Filter Pills
+    document.querySelectorAll(".sector-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        state.sector = pill.getAttribute("data-sector");
+        document.querySelectorAll(".sector-pill").forEach(p => p.classList.toggle("active", p === pill));
+        renderTable();
       });
     });
-    document.getElementById("searchInput").addEventListener("input", (e) => { state.search = e.target.value.trim(); renderTableStructure(); });
-    document.getElementById("clearBagBtn").addEventListener("click", () => { state.bag = {}; saveState(); renderTableStructure(); });
 
-    const syncModal = document.getElementById("syncModal");
-    document.getElementById("syncBagBtn").addEventListener("click", () => {
-      const payload = btoa(JSON.stringify({ bag: state.bag, watchlist: state.watchlist }));
-      document.getElementById("shareableBagUrl").textContent = `https://cryptopriceticker.com/?sync=${payload}`;
-      syncModal.classList.add("open");
-    });
-    document.getElementById("closeSyncModalBtn").addEventListener("click", () => syncModal.classList.remove("open"));
-    document.getElementById("copyBagUrlBtn").addEventListener("click", () => {
-      navigator.clipboard.writeText(document.getElementById("shareableBagUrl").textContent);
-      document.getElementById("copyBagUrlBtn").textContent = "✅ Sync Link Copied!";
+    // Column Sorting
+    document.querySelectorAll("th[data-sort]").forEach(th => {
+      th.addEventListener("click", () => {
+        const col = th.getAttribute("data-sort");
+        if (state.sortBy === col) state.sortAsc = !state.sortAsc;
+        else {
+          state.sortBy = col;
+          state.sortAsc = col === "rank" || col === "name";
+        }
+        renderTable();
+      });
     });
 
+    // Search Input & '/' Hotkey
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("input", (e) => {
+      state.search = e.target.value;
+      renderTable();
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement !== searchInput && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault();
+        searchInput.focus();
+      } else if (e.key === "Escape") {
+        document.getElementById("syncModal").classList.remove("open");
+        document.getElementById("coinModal").classList.remove("open");
+        state.activeModalSym = null;
+      }
+    });
+
+    // Movers Toggle
+    document.getElementById("moverGainersBtn").addEventListener("click", function() {
+      state.moverMode = "gainers";
+      this.classList.add("active");
+      document.getElementById("moverLosersBtn").classList.remove("active");
+      updateSummaryCards();
+    });
+    document.getElementById("moverLosersBtn").addEventListener("click", function() {
+      state.moverMode = "losers";
+      this.classList.add("active");
+      document.getElementById("moverGainersBtn").classList.remove("active");
+      updateSummaryCards();
+    });
+
+    // Reset Bag
+    document.getElementById("resetBagBtn").addEventListener("click", () => {
+      state.bag = {};
+      localStorage.setItem("cpt_bag", "{}");
+      renderTable();
+      showToast("💼 Portfolio bag quantities reset.");
+    });
+
+    // Compact Mode
+    document.getElementById("densityBtn").addEventListener("click", () => {
+      state.compact = !state.compact;
+      localStorage.setItem("cpt_compact", state.compact ? "1" : "0");
+      document.getElementById("cryptoTable").classList.toggle("compact-mode", state.compact);
+    });
+
+    // CSV Export
+    document.getElementById("exportCsvBtn").addEventListener("click", () => {
+      const list = getFilteredAndSortedCoins();
+      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Liquidity_2Pct_USD", "Bag_Qty"]];
+      list.forEach(c => {
+        rows.push([c.rank, c.sym, `"${c.name}"`, c.price, c.change24h.toFixed(2), Math.round(c.mcap), Math.round(c.vol24h), Math.round(c.liq), state.bag[c.sym] || 0]);
+      });
+      const csv = rows.map(r => r.join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `cryptopriceticker-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      showToast("📥 Exported market snapshot to CSV!");
+    });
+
+    // Sync Modal
+    document.getElementById("syncModalBtn").addEventListener("click", () => {
+      const wStr = Array.from(state.watchlist).join(",");
+      const bStr = Object.entries(state.bag).map(([k, v]) => `${k}:${v}`).join(",");
+      const url = `${window.location.origin}/?w=${encodeURIComponent(wStr)}&b=${encodeURIComponent(bStr)}`;
+      document.getElementById("syncUrlInput").value = url;
+      document.getElementById("syncModal").classList.add("open");
+    });
+    document.getElementById("closeSyncModal").addEventListener("click", () => {
+      document.getElementById("syncModal").classList.remove("open");
+    });
+    document.getElementById("closeCoinModal").addEventListener("click", () => {
+      document.getElementById("coinModal").classList.remove("open");
+      state.activeModalSym = null;
+    });
+    document.getElementById("copySyncUrlBtn").addEventListener("click", () => {
+      const inp = document.getElementById("syncUrlInput");
+      inp.select();
+      navigator.clipboard.writeText(inp.value);
+      showToast("📋 Private sync URL copied to clipboard!");
+    });
+
+    // Boot Execution
     applyTheme(state.theme);
-    renderLiveTape();
-    renderTableStructure();
+    document.getElementById("cryptoTable").classList.toggle("compact-mode", state.compact);
+    renderTable();
+    bootstrapMarketData();
     connectCoinbaseWS();
-    connectBinanceVisionWS();
-  })();
+    connectBinanceWS();
+    connectKrakenWS();
   </script>
 </body>
 </html>
