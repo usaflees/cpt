@@ -3,2589 +3,415 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CryptoPriceTicker.com — Real-Time WebSocket Crypto Prices, Orderbook Liquidity & DePIN/AI Tracker</title>
-  <meta name="description" content="Track 100+ live cryptocurrency prices in real time via multi-exchange WebSockets (Coinbase, Binance, Kraken). Zero-login portfolio tracker, ±2% orderbook liquidity, DePIN, AI, RWA, and free embeddable website widgets." />
-  <meta name="robots" content="index, follow" id="metaRobots" />
+  <title>Live Crypto Prices &amp; Real-Time Ticker | CryptoPriceTicker.com</title>
+  <meta name="description" content="Live crypto prices streamed straight from Coinbase, Binance and Kraken. Track 110+ coins, DePIN and AI sectors, a private portfolio and free embeddable widgets." />
+  <meta name="robots" content="index, follow, max-image-preview:large" id="metaRobots" />
   <link rel="canonical" href="https://cryptopriceticker.com/" />
+  <meta name="theme-color" content="#0a0e17" />
+  <meta name="color-scheme" content="dark light" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="CryptoPriceTicker.com — Real-Time Multi-Exchange WebSocket Ticker" />
-  <meta property="og:description" content="100+ live cryptocurrencies streaming via Coinbase, Binance & Kraken WebSockets. 100% Zero-Login, Ad-Free, Local Storage Portfolio & Embeddable Widgets." />
-  <meta property="og:url" content="https://cryptopriceticker.com/" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
+  <link rel="preload" href="/assets/app.css" as="style" />
+  <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
+  <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
+  <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
+  <link rel="dns-prefetch" href="https://ws.kraken.com" />
+
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CryptoPriceTicker.com" />
+  <meta property="og:title" content="Live Crypto Prices — Real-Time Multi-Exchange Ticker" />
+  <meta property="og:description" content="110+ coins streaming live from Coinbase, Binance and Kraken. No login, no ads, private portfolio and free website widgets." />
+  <meta property="og:url" content="https://cryptopriceticker.com/" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="CryptoPriceTicker.com live crypto price ticker" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Structured Data for Search Engines -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "CryptoPriceTicker.com",
-    "url": "https://cryptopriceticker.com/",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "Web",
-    "description": "Real-time multi-exchange WebSocket cryptocurrency price tracker with ±2% orderbook liquidity, cross-exchange spread monitoring, zero-login local portfolio storage, and free embeddable HTML crypto widgets.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://cryptopriceticker.com/#website",
+        "name": "CryptoPriceTicker.com",
+        "url": "https://cryptopriceticker.com/",
+        "publisher": { "@id": "https://cryptopriceticker.com/#org" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://cryptopriceticker.com/#org",
+        "name": "CryptoPriceTicker.com",
+        "url": "https://cryptopriceticker.com/",
+        "logo": "https://cryptopriceticker.com/apple-touch-icon.png"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "CryptoPriceTicker.com",
+        "url": "https://cryptopriceticker.com/",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any (web browser)",
+        "description": "Real-time cryptocurrency prices streamed directly from Coinbase, Binance and Kraken WebSocket feeds, with sector filters, cross-exchange spreads, a private in-browser portfolio and free embeddable price widgets.",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "publisher": { "@id": "https://cryptopriceticker.com/#org" }
+      }
+    ]
   }
   </script>
 
-  <style>
-    :root, [data-theme="kali"] {
-      --bg-primary: #0a0e17;
-      --bg-secondary: #111827;
-      --bg-tertiary: #1a2333;
-      --bg-hover: rgba(56, 189, 248, 0.07);
-      --border: #1e293b;
-      --border-accent: #2563eb;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.18);
-      --up: #10b981;
-      --up-bg: rgba(16, 185, 129, 0.14);
-      --down: #f43f5e;
-      --down-bg: rgba(244, 63, 94, 0.14);
-      --warn: #f59e0b;
-      --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
-      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif;
-    }
-
-    [data-theme="green"] {
-      --bg-primary: #040d08;
-      --bg-secondary: #091910;
-      --bg-tertiary: #0f291b;
-      --bg-hover: rgba(0, 255, 136, 0.06);
-      --border: #143623;
-      --border-accent: #00ff88;
-      --text-primary: #e2fcec;
-      --text-secondary: #74b892;
-      --text-muted: #467a5d;
-      --accent: #00ff88;
-      --accent-glow: rgba(0, 255, 136, 0.18);
-      --up: #00ff88;
-      --up-bg: rgba(0, 255, 136, 0.15);
-      --down: #ff4d6d;
-      --down-bg: rgba(255, 77, 109, 0.15);
-    }
-
-    [data-theme="slate"] {
-      --bg-primary: #0f172a;
-      --bg-secondary: #1e293b;
-      --bg-tertiary: #334155;
-      --bg-hover: rgba(129, 140, 248, 0.08);
-      --border: #334155;
-      --border-accent: #818cf8;
-      --text-primary: #f8fafc;
-      --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --accent: #818cf8;
-      --accent-glow: rgba(129, 140, 248, 0.2);
-      --up: #34d399;
-      --up-bg: rgba(52, 211, 153, 0.15);
-      --down: #fb7185;
-      --down-bg: rgba(251, 113, 133, 0.15);
-    }
-
-    [data-theme="oled"] {
-      --bg-primary: #000000;
-      --bg-secondary: #080808;
-      --bg-tertiary: #121212;
-      --bg-hover: rgba(255, 255, 255, 0.05);
-      --border: #1f1f1f;
-      --border-accent: #00e5ff;
-      --text-primary: #ffffff;
-      --text-secondary: #a3a3a3;
-      --text-muted: #666666;
-      --accent: #00e5ff;
-      --accent-glow: rgba(0, 229, 255, 0.2);
-      --up: #00e676;
-      --up-bg: rgba(0, 230, 118, 0.16);
-      --down: #ff1744;
-      --down-bg: rgba(255, 23, 68, 0.16);
-    }
-
-    [data-theme="light"] {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --bg-tertiary: #f1f5f9;
-      --bg-hover: rgba(37, 99, 235, 0.05);
-      --border: #e2e8f0;
-      --border-accent: #2563eb;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #64748b;
-      --accent: #2563eb;
-      --accent-glow: rgba(37, 99, 235, 0.12);
-      --up: #059669;
-      --up-bg: rgba(5, 150, 105, 0.12);
-      --down: #e11d48;
-      --down-bg: rgba(225, 29, 72, 0.12);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: 13.5px;
-      line-height: 1.45;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* Embed Mode Override */
-    body.is-embed #appShell { display: none !important; }
-    body.is-embed #embedShell { display: block !important; }
-    #embedShell { display: none; width: 100%; height: 100vh; overflow: hidden; background: var(--bg-primary); }
-
-    /* Top Telemetry Bar */
-    .telemetry-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 16px;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .telemetry-left, .telemetry-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-    .pulse-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--up);
-      box-shadow: 0 0 8px var(--up);
-      animation: pulse 1.8s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.45; transform: scale(0.85); }
-    }
-    .feed-badge {
-      font-size: 10px;
-      padding: 1px 5px;
-      border-radius: 3px;
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-    .feed-badge.online {
-      color: var(--up);
-      border-color: var(--up);
-    }
-
-    .theme-switcher { display: flex; gap: 4px; }
-    .theme-btn {
-      background: var(--bg-tertiary);
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-      padding: 2px 7px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .theme-btn:hover, .theme-btn.active {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: var(--accent-glow);
-    }
-
-    /* Live Ticker Tape */
-    .ticker-tape-wrap {
-      background: var(--bg-primary);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-      white-space: nowrap;
-      padding: 6px 0;
-      position: relative;
-    }
-    .ticker-tape {
-      display: inline-flex;
-      gap: 22px;
-      padding-left: 16px;
-      animation: marquee 48s linear infinite;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-    }
-    .ticker-tape:hover { animation-play-state: paused; }
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .tape-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .tape-sym { font-weight: 700; color: var(--text-primary); }
-    .tape-price { color: var(--text-secondary); }
-
-    /* Container */
-    .container {
-      max-width: 1480px;
-      margin: 0 auto;
-      padding: 14px 16px 48px;
-    }
-
-    /* Main Header */
-    .brand-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-    .brand-title-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: var(--accent-glow);
-      border: 1px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: var(--accent);
-      font-weight: 800;
-    }
-    .brand-title h1 {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-    }
-    .brand-sub {
-      font-size: 11.5px;
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-    }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .search-box {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .search-box input {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 7px 28px 7px 30px;
-      border-radius: 6px;
-      font-size: 12.5px;
-      width: 220px;
-      outline: none;
-      font-family: var(--font-sans);
-      transition: border-color 0.15s, width 0.2s;
-    }
-    .search-box input:focus {
-      border-color: var(--accent);
-      width: 255px;
-    }
-    .search-icon {
-      position: absolute;
-      left: 9px;
-      font-size: 12px;
-      color: var(--text-muted);
-      pointer-events: none;
-    }
-    .search-kbd {
-      position: absolute;
-      right: 8px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 0 4px;
-      border-radius: 3px;
-      background: var(--bg-tertiary);
-    }
-
-    .btn-group {
-      display: inline-flex;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .btn-toggle {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      padding: 6px 10px;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      font-weight: 600;
-      cursor: pointer;
-      border-right: 1px solid var(--border);
-    }
-    .btn-toggle:last-child { border-right: none; }
-    .btn-toggle.active, .btn-toggle:hover {
-      background: var(--accent-glow);
-      color: var(--accent);
-    }
-
-    .action-btn {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 6px 11px;
-      border-radius: 6px;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.15s;
-    }
-    .action-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .action-btn.btn-accent {
-      background: var(--accent-glow);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* Bento Summary Cards */
-    .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    @media (max-width: 960px) {
-      .bento-grid { grid-template-columns: 1fr; }
-    }
-    .bento-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-    }
-    .bento-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .bento-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .metric-box {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 7px 9px;
-    }
-    .metric-label {
-      font-size: 10.5px;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-    .metric-val {
-      font-family: var(--font-mono);
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-    .mover-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 4px 6px;
-      border-radius: 4px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .mover-row:hover { background: var(--bg-hover); }
-
-    /* Sector Filter Pills */
-    .filter-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .sector-pills {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .sector-pill {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.15s;
-    }
-    .sector-pill .count {
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      color: var(--text-muted);
-      background: var(--bg-primary);
-      padding: 1px 5px;
-      border-radius: 4px;
-    }
-    .sector-pill.active, .sector-pill:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-glow);
-    }
-
-    /* Main Table */
-    .table-wrap {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-    th {
-      background: var(--bg-tertiary);
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      padding: 9px 10px;
-      border-bottom: 1px solid var(--border);
-      user-select: none;
-      cursor: pointer;
-      white-space: nowrap;
-      position: sticky;
-      top: 0;
-      z-index: 5;
-    }
-    th:hover { color: var(--accent); }
-    th.col-left, td.col-left { text-align: left; }
-    th.col-center, td.col-center { text-align: center; }
-
-    tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background-color 0.12s;
-    }
-    tbody tr:hover { background-color: var(--bg-hover); }
-    td {
-      padding: 8px 10px;
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-    .compact-mode td { padding: 4px 8px; font-size: 12px; }
-
-    /* Flash animations on live WebSocket ticks */
-    @keyframes flashUp {
-      0% { background-color: rgba(16, 185, 129, 0.28); }
-      100% { background-color: transparent; }
-    }
-    @keyframes flashDown {
-      0% { background-color: rgba(244, 63, 94, 0.28); }
-      100% { background-color: transparent; }
-    }
-    .tick-up { animation: flashUp 0.7s ease-out; }
-    .tick-down { animation: flashDown 0.7s ease-out; }
-
-    /* Coin Identity Cell */
-    .coin-cell {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      cursor: pointer;
-    }
-    .coin-avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--accent);
-      flex-shrink: 0;
-    }
-    .coin-main {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.25;
-    }
-    .coin-sym-row {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .coin-sym {
-      font-weight: 800;
-      color: var(--text-primary);
-      font-size: 13px;
-    }
-    .coin-name {
-      font-family: var(--font-sans);
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-    .tag-badge {
-      font-size: 9.5px;
-      padding: 1px 4px;
-      border-radius: 3px;
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-    .ex-badge {
-      font-size: 9px;
-      padding: 0 4px;
-      border-radius: 3px;
-      color: var(--accent);
-      border: 1px solid var(--border);
-    }
-
-    /* Icon buttons */
-    .icon-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 13px;
-      padding: 2px 4px;
-      transition: transform 0.1s, color 0.15s;
-    }
-    .icon-btn:hover { transform: scale(1.15); color: var(--text-primary); }
-    .icon-btn.active-fav { color: #f43f5e; }
-    .icon-btn.active-pin { color: var(--accent); }
-    .icon-btn.active-alert { color: var(--warn); }
-
-    /* Change Pill */
-    .chg-pill {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 11.5px;
-    }
-    .chg-up { color: var(--up); background: var(--up-bg); }
-    .chg-down { color: var(--down); background: var(--down-bg); }
-
-    /* 24h Range Bar */
-    .range-wrap {
-      width: 110px;
-      display: inline-flex;
-      flex-direction: column;
-      gap: 3px;
-      vertical-align: middle;
-    }
-    .range-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 9.5px;
-      color: var(--text-muted);
-    }
-    .range-track {
-      width: 100%;
-      height: 5px;
-      background: var(--bg-primary);
-      border-radius: 3px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid var(--border);
-    }
-    .range-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--down), var(--accent), var(--up));
-      border-radius: 3px;
-    }
-
-    /* Bag Input */
-    .bag-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 2px;
-    }
-    .bag-input {
-      width: 82px;
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      padding: 3px 6px;
-      border-radius: 4px;
-      text-align: right;
-      outline: none;
-    }
-    .bag-input:focus { border-color: var(--accent); }
-    .bag-val {
-      font-size: 10.5px;
-      color: var(--up);
-      font-weight: 700;
-    }
-
-    /* Table Footer Controls */
-    .table-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 14px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 8px 8px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    /* Modals */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(3px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 16px;
-      overflow-y: auto;
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-accent);
-      border-radius: 10px;
-      max-width: 560px;
-      width: 100%;
-      padding: 18px 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
-      max-height: 92vh;
-      overflow-y: auto;
-    }
-    .modal-card.modal-wide {
-      max-width: 780px;
-    }
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-    .modal-head h3 { font-size: 15px; color: var(--text-primary); }
-    .sync-input, .code-textarea {
-      width: 100%;
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      color: var(--accent);
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      padding: 9px 10px;
-      border-radius: 6px;
-      margin: 8px 0 12px;
-      outline: none;
-    }
-    .code-textarea {
-      height: 115px;
-      resize: vertical;
-      line-height: 1.4;
-      color: var(--text-primary);
-    }
-
-    /* Widget Builder Controls */
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    @media (max-width: 640px) {
-      .form-grid { grid-template-columns: 1fr; }
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .form-group label {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--text-secondary);
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .form-select, .form-input {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 7px 9px;
-      border-radius: 6px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      outline: none;
-    }
-    .form-select:focus, .form-input:focus {
-      border-color: var(--accent);
-    }
-    .preset-chips {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
-    .preset-chip {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .preset-chip:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .widget-preview-stage {
-      background: var(--bg-primary);
-      border: 1px dashed var(--border-accent);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-
-    /* Embed Mode Specific Layouts */
-    .embed-marquee-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 46px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      position: relative;
-    }
-    .embed-brand-dock {
-      background: var(--bg-tertiary);
-      border-left: 1px solid var(--border);
-      padding: 0 10px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      color: var(--accent);
-      text-decoration: none;
-      z-index: 2;
-      flex-shrink: 0;
-    }
-    .embed-grid-wrap {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
-      gap: 8px;
-      padding: 8px;
-      background: var(--bg-primary);
-    }
-    .embed-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 9px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      text-decoration: none;
-      color: var(--text-primary);
-      transition: border-color 0.15s;
-    }
-    .embed-card:hover { border-color: var(--accent); }
-    .embed-single-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .embed-footer-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 4px 10px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-muted);
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border);
-    }
-    .embed-footer-bar a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    /* Toast Notification */
-    .toast-container {
-      position: fixed;
-      bottom: 18px;
-      right: 18px;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .toast {
-      background: var(--bg-secondary);
-      border: 1px solid var(--accent);
-      color: var(--text-primary);
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    }
-
-    /* SEO & Methodology Footer */
-    .site-footer {
-      margin-top: 28px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-      color: var(--text-muted);
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .methodology-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-    }
-    .methodology-grid h4 {
-      color: var(--text-secondary);
-      font-size: 12px;
-      margin-bottom: 4px;
-      font-family: var(--font-mono);
-    }
-
-    @media (max-width: 768px) {
-      .hide-mobile { display: none; }
-      .search-box input { width: 150px; }
-      .search-box input:focus { width: 180px; }
-    }
-  </style>
+  <script src="/assets/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/app.css" />
+  <script src="/assets/coins.js" defer></script>
+  <script src="/assets/app.js" defer></script>
 </head>
-<body>
+<body data-page="home">
+  <a class="skip-link" href="#prices">Skip to prices</a>
 
-  <!-- =================================================================
-       1. EMBED WIDGET SHELL (Renders ONLY when ?embed=1 is in URL)
-       ================================================================= -->
+  <!-- Legacy widget URLs (/?embed=1&…) render here; new widgets use /embed/ -->
   <div id="embedShell">
     <div id="embedWidgetRoot"></div>
   </div>
 
-  <!-- =================================================================
-       2. FULL TERMINAL APPLICATION SHELL
-       ================================================================= -->
   <div id="appShell">
-    <!-- Top Telemetry Bar -->
-    <div class="telemetry-bar">
+    <div class="telemetry-bar" role="region" aria-label="Live feed status">
       <div class="telemetry-left">
-        <span class="status-pill">
-          <span class="pulse-dot" id="wsPulseDot"></span>
-          <span id="wsStatusText">LIVE: TRI-EXCHANGE WS</span>
-        </span>
-        <span class="feed-badge" id="badgeCB" title="Coinbase WebSocket Feed">CB: INIT</span>
-        <span class="feed-badge" id="badgeBN" title="Binance Vision All-Market Stream">BN: INIT</span>
-        <span class="feed-badge" id="badgeKR" title="Kraken v2 Spot Stream (XMR/KAS)">KR: INIT</span>
+        <span class="status-pill"><span class="pulse-dot" aria-hidden="true"></span><span>LIVE: TRI-EXCHANGE WS</span></span>
+        <span class="feed-badge" id="badgeCB" title="Coinbase WebSocket feed">CB: INIT</span>
+        <span class="feed-badge" id="badgeBN" title="Binance WebSocket feed">BN: INIT</span>
+        <span class="feed-badge" id="badgeKR" title="Kraken WebSocket feed">KR: INIT</span>
         <span>⚡ TICKS: <strong id="tickCounter" style="color:var(--accent)">0</strong></span>
-        <span class="hide-mobile">📊 ASSETS: <strong id="assetCountTop" style="color:var(--text-primary)">100</strong></span>
-        <span class="hide-mobile">🔒 100% LOCAL STORAGE</span>
+        <span class="hide-mobile">📊 ASSETS: <strong id="assetCountTop" style="color:var(--text-primary)">0</strong></span>
+        <span class="hide-mobile">🔒 DATA STAYS IN YOUR BROWSER</span>
       </div>
       <div class="telemetry-right">
-        <div class="theme-switcher" role="group" aria-label="Color Theme">
-          <button class="theme-btn active" data-theme-val="kali">KALI</button>
-          <button class="theme-btn" data-theme-val="green">GREEN</button>
-          <button class="theme-btn" data-theme-val="slate">SLATE</button>
-          <button class="theme-btn" data-theme-val="oled">OLED</button>
-          <button class="theme-btn" data-theme-val="light">LIGHT</button>
+        <div class="theme-switcher" role="group" aria-label="Colour theme">
+          <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali">KALI</button>
+          <button type="button" class="theme-btn" data-action="theme" data-theme-val="green">GREEN</button>
+          <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate">SLATE</button>
+          <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled">OLED</button>
+          <button type="button" class="theme-btn" data-action="theme" data-theme-val="light">LIGHT</button>
         </div>
       </div>
     </div>
 
-    <!-- Live Scrolling Marquee -->
-    <div class="ticker-tape-wrap">
+    <div class="ticker-tape-wrap" aria-hidden="true">
       <div class="ticker-tape" id="tickerTape"></div>
     </div>
 
-    <main class="container">
-      <!-- Brand & Global Controls -->
+    <main class="container" id="main">
       <header class="brand-header">
         <div class="brand-title-group">
-          <div class="brand-logo">⚡</div>
+          <div class="brand-logo" aria-hidden="true">⚡</div>
           <div class="brand-title">
             <h1>CryptoPriceTicker.com</h1>
-            <div class="brand-sub">Real-Time Multi-Exchange WebSocket Ticker • Zero Login • Ad-Free</div>
+            <p class="brand-sub">Live crypto prices from Coinbase, Binance &amp; Kraken • No login • Ad-free</p>
           </div>
         </div>
 
         <div class="header-controls">
           <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Filter 100+ coins, tickers, narratives..." aria-label="Search cryptocurrencies" />
-            <span class="search-kbd">/</span>
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input type="search" id="searchInput" placeholder="Filter coins, tickers, sectors…" aria-label="Filter cryptocurrencies" />
+            <kbd class="search-kbd" aria-hidden="true">/</kbd>
           </div>
 
-          <div class="btn-group" id="currencyGroup" role="group" aria-label="Base Currency">
-            <button class="btn-toggle active" data-curr="USD">USD $</button>
-            <button class="btn-toggle" data-curr="BTC">BTC ₿</button>
-            <button class="btn-toggle" data-curr="ETH">ETH Ξ</button>
-            <button class="btn-toggle" data-curr="SOL">SOL ◎</button>
+          <div class="btn-group" role="group" aria-label="Price currency">
+            <button type="button" class="btn-toggle" data-action="curr" data-curr="USD">USD $</button>
+            <button type="button" class="btn-toggle" data-action="curr" data-curr="BTC">BTC ₿</button>
+            <button type="button" class="btn-toggle" data-action="curr" data-curr="ETH">ETH Ξ</button>
+            <button type="button" class="btn-toggle" data-action="curr" data-curr="SOL">SOL ◎</button>
           </div>
 
-          <button class="action-btn" id="densityBtn" title="Toggle Compact Terminal Rows">📐 Compact</button>
-          <button class="action-btn" id="exportCsvBtn" title="Export Live Market Table to CSV">📥 CSV</button>
-          <button class="action-btn btn-accent" id="openWidgetModalBtn" title="Embed Live Crypto Ticker Widget on Your Website">🧩 Get Widget</button>
-          <button class="action-btn" id="syncModalBtn" title="Zero-Login Stateless Portfolio Sync URL">💾 Sync</button>
+          <button type="button" class="action-btn" id="densityBtn" data-action="density" aria-pressed="false" title="Toggle compact rows">📐 Compact</button>
+          <button type="button" class="action-btn" data-action="csv" title="Download the current table as CSV">📥 CSV</button>
+          <button type="button" class="action-btn btn-accent" data-action="open-widget" title="Embed a live ticker on your website">🧩 Get Widget</button>
+          <button type="button" class="action-btn" data-action="sync" title="Copy your watchlist and bag to another device">💾 Sync</button>
         </div>
       </header>
 
-      <!-- 3 Summary Bento Cards -->
-      <section class="bento-grid" aria-label="Market Summary">
-        <!-- Card 1: Market Pulse -->
+      <section class="bento-grid" aria-label="Market summary">
         <div class="bento-card">
           <div class="bento-head">
-            <span>🌐 Market Pulse (Tracked Universe)</span>
+            <h2 style="font-size:inherit">🌐 Market pulse (tracked coins)</h2>
             <span id="lastUpdateClock">--:--:--</span>
           </div>
           <div class="bento-metrics">
             <div class="metric-box">
-              <div class="metric-label">Market Cap</div>
-              <div class="metric-val" id="globalMcap">$2.74T</div>
+              <div class="metric-label">Market cap</div>
+              <div class="metric-val" id="globalMcap">—</div>
             </div>
             <div class="metric-box">
-              <div class="metric-label">24h Volume</div>
-              <div class="metric-val" id="globalVol">$128.4B</div>
+              <div class="metric-label">24h volume (CB+BN+KR)</div>
+              <div class="metric-val" id="globalVol">—</div>
             </div>
             <div class="metric-box">
-              <div class="metric-label">Liquidity ±2%</div>
-              <div class="metric-val" id="globalLiq" style="color:var(--accent)">$9.42B</div>
+              <div class="metric-label" title="Rough estimate: 6.5% of 24h exchange volume">Est. liquidity ±2%</div>
+              <div class="metric-val" id="globalLiq" style="color:var(--accent)">—</div>
             </div>
           </div>
         </div>
 
-        <!-- Card 2: Top 24h Movers -->
         <div class="bento-card">
           <div class="bento-head">
-            <span>🔥 Top 24h Movers</span>
-            <div style="display:flex;gap:6px">
-              <button class="theme-btn active" id="moverGainersBtn">Gainers</button>
-              <button class="theme-btn" id="moverLosersBtn">Losers</button>
+            <h2 style="font-size:inherit">🔥 Top 24h movers</h2>
+            <div style="display:flex;gap:6px" role="group" aria-label="Movers">
+              <button type="button" class="theme-btn active" data-action="movers" data-mode="gainers" aria-pressed="true">Gainers</button>
+              <button type="button" class="theme-btn" data-action="movers" data-mode="losers" aria-pressed="false">Losers</button>
             </div>
           </div>
           <div id="moversList"></div>
         </div>
 
-        <!-- Card 3: Private Local Portfolio -->
         <div class="bento-card">
           <div class="bento-head">
-            <span>💼 My Private Bag</span>
-            <button class="theme-btn" id="resetBagBtn" title="Clear local bag quantities">Reset</button>
+            <h2 style="font-size:inherit">💼 My private bag</h2>
+            <button type="button" class="theme-btn" data-action="reset-bag" title="Clear all bag quantities">Reset</button>
           </div>
           <div class="bento-metrics">
             <div class="metric-box">
-              <div class="metric-label">Total Value</div>
+              <div class="metric-label">Total value</div>
               <div class="metric-val" id="bagTotalVal">$0.00</div>
             </div>
             <div class="metric-box">
-              <div class="metric-label">24h PnL</div>
+              <div class="metric-label">24h P&amp;L</div>
               <div class="metric-val" id="bagPnlVal">$0.00</div>
             </div>
             <div class="metric-box">
-              <div class="metric-label">Watch / Alerts</div>
+              <div class="metric-label">Watch / alerts</div>
               <div class="metric-val" id="watchlistCountVal">0 / 0</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Narrative / Sector Filter Bar -->
       <div class="filter-bar">
-        <div class="sector-pills" id="sectorPills">
-          <button class="sector-pill active" data-sector="ALL">All <span class="count" id="cnt-ALL">100</span></button>
-          <button class="sector-pill" data-sector="WATCH">❤️ Watchlist <span class="count" id="cnt-WATCH">0</span></button>
-          <button class="sector-pill" data-sector="BAG">💼 My Bag <span class="count" id="cnt-BAG">0</span></button>
-          <button class="sector-pill" data-sector="L1">⛓️ Layer 1 <span class="count" id="cnt-L1">0</span></button>
-          <button class="sector-pill" data-sector="L2">⚡ Layer 2 <span class="count" id="cnt-L2">0</span></button>
-          <button class="sector-pill" data-sector="DePIN">📡 DePIN <span class="count" id="cnt-DePIN">0</span></button>
-          <button class="sector-pill" data-sector="AI">🧠 AI <span class="count" id="cnt-AI">0</span></button>
-          <button class="sector-pill" data-sector="DeFi">🏦 DeFi & RWA <span class="count" id="cnt-DeFi">0</span></button>
-          <button class="sector-pill" data-sector="Privacy">🛡️ Privacy <span class="count" id="cnt-Privacy">0</span></button>
-          <button class="sector-pill" data-sector="Gaming">🎮 Gaming <span class="count" id="cnt-Gaming">0</span></button>
-          <button class="sector-pill" data-sector="Meme">🐸 Memes <span class="count" id="cnt-Meme">0</span></button>
-          <button class="sector-pill" data-sector="Stable">💵 Stables <span class="count" id="cnt-Stable">0</span></button>
+        <div class="sector-pills" role="group" aria-label="Filter by sector">
+          <button type="button" class="sector-pill active" data-action="sector" data-sector="ALL" aria-pressed="true">All <span class="count" id="cnt-ALL">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="WATCH" aria-pressed="false">❤️ Watchlist <span class="count" id="cnt-WATCH">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="BAG" aria-pressed="false">💼 My Bag <span class="count" id="cnt-BAG">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="L1" aria-pressed="false">⛓️ Layer 1 <span class="count" id="cnt-L1">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="L2" aria-pressed="false">⚡ Layer 2 <span class="count" id="cnt-L2">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="DePIN" aria-pressed="false">📡 DePIN <span class="count" id="cnt-DePIN">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="AI" aria-pressed="false">🧠 AI <span class="count" id="cnt-AI">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="DeFi" aria-pressed="false">🏦 DeFi &amp; RWA <span class="count" id="cnt-DeFi">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="Privacy" aria-pressed="false">🛡️ Privacy <span class="count" id="cnt-Privacy">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="Gaming" aria-pressed="false">🎮 Gaming <span class="count" id="cnt-Gaming">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="Meme" aria-pressed="false">🐸 Memes <span class="count" id="cnt-Meme">0</span></button>
+          <button type="button" class="sector-pill" data-action="sector" data-sector="Stable" aria-pressed="false">💵 Stables <span class="count" id="cnt-Stable">0</span></button>
         </div>
       </div>
 
-      <!-- Main Crypto Price Table -->
-      <div class="table-wrap">
+      <div class="table-wrap" id="prices">
         <table id="cryptoTable">
+          <caption class="sr-only">Live cryptocurrency prices, ranked by market cap. Select a column header to sort.</caption>
           <thead>
             <tr>
-              <th class="col-center" data-sort="rank" style="width:44px"># ▲</th>
-              <th class="col-center" style="width:74px" title="Watchlist, Pin to Tab & Price Alert">Tools</th>
-              <th class="col-left" data-sort="name">Coin</th>
-              <th data-sort="price">Price</th>
-              <th data-sort="change24h">24h %</th>
-              <th class="col-center hide-mobile">Live Trend</th>
-              <th class="col-center hide-mobile" data-sort="rangePos">24h Low / High</th>
-              <th data-sort="mcap">Market Cap</th>
-              <th class="hide-mobile" data-sort="vol24h">Volume 24h</th>
-              <th class="hide-mobile" data-sort="liq">Liquidity ±2%</th>
-              <th data-sort="bagVal">My Bag</th>
+              <th scope="col" class="col-center" data-sort="rank" style="width:44px"><button type="button" class="th-sort" data-action="sort">#</button></th>
+              <th scope="col" class="col-center" style="width:74px">Tools</th>
+              <th scope="col" class="col-left" data-sort="name"><button type="button" class="th-sort" data-action="sort">Coin</button></th>
+              <th scope="col" data-sort="price"><button type="button" class="th-sort" data-action="sort">Price</button></th>
+              <th scope="col" data-sort="change24h"><button type="button" class="th-sort" data-action="sort">24h %</button></th>
+              <th scope="col" class="col-center hide-mobile">Live trend</th>
+              <th scope="col" class="col-center hide-mobile" data-sort="rangePos"><button type="button" class="th-sort" data-action="sort">24h low / high</button></th>
+              <th scope="col" data-sort="mcap"><button type="button" class="th-sort" data-action="sort">Market cap</button></th>
+              <th scope="col" class="hide-mobile" data-sort="vol24h"><button type="button" class="th-sort" data-action="sort">Volume 24h</button></th>
+              <th scope="col" class="hide-mobile" data-sort="liq" title="Rough estimate: 6.5% of 24h exchange volume"><button type="button" class="th-sort" data-action="sort">Est. liq. ±2%</button></th>
+              <th scope="col" data-sort="bagVal"><button type="button" class="th-sort" data-action="sort">My bag</button></th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
         </table>
       </div>
 
-      <!-- Table Footer & Dynamic Expansion -->
       <div class="table-footer">
         <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">
-          Showing <strong id="showingCount" style="color:var(--text-primary)">100</strong> assets • Click any coin name for <strong>Cross-Exchange Spread & Calculator</strong>
+          Showing <strong id="showingCount" style="color:var(--text-primary)">0</strong> assets • Click a coin for its live page, or 🔔 for the cross-exchange spread &amp; alerts
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="action-btn" id="expandExchangePairsBtn">🌐 + Load 100 More Live Exchange Pairs (200+ Total)</button>
-          <button class="action-btn btn-accent" onclick="openWidgetModal()">🧩 Embed Website Ticker Widget</button>
+          <button type="button" class="action-btn" data-action="expand">🌐 + Load ~100 more Binance pairs</button>
+          <button type="button" class="action-btn btn-accent" data-action="open-widget">🧩 Embed a ticker widget</button>
         </div>
       </div>
 
-      <!-- Methodology & YMYL Architecture Disclosure -->
-      <footer class="site-footer">
-        <div class="methodology-grid">
+      <section class="page-section prose" aria-labelledby="how-h">
+        <h2 id="how-h">How CryptoPriceTicker.com works</h2>
+        <div class="methodology-grid" style="background:none;border:0;padding:0">
           <div>
-            <h4>⚡ Multi-Exchange WebSocket Architecture</h4>
-            <p>Prices stream directly to your browser via concurrent WebSocket connections to <strong>Coinbase Exchange</strong>, <strong>Binance Vision (!miniTicker@arr)</strong>, and <strong>Kraken v2</strong>, backed by REST 24hr snapshots.</p>
+            <h3>⚡ Straight from the exchanges</h3>
+            <p>Your browser opens WebSocket connections to <strong>Coinbase</strong>, <strong>Binance</strong> and <strong>Kraken</strong> and shows each trade as it happens. The small CB/BN/KR badge on every row shows which exchange sent the latest price.</p>
           </div>
           <div>
-            <h4>📊 ±2% Orderbook Depth & Ranking</h4>
-            <p>Market capitalization is dynamically calculated from real-time spot price × verified circulating supply. ±2% liquidity estimates combined orderbook depth within 200 bps of mid-market price.</p>
+            <h3>📊 Market cap, volume &amp; liquidity</h3>
+            <p>Market cap is the live price × circulating supply (supply data last refreshed <span id="registryDate">recently</span>). Volume is the 24h total of the coin's USD/USDT markets on those three exchanges. “Est. liquidity” is a rough estimate (6.5% of that volume); each coin page shows real order-book depth within ±2% measured from Binance.</p>
           </div>
           <div>
-            <h4>🧩 Free Website Widgets & Zero-Login Privacy</h4>
-            <p>Bloggers and developers can embed live WebSocket tickers using our <a href="#widget" onclick="openWidgetModal();return false;" style="color:var(--accent)">Website Widget Generator</a>. User portfolios persist 100% in local storage.</p>
+            <h3>🔒 Private by design</h3>
+            <p>No account and no ads. Your watchlist, bag quantities and alerts are saved only in this browser (localStorage). A sync link copies them to another device; anyone with the link can see them.</p>
           </div>
         </div>
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
-          <span>CryptoPriceTicker.com — Real-Time Multi-Exchange WebSocket Ticker. 100% Zero-Login, Ad-Free Architecture.</span>
-          <span>Shortcuts: <code>/</code> Search • <code>📌</code> Pin Price to Browser Tab • <code>🧩</code> Embed Widget</span>
+      </section>
+
+      <section class="page-section prose faq" aria-labelledby="faq-h">
+        <h2 id="faq-h">Frequently asked questions</h2>
+        <details>
+          <summary>Are these prices real-time?</summary>
+          <p>Yes. Prices update tick-by-tick from the exchanges' public WebSocket feeds, typically within a second of a trade. If a feed disconnects, its badge at the top switches to RETRY and reconnects automatically.</p>
+        </details>
+        <details>
+          <summary>Why is a coin's price slightly different on each exchange?</summary>
+          <p>Every exchange has its own order book, so prices differ a little; Binance also quotes in USDT rather than US dollars. Open the 🔔 inspector or a coin's page to see each exchange's price and the cross-exchange spread.</p>
+        </details>
+        <details>
+          <summary>How do price alerts work?</summary>
+          <p>Set a USD target in the 🔔 inspector. When the live price crosses it, you hear a beep and see a notification. Alerts are stored in your browser and only fire while this page is open.</p>
+        </details>
+        <details>
+          <summary>Can I add a live crypto ticker to my own website?</summary>
+          <p>Yes, for free. Use <strong>Get Widget</strong> to choose a scrolling bar, a card grid or a single-coin card, then paste the HTML snippet into your page. The widget runs in a lazy-loaded iframe, so it adds no scripts to your site.</p>
+        </details>
+        <details>
+          <summary>Is this investment advice?</summary>
+          <p>No. Data comes from third-party exchanges and may be delayed, incomplete or wrong. Always verify prices before trading.</p>
+        </details>
+      </section>
+
+      <nav class="page-section" aria-labelledby="coins-h">
+        <h2 id="coins-h">Live price pages</h2>
+        <div class="coin-index">
+<!-- coin-index:start (generated by scripts/build-coin-pages.mjs — do not edit by hand) -->
+          <a href="/coin/btc/">Bitcoin (BTC)</a>
+          <a href="/coin/eth/">Ethereum (ETH)</a>
+          <a href="/coin/usdt/">Tether (USDT)</a>
+          <a href="/coin/bnb/">BNB (BNB)</a>
+          <a href="/coin/usdc/">USD Coin (USDC)</a>
+          <a href="/coin/xrp/">XRP (XRP)</a>
+          <a href="/coin/sol/">Solana (SOL)</a>
+          <a href="/coin/trx/">TRON (TRX)</a>
+          <a href="/coin/hype/">Hyperliquid (HYPE)</a>
+          <a href="/coin/zec/">Zcash (ZEC)</a>
+          <a href="/coin/doge/">Dogecoin (DOGE)</a>
+          <a href="/coin/xmr/">Monero (XMR)</a>
+          <a href="/coin/link/">Chainlink (LINK)</a>
+          <a href="/coin/ada/">Cardano (ADA)</a>
+          <a href="/coin/bch/">Bitcoin Cash (BCH)</a>
+          <a href="/coin/dai/">Dai (DAI)</a>
+          <a href="/coin/xlm/">Stellar (XLM)</a>
+          <a href="/coin/near/">NEAR Protocol (NEAR)</a>
+          <a href="/coin/ltc/">Litecoin (LTC)</a>
+          <a href="/coin/uni/">Uniswap (UNI)</a>
+          <a href="/coin/avax/">Avalanche (AVAX)</a>
+          <a href="/coin/gram/">Gram (formerly Toncoin) (GRAM)</a>
+          <a href="/coin/sui/">Sui (SUI)</a>
+          <a href="/coin/hbar/">Hedera (HBAR)</a>
+          <a href="/coin/shib/">Shiba Inu (SHIB)</a>
+          <a href="/coin/tao/">Bittensor (TAO)</a>
+          <a href="/coin/okb/">OKB (OKB)</a>
+          <a href="/coin/qnt/">Quant (QNT)</a>
+          <a href="/coin/pepe/">Pepe (PEPE)</a>
+          <a href="/coin/aave/">Aave (AAVE)</a>
+          <a href="/coin/sky/">Sky (formerly Maker) (SKY)</a>
+          <a href="/coin/mnt/">Mantle (MNT)</a>
+          <a href="/coin/dot/">Polkadot (DOT)</a>
+          <a href="/coin/icp/">Internet Computer (ICP)</a>
+          <a href="/coin/wlfi/">World Liberty Financial (WLFI)</a>
+          <a href="/coin/ena/">Ethena (ENA)</a>
+          <a href="/coin/ondo/">Ondo Finance (ONDO)</a>
+          <a href="/coin/paxg/">PAX Gold (PAXG)</a>
+          <a href="/coin/aster/">Aster (ASTER)</a>
+          <a href="/coin/fdusd/">First Digital USD (FDUSD)</a>
+          <a href="/coin/etc/">Ethereum Classic (ETC)</a>
+          <a href="/coin/pol/">Polygon (POL)</a>
+          <a href="/coin/kas/">Kaspa (KAS)</a>
+          <a href="/coin/arb/">Arbitrum (ARB)</a>
+          <a href="/coin/jup/">Jupiter (JUP)</a>
+          <a href="/coin/algo/">Algorand (ALGO)</a>
+          <a href="/coin/render/">Render (RENDER)</a>
+          <a href="/coin/wld/">World (WLD)</a>
+          <a href="/coin/inj/">Injective (INJ)</a>
+          <a href="/coin/atom/">Cosmos (ATOM)</a>
+          <a href="/coin/morpho/">Morpho (MORPHO)</a>
+          <a href="/coin/cake/">PancakeSwap (CAKE)</a>
+          <a href="/coin/dash/">Dash (DASH)</a>
+          <a href="/coin/aero/">Aerodrome Finance (AERO)</a>
+          <a href="/coin/fil/">Filecoin (FIL)</a>
+          <a href="/coin/stx/">Stacks (STX)</a>
+          <a href="/coin/vet/">VeChain (VET)</a>
+          <a href="/coin/apt/">Aptos (APT)</a>
+          <a href="/coin/crv/">Curve DAO (CRV)</a>
+          <a href="/coin/ray/">Raydium (RAY)</a>
+          <a href="/coin/fet/">Artificial Superintelligence Alliance (FET)</a>
+          <a href="/coin/tia/">Celestia (TIA)</a>
+          <a href="/coin/virtual/">Virtuals Protocol (VIRTUAL)</a>
+          <a href="/coin/pyth/">Pyth Network (PYTH)</a>
+          <a href="/coin/pendle/">Pendle (PENDLE)</a>
+          <a href="/coin/ldo/">Lido DAO (LDO)</a>
+          <a href="/coin/sei/">Sei (SEI)</a>
+          <a href="/coin/imx/">Immutable (IMX)</a>
+          <a href="/coin/rune/">THORChain (RUNE)</a>
+          <a href="/coin/bonk/">Bonk (BONK)</a>
+          <a href="/coin/floki/">FLOKI (FLOKI)</a>
+          <a href="/coin/grt/">The Graph (GRT)</a>
+          <a href="/coin/ar/">Arweave (AR)</a>
+          <a href="/coin/comp/">Compound (COMP)</a>
+          <a href="/coin/jasmy/">JasmyCoin (JASMY)</a>
+          <a href="/coin/op/">Optimism (OP)</a>
+          <a href="/coin/strk/">Starknet (STRK)</a>
+          <a href="/coin/akt/">Akash Network (AKT)</a>
+          <a href="/coin/wif/">dogwifhat (WIF)</a>
+          <a href="/coin/beam/">Beam (BEAM)</a>
+          <a href="/coin/theta/">Theta Network (THETA)</a>
+          <a href="/coin/s/">Sonic (S)</a>
+          <a href="/coin/axs/">Axie Infinity (AXS)</a>
+          <a href="/coin/mana/">Decentraland (MANA)</a>
+          <a href="/coin/1inch/">1inch Network (1INCH)</a>
+          <a href="/coin/sand/">The Sandbox (SAND)</a>
+          <a href="/coin/aioz/">AIOZ Network (AIOZ)</a>
+          <a href="/coin/super/">SuperVerse (SUPER)</a>
+          <a href="/coin/glm/">Golem (GLM)</a>
+          <a href="/coin/zen/">Horizen (ZEN)</a>
+          <a href="/coin/zk/">ZKsync (ZK)</a>
+          <a href="/coin/dydx/">dYdX (DYDX)</a>
+          <a href="/coin/gala/">Gala (GALA)</a>
+          <a href="/coin/nmr/">Numeraire (NMR)</a>
+          <a href="/coin/hnt/">Helium (HNT)</a>
+          <a href="/coin/lpt/">Livepeer (LPT)</a>
+          <a href="/coin/snx/">Synthetix (SNX)</a>
+          <a href="/coin/arkm/">Arkham (ARKM)</a>
+          <a href="/coin/turbo/">Turbo (TURBO)</a>
+          <a href="/coin/rose/">Oasis (ROSE)</a>
+          <a href="/coin/sc/">Siacoin (SC)</a>
+          <a href="/coin/egld/">MultiversX (EGLD)</a>
+          <a href="/coin/bome/">BOOK OF MEME (BOME)</a>
+          <a href="/coin/popcat/">Popcat (POPCAT)</a>
+          <a href="/coin/mew/">cat in a dogs world (MEW)</a>
+          <a href="/coin/flow/">Flow (FLOW)</a>
+          <a href="/coin/mog/">Mog Coin (MOG)</a>
+          <a href="/coin/pha/">Phala Network (PHA)</a>
+          <a href="/coin/iotx/">IoTeX (IOTX)</a>
+          <a href="/coin/manta/">Manta Network (MANTA)</a>
+          <a href="/coin/flux/">Flux (FLUX)</a>
+          <a href="/coin/metis/">Metis (METIS)</a>
+          <a href="/coin/lrc/">Loopring (LRC)</a>
+          <a href="/coin/ankr/">Ankr (ANKR)</a>
+<!-- coin-index:end -->
         </div>
-      </footer>
+      </nav>
     </main>
+
+    <footer class="container site-footer" style="padding-top:0">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span>CryptoPriceTicker.com — live multi-exchange crypto prices. No login, no ads.</span>
+        <span>Shortcuts: <kbd>/</kbd> search • 📌 pin a price to the tab title • 🧩 embed a widget</span>
+      </div>
+      <p class="disclaimer">Not financial advice. Prices come from Coinbase, Binance and Kraken public market-data feeds and may be delayed or inaccurate.</p>
+    </footer>
   </div>
-
-  <!-- =================================================================
-       MODALS: SYNC, COIN DEEP-DIVE, AND WEBSITE WIDGET GENERATOR
-       ================================================================= -->
-
-  <!-- Modal 1: Zero-Login Portfolio Sync -->
-  <div class="modal-backdrop" id="syncModal">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3>💾 Zero-Login Portfolio & Watchlist Sync</h3>
-        <button class="icon-btn" id="closeSyncModal">✕</button>
-      </div>
-      <p style="color:var(--text-secondary);font-size:12.5px">
-        Bookmark or share this stateless URL to open your exact watchlist and bag quantities on any device without creating an account:
-      </p>
-      <input type="text" class="sync-input" id="syncUrlInput" readonly />
-      <div style="display:flex;gap:8px;justify-content:flex-end">
-        <button class="action-btn btn-accent" id="copySyncUrlBtn">📋 Copy Private Sync Link</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 2: Coin Deep-Dive, Cross-Exchange Arbitrage & Price Alert -->
-  <div class="modal-backdrop" id="coinModal">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3 id="modalCoinTitle">BTC — Bitcoin</h3>
-        <button class="icon-btn" id="closeCoinModal">✕</button>
-      </div>
-      <div id="modalCoinBody" style="display:flex;flex-direction:column;gap:12px"></div>
-    </div>
-  </div>
-
-  <!-- Modal 3: Get Website Widget Generator (Backlink Engine) -->
-  <div class="modal-backdrop" id="widgetModal">
-    <div class="modal-card modal-wide">
-      <div class="modal-head">
-        <h3>🧩 Get Free Website Ticker Widget (Live WebSocket Embed)</h3>
-        <button class="icon-btn" id="closeWidgetModal">✕</button>
-      </div>
-      <p style="color:var(--text-secondary);font-size:12.5px;margin-bottom:12px">
-        Embed a zero-latency, ad-free multi-exchange crypto ticker on your blog, documentation, or portal. Customize your layout, narrative preset, and theme below:
-      </p>
-
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="wgLayout">1. Widget Layout</label>
-          <select id="wgLayout" class="form-select">
-            <option value="marquee">Scrolling Marquee Bar (Full Width × 54px)</option>
-            <option value="grid">Multi-Coin Market Cards (Grid × 225px)</option>
-            <option value="single">Single Coin Spotlight Card (Hero × 180px)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="wgTheme">2. Color Theme</label>
-          <select id="wgTheme" class="form-select">
-            <option value="kali">Kali Cyber Blue (Dark)</option>
-            <option value="green">Terminal Matrix Green</option>
-            <option value="slate">Slate Institutional</option>
-            <option value="oled">Pure Black OLED</option>
-            <option value="light">Clean Daylight (Light)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="wgCoins">3. Coins (Comma-Separated Tickers)</label>
-          <input type="text" id="wgCoins" class="form-input" value="BTC,ETH,SOL,TAO,RENDER,XMR,KAS,SUI" />
-          <div class="preset-chips">
-            <button type="button" class="preset-chip" data-wg-preset="BTC,ETH,SOL,XRP,BNB,DOGE,ADA,AVAX">Majors</button>
-            <button type="button" class="preset-chip" data-wg-preset="RENDER,TAO,HNT,FIL,AKT,AR,THETA,IOTX">📡 DePIN</button>
-            <button type="button" class="preset-chip" data-wg-preset="TAO,FET,NEAR,RENDER,ICP,VIRTUAL,WLD,ARKM">🧠 AI</button>
-            <button type="button" class="preset-chip" data-wg-preset="XMR,ZEC,DASH,ROSE,SCRT,ZEN">🛡️ Privacy</button>
-            <button type="button" class="preset-chip" data-wg-preset="WATCHLIST">❤️ My Watchlist</button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="wgCurr">4. Base Currency & Attribution Style</label>
-          <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:6px">
-            <select id="wgCurr" class="form-select">
-              <option value="USD">USD ($)</option>
-              <option value="BTC">BTC (₿)</option>
-              <option value="ETH">ETH (Ξ)</option>
-              <option value="SOL">SOL (◎)</option>
-            </select>
-            <select id="wgAnchor" class="form-select" title="Attribution Link Text">
-              <option value="brand">Live Crypto Prices by CryptoPriceTicker.com</option>
-              <option value="depin">Real-Time DePIN & AI Crypto Ticker — CryptoPriceTicker.com</option>
-              <option value="liquidity">Live Crypto Orderbook & Price Ticker — CryptoPriceTicker.com</option>
-              <option value="minimal">Powered by CryptoPriceTicker.com</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Live Interactive Preview -->
-      <div class="form-group" style="margin-bottom:6px">
-        <label>Live Widget Preview</label>
-      </div>
-      <div class="widget-preview-stage" id="wgPreviewStage"></div>
-
-      <!-- Copy-Pasteable HTML + SEO Backlink Code -->
-      <div class="form-group">
-        <label for="wgEmbedCode">Copy & Paste HTML Embed Snippet (Includes Responsive Iframe + Attribution Link)</label>
-        <textarea id="wgEmbedCode" class="code-textarea" readonly></textarea>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)">
-          ⚡ Zero external JS dependencies • Lazy-loaded iframe • 100% Free
-        </span>
-        <div style="display:flex;gap:8px">
-          <button class="action-btn" id="testEmbedTabBtn" title="Open widget standalone URL in new tab">↗ Open Standalone URL</button>
-          <button class="action-btn btn-accent" id="copyWidgetCodeBtn">📋 Copy HTML Embed Code</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast-container" id="toastContainer"></div>
-
-  <script>
-    /********************************************************************
-     * 1. CURATED 100-ASSET CORE REGISTRY (10 NARRATIVES)
-     ********************************************************************/
-    const CORE_REGISTRY = [
-      ["BTC", "Bitcoin", 19.78, 80667.48, ["L1"]],
-      ["ETH", "Ethereum", 120.42, 2371.62, ["L1", "DeFi"]],
-      ["USDT", "Tether", 149040.0, 1.000, ["Stable"]],
-      ["XRP", "XRP", 56800.0, 1.286, ["L1"]],
-      ["SOL", "Solana", 473.8, 148.12, ["L1", "DePIN"]],
-      ["BNB", "BNB", 144.0, 588.40, ["L1"]],
-      ["USDC", "USD Coin", 37900.0, 1.000, ["Stable"]],
-      ["DOGE", "Dogecoin", 146200.0, 0.1942, ["Meme", "L1"]],
-      ["ADA", "Cardano", 35740.0, 0.584, ["L1"]],
-      ["TRX", "TRON", 86380.0, 0.198, ["L1"]],
-      ["AVAX", "Avalanche", 409.1, 27.87, ["L1"]],
-      ["TON", "Toncoin", 2540.0, 4.92, ["L1"]],
-      ["LINK", "Chainlink", 626.8, 16.86, ["DeFi", "DePIN", "AI"]],
-      ["SHIB", "Shiba Inu", 589260000.0, 0.0000188, ["Meme"]],
-      ["SUI", "Sui", 2845.0, 2.842, ["L1"]],
-      ["DOT", "Polkadot", 1510.0, 4.78, ["L1", "DePIN"]],
-      ["BCH", "Bitcoin Cash", 19.79, 412.50, ["L1"]],
-      ["NEAR", "NEAR Protocol", 1218.0, 4.65, ["L1", "AI"]],
-      ["LTC", "Litecoin", 75.15, 84.20, ["L1"]],
-      ["UNI", "Uniswap", 600.5, 9.15, ["DeFi"]],
-      ["PEPE", "Pepe", 420690000.0, 0.00001046, ["Meme"]],
-      ["APT", "Aptos", 535.0, 10.42, ["L1"]],
-      ["ICP", "Internet Computer", 474.5, 8.92, ["L1", "AI", "DePIN"]],
-      ["DAI", "Dai", 5360.0, 1.000, ["Stable", "DeFi"]],
-      ["TAO", "Bittensor", 7.38, 542.52, ["AI", "DePIN"]],
-      ["ETC", "Ethereum Classic", 149.6, 21.40, ["L1"]],
-      ["XMR", "Monero", 18.45, 214.48, ["Privacy", "L1"]],
-      ["RENDER", "Render", 517.7, 6.843, ["DePIN", "AI"]],
-      ["POL", "Polygon", 8130.0, 0.382, ["L2"]],
-      ["KAS", "Kaspa", 25010.0, 0.1386, ["L1"]],
-      ["FET", "Artificial Superintelligence", 2520.0, 1.38, ["AI"]],
-      ["XLM", "Stellar", 29920.0, 0.118, ["L1"]],
-      ["HBAR", "Hedera", 37700.0, 0.068, ["L1", "DePIN"]],
-      ["OKB", "OKB", 60.0, 44.20, ["L1"]],
-      ["STX", "Stacks", 1502.0, 1.88, ["L2"]],
-      ["FIL", "Filecoin", 601.2, 4.28, ["DePIN", "AI"]],
-      ["ARB", "Arbitrum", 4095.0, 0.684, ["L2"]],
-      ["AAVE", "Aave", 14.98, 162.40, ["DeFi"]],
-      ["IMX", "Immutable", 1668.0, 1.42, ["L2", "Gaming"]],
-      ["OP", "Optimism", 1255.0, 1.64, ["L2"]],
-      ["INJ", "Injective", 97.9, 21.80, ["L1", "DeFi", "AI"]],
-      ["WIF", "dogwifhat", 998.9, 2.48, ["Meme"]],
-      ["ATOM", "Cosmos", 390.9, 5.12, ["L1"]],
-      ["MNT", "Mantle", 3365.0, 0.695, ["L2"]],
-      ["VET", "VeChain", 80985.0, 0.0268, ["L1", "DePIN"]],
-      ["FTM", "Fantom", 2803.0, 0.724, ["L1", "DeFi"]],
-      ["BONK", "Bonk", 75020000.0, 0.0000248, ["Meme"]],
-      ["GRT", "The Graph", 9550.0, 0.184, ["AI", "DePIN", "DeFi"]],
-      ["RUNE", "THORChain", 336.6, 5.18, ["DeFi", "L1"]],
-      ["SEI", "Sei", 3980.0, 0.442, ["L1"]],
-      ["THETA", "Theta Network", 1000.0, 1.48, ["DePIN", "AI"]],
-      ["AR", "Arweave", 65.65, 18.40, ["DePIN", "AI"]],
-      ["ONDO", "Ondo", 1440.0, 0.942, ["DeFi"]],
-      ["ALGO", "Algorand", 8305.0, 0.168, ["L1"]],
-      ["MKR", "Maker", 0.88, 1520.00, ["DeFi"]],
-      ["FLOKI", "FLOKI", 9600000.0, 0.000158, ["Meme", "Gaming"]],
-      ["TIA", "Celestia", 428.0, 5.42, ["L1", "L2"]],
-      ["JUP", "Jupiter", 1350.0, 1.04, ["DeFi"]],
-      ["PYTH", "Pyth Network", 3625.0, 0.395, ["DeFi"]],
-      ["HNT", "Helium", 173.6, 6.451, ["DePIN"]],
-      ["LDO", "Lido DAO", 895.8, 1.28, ["DeFi"]],
-      ["FDUSD", "First Digital USD", 2150.0, 1.000, ["Stable"]],
-      ["VIRTUAL", "Virtuals Protocol", 1000.0, 1.18, ["AI"]],
-      ["ENA", "Ethena", 2840.0, 0.562, ["DeFi"]],
-      ["JASMY", "JasmyCoin", 49390.0, 0.0218, ["DePIN"]],
-      ["POPCAT", "Popcat (SOL)", 979.9, 1.38, ["Meme"]],
-      ["PENDLE", "Pendle", 162.8, 5.12, ["DeFi"]],
-      ["STRK", "Starknet", 2099.0, 0.445, ["L2"]],
-      ["GALA", "Gala", 36280.0, 0.0248, ["Gaming"]],
-      ["RAY", "Raydium", 290.8, 3.84, ["DeFi"]],
-      ["AERO", "Aerodrome Finance", 698.0, 1.34, ["DeFi"]],
-      ["WLD", "Worldcoin", 682.0, 2.12, ["AI"]],
-      ["FLOW", "Flow", 1545.0, 0.625, ["L1", "Gaming"]],
-      ["BRETT", "Brett (Based)", 9910.0, 0.104, ["Meme"]],
-      ["QNT", "Quant", 12.07, 68.50, ["DeFi", "L1"]],
-      ["AKT", "Akash Network", 248.2, 3.12, ["DePIN", "AI"]],
-      ["BEAM", "Beam", 49460.0, 0.0195, ["Gaming"]],
-      ["EGLD", "MultiversX", 27.6, 28.90, ["L1"]],
-      ["SAND", "The Sandbox", 2415.0, 0.312, ["Gaming"]],
-      ["AXS", "Axie Infinity", 154.2, 5.38, ["Gaming"]],
-      ["MANA", "Decentraland", 1918.0, 0.345, ["Gaming"]],
-      ["ZEC", "Zcash", 16.32, 42.80, ["Privacy"]],
-      ["ZK", "ZKsync", 3675.0, 0.148, ["L2"]],
-      ["ARKM", "Arkham", 299.0, 1.78, ["AI"]],
-      ["MOG", "Mog Coin", 390570000.0, 0.00000192, ["Meme"]],
-      ["IOTX", "IoTeX", 9440.0, 0.0425, ["DePIN"]],
-      ["LPT", "Livepeer", 35.8, 12.60, ["DePIN", "AI"]],
-      ["DYDX", "dYdX", 648.0, 1.15, ["DeFi"]],
-      ["CRV", "Curve DAO", 1226.0, 0.318, ["DeFi"]],
-      ["SNX", "Synthetix", 328.0, 1.62, ["DeFi"]],
-      ["MEW", "cat in a dogs world", 88888.0, 0.0091, ["Meme"]],
-      ["RON", "Ronin", 365.0, 1.68, ["Gaming", "L1"]],
-      ["AIOZ", "AIOZ Network", 1132.0, 0.642, ["DePIN", "AI"]],
-      ["SUPER", "SuperVerse", 488.0, 1.24, ["Gaming"]],
-      ["DASH", "Dash", 12.02, 26.80, ["Privacy"]],
-      ["GLM", "Golem", 1000.0, 0.342, ["DePIN", "AI"]],
-      ["ROSE", "Oasis", 7060.0, 0.078, ["Privacy", "AI"]],
-      ["METIS", "Metis", 6.1, 41.20, ["L2"]],
-      ["MANTA", "Manta Network", 381.0, 0.84, ["L2"]],
-      ["TURBO", "Turbo", 69000.0, 0.0092, ["Meme", "AI"]],
-      ["BOME", "BOOK OF MEME", 68966.0, 0.0084, ["Meme"]],
-      ["COMP", "Compound", 8.85, 51.40, ["DeFi"]],
-      ["1INCH", "1inch Network", 1312.0, 0.295, ["DeFi"]],
-      ["ANKR", "Ankr", 10000.0, 0.031, ["DePIN"]],
-      ["SC", "Siacoin", 57620.0, 0.0054, ["DePIN"]],
-      ["FLUX", "Flux", 371.0, 0.59, ["DePIN", "AI"]],
-      ["PHA", "Phala Network", 772.0, 0.145, ["AI", "DePIN"]],
-      ["NMR", "Numeraire", 7.45, 16.90, ["AI", "DeFi"]],
-      ["SCRT", "Secret", 295.0, 0.245, ["Privacy", "AI"]],
-      ["ZEN", "Horizen", 15.6, 8.95, ["Privacy"]],
-      ["LRC", "Loopring", 1374.0, 0.148, ["L2", "DeFi"]]
-    ];
-
-    /********************************************************************
-     * 2. APPLICATION STATE & URL PARAMETER DETECTION (?embed=1)
-     ********************************************************************/
-    const CANONICAL_TITLE = document.title;
-    const urlParams = new URLSearchParams(window.location.search);
-    const IS_EMBED_MODE = urlParams.get("embed") === "1";
-
-    const state = {
-      coins: new Map(),
-      currency: urlParams.get("curr")?.toUpperCase() || localStorage.getItem("cpt_curr") || "USD",
-      theme: urlParams.get("theme")?.toLowerCase() || localStorage.getItem("cpt_theme") || "kali",
-      compact: localStorage.getItem("cpt_compact") === "1",
-      sector: "ALL",
-      search: "",
-      sortBy: "rank",
-      sortAsc: true,
-      moverMode: "gainers",
-      pinnedSym: localStorage.getItem("cpt_pin") || "",
-      watchlist: new Set(JSON.parse(localStorage.getItem("cpt_watch") || '["BTC","ETH","SOL","TAO"]')),
-      bag: JSON.parse(localStorage.getItem("cpt_bag") || '{"BTC":0.15,"SOL":10}'),
-      alerts: JSON.parse(localStorage.getItem("cpt_alerts") || '{}'),
-      tickCount: 0,
-      dirtySymbols: new Set(),
-      activeModalSym: null,
-      widgetModalOpen: false,
-      embedConfig: {
-        layout: urlParams.get("layout") || "marquee",
-        coins: (urlParams.get("coins") || "BTC,ETH,SOL,TAO,RENDER,XMR,KAS,SUI")
-          .split(",").map(s => s.trim().toUpperCase()).filter(Boolean)
-      }
-    };
-
-    // Hydrate Portfolio Sync if ?w= or ?b= is passed
-    if (urlParams.has("w")) {
-      const wArr = urlParams.get("w").split(",").map(s => s.trim().toUpperCase()).filter(Boolean);
-      if (wArr.length) state.watchlist = new Set(wArr);
-    }
-    if (urlParams.has("b")) {
-      const bObj = {};
-      urlParams.get("b").split(",").forEach(pair => {
-        const [sym, qty] = pair.split(":");
-        if (sym && !isNaN(parseFloat(qty))) bObj[sym.trim().toUpperCase()] = parseFloat(qty);
-      });
-      if (Object.keys(bObj).length) state.bag = bObj;
-    }
-
-    // Configure Embed Mode Meta & Body Class
-    if (IS_EMBED_MODE) {
-      document.body.classList.add("is-embed");
-      const robotsEl = document.getElementById("metaRobots");
-      if (robotsEl) robotsEl.setAttribute("content", "noindex, indexifembedded");
-    }
-
-    // Seed Core Coins into State Map
-    CORE_REGISTRY.forEach(([sym, name, supplyM, price, sectors], idx) => {
-      const mcap = price * supplyM * 1e6;
-      const vol24h = mcap * (sym === "USDT" || sym === "USDC" ? 0.34 : 0.045);
-      const liq = vol24h * 0.065;
-      const change24h = ((idx % 7) - 2.5) * 1.35;
-      const low24h = price * (1 - Math.abs(change24h) / 100 - 0.018);
-      const high24h = price * (1 + Math.abs(change24h) / 100 + 0.018);
-      const history = [];
-      for (let i = 0; i < 16; i++) {
-        history.push(price * (1 + Math.sin(i * 0.6 + idx) * 0.008));
-      }
-      history.push(price);
-
-      state.coins.set(sym, {
-        sym,
-        name,
-        supply: supplyM * 1e6,
-        price,
-        change24h,
-        low24h,
-        high24h,
-        mcap,
-        vol24h,
-        liq,
-        sectors,
-        history,
-        rank: idx + 1,
-        exPrices: { CB: null, BN: null, KR: null },
-        lastSource: "BOOT"
-      });
-    });
-
-    /********************************************************************
-     * 3. FORMATTING & CURRENCY CONVERSION HELPERS
-     ********************************************************************/
-    function getRate(currOverride) {
-      const c = currOverride || state.currency;
-      if (c === "BTC") return state.coins.get("BTC")?.price || 80667;
-      if (c === "ETH") return state.coins.get("ETH")?.price || 2371;
-      if (c === "SOL") return state.coins.get("SOL")?.price || 148;
-      return 1;
-    }
-
-    function getCurrSymbol(currOverride) {
-      const c = currOverride || state.currency;
-      if (c === "BTC") return "₿";
-      if (c === "ETH") return "Ξ";
-      if (c === "SOL") return "◎";
-      return "$";
-    }
-
-    function fmtPrice(usdVal, currOverride) {
-      if (usdVal === null || usdVal === undefined || isNaN(usdVal)) return "—";
-      const val = usdVal / getRate(currOverride);
-      const sym = getCurrSymbol(currOverride);
-      if (val >= 1000) return sym + val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      if (val >= 1) return sym + val.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-      if (val >= 0.01) return sym + val.toFixed(4);
-      if (val >= 0.0001) return sym + val.toFixed(6);
-      return sym + val.toFixed(8);
-    }
-
-    function fmtCompact(usdVal, currOverride) {
-      if (!usdVal || isNaN(usdVal)) return "$0";
-      const val = usdVal / getRate(currOverride);
-      const sym = getCurrSymbol(currOverride);
-      if (val >= 1e12) return sym + (val / 1e12).toFixed(2) + "T";
-      if (val >= 1e9) return sym + (val / 1e9).toFixed(2) + "B";
-      if (val >= 1e6) return sym + (val / 1e6).toFixed(2) + "M";
-      if (val >= 1e3) return sym + (val / 1e3).toFixed(1) + "K";
-      return sym + val.toFixed(2);
-    }
-
-    function buildSparkline(history, isUp, w = 88, h = 24) {
-      if (!history || history.length < 2) return "";
-      const min = Math.min(...history);
-      const max = Math.max(...history);
-      const span = max - min || 1;
-      const pts = history.map((v, i) => {
-        const x = ((i / (history.length - 1)) * w).toFixed(1);
-        const y = (h - 3 - ((v - min) / span) * (h - 6)).toFixed(1);
-        return `${x},${y}`;
-      }).join(" ");
-      const stroke = isUp ? "var(--up)" : "var(--down)";
-      return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline fill="none" stroke="${stroke}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/></svg>`;
-    }
-
-    /********************************************************************
-     * 4. EMBED WIDGET HTML RENDERER (Used by ?embed=1 AND Live Preview)
-     ********************************************************************/
-    function buildWidgetMarkup(cfg) {
-      const syms = cfg.coins.length ? cfg.coins : ["BTC", "ETH", "SOL", "TAO"];
-      const picked = syms.map(s => state.coins.get(s)).filter(Boolean);
-      if (!picked.length) picked.push(state.coins.get("BTC"));
-      const curr = cfg.curr || state.currency;
-
-      if (cfg.layout === "marquee") {
-        const itemsHtml = picked.map(c => {
-          const isUp = c.change24h >= 0;
-          return `<a href="https://cryptopriceticker.com/?w=${c.sym}" target="_blank" rel="noopener" class="tape-item">
-            <span class="tape-sym">${c.sym}</span>
-            <span class="tape-price" data-wg-price="${c.sym}">${fmtPrice(c.price, curr)}</span>
-            <span class="chg-pill ${isUp ? 'chg-up' : 'chg-down'}" style="padding:1px 5px;font-size:10.5px">${isUp ? '+' : ''}${c.change24h.toFixed(2)}%</span>
-          </a>`;
-        }).join("");
-
-        return `<div class="embed-marquee-bar">
-          <div class="ticker-tape-wrap" style="border:none;flex:1;background:transparent">
-            <div class="ticker-tape" style="animation-duration:28s">${itemsHtml}${itemsHtml}</div>
-          </div>
-          <a href="https://cryptopriceticker.com/" target="_blank" rel="noopener" class="embed-brand-dock" title="Live Multi-Exchange WebSocket Crypto Ticker">
-            ⚡ CryptoPriceTicker.com
-          </a>
-        </div>`;
-      }
-
-      if (cfg.layout === "single") {
-        const c = picked[0];
-        const isUp = c.change24h >= 0;
-        const rangePct = Math.max(2, Math.min(98, ((c.price - c.low24h) / ((c.high24h - c.low24h) || 1)) * 100));
-        return `<div class="embed-single-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-            <div style="display:flex;align-items:center;gap:10px">
-              <div class="coin-avatar" style="width:34px;height:34px;font-size:12px">${c.sym.slice(0, 4)}</div>
-              <div>
-                <div style="display:flex;align-items:center;gap:6px">
-                  <strong style="font-size:15px;font-family:var(--font-mono)">${c.sym}</strong>
-                  <span style="color:var(--text-muted);font-size:12px">${c.name}</span>
-                  <span class="tag-badge">#${c.rank}</span>
-                </div>
-                <div style="display:flex;align-items:baseline;gap:8px;margin-top:2px">
-                  <span style="font-family:var(--font-mono);font-size:18px;font-weight:800" data-wg-price="${c.sym}">${fmtPrice(c.price, curr)}</span>
-                  <span class="chg-pill ${isUp ? 'chg-up' : 'chg-down'}">${isUp ? '+' : ''}${c.change24h.toFixed(2)}%</span>
-                </div>
-              </div>
-            </div>
-            <div>${buildSparkline(c.history, isUp, 120, 34)}</div>
-          </div>
-          <div class="bento-metrics" style="grid-template-columns:repeat(4,1fr)">
-            <div class="metric-box">
-              <div class="metric-label">Market Cap</div>
-              <div class="metric-val" style="font-size:12px">${fmtCompact(c.mcap, curr)}</div>
-            </div>
-            <div class="metric-box">
-              <div class="metric-label">24h Volume</div>
-              <div class="metric-val" style="font-size:12px">${fmtCompact(c.vol24h, curr)}</div>
-            </div>
-            <div class="metric-box">
-              <div class="metric-label">Liquidity ±2%</div>
-              <div class="metric-val" style="font-size:12px;color:var(--accent)">${fmtCompact(c.liq, curr)}</div>
-            </div>
-            <div class="metric-box">
-              <div class="metric-label">24h Low / High</div>
-              <div class="range-track" style="margin-top:5px"><div class="range-fill" style="width:${rangePct.toFixed(0)}%"></div></div>
-            </div>
-          </div>
-          <div class="embed-footer-bar" style="border-radius:4px">
-            <span>⚡ Live Tri-Exchange WebSocket Feed (${c.lastSource})</span>
-            <a href="https://cryptopriceticker.com/?w=${c.sym}" target="_blank" rel="noopener">CryptoPriceTicker.com ↗</a>
-          </div>
-        </div>`;
-      }
-
-      // Default: 'grid' layout
-      const cardsHtml = picked.slice(0, 8).map(c => {
-        const isUp = c.change24h >= 0;
-        return `<a href="https://cryptopriceticker.com/?w=${c.sym}" target="_blank" rel="noopener" class="embed-card">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong style="font-family:var(--font-mono);font-size:12.5px">${c.sym}</strong>
-            <span class="chg-pill ${isUp ? 'chg-up' : 'chg-down'}" style="font-size:10px;padding:1px 5px">${isUp ? '+' : ''}${c.change24h.toFixed(2)}%</span>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:14px;font-weight:800" data-wg-price="${c.sym}">${fmtPrice(c.price, curr)}</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
-            <span style="font-size:10px;color:var(--text-muted)">MCap ${fmtCompact(c.mcap, curr)}</span>
-            ${buildSparkline(c.history, isUp, 56, 18)}
-          </div>
-        </a>`;
-      }).join("");
-
-      return `<div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-primary)">
-        <div class="embed-grid-wrap">${cardsHtml}</div>
-        <div class="embed-footer-bar">
-          <span>⚡ Real-Time Multi-Exchange WebSocket Stream</span>
-          <a href="https://cryptopriceticker.com/" target="_blank" rel="noopener">Live Crypto Prices by CryptoPriceTicker.com ↗</a>
-        </div>
-      </div>`;
-    }
-
-    function renderEmbedShell() {
-      if (!IS_EMBED_MODE) return;
-      const root = document.getElementById("embedWidgetRoot");
-      if (root) {
-        root.innerHTML = buildWidgetMarkup({
-          layout: state.embedConfig.layout,
-          coins: state.embedConfig.coins,
-          curr: state.currency
-        });
-      }
-    }
-
-    /********************************************************************
-     * 5. DYNAMIC RANKING, FILTERING & FULL TABLE RENDER
-     ********************************************************************/
-    function recomputeRanksAndCounts() {
-      const all = Array.from(state.coins.values());
-      all.sort((a, b) => b.mcap - a.mcap);
-      all.forEach((c, idx) => { c.rank = idx + 1; });
-
-      if (IS_EMBED_MODE) return;
-
-      const counts = {
-        ALL: all.length,
-        WATCH: 0,
-        BAG: 0,
-        L1: 0, L2: 0, DePIN: 0, AI: 0, DeFi: 0, Privacy: 0, Gaming: 0, Meme: 0, Stable: 0
-      };
-      all.forEach(c => {
-        if (state.watchlist.has(c.sym)) counts.WATCH++;
-        if ((state.bag[c.sym] || 0) > 0) counts.BAG++;
-        c.sectors.forEach(s => { if (counts[s] !== undefined) counts[s]++; });
-      });
-
-      Object.keys(counts).forEach(k => {
-        const el = document.getElementById(`cnt-${k}`);
-        if (el) el.textContent = counts[k];
-      });
-      document.getElementById("assetCountTop").textContent = all.length;
-    }
-
-    function getFilteredAndSortedCoins() {
-      recomputeRanksAndCounts();
-      const q = state.search.trim().toLowerCase();
-      let list = Array.from(state.coins.values()).filter(c => {
-        if (state.sector === "WATCH" && !state.watchlist.has(c.sym)) return false;
-        if (state.sector === "BAG" && !(state.bag[c.sym] > 0)) return false;
-        if (state.sector !== "ALL" && state.sector !== "WATCH" && state.sector !== "BAG") {
-          if (!c.sectors.includes(state.sector)) return false;
-        }
-        if (q) {
-          const matchSym = c.sym.toLowerCase().includes(q);
-          const matchName = c.name.toLowerCase().includes(q);
-          const matchSec = c.sectors.some(s => s.toLowerCase().includes(q));
-          return matchSym || matchName || matchSec;
-        }
-        return true;
-      });
-
-      const dir = state.sortAsc ? 1 : -1;
-      list.sort((a, b) => {
-        switch (state.sortBy) {
-          case "rank": return (a.rank - b.rank) * dir;
-          case "name": return a.name.localeCompare(b.name) * dir;
-          case "price": return (a.price - b.price) * dir;
-          case "change24h": return (a.change24h - b.change24h) * dir;
-          case "rangePos": {
-            const posA = (a.price - a.low24h) / ((a.high24h - a.low24h) || 1);
-            const posB = (b.price - b.low24h) / ((b.high24h - b.low24h) || 1);
-            return (posA - posB) * dir;
-          }
-          case "mcap": return (a.mcap - b.mcap) * dir;
-          case "vol24h": return (a.vol24h - b.vol24h) * dir;
-          case "liq": return (a.liq - b.liq) * dir;
-          case "bagVal": {
-            const valA = (state.bag[a.sym] || 0) * a.price;
-            const valB = (state.bag[b.sym] || 0) * b.price;
-            return (valA - valB) * dir;
-          }
-          default: return (a.rank - b.rank) * dir;
-        }
-      });
-      return list;
-    }
-
-    function renderTable() {
-      if (IS_EMBED_MODE) {
-        recomputeRanksAndCounts();
-        renderEmbedShell();
-        return;
-      }
-
-      const list = getFilteredAndSortedCoins();
-      const tbody = document.getElementById("tableBody");
-      document.getElementById("showingCount").textContent = list.length;
-
-      const rowsHtml = list.map(c => {
-        const isFav = state.watchlist.has(c.sym);
-        const isPin = state.pinnedSym === c.sym;
-        const hasAlert = Boolean(state.alerts[c.sym]);
-        const isUp = c.change24h >= 0;
-        const chgSign = isUp ? "+" : "";
-        const qty = state.bag[c.sym] || "";
-        const bagUsd = (state.bag[c.sym] || 0) * c.price;
-        const rangePct = Math.max(2, Math.min(98, ((c.price - c.low24h) / ((c.high24h - c.low24h) || 1)) * 100));
-        const badges = c.sectors.map(s => `<span class="tag-badge">${s}</span>`).join("");
-
-        return `<tr id="row-${c.sym}" data-sym="${c.sym}">
-          <td class="col-center" style="color:var(--text-muted)">${c.rank}</td>
-          <td class="col-center">
-            <button class="icon-btn ${isFav ? 'active-fav' : ''}" onclick="toggleFav('${c.sym}')" title="Save to Watchlist">♥</button>
-            <button class="icon-btn ${isPin ? 'active-pin' : ''}" onclick="togglePin('${c.sym}')" title="Pin Live Price to Browser Tab">📌</button>
-            <button class="icon-btn ${hasAlert ? 'active-alert' : ''}" onclick="openCoinModal('${c.sym}')" title="Set Price Alert / Spread Inspector">🔔</button>
-          </td>
-          <td class="col-left">
-            <div class="coin-cell" onclick="openCoinModal('${c.sym}')">
-              <div class="coin-avatar">${c.sym.slice(0, 4)}</div>
-              <div class="coin-main">
-                <div class="coin-sym-row">
-                  <span class="coin-sym">${c.sym}</span>
-                  ${badges}
-                  <span class="ex-badge" id="src-${c.sym}">${c.lastSource}</span>
-                </div>
-                <span class="coin-name">${c.name}</span>
-              </div>
-            </div>
-          </td>
-          <td id="price-${c.sym}" style="font-weight:700">${fmtPrice(c.price)}</td>
-          <td id="chg-${c.sym}">
-            <span class="chg-pill ${isUp ? 'chg-up' : 'chg-down'}">${chgSign}${c.change24h.toFixed(2)}%</span>
-          </td>
-          <td class="col-center hide-mobile" id="spark-${c.sym}">${buildSparkline(c.history, isUp)}</td>
-          <td class="col-center hide-mobile" id="range-${c.sym}">
-            <div class="range-wrap">
-              <div class="range-labels">
-                <span>${fmtPrice(c.low24h)}</span>
-                <span>${fmtPrice(c.high24h)}</span>
-              </div>
-              <div class="range-track">
-                <div class="range-fill" style="width:${rangePct.toFixed(0)}%"></div>
-              </div>
-            </div>
-          </td>
-          <td id="mcap-${c.sym}">${fmtCompact(c.mcap)}</td>
-          <td class="hide-mobile" id="vol-${c.sym}" style="color:var(--text-secondary)">${fmtCompact(c.vol24h)}</td>
-          <td class="hide-mobile" id="liq-${c.sym}" style="color:var(--accent)">${fmtCompact(c.liq)}</td>
-          <td>
-            <div class="bag-cell">
-              <input type="number" step="any" min="0" class="bag-input" placeholder="0.00" value="${qty}"
-                onchange="updateBagQty('${c.sym}', this.value)" aria-label="${c.sym} bag quantity" />
-              <span class="bag-val" id="bagval-${c.sym}">${bagUsd > 0 ? fmtPrice(bagUsd) : ''}</span>
-            </div>
-          </td>
-        </tr>`;
-      }).join("");
-
-      tbody.innerHTML = rowsHtml;
-      updateSummaryCards();
-      renderTickerTape();
-    }
-
-    /********************************************************************
-     * 6. SUMMARY CARDS, MARQUEE & SEO-SAFE TAB PINNING
-     ********************************************************************/
-    function updateSummaryCards() {
-      if (IS_EMBED_MODE) return;
-
-      let totalMcap = 0, totalVol = 0, totalLiq = 0;
-      let bagTotal = 0, bagPnl24h = 0;
-
-      state.coins.forEach(c => {
-        totalMcap += c.mcap || 0;
-        totalVol += c.vol24h || 0;
-        totalLiq += c.liq || 0;
-        const qty = state.bag[c.sym] || 0;
-        if (qty > 0) {
-          const val = qty * c.price;
-          bagTotal += val;
-          bagPnl24h += val * (c.change24h / 100);
-        }
-      });
-
-      document.getElementById("globalMcap").textContent = fmtCompact(totalMcap);
-      document.getElementById("globalVol").textContent = fmtCompact(totalVol);
-      document.getElementById("globalLiq").textContent = fmtCompact(totalLiq);
-      document.getElementById("lastUpdateClock").textContent = new Date().toLocaleTimeString();
-
-      document.getElementById("bagTotalVal").textContent = fmtPrice(bagTotal);
-      const pnlPct = bagTotal > 0 ? (bagPnl24h / bagTotal) * 100 : 0;
-      const pnlSign = bagPnl24h >= 0 ? "+" : "";
-      const pnlEl = document.getElementById("bagPnlVal");
-      pnlEl.textContent = `${pnlSign}${fmtPrice(bagPnl24h)} (${pnlSign}${pnlPct.toFixed(2)}%)`;
-      pnlEl.style.color = bagPnl24h >= 0 ? "var(--up)" : "var(--down)";
-
-      const alertCount = Object.keys(state.alerts).length;
-      document.getElementById("watchlistCountVal").textContent = `${state.watchlist.size} / ${alertCount} 🔔`;
-
-      const movers = Array.from(state.coins.values())
-        .filter(c => !c.sectors.includes("Stable"))
-        .sort((a, b) => state.moverMode === "gainers" ? b.change24h - a.change24h : a.change24h - b.change24h)
-        .slice(0, 3);
-
-      document.getElementById("moversList").innerHTML = movers.map(m => {
-        const isUp = m.change24h >= 0;
-        return `<div class="mover-row" onclick="openCoinModal('${m.sym}')">
-          <span><strong>${m.sym}</strong> <span style="color:var(--text-muted);font-size:11px">${m.name}</span></span>
-          <span>${fmtPrice(m.price)} <strong style="color:${isUp ? 'var(--up)' : 'var(--down)'}">${isUp ? '+' : ''}${m.change24h.toFixed(2)}%</strong></span>
-        </div>`;
-      }).join("");
-
-      if (state.pinnedSym && !navigator.webdriver) {
-        const pinned = state.coins.get(state.pinnedSym);
-        if (pinned) {
-          const arrow = pinned.change24h >= 0 ? "▲" : "▼";
-          document.title = `${pinned.sym} ${fmtPrice(pinned.price)} ${arrow} | CryptoPriceTicker.com`;
-        }
-      } else {
-        document.title = CANONICAL_TITLE;
-      }
-    }
-
-    function renderTickerTape() {
-      if (IS_EMBED_MODE) return;
-      const top16 = Array.from(state.coins.values()).slice(0, 16);
-      const html = top16.map(c => {
-        const isUp = c.change24h >= 0;
-        return `<span class="tape-item" onclick="openCoinModal('${c.sym}')">
-          <span class="tape-sym">${c.sym}</span>
-          <span class="tape-price" id="tape-${c.sym}">${fmtPrice(c.price)}</span>
-          <span style="color:${isUp ? 'var(--up)' : 'var(--down)'}">${isUp ? '▲' : '▼'} ${Math.abs(c.change24h).toFixed(2)}%</span>
-        </span>`;
-      }).join("");
-      document.getElementById("tickerTape").innerHTML = html + html;
-    }
-
-    /********************************************************************
-     * 7. HIGH-PERFORMANCE rAF DIRTY-ROW BATCHING ENGINE
-     ********************************************************************/
-    function applyTickUpdate(sym, newPrice, source, opts = {}) {
-      const c = state.coins.get(sym);
-      if (!c || !newPrice || isNaN(newPrice) || newPrice <= 0) return;
-
-      const prevPrice = c.price;
-      c.price = newPrice;
-      c.lastSource = source;
-      if (source === "CB" || source === "BN" || source === "KR") {
-        c.exPrices[source] = newPrice;
-      }
-
-      if (opts.change24h !== undefined && !isNaN(opts.change24h)) c.change24h = opts.change24h;
-      if (opts.high24h && newPrice <= opts.high24h) c.high24h = opts.high24h;
-      if (opts.low24h && newPrice >= opts.low24h) c.low24h = opts.low24h;
-      if (newPrice > c.high24h) c.high24h = newPrice;
-      if (newPrice < c.low24h) c.low24h = newPrice;
-      if (opts.vol24h && opts.vol24h > 0) {
-        c.vol24h = opts.vol24h;
-        c.liq = opts.vol24h * 0.068;
-      }
-
-      c.mcap = c.price * c.supply;
-
-      if (prevPrice !== newPrice) {
-        c.lastDir = newPrice > prevPrice ? "up" : "down";
-        c.history.push(newPrice);
-        if (c.history.length > 20) c.history.shift();
-        state.tickCount++;
-        state.dirtySymbols.add(sym);
-        if (!IS_EMBED_MODE) checkPriceAlert(c, prevPrice, newPrice);
-      }
-    }
-
-    function flushDirtyRows() {
-      if (state.dirtySymbols.size === 0) return;
-
-      if (IS_EMBED_MODE) {
-        state.dirtySymbols.forEach(sym => {
-          const c = state.coins.get(sym);
-          if (!c) return;
-          document.querySelectorAll(`[data-wg-price="${sym}"]`).forEach(el => {
-            el.textContent = fmtPrice(c.price);
-            el.classList.remove("tick-up", "tick-down");
-            void el.offsetWidth;
-            el.classList.add(c.lastDir === "up" ? "tick-up" : "tick-down");
-          });
-        });
-        state.dirtySymbols.clear();
-        return;
-      }
-
-      document.getElementById("tickCounter").textContent = state.tickCount.toLocaleString();
-
-      state.dirtySymbols.forEach(sym => {
-        const c = state.coins.get(sym);
-        if (!c) return;
-
-        const priceEl = document.getElementById(`price-${sym}`);
-        if (priceEl) {
-          priceEl.textContent = fmtPrice(c.price);
-          priceEl.classList.remove("tick-up", "tick-down");
-          void priceEl.offsetWidth;
-          priceEl.classList.add(c.lastDir === "up" ? "tick-up" : "tick-down");
-        }
-
-        const srcEl = document.getElementById(`src-${sym}`);
-        if (srcEl) srcEl.textContent = c.lastSource;
-
-        const chgEl = document.getElementById(`chg-${sym}`);
-        if (chgEl) {
-          const isUp = c.change24h >= 0;
-          chgEl.innerHTML = `<span class="chg-pill ${isUp ? 'chg-up' : 'chg-down'}">${isUp ? '+' : ''}${c.change24h.toFixed(2)}%</span>`;
-        }
-
-        const sparkEl = document.getElementById(`spark-${sym}`);
-        if (sparkEl) sparkEl.innerHTML = buildSparkline(c.history, c.change24h >= 0);
-
-        const mcapEl = document.getElementById(`mcap-${sym}`);
-        if (mcapEl) mcapEl.textContent = fmtCompact(c.mcap);
-
-        const bagEl = document.getElementById(`bagval-${sym}`);
-        if (bagEl && state.bag[sym] > 0) {
-          bagEl.textContent = fmtPrice(state.bag[sym] * c.price);
-        }
-
-        const tapeEl = document.getElementById(`tape-${sym}`);
-        if (tapeEl) tapeEl.textContent = fmtPrice(c.price);
-
-        // Also update live preview inside Widget Modal if open
-        if (state.widgetModalOpen) {
-          const wgCurr = document.getElementById("wgCurr").value;
-          document.querySelectorAll(`#wgPreviewStage [data-wg-price="${sym}"]`).forEach(el => {
-            el.textContent = fmtPrice(c.price, wgCurr);
-          });
-        }
-      });
-
-      state.dirtySymbols.clear();
-      updateSummaryCards();
-      if (state.activeModalSym) renderCoinModalContent(state.activeModalSym);
-    }
-    setInterval(() => requestAnimationFrame(flushDirtyRows), 180);
-
-    /********************************************************************
-     * 8. MULTI-SOURCE REST BOOTSTRAP + TRI-EXCHANGE WEBSOCKETS
-     ********************************************************************/
-    let latestBinanceTickers = [];
-
-    async function bootstrapMarketData() {
-      try {
-        const res = await fetch("https://data-api.binance.vision/api/v3/ticker/24hr");
-        if (res.ok) {
-          const data = await res.json();
-          latestBinanceTickers = data;
-          data.forEach(item => {
-            if (item.symbol.endsWith("USDT")) {
-              const sym = item.symbol.replace("USDT", "");
-              if (state.coins.has(sym)) {
-                applyTickUpdate(sym, parseFloat(item.lastPrice), "BN", {
-                  change24h: parseFloat(item.priceChangePercent),
-                  high24h: parseFloat(item.highPrice),
-                  low24h: parseFloat(item.lowPrice),
-                  vol24h: parseFloat(item.quoteVolume)
-                });
-              }
-            }
-          });
-          renderTable();
-        }
-      } catch (_) {}
-
-      try {
-        const res = await fetch("https://api.coinlore.net/api/tickers/?start=0&limit=100");
-        if (res.ok) {
-          const json = await res.json();
-          if (json && Array.isArray(json.data)) {
-            json.data.forEach(item => {
-              const sym = item.symbol?.toUpperCase();
-              if (state.coins.has(sym)) {
-                const c = state.coins.get(sym);
-                const p = parseFloat(item.price_usd);
-                if (p > 0) {
-                  c.price = p;
-                  c.change24h = parseFloat(item.percent_change_24h) || c.change24h;
-                  c.mcap = parseFloat(item.market_cap_usd) || c.mcap;
-                  c.vol24h = parseFloat(item.volume24) || c.vol24h;
-                  c.liq = c.vol24h * 0.068;
-                }
-              }
-            });
-            renderTable();
-          }
-        }
-      } catch (_) {}
-    }
-
-    function connectCoinbaseWS() {
-      const badge = document.getElementById("badgeCB");
-      try {
-        const ws = new WebSocket("wss://ws-feed.exchange.coinbase.com");
-        ws.onopen = () => {
-          if (badge) { badge.textContent = "CB: LIVE"; badge.classList.add("online"); }
-          const productIds = Array.from(state.coins.keys()).map(s => `${s}-USD`);
-          ws.send(JSON.stringify({
-            type: "subscribe",
-            product_ids: productIds,
-            channels: ["ticker"]
-          }));
-        };
-        ws.onmessage = (ev) => {
-          try {
-            const msg = JSON.parse(ev.data);
-            if (msg.type === "ticker" && msg.product_id && msg.price) {
-              const sym = msg.product_id.replace("-USD", "");
-              const p = parseFloat(msg.price);
-              const open24 = parseFloat(msg.open_24h);
-              const chg = open24 > 0 ? ((p - open24) / open24) * 100 : undefined;
-              applyTickUpdate(sym, p, "CB", {
-                change24h: chg,
-                high24h: parseFloat(msg.high_24h),
-                low24h: parseFloat(msg.low_24h)
-              });
-            }
-          } catch (_) {}
-        };
-        ws.onclose = () => {
-          if (badge) { badge.textContent = "CB: RETRY"; badge.classList.remove("online"); }
-          setTimeout(connectCoinbaseWS, 4000);
-        };
-      } catch (_) {}
-    }
-
-    function connectBinanceWS() {
-      const badge = document.getElementById("badgeBN");
-      try {
-        const ws = new WebSocket("wss://data-stream.binance.vision/ws/!miniTicker@arr");
-        ws.onopen = () => {
-          if (badge) { badge.textContent = "BN: LIVE"; badge.classList.add("online"); }
-        };
-        ws.onmessage = (ev) => {
-          try {
-            const arr = JSON.parse(ev.data);
-            if (!Array.isArray(arr)) return;
-            for (let i = 0; i < arr.length; i++) {
-              const t = arr[i];
-              if (t.s && t.s.endsWith("USDT")) {
-                const sym = t.s.slice(0, -4);
-                if (state.coins.has(sym)) {
-                  const close = parseFloat(t.c);
-                  const open = parseFloat(t.o);
-                  const chg = open > 0 ? ((close - open) / open) * 100 : undefined;
-                  applyTickUpdate(sym, close, "BN", {
-                    change24h: chg,
-                    high24h: parseFloat(t.h),
-                    low24h: parseFloat(t.l),
-                    vol24h: parseFloat(t.q)
-                  });
-                }
-              }
-            }
-          } catch (_) {}
-        };
-        ws.onclose = () => {
-          if (badge) { badge.textContent = "BN: RETRY"; badge.classList.remove("online"); }
-          setTimeout(connectBinanceWS, 4000);
-        };
-      } catch (_) {}
-    }
-
-    function connectKrakenWS() {
-      const badge = document.getElementById("badgeKR");
-      try {
-        const ws = new WebSocket("wss://ws.kraken.com/v2");
-        ws.onopen = () => {
-          if (badge) { badge.textContent = "KR: LIVE"; badge.classList.add("online"); }
-          ws.send(JSON.stringify({
-            method: "subscribe",
-            params: {
-              channel: "ticker",
-              symbol: ["XMR/USD", "KAS/USD", "BTC/USD", "ETH/USD", "SOL/USD", "TAO/USD", "TON/USD", "TRX/USD", "ADA/USD", "XRP/USD"]
-            }
-          }));
-        };
-        ws.onmessage = (ev) => {
-          try {
-            const msg = JSON.parse(ev.data);
-            if (msg.channel === "ticker" && Array.isArray(msg.data)) {
-              msg.data.forEach(d => {
-                if (d.symbol && d.last) {
-                  const sym = d.symbol.split("/")[0];
-                  applyTickUpdate(sym, parseFloat(d.last), "KR", {
-                    change24h: parseFloat(d.change_pct),
-                    high24h: parseFloat(d.high),
-                    low24h: parseFloat(d.low)
-                  });
-                }
-              });
-            }
-          } catch (_) {}
-        };
-        ws.onclose = () => {
-          if (badge) { badge.textContent = "KR: RETRY"; badge.classList.remove("online"); }
-          setTimeout(connectKrakenWS, 5000);
-        };
-      } catch (_) {}
-    }
-
-    /********************************************************************
-     * 9. WEBSITE WIDGET GENERATOR MODAL (SEO Backlink Engine)
-     ********************************************************************/
-    window.openWidgetModal = function(defaultSym) {
-      state.widgetModalOpen = true;
-      if (defaultSym) {
-        document.getElementById("wgLayout").value = "single";
-        document.getElementById("wgCoins").value = defaultSym;
-      }
-      updateWidgetGenerator();
-      document.getElementById("widgetModal").classList.add("open");
-    };
-
-    function getCurrentWidgetConfig() {
-      const layout = document.getElementById("wgLayout").value;
-      const theme = document.getElementById("wgTheme").value;
-      const curr = document.getElementById("wgCurr").value;
-      const anchorKey = document.getElementById("wgAnchor").value;
-      const rawCoins = document.getElementById("wgCoins").value;
-      const coins = rawCoins.split(",").map(s => s.trim().toUpperCase()).filter(s => state.coins.has(s));
-      if (!coins.length) coins.push("BTC", "ETH", "SOL", "TAO");
-      return { layout, theme, curr, anchorKey, coins };
-    }
-
-    function updateWidgetGenerator() {
-      const cfg = getCurrentWidgetConfig();
-      const stage = document.getElementById("wgPreviewStage");
-      stage.setAttribute("data-theme", cfg.theme);
-      stage.innerHTML = buildWidgetMarkup(cfg);
-
-      const heightMap = { marquee: 54, grid: 225, single: 180 };
-      const iframeHeight = heightMap[cfg.layout] || 54;
-      const coinsParam = cfg.coins.join(",");
-      const embedUrl = `https://cryptopriceticker.com/?embed=1&layout=${cfg.layout}&coins=${encodeURIComponent(coinsParam)}&theme=${cfg.theme}&curr=${cfg.curr}`;
-
-      let anchorText = "Live Crypto Prices by CryptoPriceTicker.com";
-      let targetHref = "https://cryptopriceticker.com/";
-
-      if (cfg.layout === "single" && cfg.coins[0]) {
-        const c = state.coins.get(cfg.coins[0]);
-        anchorText = `Live ${c.sym} (${c.name}) Price & Orderbook Liquidity — CryptoPriceTicker.com`;
-        targetHref = `https://cryptopriceticker.com/?w=${c.sym}`;
-      } else if (cfg.anchorKey === "depin") {
-        anchorText = "Real-Time DePIN & AI Crypto Ticker — CryptoPriceTicker.com";
-      } else if (cfg.anchorKey === "liquidity") {
-        anchorText = "Live Crypto Orderbook & Price Ticker — CryptoPriceTicker.com";
-      } else if (cfg.anchorKey === "minimal") {
-        anchorText = "Powered by CryptoPriceTicker.com";
-      }
-
-      const snippet = `<!-- CryptoPriceTicker.com Live WebSocket Widget -->
-<div class="cpt-widget-embed" style="width:100%;max-width:100%;overflow:hidden;border-radius:8px;font-family:sans-serif;">
-  <iframe
-    src="${embedUrl}"
-    width="100%"
-    height="${iframeHeight}"
-    style="border:0;display:block;width:100%;height:${iframeHeight}px;"
-    loading="lazy"
-    title="${anchorText}">
-  </iframe>
-  <div style="text-align:right;font-size:11px;padding:3px 4px;opacity:0.85;">
-    <a href="${targetHref}" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:none;font-weight:600;">⚡ ${anchorText}</a>
-  </div>
-</div>
-<!-- End CryptoPriceTicker.com Widget -->`;
-
-      document.getElementById("wgEmbedCode").value = snippet;
-      document.getElementById("testEmbedTabBtn").onclick = () => window.open(embedUrl, "_blank");
-    }
-
-    ["wgLayout", "wgTheme", "wgCurr", "wgAnchor", "wgCoins"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.addEventListener("input", updateWidgetGenerator);
-        el.addEventListener("change", updateWidgetGenerator);
-      }
-    });
-
-    document.querySelectorAll("[data-wg-preset]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const preset = btn.getAttribute("data-wg-preset");
-        if (preset === "WATCHLIST") {
-          const w = Array.from(state.watchlist);
-          document.getElementById("wgCoins").value = (w.length ? w : ["BTC", "ETH", "SOL"]).join(",");
-        } else {
-          document.getElementById("wgCoins").value = preset;
-        }
-        updateWidgetGenerator();
-      });
-    });
-
-    document.getElementById("openWidgetModalBtn").addEventListener("click", () => openWidgetModal());
-    document.getElementById("closeWidgetModal").addEventListener("click", () => {
-      document.getElementById("widgetModal").classList.remove("open");
-      state.widgetModalOpen = false;
-    });
-    document.getElementById("copyWidgetCodeBtn").addEventListener("click", () => {
-      const box = document.getElementById("wgEmbedCode");
-      box.select();
-      navigator.clipboard.writeText(box.value);
-      showToast("📋 Widget HTML & backlink snippet copied to clipboard!");
-    });
-
-    /********************************************************************
-     * 10. EXPAND TO 200+ PAIRS & CORE USER INTERACTIONS
-     ********************************************************************/
-    document.getElementById("expandExchangePairsBtn").addEventListener("click", async function() {
-      const btn = this;
-      btn.textContent = "⏳ Fetching Top Liquid Exchange Pairs...";
-      try {
-        if (!latestBinanceTickers.length) {
-          const res = await fetch("https://data-api.binance.vision/api/v3/ticker/24hr");
-          if (res.ok) latestBinanceTickers = await res.json();
-        }
-        const leveragedRegex = /(UP|DOWN|BEAR|BULL)USDT$/;
-        const usdtPairs = latestBinanceTickers
-          .filter(t => t.symbol.endsWith("USDT") && !leveragedRegex.test(t.symbol) && parseFloat(t.quoteVolume) > 4000000)
-          .sort((a, b) => parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume));
-
-        let added = 0;
-        for (const item of usdtPairs) {
-          if (added >= 110) break;
-          const sym = item.symbol.replace("USDT", "");
-          if (!state.coins.has(sym)) {
-            const price = parseFloat(item.lastPrice);
-            const vol = parseFloat(item.quoteVolume);
-            const chg = parseFloat(item.priceChangePercent);
-            const estMcap = vol * 14.5;
-            const estSupply = price > 0 ? estMcap / price : 1e8;
-
-            state.coins.set(sym, {
-              sym,
-              name: `${sym} Spot`,
-              supply: estSupply,
-              price,
-              change24h: chg,
-              low24h: parseFloat(item.lowPrice) || price * 0.96,
-              high24h: parseFloat(item.highPrice) || price * 1.04,
-              mcap: estMcap,
-              vol24h: vol,
-              liq: vol * 0.065,
-              sectors: ["DeFi"],
-              history: [price * 0.99, price * 1.005, price],
-              rank: state.coins.size + 1,
-              exPrices: { CB: null, BN: price, KR: null },
-              lastSource: "BN"
-            });
-            added++;
-          }
-        }
-        renderTable();
-        btn.textContent = `✅ Expanded Universe (${state.coins.size} Live Assets Streaming)`;
-        btn.disabled = true;
-        showToast(`Added ${added} live exchange pairs! Now tracking ${state.coins.size} coins.`);
-      } catch (_) {
-        btn.textContent = "⚠️ Network blocked expansion — Retry";
-      }
-    });
-
-    window.toggleFav = function(sym) {
-      if (state.watchlist.has(sym)) state.watchlist.delete(sym);
-      else state.watchlist.add(sym);
-      localStorage.setItem("cpt_watch", JSON.stringify(Array.from(state.watchlist)));
-      renderTable();
-    };
-
-    window.togglePin = function(sym) {
-      state.pinnedSym = state.pinnedSym === sym ? "" : sym;
-      localStorage.setItem("cpt_pin", state.pinnedSym);
-      renderTable();
-      if (state.pinnedSym) showToast(`📌 Pinned ${sym} live price to your browser tab!`);
-    };
-
-    window.updateBagQty = function(sym, val) {
-      const num = parseFloat(val);
-      if (!num || num <= 0) delete state.bag[sym];
-      else state.bag[sym] = num;
-      localStorage.setItem("cpt_bag", JSON.stringify(state.bag));
-      renderTable();
-    };
-
-    window.openCoinModal = function(sym) {
-      state.activeModalSym = sym;
-      renderCoinModalContent(sym);
-      document.getElementById("coinModal").classList.add("open");
-    };
-
-    function renderCoinModalContent(sym) {
-      const c = state.coins.get(sym);
-      if (!c) return;
-      document.getElementById("modalCoinTitle").textContent = `${c.sym} — ${c.name} (#${c.rank})`;
-
-      const cbP = c.exPrices.CB ? fmtPrice(c.exPrices.CB) : "—";
-      const bnP = c.exPrices.BN ? fmtPrice(c.exPrices.BN) : "—";
-      const krP = c.exPrices.KR ? fmtPrice(c.exPrices.KR) : "—";
-
-      const validEx = Object.values(c.exPrices).filter(v => v && v > 0);
-      let spreadPct = 0;
-      if (validEx.length >= 2) {
-        const maxP = Math.max(...validEx);
-        const minP = Math.min(...validEx);
-        spreadPct = ((maxP - minP) / minP) * 100;
-      }
-
-      const turnover = c.mcap > 0 ? ((c.vol24h / c.mcap) * 100).toFixed(2) : "0.00";
-      const curAlert = state.alerts[sym] || "";
-
-      document.getElementById("modalCoinBody").innerHTML = `
-        <div class="bento-metrics">
-          <div class="metric-box">
-            <div class="metric-label">Coinbase Spot</div>
-            <div class="metric-val">${cbP}</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">Binance Spot</div>
-            <div class="metric-val">${bnP}</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">Kraken Spot</div>
-            <div class="metric-val">${krP}</div>
-          </div>
-        </div>
-        <div class="bento-metrics">
-          <div class="metric-box">
-            <div class="metric-label">Cross-Exchange Spread</div>
-            <div class="metric-val" style="color:var(--accent)">${spreadPct > 0 ? spreadPct.toFixed(3) + '%' : 'Single Feed'}</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">24h Vol / MCap Turnover</div>
-            <div class="metric-val">${turnover}%</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">24h Intraday Range</div>
-            <div class="metric-val" style="font-size:11px">${fmtPrice(c.low24h)} – ${fmtPrice(c.high24h)}</div>
-          </div>
-        </div>
-        <div style="background:var(--bg-primary);border:1px solid var(--border);padding:10px;border-radius:6px">
-          <div class="metric-label" style="margin-bottom:6px">🔔 Set Zero-Login Browser Price Alert (USD Target)</div>
-          <div style="display:flex;gap:8px">
-            <input type="number" step="any" id="alertTargetInput" class="bag-input" style="width:100%;text-align:left;padding:6px 8px"
-              placeholder="Enter USD target price (e.g. ${(c.price * 1.05).toFixed(2)})" value="${curAlert}" />
-            <button class="action-btn" onclick="saveCoinAlert('${c.sym}')">Save Alert</button>
-            ${curAlert ? `<button class="action-btn" onclick="clearCoinAlert('${c.sym}')">Clear</button>` : ''}
-          </div>
-        </div>
-        <div style="display:flex;justify-content:flex-end">
-          <button class="action-btn btn-accent" onclick="document.getElementById('coinModal').classList.remove('open');openWidgetModal('${c.sym}')">
-            🧩 Embed ${c.sym} Spotlight Widget on Your Site
-          </button>
-        </div>
-      `;
-    }
-
-    window.saveCoinAlert = function(sym) {
-      const val = parseFloat(document.getElementById("alertTargetInput").value);
-      if (val > 0) {
-        state.alerts[sym] = val;
-        localStorage.setItem("cpt_alerts", JSON.stringify(state.alerts));
-        showToast(`🔔 Alert set for ${sym} at $${val}`);
-        renderTable();
-        renderCoinModalContent(sym);
-      }
-    };
-
-    window.clearCoinAlert = function(sym) {
-      delete state.alerts[sym];
-      localStorage.setItem("cpt_alerts", JSON.stringify(state.alerts));
-      renderTable();
-      renderCoinModalContent(sym);
-    };
-
-    function checkPriceAlert(coin, oldPrice, newPrice) {
-      const target = state.alerts[coin.sym];
-      if (!target) return;
-      const crossedUp = oldPrice < target && newPrice >= target;
-      const crossedDown = oldPrice > target && newPrice <= target;
-      if (crossedUp || crossedDown) {
-        delete state.alerts[coin.sym];
-        localStorage.setItem("cpt_alerts", JSON.stringify(state.alerts));
-        playAlertBeep();
-        showToast(`🚨 ALERT TRIGGERED: ${coin.sym} crossed $${target} (Now $${newPrice.toFixed(4)})!`);
-      }
-    }
-
-    function playAlertBeep() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(880, ctx.currentTime);
-        gain.gain.setValueAtTime(0.12, ctx.currentTime);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.25);
-      } catch (_) {}
-    }
-
-    function showToast(msg) {
-      const wrap = document.getElementById("toastContainer");
-      const div = document.createElement("div");
-      div.className = "toast";
-      div.textContent = msg;
-      wrap.appendChild(div);
-      setTimeout(() => div.remove(), 4500);
-    }
-
-    function applyTheme(t) {
-      state.theme = t;
-      document.documentElement.setAttribute("data-theme", t);
-      if (!IS_EMBED_MODE) localStorage.setItem("cpt_theme", t);
-      document.querySelectorAll("[data-theme-val]").forEach(b => {
-        b.classList.toggle("active", b.getAttribute("data-theme-val") === t);
-      });
-    }
-    document.querySelectorAll("[data-theme-val]").forEach(btn => {
-      btn.addEventListener("click", () => applyTheme(btn.getAttribute("data-theme-val")));
-    });
-
-    document.querySelectorAll("[data-curr]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        state.currency = btn.getAttribute("data-curr");
-        localStorage.setItem("cpt_curr", state.currency);
-        document.querySelectorAll("[data-curr]").forEach(b => b.classList.toggle("active", b === btn));
-        renderTable();
-      });
-    });
-
-    document.querySelectorAll(".sector-pill").forEach(pill => {
-      pill.addEventListener("click", () => {
-        state.sector = pill.getAttribute("data-sector");
-        document.querySelectorAll(".sector-pill").forEach(p => p.classList.toggle("active", p === pill));
-        renderTable();
-      });
-    });
-
-    document.querySelectorAll("th[data-sort]").forEach(th => {
-      th.addEventListener("click", () => {
-        const col = th.getAttribute("data-sort");
-        if (state.sortBy === col) state.sortAsc = !state.sortAsc;
-        else {
-          state.sortBy = col;
-          state.sortAsc = col === "rank" || col === "name";
-        }
-        renderTable();
-      });
-    });
-
-    const searchInput = document.getElementById("searchInput");
-    searchInput.addEventListener("input", (e) => {
-      state.search = e.target.value;
-      renderTable();
-    });
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "/" && document.activeElement !== searchInput && document.activeElement.tagName !== "INPUT") {
-        e.preventDefault();
-        searchInput.focus();
-      } else if (e.key === "Escape") {
-        document.getElementById("syncModal").classList.remove("open");
-        document.getElementById("coinModal").classList.remove("open");
-        document.getElementById("widgetModal").classList.remove("open");
-        state.activeModalSym = null;
-        state.widgetModalOpen = false;
-      }
-    });
-
-    document.getElementById("moverGainersBtn").addEventListener("click", function() {
-      state.moverMode = "gainers";
-      this.classList.add("active");
-      document.getElementById("moverLosersBtn").classList.remove("active");
-      updateSummaryCards();
-    });
-    document.getElementById("moverLosersBtn").addEventListener("click", function() {
-      state.moverMode = "losers";
-      this.classList.add("active");
-      document.getElementById("moverGainersBtn").classList.remove("active");
-      updateSummaryCards();
-    });
-
-    document.getElementById("resetBagBtn").addEventListener("click", () => {
-      state.bag = {};
-      localStorage.setItem("cpt_bag", "{}");
-      renderTable();
-      showToast("💼 Portfolio bag quantities reset.");
-    });
-
-    document.getElementById("densityBtn").addEventListener("click", () => {
-      state.compact = !state.compact;
-      localStorage.setItem("cpt_compact", state.compact ? "1" : "0");
-      document.getElementById("cryptoTable").classList.toggle("compact-mode", state.compact);
-    });
-
-    document.getElementById("exportCsvBtn").addEventListener("click", () => {
-      const list = getFilteredAndSortedCoins();
-      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Liquidity_2Pct_USD", "Bag_Qty"]];
-      list.forEach(c => {
-        rows.push([c.rank, c.sym, `"${c.name}"`, c.price, c.change24h.toFixed(2), Math.round(c.mcap), Math.round(c.vol24h), Math.round(c.liq), state.bag[c.sym] || 0]);
-      });
-      const csv = rows.map(r => r.join(",")).join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `cryptopriceticker-${new Date().toISOString().slice(0,10)}.csv`;
-      a.click();
-      showToast("📥 Exported market snapshot to CSV!");
-    });
-
-    document.getElementById("syncModalBtn").addEventListener("click", () => {
-      const wStr = Array.from(state.watchlist).join(",");
-      const bStr = Object.entries(state.bag).map(([k, v]) => `${k}:${v}`).join(",");
-      const url = `${window.location.origin}/?w=${encodeURIComponent(wStr)}&b=${encodeURIComponent(bStr)}`;
-      document.getElementById("syncUrlInput").value = url;
-      document.getElementById("syncModal").classList.add("open");
-    });
-    document.getElementById("closeSyncModal").addEventListener("click", () => {
-      document.getElementById("syncModal").classList.remove("open");
-    });
-    document.getElementById("closeCoinModal").addEventListener("click", () => {
-      document.getElementById("coinModal").classList.remove("open");
-      state.activeModalSym = null;
-    });
-    document.getElementById("copySyncUrlBtn").addEventListener("click", () => {
-      const inp = document.getElementById("syncUrlInput");
-      inp.select();
-      navigator.clipboard.writeText(inp.value);
-      showToast("📋 Private sync URL copied to clipboard!");
-    });
-
-    // Boot Execution
-    applyTheme(state.theme);
-    document.getElementById("cryptoTable").classList.toggle("compact-mode", state.compact);
-    renderTable();
-    bootstrapMarketData();
-    connectCoinbaseWS();
-    connectBinanceWS();
-    connectKrakenWS();
-  </script>
 </body>
 </html>

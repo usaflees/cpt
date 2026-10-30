@@ -1,0 +1,39 @@
+# Cloudflare Pages response headers
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/  (max 100 rules, 2,000 chars per line)
+#
+# The CSP lists every host the site talks to. If you add a new data source or script
+# (e.g. a new exchange API), add its host to connect-src / script-src or the browser will block it.
+# frame-ancestors is * on purpose: other sites embed the ticker widget in an iframe.
+
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://data-api.binance.vision wss://data-stream.binance.vision wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com https://cloudflareinsights.com; manifest-src 'self'; frame-ancestors *; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+# Icons and the social image rarely change: let browsers cache them for a week.
+/favicon.svg
+  Cache-Control: public, max-age=604800
+/favicon.ico
+  Cache-Control: public, max-age=604800
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+/icon-*
+  Cache-Control: public, max-age=604800
+/og-image.png
+  Cache-Control: public, max-age=604800
+
+# Widget frames: indexable only inside the pages that embed them.
+/embed/*
+  X-Robots-Tag: noindex, indexifembedded
+
+# Repository files that are deployed but are not pages.
+/scripts/*
+  X-Robots-Tag: noindex
+/content/*
+  X-Robots-Tag: noindex
+/docs/*
+  X-Robots-Tag: noindex
+/README.md
+  X-Robots-Tag: noindex
