@@ -1,0 +1,30 @@
+# Deterministic checks for every pull request and every push to main.
+# Read-only token, no secrets, no AI: safe to run on any branch.
+name: Site checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generated pages are up to date
+        run: node scripts/build-coin-pages.mjs && git diff --exit-code
+      - name: SEO and site lint
+        run: node scripts/seo-lint.mjs
+      - name: Rules for automated SEO branches
+        if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'claude/seo-')
+        run: node scripts/seo-lint.mjs --base origin/${{ github.base_ref }}

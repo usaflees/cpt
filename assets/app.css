@@ -247,13 +247,14 @@ body.is-embed #embedShell { display: block !important; }
   color: var(--accent);
   font-weight: 800;
 }
-.brand-title h1 {
+.brand-name {
   font-size: 19px;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 .brand-sub {
+  font-weight: 400;
   font-size: 11.5px;
   color: var(--text-secondary);
   font-family: var(--font-mono);
@@ -1031,3 +1032,5 @@ button.coin-cell, button.mover-row { background: none; border: 0; color: inherit
 .notfound p { color: var(--text-secondary); margin-bottom: 16px; }
 
 [hidden] { display: none !important; }
+
+.history-table td, .history-table th { padding: 6px 12px; }

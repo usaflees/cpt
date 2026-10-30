@@ -1,0 +1,8738 @@
+{
+ "updated": "2026-10-29",
+ "coins": {
+  "USDT": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.99765,
+   "change7d": -0.11,
+   "change30d": -0.19,
+   "change90d": -0.13,
+   "change1y": -0.24,
+   "high52w": 1.0003,
+   "high52wDate": "2026-04-14",
+   "low52w": 0.99765,
+   "low52wDate": "2026-10-29",
+   "historyDays": 365,
+   "volatility30d": 0.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.99955,
+     "change": -0.03
+    },
+    {
+     "month": "2025-11",
+     "close": 1.00004,
+     "change": 0.05
+    },
+    {
+     "month": "2025-12",
+     "close": 0.99848,
+     "change": -0.16
+    },
+    {
+     "month": "2026-01",
+     "close": 0.99874,
+     "change": 0.03
+    },
+    {
+     "month": "2026-02",
+     "close": 1.00007,
+     "change": 0.13
+    },
+    {
+     "month": "2026-03",
+     "close": 0.99904,
+     "change": -0.1
+    },
+    {
+     "month": "2026-04",
+     "close": 0.99946,
+     "change": 0.04
+    },
+    {
+     "month": "2026-05",
+     "close": 0.99852,
+     "change": -0.09
+    },
+    {
+     "month": "2026-06",
+     "close": 0.99845,
+     "change": -0.01
+    },
+    {
+     "month": "2026-07",
+     "close": 0.99891,
+     "change": 0.05
+    },
+    {
+     "month": "2026-08",
+     "close": 0.9997,
+     "change": 0.08
+    },
+    {
+     "month": "2026-09",
+     "close": 0.99938,
+     "change": -0.03
+    }
+   ]
+  },
+  "ETH": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 2253.13,
+   "change7d": -5.69,
+   "change30d": -15.86,
+   "change90d": 20.97,
+   "change1y": -42.27,
+   "high52w": 3906.58,
+   "high52wDate": "2025-11-02",
+   "low52w": 1567.84,
+   "low52wDate": "2026-06-25",
+   "historyDays": 365,
+   "volatility30d": 36.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 3847.99,
+     "change": -7.17
+    },
+    {
+     "month": "2025-11",
+     "close": 2991.26,
+     "change": -22.26
+    },
+    {
+     "month": "2025-12",
+     "close": 2971.64,
+     "change": -0.66
+    },
+    {
+     "month": "2026-01",
+     "close": 2451.95,
+     "change": -17.49
+    },
+    {
+     "month": "2026-02",
+     "close": 1964.51,
+     "change": -19.88
+    },
+    {
+     "month": "2026-03",
+     "close": 2105.43,
+     "change": 7.17
+    },
+    {
+     "month": "2026-04",
+     "close": 2257.51,
+     "change": 7.22
+    },
+    {
+     "month": "2026-05",
+     "close": 2007.01,
+     "change": -11.1
+    },
+    {
+     "month": "2026-06",
+     "close": 1572.01,
+     "change": -21.67
+    },
+    {
+     "month": "2026-07",
+     "close": 1862.6,
+     "change": 18.49
+    },
+    {
+     "month": "2026-08",
+     "close": 2467.65,
+     "change": 32.48
+    },
+    {
+     "month": "2026-09",
+     "close": 2686.01,
+     "change": 8.85
+    }
+   ]
+  },
+  "BNB": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 698.46,
+   "change7d": -4.49,
+   "change30d": -7.94,
+   "change90d": 18.99,
+   "change1y": -36.95,
+   "high52w": 1094.53,
+   "high52wDate": "2025-11-01",
+   "low52w": 546.52,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 41,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1088.9,
+     "change": 7.97
+    },
+    {
+     "month": "2025-11",
+     "close": 875.31,
+     "change": -19.62
+    },
+    {
+     "month": "2025-12",
+     "close": 864.3,
+     "change": -1.26
+    },
+    {
+     "month": "2026-01",
+     "close": 781.38,
+     "change": -9.59
+    },
+    {
+     "month": "2026-02",
+     "close": 617.14,
+     "change": -21.02
+    },
+    {
+     "month": "2026-03",
+     "close": 617.43,
+     "change": 0.05
+    },
+    {
+     "month": "2026-04",
+     "close": 615.38,
+     "change": -0.33
+    },
+    {
+     "month": "2026-05",
+     "close": 710.55,
+     "change": 15.47
+    },
+    {
+     "month": "2026-06",
+     "close": 546.52,
+     "change": -23.08
+    },
+    {
+     "month": "2026-07",
+     "close": 587.01,
+     "change": 7.41
+    },
+    {
+     "month": "2026-08",
+     "close": 691.44,
+     "change": 17.79
+    },
+    {
+     "month": "2026-09",
+     "close": 769.27,
+     "change": 11.26
+    }
+   ]
+  },
+  "XRP": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.2377,
+   "change7d": -5.48,
+   "change30d": -16.97,
+   "change90d": 16.56,
+   "change1y": -51.47,
+   "high52w": 2.5267,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.9936,
+   "low52wDate": "2026-08-16",
+   "historyDays": 365,
+   "volatility30d": 44,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.5097,
+     "change": -11.84
+    },
+    {
+     "month": "2025-11",
+     "close": 2.155,
+     "change": -14.13
+    },
+    {
+     "month": "2025-12",
+     "close": 1.8423,
+     "change": -14.51
+    },
+    {
+     "month": "2026-01",
+     "close": 1.6472,
+     "change": -10.59
+    },
+    {
+     "month": "2026-02",
+     "close": 1.3762,
+     "change": -16.45
+    },
+    {
+     "month": "2026-03",
+     "close": 1.3411,
+     "change": -2.55
+    },
+    {
+     "month": "2026-04",
+     "close": 1.3679,
+     "change": 2
+    },
+    {
+     "month": "2026-05",
+     "close": 1.333,
+     "change": -2.55
+    },
+    {
+     "month": "2026-06",
+     "close": 1.0401,
+     "change": -21.97
+    },
+    {
+     "month": "2026-07",
+     "close": 1.0619,
+     "change": 2.1
+    },
+    {
+     "month": "2026-08",
+     "close": 1.3798,
+     "change": 29.94
+    },
+    {
+     "month": "2026-09",
+     "close": 1.49,
+     "change": 7.99
+    }
+   ]
+  },
+  "SOL": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 95.64,
+   "change7d": -7.73,
+   "change30d": -19.73,
+   "change90d": 31.25,
+   "change1y": -50.67,
+   "high52w": 187.71,
+   "high52wDate": "2025-11-02",
+   "low52w": 62.2,
+   "low52wDate": "2026-06-06",
+   "historyDays": 365,
+   "volatility30d": 41.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 187.21,
+     "change": -10.29
+    },
+    {
+     "month": "2025-11",
+     "close": 133.48,
+     "change": -28.7
+    },
+    {
+     "month": "2025-12",
+     "close": 124.65,
+     "change": -6.62
+    },
+    {
+     "month": "2026-01",
+     "close": 105.58,
+     "change": -15.3
+    },
+    {
+     "month": "2026-02",
+     "close": 84.35,
+     "change": -20.11
+    },
+    {
+     "month": "2026-03",
+     "close": 83.2,
+     "change": -1.36
+    },
+    {
+     "month": "2026-04",
+     "close": 83.09,
+     "change": -0.13
+    },
+    {
+     "month": "2026-05",
+     "close": 82.44,
+     "change": -0.78
+    },
+    {
+     "month": "2026-06",
+     "close": 73.67,
+     "change": -10.64
+    },
+    {
+     "month": "2026-07",
+     "close": 72.87,
+     "change": -1.09
+    },
+    {
+     "month": "2026-08",
+     "close": 103.06,
+     "change": 41.43
+    },
+    {
+     "month": "2026-09",
+     "close": 118.12,
+     "change": 14.61
+    }
+   ]
+  },
+  "BTC": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 77991.89,
+   "change7d": -4.21,
+   "change30d": -6.78,
+   "change90d": 24.02,
+   "change1y": -29.11,
+   "high52w": 110540.68,
+   "high52wDate": "2025-11-02",
+   "low52w": 58624.71,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 28.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 109608.01,
+     "change": -3.89
+    },
+    {
+     "month": "2025-11",
+     "close": 90360,
+     "change": -17.56
+    },
+    {
+     "month": "2025-12",
+     "close": 87648.22,
+     "change": -3
+    },
+    {
+     "month": "2026-01",
+     "close": 78741.09,
+     "change": -10.16
+    },
+    {
+     "month": "2026-02",
+     "close": 66973.26,
+     "change": -14.94
+    },
+    {
+     "month": "2026-03",
+     "close": 68284.48,
+     "change": 1.96
+    },
+    {
+     "month": "2026-04",
+     "close": 76346.57,
+     "change": 11.81
+    },
+    {
+     "month": "2026-05",
+     "close": 73674.39,
+     "change": -3.5
+    },
+    {
+     "month": "2026-06",
+     "close": 58624.71,
+     "change": -20.43
+    },
+    {
+     "month": "2026-07",
+     "close": 62887.88,
+     "change": 7.27
+    },
+    {
+     "month": "2026-08",
+     "close": 78581.29,
+     "change": 24.95
+    },
+    {
+     "month": "2026-09",
+     "close": 83623.6,
+     "change": 6.42
+    }
+   ]
+  },
+  "DOGE": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.07527,
+   "change7d": -4.5,
+   "change30d": -19.83,
+   "change90d": 8.12,
+   "change1y": -60.87,
+   "high52w": 0.18736,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.06909,
+   "low52wDate": "2026-08-06",
+   "historyDays": 365,
+   "volatility30d": 47.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.18644,
+     "change": -19.96
+    },
+    {
+     "month": "2025-11",
+     "close": 0.14599,
+     "change": -21.7
+    },
+    {
+     "month": "2025-12",
+     "close": 0.11747,
+     "change": -19.54
+    },
+    {
+     "month": "2026-01",
+     "close": 0.10426,
+     "change": -11.25
+    },
+    {
+     "month": "2026-02",
+     "close": 0.09405,
+     "change": -9.79
+    },
+    {
+     "month": "2026-03",
+     "close": 0.09232,
+     "change": -1.84
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1065,
+     "change": 15.36
+    },
+    {
+     "month": "2026-05",
+     "close": 0.10041,
+     "change": -5.72
+    },
+    {
+     "month": "2026-06",
+     "close": 0.07208,
+     "change": -28.21
+    },
+    {
+     "month": "2026-07",
+     "close": 0.06962,
+     "change": -3.41
+    },
+    {
+     "month": "2026-08",
+     "close": 0.08285,
+     "change": 19
+    },
+    {
+     "month": "2026-09",
+     "close": 0.09456,
+     "change": 14.13
+    }
+   ]
+  },
+  "ADA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1904,
+   "change7d": -10.32,
+   "change30d": -22.13,
+   "change90d": 13.2,
+   "change1y": -70.25,
+   "high52w": 0.6128,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.1438,
+   "low52wDate": "2026-06-25",
+   "historyDays": 365,
+   "volatility30d": 68.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.6091,
+     "change": -24.54
+    },
+    {
+     "month": "2025-11",
+     "close": 0.4143,
+     "change": -31.98
+    },
+    {
+     "month": "2025-12",
+     "close": 0.3335,
+     "change": -19.5
+    },
+    {
+     "month": "2026-01",
+     "close": 0.2936,
+     "change": -11.96
+    },
+    {
+     "month": "2026-02",
+     "close": 0.281,
+     "change": -4.29
+    },
+    {
+     "month": "2026-03",
+     "close": 0.2418,
+     "change": -13.95
+    },
+    {
+     "month": "2026-04",
+     "close": 0.2463,
+     "change": 1.86
+    },
+    {
+     "month": "2026-05",
+     "close": 0.2357,
+     "change": -4.3
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1444,
+     "change": -38.74
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1682,
+     "change": 16.48
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1978,
+     "change": 17.6
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2466,
+     "change": 24.67
+    }
+   ]
+  },
+  "USDC": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.00191,
+   "change7d": 0.08,
+   "change30d": 0.15,
+   "change90d": 0.11,
+   "change1y": 0.22,
+   "high52w": 1.00191,
+   "high52wDate": "2026-10-29",
+   "low52w": 0.9994,
+   "low52wDate": "2026-04-14",
+   "historyDays": 365,
+   "volatility30d": 0.5,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.0003,
+     "change": 0.07
+    },
+    {
+     "month": "2025-11",
+     "close": 0.9997,
+     "change": -0.06
+    },
+    {
+     "month": "2025-12",
+     "close": 1.0012,
+     "change": 0.15
+    },
+    {
+     "month": "2026-01",
+     "close": 1.0008,
+     "change": -0.04
+    },
+    {
+     "month": "2026-02",
+     "close": 1,
+     "change": -0.08
+    },
+    {
+     "month": "2026-03",
+     "close": 1.0006,
+     "change": 0.06
+    },
+    {
+     "month": "2026-04",
+     "close": 1.00013,
+     "change": -0.05
+    },
+    {
+     "month": "2026-05",
+     "close": 1.00107,
+     "change": 0.09
+    },
+    {
+     "month": "2026-06",
+     "close": 1.00112,
+     "change": 0
+    },
+    {
+     "month": "2026-07",
+     "close": 1.00085,
+     "change": -0.03
+    },
+    {
+     "month": "2026-08",
+     "close": 1.00024,
+     "change": -0.06
+    },
+    {
+     "month": "2026-09",
+     "close": 1.00062,
+     "change": 0.04
+    }
+   ]
+  },
+  "AVAX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 8.281,
+   "change7d": -9.28,
+   "change30d": -27.59,
+   "change90d": 29.67,
+   "change1y": -57.88,
+   "high52w": 18.8,
+   "high52wDate": "2025-11-02",
+   "low52w": 5.896,
+   "low52wDate": "2026-06-19",
+   "historyDays": 365,
+   "volatility30d": 66.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 18.19,
+     "change": -39.39
+    },
+    {
+     "month": "2025-11",
+     "close": 13.71,
+     "change": -24.63
+    },
+    {
+     "month": "2025-12",
+     "close": 12.32,
+     "change": -10.14
+    },
+    {
+     "month": "2026-01",
+     "close": 10.12,
+     "change": -17.86
+    },
+    {
+     "month": "2026-02",
+     "close": 9.16,
+     "change": -9.49
+    },
+    {
+     "month": "2026-03",
+     "close": 8.91,
+     "change": -2.73
+    },
+    {
+     "month": "2026-04",
+     "close": 9.09,
+     "change": 2.02
+    },
+    {
+     "month": "2026-05",
+     "close": 8.983,
+     "change": -1.18
+    },
+    {
+     "month": "2026-06",
+     "close": 6.538,
+     "change": -27.22
+    },
+    {
+     "month": "2026-07",
+     "close": 6.386,
+     "change": -2.32
+    },
+    {
+     "month": "2026-08",
+     "close": 7.233,
+     "change": 13.26
+    },
+    {
+     "month": "2026-09",
+     "close": 10.937,
+     "change": 51.21
+    }
+   ]
+  },
+  "TRX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.3524,
+   "change7d": 7.24,
+   "change30d": 5.38,
+   "change90d": 8.07,
+   "change1y": 19.01,
+   "high52w": 0.3756,
+   "high52wDate": "2026-05-26",
+   "low52w": 0.2696,
+   "low52wDate": "2026-02-05",
+   "historyDays": 365,
+   "volatility30d": 25.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.2962,
+     "change": -11.21
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2815,
+     "change": -4.96
+    },
+    {
+     "month": "2025-12",
+     "close": 0.2845,
+     "change": 1.07
+    },
+    {
+     "month": "2026-01",
+     "close": 0.2866,
+     "change": 0.74
+    },
+    {
+     "month": "2026-02",
+     "close": 0.2819,
+     "change": -1.64
+    },
+    {
+     "month": "2026-03",
+     "close": 0.3133,
+     "change": 11.14
+    },
+    {
+     "month": "2026-04",
+     "close": 0.3266,
+     "change": 4.25
+    },
+    {
+     "month": "2026-05",
+     "close": 0.3514,
+     "change": 7.59
+    },
+    {
+     "month": "2026-06",
+     "close": 0.3153,
+     "change": -10.27
+    },
+    {
+     "month": "2026-07",
+     "close": 0.3261,
+     "change": 3.43
+    },
+    {
+     "month": "2026-08",
+     "close": 0.3326,
+     "change": 1.99
+    },
+    {
+     "month": "2026-09",
+     "close": 0.3374,
+     "change": 1.44
+    }
+   ]
+  },
+  "GRAM": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 1.156,
+   "change7d": -12.09,
+   "change30d": -21.94,
+   "change90d": -17.72,
+   "change1y": -47.79,
+   "high52w": 2.721,
+   "high52wDate": "2026-05-07",
+   "low52w": 1.156,
+   "low52wDate": "2026-10-29",
+   "historyDays": 365,
+   "volatility30d": 62.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.282,
+     "change": -15.79
+    },
+    {
+     "month": "2025-11",
+     "close": 1.593,
+     "change": -30.19
+    },
+    {
+     "month": "2025-12",
+     "close": 1.657,
+     "change": 4.02
+    },
+    {
+     "month": "2026-01",
+     "close": 1.351,
+     "change": -18.47
+    },
+    {
+     "month": "2026-02",
+     "close": 1.282,
+     "change": -5.11
+    },
+    {
+     "month": "2026-03",
+     "close": 1.22,
+     "change": -4.84
+    },
+    {
+     "month": "2026-04",
+     "close": 1.334,
+     "change": 9.34
+    },
+    {
+     "month": "2026-05",
+     "close": 1.891,
+     "change": 41.75
+    },
+    {
+     "month": "2026-06",
+     "close": 1.51,
+     "change": -20.15
+    },
+    {
+     "month": "2026-07",
+     "close": 1.405,
+     "change": -6.95
+    },
+    {
+     "month": "2026-08",
+     "close": 1.391,
+     "change": -1
+    },
+    {
+     "month": "2026-09",
+     "close": 1.5,
+     "change": 7.84
+    }
+   ]
+  },
+  "SUI": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.8695,
+   "change7d": -10.58,
+   "change30d": -24.56,
+   "change90d": 27.47,
+   "change1y": -65.38,
+   "high52w": 2.3795,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.6517,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 67.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.3636,
+     "change": -27.5
+    },
+    {
+     "month": "2025-11",
+     "close": 1.4969,
+     "change": -36.67
+    },
+    {
+     "month": "2025-12",
+     "close": 1.4043,
+     "change": -6.19
+    },
+    {
+     "month": "2026-01",
+     "close": 1.1534,
+     "change": -17.87
+    },
+    {
+     "month": "2026-02",
+     "close": 0.904,
+     "change": -21.62
+    },
+    {
+     "month": "2026-03",
+     "close": 0.8784,
+     "change": -2.83
+    },
+    {
+     "month": "2026-04",
+     "close": 0.9082,
+     "change": 3.39
+    },
+    {
+     "month": "2026-05",
+     "close": 0.8954,
+     "change": -1.41
+    },
+    {
+     "month": "2026-06",
+     "close": 0.6906,
+     "change": -22.87
+    },
+    {
+     "month": "2026-07",
+     "close": 0.6821,
+     "change": -1.23
+    },
+    {
+     "month": "2026-08",
+     "close": 0.727,
+     "change": 6.58
+    },
+    {
+     "month": "2026-09",
+     "close": 1.1643,
+     "change": 60.15
+    }
+   ]
+  },
+  "BCH": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 273.9,
+   "change7d": -0.44,
+   "change30d": -10.98,
+   "change90d": 30.43,
+   "change1y": -50.7,
+   "high52w": 654.5,
+   "high52wDate": "2026-01-03",
+   "low52w": 190.4,
+   "low52wDate": "2026-06-24",
+   "historyDays": 365,
+   "volatility30d": 62.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 535.1,
+     "change": -4.55
+    },
+    {
+     "month": "2025-11",
+     "close": 540.8,
+     "change": 1.07
+    },
+    {
+     "month": "2025-12",
+     "close": 599.5,
+     "change": 10.85
+    },
+    {
+     "month": "2026-01",
+     "close": 507.5,
+     "change": -15.35
+    },
+    {
+     "month": "2026-02",
+     "close": 457.6,
+     "change": -9.83
+    },
+    {
+     "month": "2026-03",
+     "close": 466.5,
+     "change": 1.94
+    },
+    {
+     "month": "2026-04",
+     "close": 440.9,
+     "change": -5.49
+    },
+    {
+     "month": "2026-05",
+     "close": 302.9,
+     "change": -31.3
+    },
+    {
+     "month": "2026-06",
+     "close": 200,
+     "change": -33.97
+    },
+    {
+     "month": "2026-07",
+     "close": 210,
+     "change": 5
+    },
+    {
+     "month": "2026-08",
+     "close": 247.2,
+     "change": 17.71
+    },
+    {
+     "month": "2026-09",
+     "close": 306.2,
+     "change": 23.87
+    }
+   ]
+  },
+  "DOT": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.909,
+   "change7d": -18.26,
+   "change30d": -23.81,
+   "change90d": 19.76,
+   "change1y": -70.48,
+   "high52w": 3.266,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.752,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 79.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.882,
+     "change": -26.27
+    },
+    {
+     "month": "2025-11",
+     "close": 2.21,
+     "change": -23.32
+    },
+    {
+     "month": "2025-12",
+     "close": 1.789,
+     "change": -19.05
+    },
+    {
+     "month": "2026-01",
+     "close": 1.547,
+     "change": -13.53
+    },
+    {
+     "month": "2026-02",
+     "close": 1.662,
+     "change": 7.43
+    },
+    {
+     "month": "2026-03",
+     "close": 1.253,
+     "change": -24.61
+    },
+    {
+     "month": "2026-04",
+     "close": 1.204,
+     "change": -3.91
+    },
+    {
+     "month": "2026-05",
+     "close": 1.188,
+     "change": -1.33
+    },
+    {
+     "month": "2026-06",
+     "close": 0.822,
+     "change": -30.81
+    },
+    {
+     "month": "2026-07",
+     "close": 0.759,
+     "change": -7.66
+    },
+    {
+     "month": "2026-08",
+     "close": 0.84,
+     "change": 10.67
+    },
+    {
+     "month": "2026-09",
+     "close": 1.223,
+     "change": 45.6
+    }
+   ]
+  },
+  "NEAR": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 4.059,
+   "change7d": -16.89,
+   "change30d": -16.93,
+   "change90d": 143.78,
+   "change1y": 78.34,
+   "high52w": 5.896,
+   "high52wDate": "2026-10-11",
+   "low52w": 0.962,
+   "low52wDate": "2026-02-11",
+   "historyDays": 365,
+   "volatility30d": 141.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.099,
+     "change": -20.16
+    },
+    {
+     "month": "2025-11",
+     "close": 1.805,
+     "change": -14.01
+    },
+    {
+     "month": "2025-12",
+     "close": 1.514,
+     "change": -16.12
+    },
+    {
+     "month": "2026-01",
+     "close": 1.206,
+     "change": -20.34
+    },
+    {
+     "month": "2026-02",
+     "close": 1.172,
+     "change": -2.82
+    },
+    {
+     "month": "2026-03",
+     "close": 1.189,
+     "change": 1.45
+    },
+    {
+     "month": "2026-04",
+     "close": 1.297,
+     "change": 9.08
+    },
+    {
+     "month": "2026-05",
+     "close": 2.32,
+     "change": 78.87
+    },
+    {
+     "month": "2026-06",
+     "close": 1.782,
+     "change": -23.19
+    },
+    {
+     "month": "2026-07",
+     "close": 1.665,
+     "change": -6.57
+    },
+    {
+     "month": "2026-08",
+     "close": 1.922,
+     "change": 15.44
+    },
+    {
+     "month": "2026-09",
+     "close": 5.341,
+     "change": 177.89
+    }
+   ]
+  },
+  "LINK": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 10.62,
+   "change7d": -11.2,
+   "change30d": -27.3,
+   "change90d": 29.97,
+   "change1y": -41.42,
+   "high52w": 17.58,
+   "high52wDate": "2025-11-02",
+   "low52w": 7.201,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 58.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 17.24,
+     "change": -19.06
+    },
+    {
+     "month": "2025-11",
+     "close": 12.95,
+     "change": -24.88
+    },
+    {
+     "month": "2025-12",
+     "close": 12.21,
+     "change": -5.71
+    },
+    {
+     "month": "2026-01",
+     "close": 9.99,
+     "change": -18.18
+    },
+    {
+     "month": "2026-02",
+     "close": 8.85,
+     "change": -11.41
+    },
+    {
+     "month": "2026-03",
+     "close": 8.78,
+     "change": -0.79
+    },
+    {
+     "month": "2026-04",
+     "close": 9.11,
+     "change": 3.76
+    },
+    {
+     "month": "2026-05",
+     "close": 9.148,
+     "change": 0.42
+    },
+    {
+     "month": "2026-06",
+     "close": 7.201,
+     "change": -21.28
+    },
+    {
+     "month": "2026-07",
+     "close": 8.171,
+     "change": 13.47
+    },
+    {
+     "month": "2026-08",
+     "close": 11.325,
+     "change": 38.6
+    },
+    {
+     "month": "2026-09",
+     "close": 14.366,
+     "change": 26.85
+    }
+   ]
+  },
+  "SHIB": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00000463,
+   "change7d": -6.46,
+   "change30d": -19.62,
+   "change90d": -1.7,
+   "change1y": -54.43,
+   "high52w": 0.0000102,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.00000411,
+   "low52wDate": "2026-07-16",
+   "historyDays": 365,
+   "volatility30d": 47.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.00001003,
+     "change": -15.14
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00000837,
+     "change": -16.55
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00000691,
+     "change": -17.44
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00000681,
+     "change": -1.45
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00000578,
+     "change": -15.12
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00000596,
+     "change": 3.11
+    },
+    {
+     "month": "2026-04",
+     "close": 0.00000622,
+     "change": 4.36
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00000552,
+     "change": -11.25
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0000042,
+     "change": -23.91
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00000471,
+     "change": 12.14
+    },
+    {
+     "month": "2026-08",
+     "close": 0.00000507,
+     "change": 7.64
+    },
+    {
+     "month": "2026-09",
+     "close": 0.00000576,
+     "change": 13.61
+    }
+   ]
+  },
+  "DAI": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.9995,
+   "change7d": -0.03,
+   "change30d": -0.04,
+   "change90d": 0.08,
+   "change1y": -0.02,
+   "high52w": 1.00614,
+   "high52wDate": "2026-06-26",
+   "low52w": 0.99467,
+   "low52wDate": "2026-06-01",
+   "historyDays": 365,
+   "volatility30d": 2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.99983,
+     "change": 0
+    },
+    {
+     "month": "2025-11",
+     "close": 0.9996,
+     "change": -0.02
+    },
+    {
+     "month": "2025-12",
+     "close": 0.99972,
+     "change": 0.01
+    },
+    {
+     "month": "2026-01",
+     "close": 0.99969,
+     "change": 0
+    },
+    {
+     "month": "2026-02",
+     "close": 0.99989,
+     "change": 0.02
+    },
+    {
+     "month": "2026-03",
+     "close": 0.99932,
+     "change": -0.06
+    },
+    {
+     "month": "2026-04",
+     "close": 0.99918,
+     "change": -0.01
+    },
+    {
+     "month": "2026-05",
+     "close": 0.99923,
+     "change": 0.01
+    },
+    {
+     "month": "2026-06",
+     "close": 0.99904,
+     "change": -0.02
+    },
+    {
+     "month": "2026-07",
+     "close": 0.99868,
+     "change": -0.04
+    },
+    {
+     "month": "2026-08",
+     "close": 0.9999,
+     "change": 0.12
+    },
+    {
+     "month": "2026-09",
+     "close": 1.00011,
+     "change": 0.02
+    }
+   ]
+  },
+  "PEPE": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00000456,
+   "change7d": 3.64,
+   "change30d": 7.04,
+   "change90d": 65.82,
+   "change1y": -35.14,
+   "high52w": 0.00000718,
+   "high52wDate": "2026-01-04",
+   "low52w": 0.00000233,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 91.5,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.00000657,
+     "change": -29.43
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00000454,
+     "change": -30.9
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00000403,
+     "change": -11.23
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00000415,
+     "change": 2.98
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00000365,
+     "change": -12.05
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00000341,
+     "change": -6.58
+    },
+    {
+     "month": "2026-04",
+     "close": 0.00000388,
+     "change": 13.78
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00000343,
+     "change": -11.6
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00000233,
+     "change": -32.07
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00000275,
+     "change": 18.03
+    },
+    {
+     "month": "2026-08",
+     "close": 0.00000355,
+     "change": 29.09
+    },
+    {
+     "month": "2026-09",
+     "close": 0.00000428,
+     "change": 20.56
+    }
+   ]
+  },
+  "UNI": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 6.471,
+   "change7d": -7.69,
+   "change30d": -27.2,
+   "change90d": 48.79,
+   "change1y": 2.8,
+   "high52w": 10.226,
+   "high52wDate": "2026-09-22",
+   "low52w": 2.396,
+   "low52wDate": "2026-06-10",
+   "historyDays": 365,
+   "volatility30d": 88.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 5.744,
+     "change": -24.83
+    },
+    {
+     "month": "2025-11",
+     "close": 6.042,
+     "change": 5.19
+    },
+    {
+     "month": "2025-12",
+     "close": 5.64,
+     "change": -6.65
+    },
+    {
+     "month": "2026-01",
+     "close": 3.96,
+     "change": -29.79
+    },
+    {
+     "month": "2026-02",
+     "close": 3.811,
+     "change": -3.76
+    },
+    {
+     "month": "2026-03",
+     "close": 3.545,
+     "change": -6.98
+    },
+    {
+     "month": "2026-04",
+     "close": 3.187,
+     "change": -10.1
+    },
+    {
+     "month": "2026-05",
+     "close": 3.024,
+     "change": -5.11
+    },
+    {
+     "month": "2026-06",
+     "close": 2.778,
+     "change": -8.13
+    },
+    {
+     "month": "2026-07",
+     "close": 4.349,
+     "change": 56.55
+    },
+    {
+     "month": "2026-08",
+     "close": 5.232,
+     "change": 20.3
+    },
+    {
+     "month": "2026-09",
+     "close": 8.882,
+     "change": 69.76
+    }
+   ]
+  },
+  "LTC": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 54.96,
+   "change7d": -6.64,
+   "change30d": -17.76,
+   "change90d": 24.04,
+   "change1y": -44.22,
+   "high52w": 110.31,
+   "high52wDate": "2025-11-09",
+   "low52w": 40.92,
+   "low52wDate": "2026-06-25",
+   "historyDays": 365,
+   "volatility30d": 51.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 95.38,
+     "change": -10.76
+    },
+    {
+     "month": "2025-11",
+     "close": 82.38,
+     "change": -13.63
+    },
+    {
+     "month": "2025-12",
+     "close": 76.85,
+     "change": -6.71
+    },
+    {
+     "month": "2026-01",
+     "close": 59.53,
+     "change": -22.54
+    },
+    {
+     "month": "2026-02",
+     "close": 54.4,
+     "change": -8.62
+    },
+    {
+     "month": "2026-03",
+     "close": 53.95,
+     "change": -0.83
+    },
+    {
+     "month": "2026-04",
+     "close": 55.19,
+     "change": 2.3
+    },
+    {
+     "month": "2026-05",
+     "close": 52.07,
+     "change": -5.65
+    },
+    {
+     "month": "2026-06",
+     "close": 41.93,
+     "change": -19.47
+    },
+    {
+     "month": "2026-07",
+     "close": 44.31,
+     "change": 5.68
+    },
+    {
+     "month": "2026-08",
+     "close": 48.55,
+     "change": 9.57
+    },
+    {
+     "month": "2026-09",
+     "close": 67.25,
+     "change": 38.52
+    }
+   ]
+  },
+  "APT": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.6168,
+   "change7d": -18.12,
+   "change30d": -21.95,
+   "change90d": 10.94,
+   "change1y": -81.89,
+   "high52w": 3.375,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.518,
+   "low52wDate": "2026-08-30",
+   "historyDays": 365,
+   "volatility30d": 101.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 3.259,
+     "change": -26.03
+    },
+    {
+     "month": "2025-11",
+     "close": 1.986,
+     "change": -39.06
+    },
+    {
+     "month": "2025-12",
+     "close": 1.659,
+     "change": -16.47
+    },
+    {
+     "month": "2026-01",
+     "close": 1.275,
+     "change": -23.15
+    },
+    {
+     "month": "2026-02",
+     "close": 0.962,
+     "change": -24.55
+    },
+    {
+     "month": "2026-03",
+     "close": 0.894,
+     "change": -7.07
+    },
+    {
+     "month": "2026-04",
+     "close": 0.995,
+     "change": 11.3
+    },
+    {
+     "month": "2026-05",
+     "close": 0.946,
+     "change": -4.92
+    },
+    {
+     "month": "2026-06",
+     "close": 0.572,
+     "change": -39.53
+    },
+    {
+     "month": "2026-07",
+     "close": 0.556,
+     "change": -2.8
+    },
+    {
+     "month": "2026-08",
+     "close": 0.537,
+     "change": -3.42
+    },
+    {
+     "month": "2026-09",
+     "close": 0.7707,
+     "change": 43.52
+    }
+   ]
+  },
+  "ICP": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 2.413,
+   "change7d": -10.76,
+   "change30d": -29.85,
+   "change90d": 16.46,
+   "change1y": -21.2,
+   "high52w": 8.96,
+   "high52wDate": "2025-11-08",
+   "low52w": 2.023,
+   "low52wDate": "2026-08-01",
+   "historyDays": 365,
+   "volatility30d": 87.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.942,
+     "change": -30.38
+    },
+    {
+     "month": "2025-11",
+     "close": 3.828,
+     "change": 30.12
+    },
+    {
+     "month": "2025-12",
+     "close": 2.841,
+     "change": -25.78
+    },
+    {
+     "month": "2026-01",
+     "close": 2.733,
+     "change": -3.8
+    },
+    {
+     "month": "2026-02",
+     "close": 2.442,
+     "change": -10.65
+    },
+    {
+     "month": "2026-03",
+     "close": 2.308,
+     "change": -5.49
+    },
+    {
+     "month": "2026-04",
+     "close": 2.378,
+     "change": 3.03
+    },
+    {
+     "month": "2026-05",
+     "close": 2.726,
+     "change": 14.63
+    },
+    {
+     "month": "2026-06",
+     "close": 2.1,
+     "change": -22.96
+    },
+    {
+     "month": "2026-07",
+     "close": 2.072,
+     "change": -1.33
+    },
+    {
+     "month": "2026-08",
+     "close": 2.402,
+     "change": 15.93
+    },
+    {
+     "month": "2026-09",
+     "close": 3.337,
+     "change": 38.93
+    }
+   ]
+  },
+  "XMR": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 601.94,
+   "change7d": 0.29,
+   "change30d": 11.08,
+   "change90d": 68.16,
+   "change1y": 79.17,
+   "high52w": 711.53,
+   "high52wDate": "2026-01-14",
+   "low52w": 291.91,
+   "low52wDate": "2026-02-05",
+   "historyDays": 365,
+   "volatility30d": 48.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 334.6,
+     "change": 13.27
+    },
+    {
+     "month": "2025-11",
+     "close": 435,
+     "change": 30.01
+    },
+    {
+     "month": "2025-12",
+     "close": 433.31,
+     "change": -0.39
+    },
+    {
+     "month": "2026-01",
+     "close": 464.79,
+     "change": 7.27
+    },
+    {
+     "month": "2026-02",
+     "close": 336.51,
+     "change": -27.6
+    },
+    {
+     "month": "2026-03",
+     "close": 334.35,
+     "change": -0.64
+    },
+    {
+     "month": "2026-04",
+     "close": 379.63,
+     "change": 13.54
+    },
+    {
+     "month": "2026-05",
+     "close": 367.11,
+     "change": -3.3
+    },
+    {
+     "month": "2026-06",
+     "close": 303.42,
+     "change": -17.35
+    },
+    {
+     "month": "2026-07",
+     "close": 357.96,
+     "change": 17.98
+    },
+    {
+     "month": "2026-08",
+     "close": 520,
+     "change": 45.27
+    },
+    {
+     "month": "2026-09",
+     "close": 544.7,
+     "change": 4.75
+    }
+   ]
+  },
+  "RENDER": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.531,
+   "change7d": -13.26,
+   "change30d": -19.8,
+   "change90d": 11.43,
+   "change1y": -35.97,
+   "high52w": 2.583,
+   "high52wDate": "2026-01-11",
+   "low52w": 1.21,
+   "low52wDate": "2025-12-18",
+   "historyDays": 365,
+   "volatility30d": 76.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.229,
+     "change": -33.16
+    },
+    {
+     "month": "2025-11",
+     "close": 1.711,
+     "change": -23.24
+    },
+    {
+     "month": "2025-12",
+     "close": 1.287,
+     "change": -24.78
+    },
+    {
+     "month": "2026-01",
+     "close": 1.55,
+     "change": 20.44
+    },
+    {
+     "month": "2026-02",
+     "close": 1.407,
+     "change": -9.23
+    },
+    {
+     "month": "2026-03",
+     "close": 1.742,
+     "change": 23.81
+    },
+    {
+     "month": "2026-04",
+     "close": 1.676,
+     "change": -3.79
+    },
+    {
+     "month": "2026-05",
+     "close": 2.09,
+     "change": 24.7
+    },
+    {
+     "month": "2026-06",
+     "close": 1.51,
+     "change": -27.75
+    },
+    {
+     "month": "2026-07",
+     "close": 1.374,
+     "change": -9.01
+    },
+    {
+     "month": "2026-08",
+     "close": 1.425,
+     "change": 3.71
+    },
+    {
+     "month": "2026-09",
+     "close": 1.914,
+     "change": 34.32
+    }
+   ]
+  },
+  "TAO": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 234.2,
+   "change7d": -9.05,
+   "change30d": -22.12,
+   "change90d": 21.16,
+   "change1y": -46.89,
+   "high52w": 497.2,
+   "high52wDate": "2025-11-01",
+   "low52w": 145.9,
+   "low52wDate": "2026-02-11",
+   "historyDays": 365,
+   "volatility30d": 69.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 481,
+     "change": 58.69
+    },
+    {
+     "month": "2025-11",
+     "close": 289,
+     "change": -39.92
+    },
+    {
+     "month": "2025-12",
+     "close": 219.2,
+     "change": -24.15
+    },
+    {
+     "month": "2026-01",
+     "close": 198,
+     "change": -9.67
+    },
+    {
+     "month": "2026-02",
+     "close": 183.1,
+     "change": -7.53
+    },
+    {
+     "month": "2026-03",
+     "close": 306.1,
+     "change": 67.18
+    },
+    {
+     "month": "2026-04",
+     "close": 249.1,
+     "change": -18.62
+    },
+    {
+     "month": "2026-05",
+     "close": 255.7,
+     "change": 2.65
+    },
+    {
+     "month": "2026-06",
+     "close": 202.2,
+     "change": -20.92
+    },
+    {
+     "month": "2026-07",
+     "close": 193.3,
+     "change": -4.4
+    },
+    {
+     "month": "2026-08",
+     "close": 230.4,
+     "change": 19.19
+    },
+    {
+     "month": "2026-09",
+     "close": 300.9,
+     "change": 30.6
+    }
+   ]
+  },
+  "POL": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.08757,
+   "change7d": -3.18,
+   "change30d": -25.56,
+   "change90d": 22.77,
+   "change1y": -55.18,
+   "high52w": 0.1929,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.06853,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 52.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1843,
+     "change": -17.91
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1329,
+     "change": -27.89
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1005,
+     "change": -24.38
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1038,
+     "change": 3.28
+    },
+    {
+     "month": "2026-02",
+     "close": 0.109,
+     "change": 5.01
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0912,
+     "change": -16.33
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0951,
+     "change": 4.28
+    },
+    {
+     "month": "2026-05",
+     "close": 0.09302,
+     "change": -2.19
+    },
+    {
+     "month": "2026-06",
+     "close": 0.06853,
+     "change": -26.33
+    },
+    {
+     "month": "2026-07",
+     "close": 0.07133,
+     "change": 4.09
+    },
+    {
+     "month": "2026-08",
+     "close": 0.09061,
+     "change": 27.03
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1141,
+     "change": 25.92
+    }
+   ]
+  },
+  "ETC": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 7.09,
+   "change7d": -8.04,
+   "change30d": -22,
+   "change90d": 7.26,
+   "change1y": -55.6,
+   "high52w": 17.91,
+   "high52wDate": "2025-11-07",
+   "low52w": 6.08,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 48.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 15.86,
+     "change": -13.99
+    },
+    {
+     "month": "2025-11",
+     "close": 13.73,
+     "change": -13.43
+    },
+    {
+     "month": "2025-12",
+     "close": 11.48,
+     "change": -16.39
+    },
+    {
+     "month": "2026-01",
+     "close": 9.76,
+     "change": -14.98
+    },
+    {
+     "month": "2026-02",
+     "close": 8.68,
+     "change": -11.07
+    },
+    {
+     "month": "2026-03",
+     "close": 8.19,
+     "change": -5.65
+    },
+    {
+     "month": "2026-04",
+     "close": 8.35,
+     "change": 1.95
+    },
+    {
+     "month": "2026-05",
+     "close": 8.18,
+     "change": -2.04
+    },
+    {
+     "month": "2026-06",
+     "close": 6.89,
+     "change": -15.77
+    },
+    {
+     "month": "2026-07",
+     "close": 6.61,
+     "change": -4.06
+    },
+    {
+     "month": "2026-08",
+     "close": 7.28,
+     "change": 10.14
+    },
+    {
+     "month": "2026-09",
+     "close": 8.89,
+     "change": 22.12
+    }
+   ]
+  },
+  "KAS": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.03404,
+   "change7d": -7.93,
+   "change30d": -20.71,
+   "change90d": 25.15,
+   "change1y": -41.77,
+   "high52w": 0.05831,
+   "high52wDate": "2025-11-27",
+   "low52w": 0.02527,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 69,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.05282,
+     "change": -29.76
+    },
+    {
+     "month": "2025-11",
+     "close": 0.05719,
+     "change": 8.27
+    },
+    {
+     "month": "2025-12",
+     "close": 0.04288,
+     "change": -25.02
+    },
+    {
+     "month": "2026-01",
+     "close": 0.03316,
+     "change": -22.67
+    },
+    {
+     "month": "2026-02",
+     "close": 0.03014,
+     "change": -9.11
+    },
+    {
+     "month": "2026-03",
+     "close": 0.03262,
+     "change": 8.23
+    },
+    {
+     "month": "2026-04",
+     "close": 0.03254,
+     "change": -0.25
+    },
+    {
+     "month": "2026-05",
+     "close": 0.03069,
+     "change": -5.69
+    },
+    {
+     "month": "2026-06",
+     "close": 0.02927,
+     "change": -4.63
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0272,
+     "change": -7.07
+    },
+    {
+     "month": "2026-08",
+     "close": 0.02791,
+     "change": 2.61
+    },
+    {
+     "month": "2026-09",
+     "close": 0.04343,
+     "change": 55.61
+    }
+   ]
+  },
+  "OKB": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 111.09,
+   "change7d": 0.78,
+   "change30d": -8.05,
+   "change90d": 28.76,
+   "change1y": null,
+   "high52w": 136.41,
+   "high52wDate": "2026-10-06",
+   "low52w": 69.2,
+   "low52wDate": "2026-06-06",
+   "historyDays": 210,
+   "volatility30d": 51.2,
+   "monthly": [
+    {
+     "month": "2026-04",
+     "close": 82.26,
+     "change": null
+    },
+    {
+     "month": "2026-05",
+     "close": 92.65,
+     "change": 12.63
+    },
+    {
+     "month": "2026-06",
+     "close": 78.12,
+     "change": -15.68
+    },
+    {
+     "month": "2026-07",
+     "close": 86.28,
+     "change": 10.45
+    },
+    {
+     "month": "2026-08",
+     "close": 112.7,
+     "change": 30.62
+    },
+    {
+     "month": "2026-09",
+     "close": 121.45,
+     "change": 7.76
+    }
+   ]
+  },
+  "FET": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1634,
+   "change7d": -11.34,
+   "change30d": -26.56,
+   "change90d": 16.13,
+   "change1y": -37.63,
+   "high52w": 0.3657,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.1215,
+   "low52wDate": "2026-08-16",
+   "historyDays": 365,
+   "volatility30d": 97.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.2364,
+     "change": -56.62
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2559,
+     "change": 8.25
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1986,
+     "change": -22.39
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1879,
+     "change": -5.39
+    },
+    {
+     "month": "2026-02",
+     "close": 0.1568,
+     "change": -16.55
+    },
+    {
+     "month": "2026-03",
+     "close": 0.2321,
+     "change": 48.02
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1956,
+     "change": -15.73
+    },
+    {
+     "month": "2026-05",
+     "close": 0.269,
+     "change": 37.53
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1718,
+     "change": -36.13
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1407,
+     "change": -18.1
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1535,
+     "change": 9.1
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2287,
+     "change": 48.99
+    }
+   ]
+  },
+  "HBAR": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.069,
+   "change7d": -13.71,
+   "change30d": -32.62,
+   "change90d": 0.23,
+   "change1y": -65.69,
+   "high52w": 0.201,
+   "high52wDate": "2025-10-31",
+   "low52w": 0.06465,
+   "low52wDate": "2026-08-16",
+   "historyDays": 365,
+   "volatility30d": 54.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.201,
+     "change": -6.51
+    },
+    {
+     "month": "2025-11",
+     "close": 0.14135,
+     "change": -29.68
+    },
+    {
+     "month": "2025-12",
+     "close": 0.10633,
+     "change": -24.78
+    },
+    {
+     "month": "2026-01",
+     "close": 0.09294,
+     "change": -12.59
+    },
+    {
+     "month": "2026-02",
+     "close": 0.10021,
+     "change": 7.82
+    },
+    {
+     "month": "2026-03",
+     "close": 0.08764,
+     "change": -12.54
+    },
+    {
+     "month": "2026-04",
+     "close": 0.08735,
+     "change": -0.33
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0966,
+     "change": 10.59
+    },
+    {
+     "month": "2026-06",
+     "close": 0.06953,
+     "change": -28.02
+    },
+    {
+     "month": "2026-07",
+     "close": 0.06884,
+     "change": -0.99
+    },
+    {
+     "month": "2026-08",
+     "close": 0.07363,
+     "change": 6.96
+    },
+    {
+     "month": "2026-09",
+     "close": 0.10476,
+     "change": 42.28
+    }
+   ]
+  },
+  "XLM": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1623,
+   "change7d": -7.47,
+   "change30d": -26.99,
+   "change90d": -5.75,
+   "change1y": -48.61,
+   "high52w": 0.3051,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.1435,
+   "low52wDate": "2026-05-22",
+   "historyDays": 365,
+   "volatility30d": 52.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.305,
+     "change": -16.21
+    },
+    {
+     "month": "2025-11",
+     "close": 0.248,
+     "change": -18.69
+    },
+    {
+     "month": "2025-12",
+     "close": 0.201,
+     "change": -18.95
+    },
+    {
+     "month": "2026-01",
+     "close": 0.181,
+     "change": -9.95
+    },
+    {
+     "month": "2026-02",
+     "close": 0.159,
+     "change": -12.15
+    },
+    {
+     "month": "2026-03",
+     "close": 0.1673,
+     "change": 5.22
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1583,
+     "change": -5.38
+    },
+    {
+     "month": "2026-05",
+     "close": 0.2599,
+     "change": 64.18
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1892,
+     "change": -27.2
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1722,
+     "change": -8.99
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1773,
+     "change": 2.96
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2263,
+     "change": 27.64
+    }
+   ]
+  },
+  "STX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.2788,
+   "change7d": -13.52,
+   "change30d": -12.02,
+   "change90d": 102.62,
+   "change1y": -36.72,
+   "high52w": 0.4349,
+   "high52wDate": "2026-10-13",
+   "low52w": 0.12,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 96.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.4132,
+     "change": -27.76
+    },
+    {
+     "month": "2025-11",
+     "close": 0.3076,
+     "change": -25.56
+    },
+    {
+     "month": "2025-12",
+     "close": 0.2445,
+     "change": -20.51
+    },
+    {
+     "month": "2026-01",
+     "close": 0.2621,
+     "change": 7.2
+    },
+    {
+     "month": "2026-02",
+     "close": 0.2614,
+     "change": -0.27
+    },
+    {
+     "month": "2026-03",
+     "close": 0.2248,
+     "change": -14
+    },
+    {
+     "month": "2026-04",
+     "close": 0.2207,
+     "change": -1.82
+    },
+    {
+     "month": "2026-05",
+     "close": 0.2401,
+     "change": 8.79
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1612,
+     "change": -32.86
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1376,
+     "change": -14.64
+    },
+    {
+     "month": "2026-08",
+     "close": 0.2513,
+     "change": 82.63
+    },
+    {
+     "month": "2026-09",
+     "close": 0.3719,
+     "change": 47.99
+    }
+   ]
+  },
+  "FIL": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.8268,
+   "change7d": -15.66,
+   "change30d": -21.9,
+   "change90d": 15.57,
+   "change1y": -47.8,
+   "high52w": 3.392,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.632,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 99.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.515,
+     "change": -30.76
+    },
+    {
+     "month": "2025-11",
+     "close": 1.571,
+     "change": 3.7
+    },
+    {
+     "month": "2025-12",
+     "close": 1.298,
+     "change": -17.38
+    },
+    {
+     "month": "2026-01",
+     "close": 1.052,
+     "change": -18.95
+    },
+    {
+     "month": "2026-02",
+     "close": 1.005,
+     "change": -4.47
+    },
+    {
+     "month": "2026-03",
+     "close": 0.832,
+     "change": -17.21
+    },
+    {
+     "month": "2026-04",
+     "close": 0.922,
+     "change": 10.82
+    },
+    {
+     "month": "2026-05",
+     "close": 0.937,
+     "change": 1.63
+    },
+    {
+     "month": "2026-06",
+     "close": 0.717,
+     "change": -23.48
+    },
+    {
+     "month": "2026-07",
+     "close": 0.7154,
+     "change": -0.22
+    },
+    {
+     "month": "2026-08",
+     "close": 0.6825,
+     "change": -4.6
+    },
+    {
+     "month": "2026-09",
+     "close": 1.0433,
+     "change": 52.86
+    }
+   ]
+  },
+  "AAVE": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 119.35,
+   "change7d": -18.68,
+   "change30d": -27.79,
+   "change90d": 27.31,
+   "change1y": -47.57,
+   "high52w": 231.37,
+   "high52wDate": "2025-11-02",
+   "low52w": 60.96,
+   "low52wDate": "2026-06-06",
+   "historyDays": 365,
+   "volatility30d": 72.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 228.45,
+     "change": -16.74
+    },
+    {
+     "month": "2025-11",
+     "close": 177.46,
+     "change": -22.32
+    },
+    {
+     "month": "2025-12",
+     "close": 146.02,
+     "change": -17.72
+    },
+    {
+     "month": "2026-01",
+     "close": 129.05,
+     "change": -11.62
+    },
+    {
+     "month": "2026-02",
+     "close": 111.94,
+     "change": -13.26
+    },
+    {
+     "month": "2026-03",
+     "close": 98.2,
+     "change": -12.27
+    },
+    {
+     "month": "2026-04",
+     "close": 92.87,
+     "change": -5.43
+    },
+    {
+     "month": "2026-05",
+     "close": 82.16,
+     "change": -11.53
+    },
+    {
+     "month": "2026-06",
+     "close": 85.17,
+     "change": 3.66
+    },
+    {
+     "month": "2026-07",
+     "close": 93.75,
+     "change": 10.07
+    },
+    {
+     "month": "2026-08",
+     "close": 124.13,
+     "change": 32.41
+    },
+    {
+     "month": "2026-09",
+     "close": 159.49,
+     "change": 28.49
+    }
+   ]
+  },
+  "IMX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.129,
+   "change7d": -10.73,
+   "change30d": -21.87,
+   "change90d": 21.01,
+   "change1y": -75.43,
+   "high52w": 0.516,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.1002,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 79.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.495,
+     "change": -27.74
+    },
+    {
+     "month": "2025-11",
+     "close": 0.304,
+     "change": -38.59
+    },
+    {
+     "month": "2025-12",
+     "close": 0.218,
+     "change": -28.29
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1839,
+     "change": -15.64
+    },
+    {
+     "month": "2026-02",
+     "close": 0.165,
+     "change": -10.28
+    },
+    {
+     "month": "2026-03",
+     "close": 0.1396,
+     "change": -15.39
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1638,
+     "change": 17.34
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1626,
+     "change": -0.73
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1141,
+     "change": -29.83
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1066,
+     "change": -6.57
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1246,
+     "change": 16.89
+    },
+    {
+     "month": "2026-09",
+     "close": 0.167,
+     "change": 34.03
+    }
+   ]
+  },
+  "ARB": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1543,
+   "change7d": -13.9,
+   "change30d": -24.18,
+   "change90d": 97.06,
+   "change1y": -51.42,
+   "high52w": 0.3075,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.0728,
+   "low52wDate": "2026-08-15",
+   "historyDays": 365,
+   "volatility30d": 92.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.2953,
+     "change": -29.94
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2106,
+     "change": -28.68
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1868,
+     "change": -11.3
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1402,
+     "change": -24.95
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0997,
+     "change": -28.89
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0929,
+     "change": -6.82
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1238,
+     "change": 33.26
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1037,
+     "change": -16.24
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0761,
+     "change": -26.62
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0783,
+     "change": 2.89
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1094,
+     "change": 39.72
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2029,
+     "change": 85.47
+    }
+   ]
+  },
+  "OP": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1014,
+   "change7d": -13.92,
+   "change30d": -21.33,
+   "change90d": 19.01,
+   "change1y": -76.98,
+   "high52w": 0.4447,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.0821,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 121,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.3991,
+     "change": -40.52
+    },
+    {
+     "month": "2025-11",
+     "close": 0.3187,
+     "change": -20.15
+    },
+    {
+     "month": "2025-12",
+     "close": 0.2678,
+     "change": -15.97
+    },
+    {
+     "month": "2026-01",
+     "close": 0.2345,
+     "change": -12.43
+    },
+    {
+     "month": "2026-02",
+     "close": 0.1227,
+     "change": -47.68
+    },
+    {
+     "month": "2026-03",
+     "close": 0.1108,
+     "change": -9.7
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1204,
+     "change": 8.66
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1186,
+     "change": -1.5
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0965,
+     "change": -18.63
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0852,
+     "change": -11.71
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0936,
+     "change": 9.86
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1296,
+     "change": 38.46
+    }
+   ]
+  },
+  "INJ": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 7.337,
+   "change7d": -7.24,
+   "change30d": -3.65,
+   "change90d": 50.69,
+   "change1y": -13.68,
+   "high52w": 8.948,
+   "high52wDate": "2026-10-20",
+   "low52w": 2.745,
+   "low52wDate": "2026-04-02",
+   "historyDays": 365,
+   "volatility30d": 104.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 7.59,
+     "change": -36.75
+    },
+    {
+     "month": "2025-11",
+     "close": 5.73,
+     "change": -24.51
+    },
+    {
+     "month": "2025-12",
+     "close": 4.19,
+     "change": -26.88
+    },
+    {
+     "month": "2026-01",
+     "close": 3.618,
+     "change": -13.65
+    },
+    {
+     "month": "2026-02",
+     "close": 3.122,
+     "change": -13.71
+    },
+    {
+     "month": "2026-03",
+     "close": 2.882,
+     "change": -7.69
+    },
+    {
+     "month": "2026-04",
+     "close": 3.422,
+     "change": 18.74
+    },
+    {
+     "month": "2026-05",
+     "close": 6.543,
+     "change": 91.2
+    },
+    {
+     "month": "2026-06",
+     "close": 4.552,
+     "change": -30.43
+    },
+    {
+     "month": "2026-07",
+     "close": 4.869,
+     "change": 6.96
+    },
+    {
+     "month": "2026-08",
+     "close": 4.931,
+     "change": 1.27
+    },
+    {
+     "month": "2026-09",
+     "close": 7.413,
+     "change": 50.33
+    }
+   ]
+  },
+  "WIF": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1665,
+   "change7d": -15.53,
+   "change30d": -30.74,
+   "change90d": 16.11,
+   "change1y": -69.05,
+   "high52w": 0.544,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.1356,
+   "low52wDate": "2026-08-01",
+   "historyDays": 365,
+   "volatility30d": 77.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.514,
+     "change": -29.4
+    },
+    {
+     "month": "2025-11",
+     "close": 0.366,
+     "change": -28.79
+    },
+    {
+     "month": "2025-12",
+     "close": 0.27,
+     "change": -26.23
+    },
+    {
+     "month": "2026-01",
+     "close": 0.255,
+     "change": -5.56
+    },
+    {
+     "month": "2026-02",
+     "close": 0.195,
+     "change": -23.53
+    },
+    {
+     "month": "2026-03",
+     "close": 0.179,
+     "change": -8.21
+    },
+    {
+     "month": "2026-04",
+     "close": 0.183,
+     "change": 2.23
+    },
+    {
+     "month": "2026-05",
+     "close": 0.192,
+     "change": 4.92
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1659,
+     "change": -13.59
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1434,
+     "change": -13.56
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1972,
+     "change": 37.52
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2489,
+     "change": 26.22
+    }
+   ]
+  },
+  "MNT": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.468,
+   "change7d": -11.65,
+   "change30d": -29.52,
+   "change90d": 19.39,
+   "change1y": -70.44,
+   "high52w": 1.4543,
+   "high52wDate": "2025-10-31",
+   "low52w": 0.392,
+   "low52wDate": "2026-07-31",
+   "historyDays": 365,
+   "volatility30d": 62.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.4543,
+     "change": -17.83
+    },
+    {
+     "month": "2025-11",
+     "close": 1.0675,
+     "change": -26.6
+    },
+    {
+     "month": "2025-12",
+     "close": 0.9616,
+     "change": -9.92
+    },
+    {
+     "month": "2026-01",
+     "close": 0.7288,
+     "change": -24.21
+    },
+    {
+     "month": "2026-02",
+     "close": 0.6385,
+     "change": -12.39
+    },
+    {
+     "month": "2026-03",
+     "close": 0.6962,
+     "change": 9.04
+    },
+    {
+     "month": "2026-04",
+     "close": 0.6281,
+     "change": -9.78
+    },
+    {
+     "month": "2026-05",
+     "close": 0.6659,
+     "change": 6.02
+    },
+    {
+     "month": "2026-06",
+     "close": 0.4106,
+     "change": -38.34
+    },
+    {
+     "month": "2026-07",
+     "close": 0.392,
+     "change": -4.53
+    },
+    {
+     "month": "2026-08",
+     "close": 0.5467,
+     "change": 39.46
+    },
+    {
+     "month": "2026-09",
+     "close": 0.6966,
+     "change": 27.42
+    }
+   ]
+  },
+  "VET": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.005774,
+   "change7d": -18.63,
+   "change30d": -34.07,
+   "change90d": 21.46,
+   "change1y": -65.63,
+   "high52w": 0.01737,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.004376,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 74.5,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.01559,
+     "change": -28.22
+    },
+    {
+     "month": "2025-11",
+     "close": 0.01306,
+     "change": -16.23
+    },
+    {
+     "month": "2025-12",
+     "close": 0.01043,
+     "change": -20.14
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00843,
+     "change": -19.18
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0073,
+     "change": -13.4
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00677,
+     "change": -7.26
+    },
+    {
+     "month": "2026-04",
+     "close": 0.006992,
+     "change": 3.28
+    },
+    {
+     "month": "2026-05",
+     "close": 0.006088,
+     "change": -12.93
+    },
+    {
+     "month": "2026-06",
+     "close": 0.004376,
+     "change": -28.12
+    },
+    {
+     "month": "2026-07",
+     "close": 0.004754,
+     "change": 8.64
+    },
+    {
+     "month": "2026-08",
+     "close": 0.006713,
+     "change": 41.21
+    },
+    {
+     "month": "2026-09",
+     "close": 0.008858,
+     "change": 31.95
+    }
+   ]
+  },
+  "BONK": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00000279,
+   "change7d": -8.82,
+   "change30d": -23.35,
+   "change90d": -0.71,
+   "change1y": -80.77,
+   "high52w": 0.00001431,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.00000223,
+   "low52wDate": "2026-08-12",
+   "historyDays": 365,
+   "volatility30d": 82.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.00001396,
+     "change": -27.14
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00000935,
+     "change": -33.02
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00000747,
+     "change": -20.11
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00000719,
+     "change": -3.75
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00000602,
+     "change": -16.27
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00000588,
+     "change": -2.33
+    },
+    {
+     "month": "2026-04",
+     "close": 0.00000616,
+     "change": 4.76
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00000553,
+     "change": -10.23
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00000411,
+     "change": -25.68
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00000281,
+     "change": -31.63
+    },
+    {
+     "month": "2026-08",
+     "close": 0.000003,
+     "change": 6.76
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0000038,
+     "change": 26.67
+    }
+   ]
+  },
+  "GRT": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.02031,
+   "change7d": -14.63,
+   "change30d": -30.45,
+   "change90d": 41.93,
+   "change1y": -68.05,
+   "high52w": 0.06993,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.01317,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 70.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.06137,
+     "change": -23.67
+    },
+    {
+     "month": "2025-11",
+     "close": 0.04935,
+     "change": -19.59
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0332,
+     "change": -32.73
+    },
+    {
+     "month": "2026-01",
+     "close": 0.03025,
+     "change": -8.89
+    },
+    {
+     "month": "2026-02",
+     "close": 0.02655,
+     "change": -12.23
+    },
+    {
+     "month": "2026-03",
+     "close": 0.02412,
+     "change": -9.15
+    },
+    {
+     "month": "2026-04",
+     "close": 0.02411,
+     "change": -0.04
+    },
+    {
+     "month": "2026-05",
+     "close": 0.026,
+     "change": 7.84
+    },
+    {
+     "month": "2026-06",
+     "close": 0.01769,
+     "change": -31.96
+    },
+    {
+     "month": "2026-07",
+     "close": 0.01431,
+     "change": -19.11
+    },
+    {
+     "month": "2026-08",
+     "close": 0.01638,
+     "change": 14.47
+    },
+    {
+     "month": "2026-09",
+     "close": 0.02924,
+     "change": 78.51
+    }
+   ]
+  },
+  "RUNE": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.619,
+   "change7d": -3.73,
+   "change30d": -17.69,
+   "change90d": 43.62,
+   "change1y": -28.93,
+   "high52w": 0.863,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.321,
+   "low52wDate": "2026-06-05",
+   "historyDays": 365,
+   "volatility30d": 65.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.847,
+     "change": -25.77
+    },
+    {
+     "month": "2025-11",
+     "close": 0.634,
+     "change": -25.15
+    },
+    {
+     "month": "2025-12",
+     "close": 0.559,
+     "change": -11.83
+    },
+    {
+     "month": "2026-01",
+     "close": 0.476,
+     "change": -14.85
+    },
+    {
+     "month": "2026-02",
+     "close": 0.4,
+     "change": -15.97
+    },
+    {
+     "month": "2026-03",
+     "close": 0.414,
+     "change": 3.5
+    },
+    {
+     "month": "2026-04",
+     "close": 0.498,
+     "change": 20.29
+    },
+    {
+     "month": "2026-05",
+     "close": 0.418,
+     "change": -16.06
+    },
+    {
+     "month": "2026-06",
+     "close": 0.379,
+     "change": -9.33
+    },
+    {
+     "month": "2026-07",
+     "close": 0.431,
+     "change": 13.72
+    },
+    {
+     "month": "2026-08",
+     "close": 0.48,
+     "change": 11.37
+    },
+    {
+     "month": "2026-09",
+     "close": 0.8,
+     "change": 66.67
+    }
+   ]
+  },
+  "ATOM": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.502,
+   "change7d": -12.52,
+   "change30d": -12.88,
+   "change90d": 22.21,
+   "change1y": -51.47,
+   "high52w": 3.108,
+   "high52wDate": "2025-11-10",
+   "low52w": 1.224,
+   "low52wDate": "2026-08-01",
+   "historyDays": 365,
+   "volatility30d": 82.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.962,
+     "change": -27.76
+    },
+    {
+     "month": "2025-11",
+     "close": 2.376,
+     "change": -19.78
+    },
+    {
+     "month": "2025-12",
+     "close": 1.93,
+     "change": -18.77
+    },
+    {
+     "month": "2026-01",
+     "close": 1.971,
+     "change": 2.12
+    },
+    {
+     "month": "2026-02",
+     "close": 1.849,
+     "change": -6.19
+    },
+    {
+     "month": "2026-03",
+     "close": 1.707,
+     "change": -7.68
+    },
+    {
+     "month": "2026-04",
+     "close": 1.888,
+     "change": 10.6
+    },
+    {
+     "month": "2026-05",
+     "close": 1.958,
+     "change": 3.71
+    },
+    {
+     "month": "2026-06",
+     "close": 1.513,
+     "change": -22.73
+    },
+    {
+     "month": "2026-07",
+     "close": 1.229,
+     "change": -18.77
+    },
+    {
+     "month": "2026-08",
+     "close": 1.47,
+     "change": 19.61
+    },
+    {
+     "month": "2026-09",
+     "close": 1.745,
+     "change": 18.71
+    }
+   ]
+  },
+  "THETA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1599,
+   "change7d": -17.83,
+   "change30d": -28.17,
+   "change90d": 27.82,
+   "change1y": -69.6,
+   "high52w": 0.518,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.1235,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 82.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.487,
+     "change": -29.01
+    },
+    {
+     "month": "2025-11",
+     "close": 0.335,
+     "change": -31.21
+    },
+    {
+     "month": "2025-12",
+     "close": 0.264,
+     "change": -21.19
+    },
+    {
+     "month": "2026-01",
+     "close": 0.221,
+     "change": -16.29
+    },
+    {
+     "month": "2026-02",
+     "close": 0.192,
+     "change": -13.12
+    },
+    {
+     "month": "2026-03",
+     "close": 0.149,
+     "change": -22.4
+    },
+    {
+     "month": "2026-04",
+     "close": 0.194,
+     "change": 30.2
+    },
+    {
+     "month": "2026-05",
+     "close": 0.19,
+     "change": -2.06
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1273,
+     "change": -33
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1251,
+     "change": -1.73
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1691,
+     "change": 35.17
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2245,
+     "change": 32.76
+    }
+   ]
+  },
+  "AR": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 3.154,
+   "change7d": -11.6,
+   "change30d": -25.28,
+   "change90d": 83.05,
+   "change1y": -18.08,
+   "high52w": 7.91,
+   "high52wDate": "2025-11-07",
+   "low52w": 1.53,
+   "low52wDate": "2026-03-01",
+   "historyDays": 365,
+   "volatility30d": 89.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 3.55,
+     "change": -34.86
+    },
+    {
+     "month": "2025-11",
+     "close": 4.08,
+     "change": 14.93
+    },
+    {
+     "month": "2025-12",
+     "close": 3.43,
+     "change": -15.93
+    },
+    {
+     "month": "2026-01",
+     "close": 2.58,
+     "change": -24.78
+    },
+    {
+     "month": "2026-02",
+     "close": 1.6,
+     "change": -37.98
+    },
+    {
+     "month": "2026-03",
+     "close": 1.75,
+     "change": 9.37
+    },
+    {
+     "month": "2026-04",
+     "close": 1.92,
+     "change": 9.71
+    },
+    {
+     "month": "2026-05",
+     "close": 2.24,
+     "change": 16.67
+    },
+    {
+     "month": "2026-06",
+     "close": 1.995,
+     "change": -10.94
+    },
+    {
+     "month": "2026-07",
+     "close": 1.723,
+     "change": -13.63
+    },
+    {
+     "month": "2026-08",
+     "close": 2.07,
+     "change": 20.14
+    },
+    {
+     "month": "2026-09",
+     "close": 4.112,
+     "change": 98.65
+    }
+   ]
+  },
+  "SKY": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0662,
+   "change7d": -8.78,
+   "change30d": -19.09,
+   "change90d": 16.88,
+   "change1y": 12.85,
+   "high52w": 0.09775,
+   "high52wDate": "2026-10-04",
+   "low52w": 0.04179,
+   "low52wDate": "2025-11-22",
+   "historyDays": 365,
+   "volatility30d": 89.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.05598,
+     "change": -17.66
+    },
+    {
+     "month": "2025-11",
+     "close": 0.05518,
+     "change": -1.43
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0577,
+     "change": 4.57
+    },
+    {
+     "month": "2026-01",
+     "close": 0.06099,
+     "change": 5.7
+    },
+    {
+     "month": "2026-02",
+     "close": 0.06831,
+     "change": 12
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0744,
+     "change": 8.92
+    },
+    {
+     "month": "2026-04",
+     "close": 0.07959,
+     "change": 6.98
+    },
+    {
+     "month": "2026-05",
+     "close": 0.06815,
+     "change": -14.37
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0523,
+     "change": -23.26
+    },
+    {
+     "month": "2026-07",
+     "close": 0.05664,
+     "change": 8.3
+    },
+    {
+     "month": "2026-08",
+     "close": 0.06776,
+     "change": 19.63
+    },
+    {
+     "month": "2026-09",
+     "close": 0.07769,
+     "change": 14.65
+    }
+   ]
+  },
+  "SEI": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.04797,
+   "change7d": -15.93,
+   "change30d": -34.53,
+   "change90d": 15.56,
+   "change1y": -75.88,
+   "high52w": 0.1948,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.03859,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 76.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1908,
+     "change": -30.89
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1371,
+     "change": -28.14
+    },
+    {
+     "month": "2025-12",
+     "close": 0.111,
+     "change": -19.04
+    },
+    {
+     "month": "2026-01",
+     "close": 0.0877,
+     "change": -20.99
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0687,
+     "change": -21.66
+    },
+    {
+     "month": "2026-03",
+     "close": 0.05,
+     "change": -27.22
+    },
+    {
+     "month": "2026-04",
+     "close": 0.05726,
+     "change": 14.52
+    },
+    {
+     "month": "2026-05",
+     "close": 0.06809,
+     "change": 18.91
+    },
+    {
+     "month": "2026-06",
+     "close": 0.04746,
+     "change": -30.3
+    },
+    {
+     "month": "2026-07",
+     "close": 0.04151,
+     "change": -12.54
+    },
+    {
+     "month": "2026-08",
+     "close": 0.04443,
+     "change": 7.03
+    },
+    {
+     "month": "2026-09",
+     "close": 0.07356,
+     "change": 65.56
+    }
+   ]
+  },
+  "ONDO": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.3806,
+   "change7d": -11.22,
+   "change30d": -24.18,
+   "change90d": -2.46,
+   "change1y": -47.77,
+   "high52w": 0.703,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.2251,
+   "low52wDate": "2026-02-05",
+   "historyDays": 365,
+   "volatility30d": 72.5,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.6873,
+     "change": -22.25
+    },
+    {
+     "month": "2025-11",
+     "close": 0.5039,
+     "change": -26.68
+    },
+    {
+     "month": "2025-12",
+     "close": 0.3591,
+     "change": -28.74
+    },
+    {
+     "month": "2026-01",
+     "close": 0.2878,
+     "change": -19.86
+    },
+    {
+     "month": "2026-02",
+     "close": 0.2614,
+     "change": -9.17
+    },
+    {
+     "month": "2026-03",
+     "close": 0.2729,
+     "change": 4.4
+    },
+    {
+     "month": "2026-04",
+     "close": 0.2626,
+     "change": -3.77
+    },
+    {
+     "month": "2026-05",
+     "close": 0.3643,
+     "change": 38.73
+    },
+    {
+     "month": "2026-06",
+     "close": 0.3084,
+     "change": -15.34
+    },
+    {
+     "month": "2026-07",
+     "close": 0.3902,
+     "change": 26.52
+    },
+    {
+     "month": "2026-08",
+     "close": 0.3461,
+     "change": -11.3
+    },
+    {
+     "month": "2026-09",
+     "close": 0.4998,
+     "change": 44.41
+    }
+   ]
+  },
+  "ALGO": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0933,
+   "change7d": -12.72,
+   "change30d": -25.72,
+   "change90d": 18.25,
+   "change1y": -49.24,
+   "high52w": 0.1888,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.0775,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 66.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1774,
+     "change": -14.67
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1366,
+     "change": -23
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1105,
+     "change": -19.11
+    },
+    {
+     "month": "2026-01",
+     "close": 0.104,
+     "change": -5.88
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0879,
+     "change": -15.48
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0939,
+     "change": 6.83
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1104,
+     "change": 17.57
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1276,
+     "change": 15.58
+    },
+    {
+     "month": "2026-06",
+     "close": 0.083,
+     "change": -34.95
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0789,
+     "change": -4.94
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0856,
+     "change": 8.49
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1239,
+     "change": 44.74
+    }
+   ]
+  },
+  "HNT": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.3562,
+   "change7d": -12.44,
+   "change30d": -25.59,
+   "change90d": 94.96,
+   "change1y": -85.36,
+   "high52w": 2.4622,
+   "high52wDate": "2025-10-30",
+   "low52w": 0.1674,
+   "low52wDate": "2026-08-14",
+   "historyDays": 365,
+   "volatility30d": 85.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.4591,
+     "change": 1.66
+    },
+    {
+     "month": "2025-11",
+     "close": 2.1161,
+     "change": -13.95
+    },
+    {
+     "month": "2025-12",
+     "close": 1.367,
+     "change": -35.4
+    },
+    {
+     "month": "2026-01",
+     "close": 1.0018,
+     "change": -26.72
+    },
+    {
+     "month": "2026-02",
+     "close": 1.3005,
+     "change": 29.82
+    },
+    {
+     "month": "2026-03",
+     "close": 1.071,
+     "change": -17.65
+    },
+    {
+     "month": "2026-04",
+     "close": 0.9113,
+     "change": -14.91
+    },
+    {
+     "month": "2026-05",
+     "close": 0.7245,
+     "change": -20.5
+    },
+    {
+     "month": "2026-06",
+     "close": 0.2388,
+     "change": -67.04
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1827,
+     "change": -23.49
+    },
+    {
+     "month": "2026-08",
+     "close": 0.6466,
+     "change": 253.91
+    },
+    {
+     "month": "2026-09",
+     "close": 0.4836,
+     "change": -25.21
+    }
+   ]
+  },
+  "TIA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.4899,
+   "change7d": -12.42,
+   "change30d": 11.14,
+   "change90d": 52.9,
+   "change1y": -51.5,
+   "high52w": 1.06,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.2853,
+   "low52wDate": "2026-04-02",
+   "historyDays": 365,
+   "volatility30d": 136.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.9,
+     "change": -34.88
+    },
+    {
+     "month": "2025-11",
+     "close": 0.637,
+     "change": -29.22
+    },
+    {
+     "month": "2025-12",
+     "close": 0.4559,
+     "change": -28.43
+    },
+    {
+     "month": "2026-01",
+     "close": 0.3721,
+     "change": -18.38
+    },
+    {
+     "month": "2026-02",
+     "close": 0.3266,
+     "change": -12.23
+    },
+    {
+     "month": "2026-03",
+     "close": 0.2959,
+     "change": -9.4
+    },
+    {
+     "month": "2026-04",
+     "close": 0.3499,
+     "change": 18.25
+    },
+    {
+     "month": "2026-05",
+     "close": 0.401,
+     "change": 14.6
+    },
+    {
+     "month": "2026-06",
+     "close": 0.3559,
+     "change": -11.25
+    },
+    {
+     "month": "2026-07",
+     "close": 0.3204,
+     "change": -9.97
+    },
+    {
+     "month": "2026-08",
+     "close": 0.337,
+     "change": 5.18
+    },
+    {
+     "month": "2026-09",
+     "close": 0.4422,
+     "change": 31.22
+    }
+   ]
+  },
+  "JUP": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.25,
+   "change7d": -19.85,
+   "change30d": -24.22,
+   "change90d": 29.4,
+   "change1y": -40.09,
+   "high52w": 0.4108,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.1375,
+   "low52wDate": "2026-02-11",
+   "historyDays": 365,
+   "volatility30d": 88,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.4061,
+     "change": -5.23
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2445,
+     "change": -39.79
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1883,
+     "change": -22.99
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1803,
+     "change": -4.25
+    },
+    {
+     "month": "2026-02",
+     "close": 0.1619,
+     "change": -10.21
+    },
+    {
+     "month": "2026-03",
+     "close": 0.1588,
+     "change": -1.91
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1801,
+     "change": 13.41
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1914,
+     "change": 6.27
+    },
+    {
+     "month": "2026-06",
+     "close": 0.2119,
+     "change": 10.71
+    },
+    {
+     "month": "2026-07",
+     "close": 0.1932,
+     "change": -8.82
+    },
+    {
+     "month": "2026-08",
+     "close": 0.2237,
+     "change": 15.79
+    },
+    {
+     "month": "2026-09",
+     "close": 0.3301,
+     "change": 47.56
+    }
+   ]
+  },
+  "PYTH": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.06301,
+   "change7d": -12.68,
+   "change30d": -19.99,
+   "change90d": 56.31,
+   "change1y": -44.39,
+   "high52w": 0.1103,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.0311,
+   "low52wDate": "2026-06-10",
+   "historyDays": 365,
+   "volatility30d": 110.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1064,
+     "change": -27.82
+    },
+    {
+     "month": "2025-11",
+     "close": 0.0733,
+     "change": -31.11
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0558,
+     "change": -23.87
+    },
+    {
+     "month": "2026-01",
+     "close": 0.0525,
+     "change": -5.91
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0492,
+     "change": -6.29
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0392,
+     "change": -20.33
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0464,
+     "change": 18.37
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0413,
+     "change": -10.99
+    },
+    {
+     "month": "2026-06",
+     "close": 0.03751,
+     "change": -9.18
+    },
+    {
+     "month": "2026-07",
+     "close": 0.04031,
+     "change": 7.46
+    },
+    {
+     "month": "2026-08",
+     "close": 0.04959,
+     "change": 23.02
+    },
+    {
+     "month": "2026-09",
+     "close": 0.07728,
+     "change": 55.84
+    }
+   ]
+  },
+  "FLOKI": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00002239,
+   "change7d": -3.95,
+   "change30d": -18.28,
+   "change90d": 9.75,
+   "change1y": -69.07,
+   "high52w": 0.00007064,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.00002003,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 65.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.00006989,
+     "change": -14.08
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00004741,
+     "change": -32.16
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00003942,
+     "change": -16.85
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00003473,
+     "change": -11.9
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00002787,
+     "change": -19.75
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00002784,
+     "change": -0.11
+    },
+    {
+     "month": "2026-04",
+     "close": 0.00003207,
+     "change": 15.19
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00002874,
+     "change": -10.38
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00002153,
+     "change": -25.09
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0000204,
+     "change": -5.25
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0000242,
+     "change": 18.63
+    },
+    {
+     "month": "2026-09",
+     "close": 0.00002769,
+     "change": 14.42
+    }
+   ]
+  },
+  "LDO": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.3285,
+   "change7d": -14.21,
+   "change30d": -29.63,
+   "change90d": -4.73,
+   "change1y": -64.46,
+   "high52w": 0.8859,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.2399,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 95.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.8716,
+     "change": -19.85
+    },
+    {
+     "month": "2025-11",
+     "close": 0.6426,
+     "change": -26.27
+    },
+    {
+     "month": "2025-12",
+     "close": 0.5764,
+     "change": -10.3
+    },
+    {
+     "month": "2026-01",
+     "close": 0.4233,
+     "change": -26.56
+    },
+    {
+     "month": "2026-02",
+     "close": 0.3065,
+     "change": -27.59
+    },
+    {
+     "month": "2026-03",
+     "close": 0.3296,
+     "change": 7.54
+    },
+    {
+     "month": "2026-04",
+     "close": 0.3656,
+     "change": 10.92
+    },
+    {
+     "month": "2026-05",
+     "close": 0.3279,
+     "change": -10.31
+    },
+    {
+     "month": "2026-06",
+     "close": 0.2399,
+     "change": -26.84
+    },
+    {
+     "month": "2026-07",
+     "close": 0.3448,
+     "change": 43.73
+    },
+    {
+     "month": "2026-08",
+     "close": 0.3572,
+     "change": 3.6
+    },
+    {
+     "month": "2026-09",
+     "close": 0.4578,
+     "change": 28.16
+    }
+   ]
+  },
+  "POPCAT": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.039,
+   "change7d": -11.96,
+   "change30d": -26.55,
+   "change90d": -9.93,
+   "change1y": -75.18,
+   "high52w": 0.1533,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.039,
+   "low52wDate": "2026-10-29",
+   "historyDays": 365,
+   "volatility30d": 76.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1408,
+     "change": -34.88
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1039,
+     "change": -26.21
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0738,
+     "change": -28.97
+    },
+    {
+     "month": "2026-01",
+     "close": 0.056,
+     "change": -24.12
+    },
+    {
+     "month": "2026-02",
+     "close": 0.048,
+     "change": -14.29
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0477,
+     "change": -0.63
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0558,
+     "change": 16.98
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0516,
+     "change": -7.53
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0426,
+     "change": -17.44
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0433,
+     "change": 1.64
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0526,
+     "change": 21.48
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0522,
+     "change": -0.76
+    }
+   ]
+  },
+  "VIRTUAL": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.5665,
+   "change7d": -12.97,
+   "change30d": -26.63,
+   "change90d": 3.93,
+   "change1y": -62.63,
+   "high52w": 1.8336,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.5185,
+   "low52wDate": "2026-02-05",
+   "historyDays": 365,
+   "volatility30d": 77,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.3596,
+     "change": 34.23
+    },
+    {
+     "month": "2025-11",
+     "close": 0.9062,
+     "change": -33.35
+    },
+    {
+     "month": "2025-12",
+     "close": 0.6458,
+     "change": -28.74
+    },
+    {
+     "month": "2026-01",
+     "close": 0.6502,
+     "change": 0.68
+    },
+    {
+     "month": "2026-02",
+     "close": 0.7076,
+     "change": 8.83
+    },
+    {
+     "month": "2026-03",
+     "close": 0.6564,
+     "change": -7.24
+    },
+    {
+     "month": "2026-04",
+     "close": 0.6869,
+     "change": 4.65
+    },
+    {
+     "month": "2026-05",
+     "close": 0.7217,
+     "change": 5.07
+    },
+    {
+     "month": "2026-06",
+     "close": 0.5254,
+     "change": -27.2
+    },
+    {
+     "month": "2026-07",
+     "close": 0.5451,
+     "change": 3.75
+    },
+    {
+     "month": "2026-08",
+     "close": 0.6966,
+     "change": 27.79
+    },
+    {
+     "month": "2026-09",
+     "close": 0.8056,
+     "change": 15.65
+    }
+   ]
+  },
+  "ENA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1755,
+   "change7d": -11.5,
+   "change30d": -29.35,
+   "change90d": 118.56,
+   "change1y": -60.39,
+   "high52w": 0.3941,
+   "high52wDate": "2025-10-30",
+   "low52w": 0.0714,
+   "low52wDate": "2026-07-01",
+   "historyDays": 365,
+   "volatility30d": 119.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.3918,
+     "change": -29.89
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2589,
+     "change": -33.92
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1999,
+     "change": -22.79
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1387,
+     "change": -30.62
+    },
+    {
+     "month": "2026-02",
+     "close": 0.1041,
+     "change": -24.95
+    },
+    {
+     "month": "2026-03",
+     "close": 0.091,
+     "change": -12.58
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1027,
+     "change": 12.86
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0881,
+     "change": -14.22
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0722,
+     "change": -18.05
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0803,
+     "change": 11.22
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1495,
+     "change": 86.18
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2649,
+     "change": 77.19
+    }
+   ]
+  },
+  "JASMY": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00374,
+   "change7d": -17.07,
+   "change30d": -28.9,
+   "change90d": -13.63,
+   "change1y": -64,
+   "high52w": 0.01019,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.0035,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 83.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.00999,
+     "change": -19.69
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00714,
+     "change": -28.53
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00562,
+     "change": -21.29
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00587,
+     "change": 4.45
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00562,
+     "change": -4.26
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00537,
+     "change": -4.45
+    },
+    {
+     "month": "2026-04",
+     "close": 0.00563,
+     "change": 4.84
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00547,
+     "change": -2.84
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00426,
+     "change": -22.12
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00433,
+     "change": 1.64
+    },
+    {
+     "month": "2026-08",
+     "close": 0.00483,
+     "change": 11.55
+    },
+    {
+     "month": "2026-09",
+     "close": 0.00508,
+     "change": 5.18
+    }
+   ]
+  },
+  "FDUSD": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.9979,
+   "change7d": -0.04,
+   "change30d": -0.06,
+   "change90d": -0.03,
+   "change1y": 0.02,
+   "high52w": 1.0037,
+   "high52wDate": "2026-01-14",
+   "low52w": 0.9966,
+   "low52wDate": "2025-11-28",
+   "historyDays": 365,
+   "volatility30d": 1.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.9993,
+     "change": 0.16
+    },
+    {
+     "month": "2025-11",
+     "close": 0.9966,
+     "change": -0.27
+    },
+    {
+     "month": "2025-12",
+     "close": 0.9994,
+     "change": 0.28
+    },
+    {
+     "month": "2026-01",
+     "close": 0.9982,
+     "change": -0.12
+    },
+    {
+     "month": "2026-02",
+     "close": 1.0004,
+     "change": 0.22
+    },
+    {
+     "month": "2026-03",
+     "close": 0.9998,
+     "change": -0.06
+    },
+    {
+     "month": "2026-04",
+     "close": 0.9991,
+     "change": -0.07
+    },
+    {
+     "month": "2026-05",
+     "close": 0.9993,
+     "change": 0.02
+    },
+    {
+     "month": "2026-06",
+     "close": 0.9977,
+     "change": -0.16
+    },
+    {
+     "month": "2026-07",
+     "close": 0.9982,
+     "change": 0.05
+    },
+    {
+     "month": "2026-08",
+     "close": 0.9986,
+     "change": 0.04
+    },
+    {
+     "month": "2026-09",
+     "close": 0.9992,
+     "change": 0.06
+    }
+   ]
+  },
+  "PENDLE": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.749,
+   "change7d": -14.6,
+   "change30d": -24.74,
+   "change90d": 21.8,
+   "change1y": -46.76,
+   "high52w": 3.128,
+   "high52wDate": "2025-11-01",
+   "low52w": 1.014,
+   "low52wDate": "2026-04-06",
+   "historyDays": 365,
+   "volatility30d": 74.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 3.063,
+     "change": -31.49
+    },
+    {
+     "month": "2025-11",
+     "close": 2.656,
+     "change": -13.29
+    },
+    {
+     "month": "2025-12",
+     "close": 1.883,
+     "change": -29.1
+    },
+    {
+     "month": "2026-01",
+     "close": 1.599,
+     "change": -15.08
+    },
+    {
+     "month": "2026-02",
+     "close": 1.29,
+     "change": -19.32
+    },
+    {
+     "month": "2026-03",
+     "close": 1.115,
+     "change": -13.57
+    },
+    {
+     "month": "2026-04",
+     "close": 1.427,
+     "change": 27.98
+    },
+    {
+     "month": "2026-05",
+     "close": 1.371,
+     "change": -3.92
+    },
+    {
+     "month": "2026-06",
+     "close": 1.318,
+     "change": -3.87
+    },
+    {
+     "month": "2026-07",
+     "close": 1.436,
+     "change": 8.95
+    },
+    {
+     "month": "2026-08",
+     "close": 1.758,
+     "change": 22.42
+    },
+    {
+     "month": "2026-09",
+     "close": 2.387,
+     "change": 35.78
+    }
+   ]
+  },
+  "RAY": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.586,
+   "change7d": -13.67,
+   "change30d": -17.12,
+   "change90d": 163.81,
+   "change1y": -11.94,
+   "high52w": 2.4678,
+   "high52wDate": "2026-10-07",
+   "low52w": 0.558,
+   "low52wDate": "2026-06-06",
+   "historyDays": 365,
+   "volatility30d": 104.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.633,
+     "change": -38.07
+    },
+    {
+     "month": "2025-11",
+     "close": 1.072,
+     "change": -34.35
+    },
+    {
+     "month": "2025-12",
+     "close": 0.886,
+     "change": -17.35
+    },
+    {
+     "month": "2026-01",
+     "close": 0.762,
+     "change": -14
+    },
+    {
+     "month": "2026-02",
+     "close": 0.608,
+     "change": -20.21
+    },
+    {
+     "month": "2026-03",
+     "close": 0.628,
+     "change": 3.29
+    },
+    {
+     "month": "2026-04",
+     "close": 0.81,
+     "change": 28.98
+    },
+    {
+     "month": "2026-05",
+     "close": 0.716,
+     "change": -11.6
+    },
+    {
+     "month": "2026-06",
+     "close": 0.5988,
+     "change": -16.37
+    },
+    {
+     "month": "2026-07",
+     "close": 0.6012,
+     "change": 0.4
+    },
+    {
+     "month": "2026-08",
+     "close": 0.7969,
+     "change": 32.55
+    },
+    {
+     "month": "2026-09",
+     "close": 1.9456,
+     "change": 144.15
+    }
+   ]
+  },
+  "FLOW": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.02311,
+   "change7d": -19.28,
+   "change30d": -24.6,
+   "change90d": -25.14,
+   "change1y": -91.41,
+   "high52w": 0.285,
+   "high52wDate": "2025-11-08",
+   "low52w": 0.02311,
+   "low52wDate": "2026-10-29",
+   "historyDays": 365,
+   "volatility30d": 82.5,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.26,
+     "change": -25.71
+    },
+    {
+     "month": "2025-11",
+     "close": 0.228,
+     "change": -12.31
+    },
+    {
+     "month": "2025-12",
+     "close": 0.085,
+     "change": -62.72
+    },
+    {
+     "month": "2026-01",
+     "close": 0.05447,
+     "change": -35.92
+    },
+    {
+     "month": "2026-02",
+     "close": 0.03882,
+     "change": -28.73
+    },
+    {
+     "month": "2026-03",
+     "close": 0.03001,
+     "change": -22.69
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0442,
+     "change": 47.28
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0321,
+     "change": -27.38
+    },
+    {
+     "month": "2026-06",
+     "close": 0.02698,
+     "change": -15.95
+    },
+    {
+     "month": "2026-07",
+     "close": 0.03087,
+     "change": 14.42
+    },
+    {
+     "month": "2026-08",
+     "close": 0.02668,
+     "change": -13.57
+    },
+    {
+     "month": "2026-09",
+     "close": 0.03117,
+     "change": 16.83
+    }
+   ]
+  },
+  "GALA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.001628,
+   "change7d": -12.43,
+   "change30d": -26.3,
+   "change90d": -10.94,
+   "change1y": -84.91,
+   "high52w": 0.01063,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.001394,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 95.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.01005,
+     "change": -30.26
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00751,
+     "change": -25.27
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00584,
+     "change": -22.24
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00483,
+     "change": -17.29
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0036,
+     "change": -25.47
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0029,
+     "change": -19.44
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0032,
+     "change": 10.34
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00315,
+     "change": -1.56
+    },
+    {
+     "month": "2026-06",
+     "close": 0.002234,
+     "change": -29.08
+    },
+    {
+     "month": "2026-07",
+     "close": 0.001828,
+     "change": -18.17
+    },
+    {
+     "month": "2026-08",
+     "close": 0.001711,
+     "change": -6.4
+    },
+    {
+     "month": "2026-09",
+     "close": 0.002317,
+     "change": 35.42
+    }
+   ]
+  },
+  "WLD": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.3819,
+   "change7d": -30.04,
+   "change30d": -21.05,
+   "change90d": 27.38,
+   "change1y": -55.59,
+   "high52w": 0.872,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.2341,
+   "low52wDate": "2026-05-01",
+   "historyDays": 365,
+   "volatility30d": 126.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.799,
+     "change": -35.77
+    },
+    {
+     "month": "2025-11",
+     "close": 0.62,
+     "change": -22.4
+    },
+    {
+     "month": "2025-12",
+     "close": 0.4806,
+     "change": -22.48
+    },
+    {
+     "month": "2026-01",
+     "close": 0.4138,
+     "change": -13.9
+    },
+    {
+     "month": "2026-02",
+     "close": 0.3992,
+     "change": -3.53
+    },
+    {
+     "month": "2026-03",
+     "close": 0.2764,
+     "change": -30.76
+    },
+    {
+     "month": "2026-04",
+     "close": 0.243,
+     "change": -12.08
+    },
+    {
+     "month": "2026-05",
+     "close": 0.3502,
+     "change": 44.12
+    },
+    {
+     "month": "2026-06",
+     "close": 0.4067,
+     "change": 16.13
+    },
+    {
+     "month": "2026-07",
+     "close": 0.2998,
+     "change": -26.28
+    },
+    {
+     "month": "2026-08",
+     "close": 0.3648,
+     "change": 21.68
+    },
+    {
+     "month": "2026-09",
+     "close": 0.5353,
+     "change": 46.74
+    }
+   ]
+  },
+  "STRK": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.04229,
+   "change7d": -20.61,
+   "change30d": 0.98,
+   "change90d": 65.65,
+   "change1y": -64.01,
+   "high52w": 0.249,
+   "high52wDate": "2025-11-19",
+   "low52w": 0.02247,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 264.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.103,
+     "change": -26.32
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1239,
+     "change": 20.29
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0792,
+     "change": -36.08
+    },
+    {
+     "month": "2026-01",
+     "close": 0.0549,
+     "change": -30.68
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0416,
+     "change": -24.23
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0345,
+     "change": -17.07
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0384,
+     "change": 11.3
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0383,
+     "change": -0.26
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0291,
+     "change": -24.02
+    },
+    {
+     "month": "2026-07",
+     "close": 0.02553,
+     "change": -12.27
+    },
+    {
+     "month": "2026-08",
+     "close": 0.02603,
+     "change": 1.96
+    },
+    {
+     "month": "2026-09",
+     "close": 0.04315,
+     "change": 65.77
+    }
+   ]
+  },
+  "AERO": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.6232,
+   "change7d": -20.75,
+   "change30d": -23.08,
+   "change90d": 49.84,
+   "change1y": -36.25,
+   "high52w": 1.183,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.2807,
+   "low52wDate": "2026-02-11",
+   "historyDays": 365,
+   "volatility30d": 111.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.0649,
+     "change": 5.11
+    },
+    {
+     "month": "2025-11",
+     "close": 0.6631,
+     "change": -37.73
+    },
+    {
+     "month": "2025-12",
+     "close": 0.4026,
+     "change": -39.29
+    },
+    {
+     "month": "2026-01",
+     "close": 0.389,
+     "change": -3.38
+    },
+    {
+     "month": "2026-02",
+     "close": 0.358,
+     "change": -7.97
+    },
+    {
+     "month": "2026-03",
+     "close": 0.3266,
+     "change": -8.77
+    },
+    {
+     "month": "2026-04",
+     "close": 0.4502,
+     "change": 37.84
+    },
+    {
+     "month": "2026-05",
+     "close": 0.4111,
+     "change": -8.69
+    },
+    {
+     "month": "2026-06",
+     "close": 0.4769,
+     "change": 16.01
+    },
+    {
+     "month": "2026-07",
+     "close": 0.4159,
+     "change": -12.79
+    },
+    {
+     "month": "2026-08",
+     "close": 0.4728,
+     "change": 13.68
+    },
+    {
+     "month": "2026-09",
+     "close": 0.8243,
+     "change": 74.34
+    }
+   ]
+  },
+  "AKT": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.6127,
+   "change7d": -9.46,
+   "change30d": -4.73,
+   "change90d": 40.37,
+   "change1y": -23.82,
+   "high52w": 0.9282,
+   "high52wDate": "2026-05-25",
+   "low52w": 0.2768,
+   "low52wDate": "2026-02-05",
+   "historyDays": 365,
+   "volatility30d": 92.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.7152,
+     "change": -29.01
+    },
+    {
+     "month": "2025-11",
+     "close": 0.5009,
+     "change": -29.96
+    },
+    {
+     "month": "2025-12",
+     "close": 0.3519,
+     "change": -29.75
+    },
+    {
+     "month": "2026-01",
+     "close": 0.3699,
+     "change": 5.12
+    },
+    {
+     "month": "2026-02",
+     "close": 0.3105,
+     "change": -16.06
+    },
+    {
+     "month": "2026-03",
+     "close": 0.4979,
+     "change": 60.35
+    },
+    {
+     "month": "2026-04",
+     "close": 0.5079,
+     "change": 2.01
+    },
+    {
+     "month": "2026-05",
+     "close": 0.7828,
+     "change": 54.12
+    },
+    {
+     "month": "2026-06",
+     "close": 0.597,
+     "change": -23.74
+    },
+    {
+     "month": "2026-07",
+     "close": 0.4365,
+     "change": -26.88
+    },
+    {
+     "month": "2026-08",
+     "close": 0.5099,
+     "change": 16.82
+    },
+    {
+     "month": "2026-09",
+     "close": 0.6422,
+     "change": 25.95
+    }
+   ]
+  },
+  "BEAM": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.003323,
+   "change7d": 8.59,
+   "change30d": 61.47,
+   "change90d": 131.89,
+   "change1y": -34.2,
+   "high52w": 0.00509,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.001285,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 110.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.00496,
+     "change": -39.29
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00339,
+     "change": -31.65
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0027,
+     "change": -20.35
+    },
+    {
+     "month": "2026-01",
+     "close": 0.002564,
+     "change": -5.04
+    },
+    {
+     "month": "2026-02",
+     "close": 0.001899,
+     "change": -25.94
+    },
+    {
+     "month": "2026-03",
+     "close": 0.001676,
+     "change": -11.74
+    },
+    {
+     "month": "2026-04",
+     "close": 0.001905,
+     "change": 13.66
+    },
+    {
+     "month": "2026-05",
+     "close": 0.001724,
+     "change": -9.5
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00141,
+     "change": -18.21
+    },
+    {
+     "month": "2026-07",
+     "close": 0.001433,
+     "change": 1.63
+    },
+    {
+     "month": "2026-08",
+     "close": 0.001502,
+     "change": 4.82
+    },
+    {
+     "month": "2026-09",
+     "close": 0.001985,
+     "change": 32.16
+    }
+   ]
+  },
+  "EGLD": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 3.215,
+   "change7d": -9.31,
+   "change30d": -28.78,
+   "change90d": 21.32,
+   "change1y": -66.72,
+   "high52w": 10.3,
+   "high52wDate": "2025-11-08",
+   "low52w": 2.51,
+   "low52wDate": "2026-06-25",
+   "historyDays": 365,
+   "volatility30d": 57.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 9.12,
+     "change": -29.68
+    },
+    {
+     "month": "2025-11",
+     "close": 7.09,
+     "change": -22.26
+    },
+    {
+     "month": "2025-12",
+     "close": 5.54,
+     "change": -21.86
+    },
+    {
+     "month": "2026-01",
+     "close": 4.73,
+     "change": -14.62
+    },
+    {
+     "month": "2026-02",
+     "close": 4.52,
+     "change": -4.44
+    },
+    {
+     "month": "2026-03",
+     "close": 3.81,
+     "change": -15.71
+    },
+    {
+     "month": "2026-04",
+     "close": 4.07,
+     "change": 6.82
+    },
+    {
+     "month": "2026-05",
+     "close": 3.57,
+     "change": -12.29
+    },
+    {
+     "month": "2026-06",
+     "close": 2.52,
+     "change": -29.41
+    },
+    {
+     "month": "2026-07",
+     "close": 2.65,
+     "change": 5.16
+    },
+    {
+     "month": "2026-08",
+     "close": 3.881,
+     "change": 46.45
+    },
+    {
+     "month": "2026-09",
+     "close": 4.502,
+     "change": 16
+    }
+   ]
+  },
+  "QNT": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 182.89,
+   "change7d": -2.34,
+   "change30d": -31.45,
+   "change90d": 203.96,
+   "change1y": 125.23,
+   "high52w": 287.15,
+   "high52wDate": "2026-09-30",
+   "low52w": 55.89,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 100.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 79.94,
+     "change": -20.83
+    },
+    {
+     "month": "2025-11",
+     "close": 101.85,
+     "change": 27.41
+    },
+    {
+     "month": "2025-12",
+     "close": 69.5,
+     "change": -31.76
+    },
+    {
+     "month": "2026-01",
+     "close": 69.01,
+     "change": -0.71
+    },
+    {
+     "month": "2026-02",
+     "close": 63.76,
+     "change": -7.61
+    },
+    {
+     "month": "2026-03",
+     "close": 69.94,
+     "change": 9.69
+    },
+    {
+     "month": "2026-04",
+     "close": 68.93,
+     "change": -1.44
+    },
+    {
+     "month": "2026-05",
+     "close": 72.16,
+     "change": 4.69
+    },
+    {
+     "month": "2026-06",
+     "close": 64.86,
+     "change": -10.12
+    },
+    {
+     "month": "2026-07",
+     "close": 60.17,
+     "change": -7.23
+    },
+    {
+     "month": "2026-08",
+     "close": 61.12,
+     "change": 1.58
+    },
+    {
+     "month": "2026-09",
+     "close": 287.15,
+     "change": 369.81
+    }
+   ]
+  },
+  "SAND": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.04419,
+   "change7d": -17.86,
+   "change30d": 1.03,
+   "change90d": 3.25,
+   "change1y": -79.08,
+   "high52w": 0.2106,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.03345,
+   "low52wDate": "2026-09-15",
+   "historyDays": 365,
+   "volatility30d": 192.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.2021,
+     "change": -23.71
+    },
+    {
+     "month": "2025-11",
+     "close": 0.151,
+     "change": -25.28
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1088,
+     "change": -27.95
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1021,
+     "change": -6.16
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0844,
+     "change": -17.34
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0757,
+     "change": -10.31
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0723,
+     "change": -4.49
+    },
+    {
+     "month": "2026-05",
+     "close": 0.07027,
+     "change": -2.81
+    },
+    {
+     "month": "2026-06",
+     "close": 0.04653,
+     "change": -33.78
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0428,
+     "change": -8.02
+    },
+    {
+     "month": "2026-08",
+     "close": 0.03819,
+     "change": -10.77
+    },
+    {
+     "month": "2026-09",
+     "close": 0.04388,
+     "change": 14.9
+    }
+   ]
+  },
+  "AXS": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.872,
+   "change7d": -12.45,
+   "change30d": -23.91,
+   "change90d": 3.44,
+   "change1y": -42.71,
+   "high52w": 2.936,
+   "high52wDate": "2026-01-23",
+   "low52w": 0.805,
+   "low52wDate": "2025-12-31",
+   "historyDays": 365,
+   "volatility30d": 86.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.416,
+     "change": -32.6
+    },
+    {
+     "month": "2025-11",
+     "close": 1.085,
+     "change": -23.38
+    },
+    {
+     "month": "2025-12",
+     "close": 0.805,
+     "change": -25.81
+    },
+    {
+     "month": "2026-01",
+     "close": 1.818,
+     "change": 125.84
+    },
+    {
+     "month": "2026-02",
+     "close": 1.318,
+     "change": -27.5
+    },
+    {
+     "month": "2026-03",
+     "close": 1.128,
+     "change": -14.42
+    },
+    {
+     "month": "2026-04",
+     "close": 1.37,
+     "change": 21.45
+    },
+    {
+     "month": "2026-05",
+     "close": 1.186,
+     "change": -13.43
+    },
+    {
+     "month": "2026-06",
+     "close": 0.964,
+     "change": -18.72
+    },
+    {
+     "month": "2026-07",
+     "close": 0.843,
+     "change": -12.55
+    },
+    {
+     "month": "2026-08",
+     "close": 0.9,
+     "change": 6.76
+    },
+    {
+     "month": "2026-09",
+     "close": 1.157,
+     "change": 28.56
+    }
+   ]
+  },
+  "MOG": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 9.36e-8,
+   "change7d": -8.15,
+   "change30d": -20,
+   "change90d": -3.41,
+   "change1y": -79.14,
+   "high52w": 5.488e-7,
+   "high52wDate": "2025-11-01",
+   "low52w": 9.31e-8,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 64.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 3.996e-7,
+     "change": -40.87
+    },
+    {
+     "month": "2025-11",
+     "close": 3.069e-7,
+     "change": -23.2
+    },
+    {
+     "month": "2025-12",
+     "close": 2.22e-7,
+     "change": -27.66
+    },
+    {
+     "month": "2026-01",
+     "close": 1.962e-7,
+     "change": -11.62
+    },
+    {
+     "month": "2026-02",
+     "close": 1.59e-7,
+     "change": -18.96
+    },
+    {
+     "month": "2026-03",
+     "close": 1.44e-7,
+     "change": -9.43
+    },
+    {
+     "month": "2026-04",
+     "close": 1.473e-7,
+     "change": 2.29
+    },
+    {
+     "month": "2026-05",
+     "close": 1.31e-7,
+     "change": -11.07
+    },
+    {
+     "month": "2026-06",
+     "close": 1.034e-7,
+     "change": -21.07
+    },
+    {
+     "month": "2026-07",
+     "close": 9.69e-8,
+     "change": -6.29
+    },
+    {
+     "month": "2026-08",
+     "close": 1.073e-7,
+     "change": 10.73
+    },
+    {
+     "month": "2026-09",
+     "close": 1.163e-7,
+     "change": 8.39
+    }
+   ]
+  },
+  "ZEC": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1223,
+   "change7d": 0.31,
+   "change30d": -13.71,
+   "change90d": 167.21,
+   "change1y": 247.85,
+   "high52w": 1653.12,
+   "high52wDate": "2026-09-26",
+   "low52w": 197.25,
+   "low52wDate": "2026-03-07",
+   "historyDays": 365,
+   "volatility30d": 94.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 404.54,
+     "change": 444.32
+    },
+    {
+     "month": "2025-11",
+     "close": 427.94,
+     "change": 5.78
+    },
+    {
+     "month": "2025-12",
+     "close": 512.31,
+     "change": 19.72
+    },
+    {
+     "month": "2026-01",
+     "close": 303.07,
+     "change": -40.84
+    },
+    {
+     "month": "2026-02",
+     "close": 220.27,
+     "change": -27.32
+    },
+    {
+     "month": "2026-03",
+     "close": 248.51,
+     "change": 12.82
+    },
+    {
+     "month": "2026-04",
+     "close": 350.55,
+     "change": 41.06
+    },
+    {
+     "month": "2026-05",
+     "close": 569.01,
+     "change": 62.32
+    },
+    {
+     "month": "2026-06",
+     "close": 399.5,
+     "change": -29.79
+    },
+    {
+     "month": "2026-07",
+     "close": 457.7,
+     "change": 14.57
+    },
+    {
+     "month": "2026-08",
+     "close": 848.1,
+     "change": 85.3
+    },
+    {
+     "month": "2026-09",
+     "close": 1438.41,
+     "change": 69.6
+    }
+   ]
+  },
+  "ZK": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.01059,
+   "change7d": -19.41,
+   "change30d": -12.04,
+   "change90d": 35.77,
+   "change1y": -66.97,
+   "high52w": 0.07555,
+   "high52wDate": "2025-11-05",
+   "low52w": 0.00723,
+   "low52wDate": "2026-08-12",
+   "historyDays": 365,
+   "volatility30d": 131.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.0289,
+     "change": -42.49
+    },
+    {
+     "month": "2025-11",
+     "close": 0.03656,
+     "change": 26.51
+    },
+    {
+     "month": "2025-12",
+     "close": 0.02899,
+     "change": -20.71
+    },
+    {
+     "month": "2026-01",
+     "close": 0.02213,
+     "change": -23.66
+    },
+    {
+     "month": "2026-02",
+     "close": 0.01912,
+     "change": -13.6
+    },
+    {
+     "month": "2026-03",
+     "close": 0.01749,
+     "change": -8.53
+    },
+    {
+     "month": "2026-04",
+     "close": 0.01533,
+     "change": -12.35
+    },
+    {
+     "month": "2026-05",
+     "close": 0.01458,
+     "change": -4.89
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00995,
+     "change": -31.76
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0078,
+     "change": -21.61
+    },
+    {
+     "month": "2026-08",
+     "close": 0.00881,
+     "change": 12.95
+    },
+    {
+     "month": "2026-09",
+     "close": 0.01215,
+     "change": 37.91
+    }
+   ]
+  },
+  "MANA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0727,
+   "change7d": -11.77,
+   "change30d": -17.85,
+   "change90d": 10.32,
+   "change1y": -69.23,
+   "high52w": 0.2383,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.0622,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 85.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.2269,
+     "change": -21.46
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1608,
+     "change": -29.13
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1215,
+     "change": -24.44
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1145,
+     "change": -5.76
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0971,
+     "change": -15.2
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0847,
+     "change": -12.77
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0895,
+     "change": 5.67
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0848,
+     "change": -5.25
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0622,
+     "change": -26.65
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0659,
+     "change": 5.95
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0716,
+     "change": 8.65
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0899,
+     "change": 25.56
+    }
+   ]
+  },
+  "ARKM": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1085,
+   "change7d": -16.22,
+   "change30d": -16.54,
+   "change90d": 13.26,
+   "change1y": -69.61,
+   "high52w": 0.363,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.0861,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 80.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.326,
+     "change": -35.57
+    },
+    {
+     "month": "2025-11",
+     "close": 0.234,
+     "change": -28.22
+    },
+    {
+     "month": "2025-12",
+     "close": 0.175,
+     "change": -25.21
+    },
+    {
+     "month": "2026-01",
+     "close": 0.135,
+     "change": -22.86
+    },
+    {
+     "month": "2026-02",
+     "close": 0.109,
+     "change": -19.26
+    },
+    {
+     "month": "2026-03",
+     "close": 0.097,
+     "change": -11.01
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1103,
+     "change": 13.71
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1432,
+     "change": 29.83
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1101,
+     "change": -23.11
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0958,
+     "change": -12.99
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1078,
+     "change": 12.53
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1325,
+     "change": 22.91
+    }
+   ]
+  },
+  "IOTX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.003453,
+   "change7d": -14.28,
+   "change30d": 2.25,
+   "change90d": 56.95,
+   "change1y": -69.68,
+   "high52w": 0.01267,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.00205,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 73,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.01106,
+     "change": -51.3
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00883,
+     "change": -20.16
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00758,
+     "change": -14.16
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00654,
+     "change": -13.72
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00493,
+     "change": -24.62
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00465,
+     "change": -5.68
+    },
+    {
+     "month": "2026-04",
+     "close": 0.00451,
+     "change": -3.01
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00437,
+     "change": -3.1
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00268,
+     "change": -38.67
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0022,
+     "change": -17.91
+    },
+    {
+     "month": "2026-08",
+     "close": 0.002865,
+     "change": 30.23
+    },
+    {
+     "month": "2026-09",
+     "close": 0.003479,
+     "change": 21.43
+    }
+   ]
+  },
+  "AIOZ": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.0908,
+   "change7d": -10.01,
+   "change30d": -18.71,
+   "change90d": 86.07,
+   "change1y": -51.96,
+   "high52w": 0.1809,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.0468,
+   "low52wDate": "2026-08-08",
+   "historyDays": 365,
+   "volatility30d": 68.1,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1771,
+     "change": -33.99
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1208,
+     "change": -31.79
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0872,
+     "change": -27.81
+    },
+    {
+     "month": "2026-01",
+     "close": 0.0677,
+     "change": -22.36
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0645,
+     "change": -4.73
+    },
+    {
+     "month": "2026-03",
+     "close": 0.057,
+     "change": -11.63
+    },
+    {
+     "month": "2026-04",
+     "close": 0.059,
+     "change": 3.51
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0669,
+     "change": 13.39
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0524,
+     "change": -21.67
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0488,
+     "change": -6.87
+    },
+    {
+     "month": "2026-08",
+     "close": 0.056,
+     "change": 14.75
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1159,
+     "change": 106.96
+    }
+   ]
+  },
+  "MEW": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.000415,
+   "change7d": -17.33,
+   "change30d": -13.18,
+   "change90d": 25.76,
+   "change1y": -77.64,
+   "high52w": 0.001801,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.000316,
+   "low52wDate": "2026-08-16",
+   "historyDays": 365,
+   "volatility30d": 86.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.001766,
+     "change": -32.21
+    },
+    {
+     "month": "2025-11",
+     "close": 0.001138,
+     "change": -35.56
+    },
+    {
+     "month": "2025-12",
+     "close": 0.000825,
+     "change": -27.5
+    },
+    {
+     "month": "2026-01",
+     "close": 0.000714,
+     "change": -13.45
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00061,
+     "change": -14.57
+    },
+    {
+     "month": "2026-03",
+     "close": 0.000564,
+     "change": -7.54
+    },
+    {
+     "month": "2026-04",
+     "close": 0.000575,
+     "change": 1.95
+    },
+    {
+     "month": "2026-05",
+     "close": 0.000497,
+     "change": -13.57
+    },
+    {
+     "month": "2026-06",
+     "close": 0.000363,
+     "change": -26.96
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00033,
+     "change": -9.09
+    },
+    {
+     "month": "2026-08",
+     "close": 0.000412,
+     "change": 24.85
+    },
+    {
+     "month": "2026-09",
+     "close": 0.000497,
+     "change": 20.63
+    }
+   ]
+  },
+  "CRV": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.3062,
+   "change7d": -15.81,
+   "change30d": -19.65,
+   "change90d": 47,
+   "change1y": -43.28,
+   "high52w": 0.5228,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.1822,
+   "low52wDate": "2026-06-05",
+   "historyDays": 365,
+   "volatility30d": 92.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.4799,
+     "change": -30.33
+    },
+    {
+     "month": "2025-11",
+     "close": 0.4148,
+     "change": -13.57
+    },
+    {
+     "month": "2025-12",
+     "close": 0.3594,
+     "change": -13.36
+    },
+    {
+     "month": "2026-01",
+     "close": 0.2891,
+     "change": -19.56
+    },
+    {
+     "month": "2026-02",
+     "close": 0.2512,
+     "change": -13.11
+    },
+    {
+     "month": "2026-03",
+     "close": 0.2181,
+     "change": -13.18
+    },
+    {
+     "month": "2026-04",
+     "close": 0.2355,
+     "change": 7.98
+    },
+    {
+     "month": "2026-05",
+     "close": 0.2162,
+     "change": -8.2
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1845,
+     "change": -14.66
+    },
+    {
+     "month": "2026-07",
+     "close": 0.2083,
+     "change": 12.9
+    },
+    {
+     "month": "2026-08",
+     "close": 0.3379,
+     "change": 62.22
+    },
+    {
+     "month": "2026-09",
+     "close": 0.3946,
+     "change": 16.78
+    }
+   ]
+  },
+  "DYDX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.10627,
+   "change7d": -6.57,
+   "change30d": -23.55,
+   "change90d": -6.44,
+   "change1y": -68.41,
+   "high52w": 0.3541,
+   "high52wDate": "2025-11-10",
+   "low52w": 0.0799,
+   "low52wDate": "2026-03-08",
+   "historyDays": 365,
+   "volatility30d": 71.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.2954,
+     "change": -49.78
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2353,
+     "change": -20.35
+    },
+    {
+     "month": "2025-12",
+     "close": 0.168,
+     "change": -28.6
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1345,
+     "change": -19.94
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0942,
+     "change": -29.96
+    },
+    {
+     "month": "2026-03",
+     "close": 0.1012,
+     "change": 7.43
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1516,
+     "change": 49.8
+    },
+    {
+     "month": "2026-05",
+     "close": 0.19084,
+     "change": 25.88
+    },
+    {
+     "month": "2026-06",
+     "close": 0.18004,
+     "change": -5.66
+    },
+    {
+     "month": "2026-07",
+     "close": 0.11359,
+     "change": -36.91
+    },
+    {
+     "month": "2026-08",
+     "close": 0.10738,
+     "change": -5.47
+    },
+    {
+     "month": "2026-09",
+     "close": 0.14397,
+     "change": 34.08
+    }
+   ]
+  },
+  "LPT": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.414,
+   "change7d": -8.95,
+   "change30d": -16.63,
+   "change90d": 8.69,
+   "change1y": -71.49,
+   "high52w": 5.697,
+   "high52wDate": "2025-11-02",
+   "low52w": 1.179,
+   "low52wDate": "2026-08-16",
+   "historyDays": 365,
+   "volatility30d": 70.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 4.7,
+     "change": -22.31
+    },
+    {
+     "month": "2025-11",
+     "close": 4.006,
+     "change": -14.77
+    },
+    {
+     "month": "2025-12",
+     "close": 2.904,
+     "change": -27.51
+    },
+    {
+     "month": "2026-01",
+     "close": 2.636,
+     "change": -9.23
+    },
+    {
+     "month": "2026-02",
+     "close": 2.327,
+     "change": -11.72
+    },
+    {
+     "month": "2026-03",
+     "close": 2.121,
+     "change": -8.85
+    },
+    {
+     "month": "2026-04",
+     "close": 2.093,
+     "change": -1.32
+    },
+    {
+     "month": "2026-05",
+     "close": 2.09,
+     "change": -0.14
+    },
+    {
+     "month": "2026-06",
+     "close": 1.514,
+     "change": -27.56
+    },
+    {
+     "month": "2026-07",
+     "close": 1.301,
+     "change": -14.07
+    },
+    {
+     "month": "2026-08",
+     "close": 1.344,
+     "change": 3.31
+    },
+    {
+     "month": "2026-09",
+     "close": 1.781,
+     "change": 32.51
+    }
+   ]
+  },
+  "SNX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1828,
+   "change7d": -13.94,
+   "change30d": -28.14,
+   "change90d": -13.77,
+   "change1y": -83.58,
+   "high52w": 1.057,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.1828,
+   "low52wDate": "2026-10-29",
+   "historyDays": 365,
+   "volatility30d": 60.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1,
+     "change": -7.24
+    },
+    {
+     "month": "2025-11",
+     "close": 0.541,
+     "change": -45.9
+    },
+    {
+     "month": "2025-12",
+     "close": 0.411,
+     "change": -24.03
+    },
+    {
+     "month": "2026-01",
+     "close": 0.358,
+     "change": -12.9
+    },
+    {
+     "month": "2026-02",
+     "close": 0.322,
+     "change": -10.06
+    },
+    {
+     "month": "2026-03",
+     "close": 0.288,
+     "change": -10.56
+    },
+    {
+     "month": "2026-04",
+     "close": 0.301,
+     "change": 4.51
+    },
+    {
+     "month": "2026-05",
+     "close": 0.295,
+     "change": -1.99
+    },
+    {
+     "month": "2026-06",
+     "close": 0.212,
+     "change": -28.14
+    },
+    {
+     "month": "2026-07",
+     "close": 0.212,
+     "change": 0
+    },
+    {
+     "month": "2026-08",
+     "close": 0.2071,
+     "change": -2.31
+    },
+    {
+     "month": "2026-09",
+     "close": 0.2533,
+     "change": 22.31
+    }
+   ]
+  },
+  "METIS": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 2.92,
+   "change7d": -25.51,
+   "change30d": -13.61,
+   "change90d": 21.16,
+   "change1y": -69.93,
+   "high52w": 10.46,
+   "high52wDate": "2025-11-09",
+   "low52w": 2.27,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 83.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 9.03,
+     "change": -31.49
+    },
+    {
+     "month": "2025-11",
+     "close": 7.32,
+     "change": -18.94
+    },
+    {
+     "month": "2025-12",
+     "close": 5.01,
+     "change": -31.56
+    },
+    {
+     "month": "2026-01",
+     "close": 4.04,
+     "change": -19.36
+    },
+    {
+     "month": "2026-02",
+     "close": 3.24,
+     "change": -19.8
+    },
+    {
+     "month": "2026-03",
+     "close": 2.87,
+     "change": -11.42
+    },
+    {
+     "month": "2026-04",
+     "close": 3.34,
+     "change": 16.38
+    },
+    {
+     "month": "2026-05",
+     "close": 3.2,
+     "change": -4.19
+    },
+    {
+     "month": "2026-06",
+     "close": 2.63,
+     "change": -17.81
+    },
+    {
+     "month": "2026-07",
+     "close": 2.41,
+     "change": -8.37
+    },
+    {
+     "month": "2026-08",
+     "close": 2.66,
+     "change": 10.37
+    },
+    {
+     "month": "2026-09",
+     "close": 3.33,
+     "change": 25.19
+    }
+   ]
+  },
+  "GLM": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1026,
+   "change7d": -6.3,
+   "change30d": -17.92,
+   "change90d": 9.27,
+   "change1y": -44.27,
+   "high52w": 0.3325,
+   "high52wDate": "2026-01-13",
+   "low52w": 0.0864,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 56.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1871,
+     "change": -14.1
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2497,
+     "change": 33.46
+    },
+    {
+     "month": "2025-12",
+     "close": 0.2181,
+     "change": -12.66
+    },
+    {
+     "month": "2026-01",
+     "close": 0.2108,
+     "change": -3.35
+    },
+    {
+     "month": "2026-02",
+     "close": 0.1366,
+     "change": -35.2
+    },
+    {
+     "month": "2026-03",
+     "close": 0.1278,
+     "change": -6.44
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1426,
+     "change": 11.58
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1349,
+     "change": -5.4
+    },
+    {
+     "month": "2026-06",
+     "close": 0.1063,
+     "change": -21.2
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0939,
+     "change": -11.67
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1066,
+     "change": 13.53
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1266,
+     "change": 18.76
+    }
+   ]
+  },
+  "SUPER": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.1667,
+   "change7d": -12.26,
+   "change30d": -13.22,
+   "change90d": 103.05,
+   "change1y": -56.86,
+   "high52w": 0.3746,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.0813,
+   "low52wDate": "2026-08-01",
+   "historyDays": 365,
+   "volatility30d": 99.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.3625,
+     "change": -41.14
+    },
+    {
+     "month": "2025-11",
+     "close": 0.2434,
+     "change": -32.86
+    },
+    {
+     "month": "2025-12",
+     "close": 0.2038,
+     "change": -16.27
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1502,
+     "change": -26.3
+    },
+    {
+     "month": "2026-02",
+     "close": 0.1162,
+     "change": -22.64
+    },
+    {
+     "month": "2026-03",
+     "close": 0.1077,
+     "change": -7.31
+    },
+    {
+     "month": "2026-04",
+     "close": 0.1203,
+     "change": 11.7
+    },
+    {
+     "month": "2026-05",
+     "close": 0.1125,
+     "change": -6.48
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0837,
+     "change": -25.6
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0821,
+     "change": -1.91
+    },
+    {
+     "month": "2026-08",
+     "close": 0.1073,
+     "change": 30.69
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1985,
+     "change": 85
+    }
+   ]
+  },
+  "DASH": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 47.49,
+   "change7d": -10.6,
+   "change30d": -21.9,
+   "change90d": 53.89,
+   "change1y": 2.39,
+   "high52w": 121.12,
+   "high52wDate": "2025-11-04",
+   "low52w": 29.68,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 66.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 52.9,
+     "change": 136.16
+    },
+    {
+     "month": "2025-11",
+     "close": 53.4,
+     "change": 0.95
+    },
+    {
+     "month": "2025-12",
+     "close": 41.66,
+     "change": -21.99
+    },
+    {
+     "month": "2026-01",
+     "close": 44.33,
+     "change": 6.41
+    },
+    {
+     "month": "2026-02",
+     "close": 32.84,
+     "change": -25.92
+    },
+    {
+     "month": "2026-03",
+     "close": 32.71,
+     "change": -0.4
+    },
+    {
+     "month": "2026-04",
+     "close": 35.38,
+     "change": 8.16
+    },
+    {
+     "month": "2026-05",
+     "close": 40.2,
+     "change": 13.62
+    },
+    {
+     "month": "2026-06",
+     "close": 32.54,
+     "change": -19.05
+    },
+    {
+     "month": "2026-07",
+     "close": 30.86,
+     "change": -5.16
+    },
+    {
+     "month": "2026-08",
+     "close": 44.89,
+     "change": 45.46
+    },
+    {
+     "month": "2026-09",
+     "close": 60.58,
+     "change": 34.95
+    }
+   ]
+  },
+  "ROSE": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00615,
+   "change7d": -14.94,
+   "change30d": -31.05,
+   "change90d": 19.42,
+   "change1y": -62.06,
+   "high52w": 0.02437,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.00512,
+   "low52wDate": "2026-07-27",
+   "historyDays": 365,
+   "volatility30d": 83.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.01498,
+     "change": -39.35
+    },
+    {
+     "month": "2025-11",
+     "close": 0.01416,
+     "change": -5.47
+    },
+    {
+     "month": "2025-12",
+     "close": 0.01017,
+     "change": -28.18
+    },
+    {
+     "month": "2026-01",
+     "close": 0.01745,
+     "change": 71.58
+    },
+    {
+     "month": "2026-02",
+     "close": 0.01176,
+     "change": -32.61
+    },
+    {
+     "month": "2026-03",
+     "close": 0.01029,
+     "change": -12.5
+    },
+    {
+     "month": "2026-04",
+     "close": 0.01,
+     "change": -2.82
+    },
+    {
+     "month": "2026-05",
+     "close": 0.009,
+     "change": -10
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00557,
+     "change": -38.11
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00515,
+     "change": -7.54
+    },
+    {
+     "month": "2026-08",
+     "close": 0.00609,
+     "change": 18.25
+    },
+    {
+     "month": "2026-09",
+     "close": 0.00899,
+     "change": 47.62
+    }
+   ]
+  },
+  "MANTA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.05859,
+   "change7d": -8.45,
+   "change30d": -13.51,
+   "change90d": -0.58,
+   "change1y": -47.22,
+   "high52w": 0.1383,
+   "high52wDate": "2025-11-20",
+   "low52w": 0.05554,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 84.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.0988,
+     "change": -44.02
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1059,
+     "change": 7.19
+    },
+    {
+     "month": "2025-12",
+     "close": 0.077,
+     "change": -27.29
+    },
+    {
+     "month": "2026-01",
+     "close": 0.0796,
+     "change": 3.38
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0626,
+     "change": -21.36
+    },
+    {
+     "month": "2026-03",
+     "close": 0.06131,
+     "change": -2.06
+    },
+    {
+     "month": "2026-04",
+     "close": 0.06585,
+     "change": 7.4
+    },
+    {
+     "month": "2026-05",
+     "close": 0.07758,
+     "change": 17.81
+    },
+    {
+     "month": "2026-06",
+     "close": 0.06639,
+     "change": -14.42
+    },
+    {
+     "month": "2026-07",
+     "close": 0.05893,
+     "change": -11.24
+    },
+    {
+     "month": "2026-08",
+     "close": 0.058,
+     "change": -1.58
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0683,
+     "change": 17.76
+    }
+   ]
+  },
+  "BOME": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0005945,
+   "change7d": -1.25,
+   "change30d": -40.23,
+   "change90d": -0.95,
+   "change1y": -43.65,
+   "high52w": 0.0012223,
+   "high52wDate": "2026-08-21",
+   "low52w": 0.000366,
+   "low52wDate": "2026-03-29",
+   "historyDays": 365,
+   "volatility30d": 139.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.000978,
+     "change": -39.63
+    },
+    {
+     "month": "2025-11",
+     "close": 0.000703,
+     "change": -28.12
+    },
+    {
+     "month": "2025-12",
+     "close": 0.000542,
+     "change": -22.9
+    },
+    {
+     "month": "2026-01",
+     "close": 0.000476,
+     "change": -12.18
+    },
+    {
+     "month": "2026-02",
+     "close": 0.000381,
+     "change": -19.96
+    },
+    {
+     "month": "2026-03",
+     "close": 0.000384,
+     "change": 0.79
+    },
+    {
+     "month": "2026-04",
+     "close": 0.000521,
+     "change": 35.68
+    },
+    {
+     "month": "2026-05",
+     "close": 0.000512,
+     "change": -1.73
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0004097,
+     "change": -19.98
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0006002,
+     "change": 46.5
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0008819,
+     "change": 46.93
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0010028,
+     "change": 13.71
+    }
+   ]
+  },
+  "COMP": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 20.96,
+   "change7d": -14.31,
+   "change30d": -15.48,
+   "change90d": 27.03,
+   "change1y": -43.26,
+   "high52w": 35.8,
+   "high52wDate": "2025-12-02",
+   "low52w": 15.19,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 94.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 35.02,
+     "change": -15.8
+    },
+    {
+     "month": "2025-11",
+     "close": 35.24,
+     "change": 0.63
+    },
+    {
+     "month": "2025-12",
+     "close": 24.82,
+     "change": -29.57
+    },
+    {
+     "month": "2026-01",
+     "close": 19.78,
+     "change": -20.31
+    },
+    {
+     "month": "2026-02",
+     "close": 18.11,
+     "change": -8.44
+    },
+    {
+     "month": "2026-03",
+     "close": 17.63,
+     "change": -2.65
+    },
+    {
+     "month": "2026-04",
+     "close": 23.59,
+     "change": 33.81
+    },
+    {
+     "month": "2026-05",
+     "close": 18.48,
+     "change": -21.66
+    },
+    {
+     "month": "2026-06",
+     "close": 15.19,
+     "change": -17.8
+    },
+    {
+     "month": "2026-07",
+     "close": 16.5,
+     "change": 8.62
+    },
+    {
+     "month": "2026-08",
+     "close": 19.19,
+     "change": 16.3
+    },
+    {
+     "month": "2026-09",
+     "close": 24.76,
+     "change": 29.03
+    }
+   ]
+  },
+  "TURBO": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.000763,
+   "change7d": -9.17,
+   "change30d": -23.85,
+   "change90d": -5.8,
+   "change1y": -68.14,
+   "high52w": 0.002479,
+   "high52wDate": "2025-12-02",
+   "low52w": 0.000755,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 59.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.002152,
+     "change": -38.23
+    },
+    {
+     "month": "2025-11",
+     "close": 0.002019,
+     "change": -6.18
+    },
+    {
+     "month": "2025-12",
+     "close": 0.001616,
+     "change": -19.96
+    },
+    {
+     "month": "2026-01",
+     "close": 0.001238,
+     "change": -23.39
+    },
+    {
+     "month": "2026-02",
+     "close": 0.000986,
+     "change": -20.36
+    },
+    {
+     "month": "2026-03",
+     "close": 0.001017,
+     "change": 3.14
+    },
+    {
+     "month": "2026-04",
+     "close": 0.001135,
+     "change": 11.6
+    },
+    {
+     "month": "2026-05",
+     "close": 0.001063,
+     "change": -6.34
+    },
+    {
+     "month": "2026-06",
+     "close": 0.000808,
+     "change": -23.99
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00081,
+     "change": 0.25
+    },
+    {
+     "month": "2026-08",
+     "close": 0.000946,
+     "change": 16.79
+    },
+    {
+     "month": "2026-09",
+     "close": 0.001033,
+     "change": 9.2
+    }
+   ]
+  },
+  "SC": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00076,
+   "change7d": -14.12,
+   "change30d": -27.27,
+   "change90d": 50.5,
+   "change1y": -61.92,
+   "high52w": 0.002131,
+   "high52wDate": "2025-11-07",
+   "low52w": 0.000449,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 79.6,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.001921,
+     "change": -25.51
+    },
+    {
+     "month": "2025-11",
+     "close": 0.001687,
+     "change": -12.18
+    },
+    {
+     "month": "2025-12",
+     "close": 0.001458,
+     "change": -13.57
+    },
+    {
+     "month": "2026-01",
+     "close": 0.001313,
+     "change": -9.95
+    },
+    {
+     "month": "2026-02",
+     "close": 0.001111,
+     "change": -15.38
+    },
+    {
+     "month": "2026-03",
+     "close": 0.000915,
+     "change": -17.64
+    },
+    {
+     "month": "2026-04",
+     "close": 0.000917,
+     "change": 0.22
+    },
+    {
+     "month": "2026-05",
+     "close": 0.000902,
+     "change": -1.64
+    },
+    {
+     "month": "2026-06",
+     "close": 0.000633,
+     "change": -29.82
+    },
+    {
+     "month": "2026-07",
+     "close": 0.000505,
+     "change": -20.22
+    },
+    {
+     "month": "2026-08",
+     "close": 0.000597,
+     "change": 18.22
+    },
+    {
+     "month": "2026-09",
+     "close": 0.001042,
+     "change": 74.54
+    }
+   ]
+  },
+  "ANKR": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.00379,
+   "change7d": -8.23,
+   "change30d": -21.53,
+   "change90d": 12.13,
+   "change1y": -62.77,
+   "high52w": 0.01004,
+   "high52wDate": "2025-11-01",
+   "low52w": 0.00329,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 64.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.00965,
+     "change": -27.17
+    },
+    {
+     "month": "2025-11",
+     "close": 0.00774,
+     "change": -19.79
+    },
+    {
+     "month": "2025-12",
+     "close": 0.00624,
+     "change": -19.38
+    },
+    {
+     "month": "2026-01",
+     "close": 0.00503,
+     "change": -19.39
+    },
+    {
+     "month": "2026-02",
+     "close": 0.00429,
+     "change": -14.71
+    },
+    {
+     "month": "2026-03",
+     "close": 0.00497,
+     "change": 15.85
+    },
+    {
+     "month": "2026-04",
+     "close": 0.00473,
+     "change": -4.83
+    },
+    {
+     "month": "2026-05",
+     "close": 0.00464,
+     "change": -1.9
+    },
+    {
+     "month": "2026-06",
+     "close": 0.00334,
+     "change": -28.02
+    },
+    {
+     "month": "2026-07",
+     "close": 0.00338,
+     "change": 1.2
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0039,
+     "change": 15.38
+    },
+    {
+     "month": "2026-09",
+     "close": 0.00499,
+     "change": 27.95
+    }
+   ]
+  },
+  "1INCH": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0834,
+   "change7d": -8.55,
+   "change30d": -17.59,
+   "change90d": 2.71,
+   "change1y": -51.37,
+   "high52w": 0.2246,
+   "high52wDate": "2025-11-09",
+   "low52w": 0.0657,
+   "low52wDate": "2026-06-30",
+   "historyDays": 365,
+   "volatility30d": 45.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1621,
+     "change": -36.68
+    },
+    {
+     "month": "2025-11",
+     "close": 0.187,
+     "change": 15.36
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1416,
+     "change": -24.28
+    },
+    {
+     "month": "2026-01",
+     "close": 0.105,
+     "change": -25.85
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0936,
+     "change": -10.86
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0907,
+     "change": -3.1
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0926,
+     "change": 2.09
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0866,
+     "change": -6.48
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0657,
+     "change": -24.13
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0812,
+     "change": 23.59
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0886,
+     "change": 9.11
+    },
+    {
+     "month": "2026-09",
+     "close": 0.1014,
+     "change": 14.45
+    }
+   ]
+  },
+  "LRC": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 0.008357,
+   "change7d": 0.78,
+   "change30d": -16.95,
+   "change90d": -20.24,
+   "change1y": -87.75,
+   "high52w": 0.0677,
+   "high52wDate": "2025-11-02",
+   "low52w": 0.007665,
+   "low52wDate": "2026-08-18",
+   "historyDays": 365,
+   "volatility30d": 51.4,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.0662,
+     "change": -20.81
+    },
+    {
+     "month": "2025-11",
+     "close": 0.0528,
+     "change": -20.24
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0493,
+     "change": -6.63
+    },
+    {
+     "month": "2026-01",
+     "close": 0.04098,
+     "change": -16.88
+    },
+    {
+     "month": "2026-02",
+     "close": 0.03158,
+     "change": -22.94
+    },
+    {
+     "month": "2026-03",
+     "close": 0.01982,
+     "change": -37.24
+    },
+    {
+     "month": "2026-04",
+     "close": 0.01655,
+     "change": -16.5
+    },
+    {
+     "month": "2026-05",
+     "close": 0.01565,
+     "change": -5.44
+    },
+    {
+     "month": "2026-06",
+     "close": 0.01193,
+     "change": -23.77
+    },
+    {
+     "month": "2026-07",
+     "close": 0.010478,
+     "change": -12.17
+    },
+    {
+     "month": "2026-08",
+     "close": 0.007916,
+     "change": -24.45
+    },
+    {
+     "month": "2026-09",
+     "close": 0.010302,
+     "change": 30.14
+    }
+   ]
+  },
+  "NMR": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 9.47,
+   "change7d": -11.41,
+   "change30d": -22.06,
+   "change90d": 11.15,
+   "change1y": -22.44,
+   "high52w": 16.1,
+   "high52wDate": "2026-10-06",
+   "low52w": 6.3,
+   "low52wDate": "2026-03-29",
+   "historyDays": 365,
+   "volatility30d": 125.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 11.84,
+     "change": -27.23
+    },
+    {
+     "month": "2025-11",
+     "close": 11.09,
+     "change": -6.33
+    },
+    {
+     "month": "2025-12",
+     "close": 9.59,
+     "change": -13.53
+    },
+    {
+     "month": "2026-01",
+     "close": 9.35,
+     "change": -2.5
+    },
+    {
+     "month": "2026-02",
+     "close": 7.67,
+     "change": -17.97
+    },
+    {
+     "month": "2026-03",
+     "close": 6.66,
+     "change": -13.17
+    },
+    {
+     "month": "2026-04",
+     "close": 8.84,
+     "change": 32.73
+    },
+    {
+     "month": "2026-05",
+     "close": 8.6,
+     "change": -2.71
+    },
+    {
+     "month": "2026-06",
+     "close": 8.88,
+     "change": 3.26
+    },
+    {
+     "month": "2026-07",
+     "close": 8.52,
+     "change": -4.05
+    },
+    {
+     "month": "2026-08",
+     "close": 9.03,
+     "change": 5.99
+    },
+    {
+     "month": "2026-09",
+     "close": 11.29,
+     "change": 25.03
+    }
+   ]
+  },
+  "PHA": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0433,
+   "change7d": -29.48,
+   "change30d": -39.1,
+   "change90d": 120.92,
+   "change1y": -26.11,
+   "high52w": 0.0867,
+   "high52wDate": "2026-09-25",
+   "low52w": 0.0195,
+   "low52wDate": "2026-08-01",
+   "historyDays": 365,
+   "volatility30d": 148,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.0547,
+     "change": -39.96
+    },
+    {
+     "month": "2025-11",
+     "close": 0.0472,
+     "change": -13.71
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0357,
+     "change": -24.36
+    },
+    {
+     "month": "2026-01",
+     "close": 0.0307,
+     "change": -14.01
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0233,
+     "change": -24.1
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0346,
+     "change": 48.5
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0311,
+     "change": -10.12
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0389,
+     "change": 25.08
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0269,
+     "change": -30.85
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0196,
+     "change": -27.14
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0249,
+     "change": 27.04
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0792,
+     "change": 218.07
+    }
+   ]
+  },
+  "ZEN": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 5.336,
+   "change7d": -13.12,
+   "change30d": -23.09,
+   "change90d": 37.17,
+   "change1y": -57.53,
+   "high52w": 20.073,
+   "high52wDate": "2025-11-01",
+   "low52w": 3.822,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 66.5,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 14.553,
+     "change": 88.02
+    },
+    {
+     "month": "2025-11",
+     "close": 10.337,
+     "change": -28.97
+    },
+    {
+     "month": "2025-12",
+     "close": 9.166,
+     "change": -11.33
+    },
+    {
+     "month": "2026-01",
+     "close": 7.276,
+     "change": -20.62
+    },
+    {
+     "month": "2026-02",
+     "close": 5.368,
+     "change": -26.22
+    },
+    {
+     "month": "2026-03",
+     "close": 5.608,
+     "change": 4.47
+    },
+    {
+     "month": "2026-04",
+     "close": 5.822,
+     "change": 3.82
+    },
+    {
+     "month": "2026-05",
+     "close": 5.917,
+     "change": 1.63
+    },
+    {
+     "month": "2026-06",
+     "close": 4.018,
+     "change": -32.09
+    },
+    {
+     "month": "2026-07",
+     "close": 3.89,
+     "change": -3.19
+    },
+    {
+     "month": "2026-08",
+     "close": 5.643,
+     "change": 45.06
+    },
+    {
+     "month": "2026-09",
+     "close": 7.321,
+     "change": 29.74
+    }
+   ]
+  },
+  "FLUX": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0611,
+   "change7d": -6.29,
+   "change30d": -15.14,
+   "change90d": 56.67,
+   "change1y": -46.54,
+   "high52w": 0.226,
+   "high52wDate": "2025-11-08",
+   "low52w": 0.0376,
+   "low52wDate": "2026-07-29",
+   "historyDays": 365,
+   "volatility30d": 99.8,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1086,
+     "change": -41.99
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1121,
+     "change": 3.22
+    },
+    {
+     "month": "2025-12",
+     "close": 0.099,
+     "change": -11.69
+    },
+    {
+     "month": "2026-01",
+     "close": 0.0826,
+     "change": -16.57
+    },
+    {
+     "month": "2026-02",
+     "close": 0.0622,
+     "change": -24.7
+    },
+    {
+     "month": "2026-03",
+     "close": 0.0546,
+     "change": -12.22
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0635,
+     "change": 16.3
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0667,
+     "change": 5.04
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0431,
+     "change": -35.38
+    },
+    {
+     "month": "2026-07",
+     "close": 0.039,
+     "change": -9.51
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0491,
+     "change": 25.9
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0739,
+     "change": 50.51
+    }
+   ]
+  },
+  "HYPE": {
+   "source": "Kraken",
+   "asOf": "2026-10-29",
+   "close": 88.79,
+   "change7d": 14.78,
+   "change30d": 3.17,
+   "change90d": 69.09,
+   "change1y": null,
+   "high52w": 97.23,
+   "high52wDate": "2026-09-22",
+   "low52w": 26.25,
+   "low52wDate": "2026-02-23",
+   "historyDays": 275,
+   "volatility30d": 62.1,
+   "monthly": [
+    {
+     "month": "2026-01",
+     "close": 31,
+     "change": null
+    },
+    {
+     "month": "2026-02",
+     "close": 31.23,
+     "change": 0.74
+    },
+    {
+     "month": "2026-03",
+     "close": 36.57,
+     "change": 17.1
+    },
+    {
+     "month": "2026-04",
+     "close": 39.71,
+     "change": 8.59
+    },
+    {
+     "month": "2026-05",
+     "close": 72.02,
+     "change": 81.36
+    },
+    {
+     "month": "2026-06",
+     "close": 65.01,
+     "change": -9.73
+    },
+    {
+     "month": "2026-07",
+     "close": 52.51,
+     "change": -19.23
+    },
+    {
+     "month": "2026-08",
+     "close": 84.19,
+     "change": 60.33
+    },
+    {
+     "month": "2026-09",
+     "close": 90.91,
+     "change": 7.98
+    }
+   ]
+  },
+  "WLFI": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.0509,
+   "change7d": -4.68,
+   "change30d": -9.91,
+   "change90d": -7.12,
+   "change1y": -64.9,
+   "high52w": 0.1801,
+   "high52wDate": "2026-01-13",
+   "low52w": 0.0509,
+   "low52wDate": "2026-10-29",
+   "historyDays": 365,
+   "volatility30d": 38.2,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1373,
+     "change": -30.02
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1593,
+     "change": 16.02
+    },
+    {
+     "month": "2025-12",
+     "close": 0.1435,
+     "change": -9.92
+    },
+    {
+     "month": "2026-01",
+     "close": 0.1327,
+     "change": -7.53
+    },
+    {
+     "month": "2026-02",
+     "close": 0.1127,
+     "change": -15.07
+    },
+    {
+     "month": "2026-03",
+     "close": 0.099,
+     "change": -12.16
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0608,
+     "change": -38.59
+    },
+    {
+     "month": "2026-05",
+     "close": 0.0594,
+     "change": -2.3
+    },
+    {
+     "month": "2026-06",
+     "close": 0.0578,
+     "change": -2.69
+    },
+    {
+     "month": "2026-07",
+     "close": 0.0548,
+     "change": -5.19
+    },
+    {
+     "month": "2026-08",
+     "close": 0.0574,
+     "change": 4.74
+    },
+    {
+     "month": "2026-09",
+     "close": 0.0552,
+     "change": -3.83
+    }
+   ]
+  },
+  "S": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.04128,
+   "change7d": -19.39,
+   "change30d": 9.73,
+   "change90d": 93.35,
+   "change1y": -74.12,
+   "high52w": 0.1668,
+   "high52wDate": "2025-11-08",
+   "low52w": 0.02006,
+   "low52wDate": "2026-06-25",
+   "historyDays": 365,
+   "volatility30d": 152.9,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.1377,
+     "change": -45.42
+    },
+    {
+     "month": "2025-11",
+     "close": 0.1049,
+     "change": -23.82
+    },
+    {
+     "month": "2025-12",
+     "close": 0.0739,
+     "change": -29.55
+    },
+    {
+     "month": "2026-01",
+     "close": 0.05234,
+     "change": -29.17
+    },
+    {
+     "month": "2026-02",
+     "close": 0.04004,
+     "change": -23.5
+    },
+    {
+     "month": "2026-03",
+     "close": 0.04095,
+     "change": 2.27
+    },
+    {
+     "month": "2026-04",
+     "close": 0.0432,
+     "change": 5.49
+    },
+    {
+     "month": "2026-05",
+     "close": 0.03988,
+     "change": -7.69
+    },
+    {
+     "month": "2026-06",
+     "close": 0.02273,
+     "change": -43
+    },
+    {
+     "month": "2026-07",
+     "close": 0.02135,
+     "change": -6.07
+    },
+    {
+     "month": "2026-08",
+     "close": 0.02777,
+     "change": 30.07
+    },
+    {
+     "month": "2026-09",
+     "close": 0.04078,
+     "change": 46.85
+    }
+   ]
+  },
+  "CAKE": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 1.907,
+   "change7d": -10.39,
+   "change30d": -25.25,
+   "change90d": 30.71,
+   "change1y": -25.77,
+   "high52w": 2.831,
+   "high52wDate": "2026-09-27",
+   "low52w": 1.163,
+   "low52wDate": "2026-06-05",
+   "historyDays": 365,
+   "volatility30d": 60.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 2.422,
+     "change": -3.39
+    },
+    {
+     "month": "2025-11",
+     "close": 2.377,
+     "change": -1.86
+    },
+    {
+     "month": "2025-12",
+     "close": 1.885,
+     "change": -20.7
+    },
+    {
+     "month": "2026-01",
+     "close": 1.54,
+     "change": -18.3
+    },
+    {
+     "month": "2026-02",
+     "close": 1.31,
+     "change": -14.94
+    },
+    {
+     "month": "2026-03",
+     "close": 1.395,
+     "change": 6.49
+    },
+    {
+     "month": "2026-04",
+     "close": 1.449,
+     "change": 3.87
+    },
+    {
+     "month": "2026-05",
+     "close": 1.485,
+     "change": 2.48
+    },
+    {
+     "month": "2026-06",
+     "close": 1.312,
+     "change": -11.65
+    },
+    {
+     "month": "2026-07",
+     "close": 1.459,
+     "change": 11.2
+    },
+    {
+     "month": "2026-08",
+     "close": 1.868,
+     "change": 28.03
+    },
+    {
+     "month": "2026-09",
+     "close": 2.597,
+     "change": 39.03
+    }
+   ]
+  },
+  "MORPHO": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 2.141,
+   "change7d": -5.64,
+   "change30d": -13.46,
+   "change90d": 7,
+   "change1y": 8.13,
+   "high52w": 2.905,
+   "high52wDate": "2026-08-23",
+   "low52w": 1.027,
+   "low52wDate": "2026-02-05",
+   "historyDays": 365,
+   "volatility30d": 68,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 1.958,
+     "change": null
+    },
+    {
+     "month": "2025-11",
+     "close": 1.455,
+     "change": -25.69
+    },
+    {
+     "month": "2025-12",
+     "close": 1.093,
+     "change": -24.88
+    },
+    {
+     "month": "2026-01",
+     "close": 1.138,
+     "change": 4.12
+    },
+    {
+     "month": "2026-02",
+     "close": 1.764,
+     "change": 55.01
+    },
+    {
+     "month": "2026-03",
+     "close": 1.539,
+     "change": -12.76
+    },
+    {
+     "month": "2026-04",
+     "close": 2.001,
+     "change": 30.02
+    },
+    {
+     "month": "2026-05",
+     "close": 2.125,
+     "change": 6.2
+    },
+    {
+     "month": "2026-06",
+     "close": 1.9,
+     "change": -10.59
+    },
+    {
+     "month": "2026-07",
+     "close": 2.001,
+     "change": 5.32
+    },
+    {
+     "month": "2026-08",
+     "close": 2.516,
+     "change": 25.74
+    },
+    {
+     "month": "2026-09",
+     "close": 2.495,
+     "change": -0.83
+    }
+   ]
+  },
+  "PAXG": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 4014.37,
+   "change7d": -0.54,
+   "change30d": -4.24,
+   "change90d": -0.83,
+   "change1y": 1.47,
+   "high52w": 5541.45,
+   "high52wDate": "2026-01-28",
+   "low52w": 3929.18,
+   "low52wDate": "2025-11-04",
+   "historyDays": 365,
+   "volatility30d": 14.3,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 4000.16,
+     "change": 3.21
+    },
+    {
+     "month": "2025-11",
+     "close": 4238.44,
+     "change": 5.96
+    },
+    {
+     "month": "2025-12",
+     "close": 4336.99,
+     "change": 2.33
+    },
+    {
+     "month": "2026-01",
+     "close": 4839.88,
+     "change": 11.6
+    },
+    {
+     "month": "2026-02",
+     "close": 5369.78,
+     "change": 10.95
+    },
+    {
+     "month": "2026-03",
+     "close": 4687.74,
+     "change": -12.7
+    },
+    {
+     "month": "2026-04",
+     "close": 4618.2,
+     "change": -1.48
+    },
+    {
+     "month": "2026-05",
+     "close": 4535,
+     "change": -1.8
+    },
+    {
+     "month": "2026-06",
+     "close": 4004.47,
+     "change": -11.7
+    },
+    {
+     "month": "2026-07",
+     "close": 4048.09,
+     "change": 1.09
+    },
+    {
+     "month": "2026-08",
+     "close": 4451.13,
+     "change": 9.96
+    },
+    {
+     "month": "2026-09",
+     "close": 4165.65,
+     "change": -6.41
+    }
+   ]
+  },
+  "ASTER": {
+   "source": "Binance",
+   "asOf": "2026-10-29",
+   "close": 0.6888,
+   "change7d": -0.71,
+   "change30d": -5.05,
+   "change90d": 14.8,
+   "change1y": -32.8,
+   "high52w": 1.381,
+   "high52wDate": "2025-11-18",
+   "low52w": 0.468,
+   "low52wDate": "2026-02-05",
+   "historyDays": 365,
+   "volatility30d": 38.7,
+   "monthly": [
+    {
+     "month": "2025-10",
+     "close": 0.994,
+     "change": null
+    },
+    {
+     "month": "2025-11",
+     "close": 1.053,
+     "change": 5.94
+    },
+    {
+     "month": "2025-12",
+     "close": 0.693,
+     "change": -34.19
+    },
+    {
+     "month": "2026-01",
+     "close": 0.55,
+     "change": -20.63
+    },
+    {
+     "month": "2026-02",
+     "close": 0.722,
+     "change": 31.27
+    },
+    {
+     "month": "2026-03",
+     "close": 0.67,
+     "change": -7.2
+    },
+    {
+     "month": "2026-04",
+     "close": 0.653,
+     "change": -2.54
+    },
+    {
+     "month": "2026-05",
+     "close": 0.726,
+     "change": 11.18
+    },
+    {
+     "month": "2026-06",
+     "close": 0.623,
+     "change": -14.19
+    },
+    {
+     "month": "2026-07",
+     "close": 0.6,
+     "change": -3.69
+    },
+    {
+     "month": "2026-08",
+     "close": 0.702,
+     "change": 17
+    },
+    {
+     "month": "2026-09",
+     "close": 0.7576,
+     "change": 7.92
+    }
+   ]
+  }
+ }
+}

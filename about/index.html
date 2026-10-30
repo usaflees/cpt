@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="kali">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About & Data Methodology | CryptoPriceTicker.com</title>
+  <meta name="description" content="Where CryptoPriceTicker.com gets its crypto prices, how market cap, volume and performance figures are calculated, and how to report an error." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://cryptopriceticker.com/about/" />
+  <meta name="theme-color" content="#0a0e17" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CryptoPriceTicker.com" />
+  <meta property="og:title" content="About CryptoPriceTicker.com and its data" />
+  <meta property="og:url" content="https://cryptopriceticker.com/about/" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": "https://cryptopriceticker.com/about/",
+        "url": "https://cryptopriceticker.com/about/",
+        "name": "About & Data Methodology",
+        "isPartOf": { "@id": "https://cryptopriceticker.com/#website" },
+        "about": { "@id": "https://cryptopriceticker.com/#org" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Live crypto prices", "item": "https://cryptopriceticker.com/" },
+          { "@type": "ListItem", "position": 2, "name": "About", "item": "https://cryptopriceticker.com/about/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script src="/assets/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/app.css" />
+</head>
+<body data-page="about">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <a class="brand" href="/"><span class="brand-logo" aria-hidden="true">⚡</span> CryptoPriceTicker.com</a>
+  </header>
+
+  <main class="container" id="main">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">About</span></nav>
+
+    <section class="page-section prose" aria-labelledby="about-h">
+      <h1 id="about-h" style="font-size:20px;margin-bottom:10px">About CryptoPriceTicker.com</h1>
+      <p>CryptoPriceTicker.com is a free, ad-free crypto price tracker. It shows live prices for 110+ cryptocurrencies streamed directly from three of the largest exchanges, with no account, no cookies for tracking and no paid placements. Nothing on this site is investment advice.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="data-h">
+      <h2 id="data-h">Where the data comes from</h2>
+      <p><strong>Live prices</strong> arrive in your browser over the public market-data WebSocket feeds of <strong>Coinbase</strong> (USD markets), <strong>Binance</strong> (USDT markets) and <strong>Kraken</strong> (USD markets). Each coin only listens to exchanges that actually list it; every row and coin page shows which exchange sent the most recent trade. Binance prices are quoted in USDT, a dollar stablecoin, so they can differ slightly from US-dollar prices.</p>
+      <p><strong>Performance figures</strong> on coin pages (7-day, 30-day, 90-day and 1-year change, 52-week high and low, volatility and monthly closing prices) are calculated from completed daily candles (UTC) from the same exchanges and refreshed weekly. Each page states the exchange used and the date of the latest close.</p>
+      <p><strong>Circulating supply</strong> comes from public data aggregators (CoinLore, cross-checked against CoinMarketCap) and is refreshed periodically; a supply figure is only accepted when the aggregator's price agrees with the exchanges, which guards against two different coins sharing a ticker.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="calc-h">
+      <h2 id="calc-h">How the numbers are calculated</h2>
+      <p><strong>Market cap</strong> = live price × circulating supply. <strong>24h volume</strong> is the sum of the coin's USD/USDT markets on the three exchanges above, so it is lower than "global" volume figures that include hundreds of venues. <strong>Estimated liquidity ±2%</strong> in the main table is a rough rule of thumb (6.5% of that volume); the order-book depth shown on coin pages is measured from Binance's live order book within 2% of the mid price. <strong>Volatility</strong> is the annualized standard deviation of the last 30 daily log returns.</p>
+      <p>Until the first live trade arrives, prices are shown dimmed and 24h changes as "—". The site never displays invented or simulated numbers.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="maint-h">
+      <h2 id="maint-h">How the site is maintained</h2>
+      <p>The coin list, supplies and performance figures are regenerated by open-source scripts, and changes are reviewed before they go live. Short coin descriptions were drafted with AI assistance and checked against each project's public documentation. Renamed coins (for example Toncoin → Gram, Fantom → Sonic, Maker → Sky) are migrated so that old links and saved watchlists keep working.</p>
+      <p>The full source code, including every data script, is public on <a href="https://github.com/usaflees/cpt">GitHub</a>.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="privacy-h">
+      <h2 id="privacy-h">Privacy</h2>
+      <p>Your watchlist, portfolio quantities and price alerts are stored only in your own browser (localStorage) and are never sent to us. The site may use Cloudflare Web Analytics, which counts page views and measures page speed without cookies or cross-site tracking. Live prices are fetched directly from the exchanges, so those exchanges see your IP address as with any website that loads their public data.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="contact-h">
+      <h2 id="contact-h">Report an error</h2>
+      <p>Spotted a wrong price, supply figure or description? Please <a href="https://github.com/usaflees/cpt/issues">open an issue on GitHub</a> with the coin and what looks wrong.</p>
+      <p class="disclaimer">Not financial advice. Crypto assets are volatile; data can be delayed, incomplete or wrong. Verify prices with your exchange before trading.</p>
+    </section>
+  </main>
+
+  <footer class="container site-footer" style="padding-top:0">
+    <span><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads.</span>
+  </footer>
+</body>
+</html>

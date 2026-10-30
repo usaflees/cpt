@@ -16,12 +16,19 @@ whatever is in this repository is what gets deployed.
 | `assets/app.js` | All site logic: feeds, table, coin pages, widgets, alerts, portfolio |
 | `assets/app.css` | All styles, including the 5 colour themes |
 | `assets/theme-init.js` | Tiny script that applies the saved theme before first paint |
+| `about/index.html` | About & data methodology page |
 | `content/coin-about.json` | Short description of each coin, shown on its coin page |
+| `content/coin-stats.json` | **Generated** performance figures (7d–1y change, 52-week range, monthly closes) |
+| `content/seo-overrides.json` | Optional per-coin `title` / `description` / `h1` overrides (the self-improving loop's only content lever) |
+| `content/experiments.json` | Log of every SEO change: hypothesis, pages, start and evaluation dates, result |
 | `_headers` | Security headers (incl. Content-Security-Policy) and cache rules for Cloudflare Pages |
 | `_redirects` | Old tickers → new coin pages (**generated**) |
 | `sitemap.xml` | **Generated** list of all pages for search engines |
 | `robots.txt`, `site.webmanifest`, `favicon.*`, `icon-*.png`, `apple-touch-icon.png`, `og-image.png` | Search/social/app metadata |
-| `scripts/` | Maintenance scripts (Node 18+, no dependencies) |
+| `scripts/` | Maintenance scripts (Node 18+, no dependencies) — see below |
+| `scripts/telemetry/` | Google Apps Script that collects Search Console + Cloudflare data into a private Sheet |
+| `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` |
+| `docs/SELF-IMPROVING.md` | How the weekly self-improvement loop works and the rules it must follow |
 | `docs/AUDIT.md` | The October 2026 audit: what was wrong, what changed, and the evidence |
 
 ## Common tasks
@@ -44,9 +51,19 @@ If a coin is renamed (like Toncoin → Gram), change its `sym`/`name` and set `f
 watchlists, portfolios and `/coin/old/` links then move over automatically. If an exchange still
 uses the old ticker, add `tickers: { CB: "OLD" }` (or `BN`/`KR`).
 
-**Refresh supplies and prices** (every month or two):
-`node scripts/refresh-coins.mjs && node scripts/build-coin-pages.mjs`. The refresh script warns if a coin has
-lost every live feed (for example, after a delisting).
+**Refresh data** (the weekly scheduled task does this automatically):
+```sh
+node scripts/refresh-coins.mjs      # supplies, seed prices, verified exchange feeds (warns on delistings)
+node scripts/fetch-coin-stats.mjs   # performance figures from daily candles
+node scripts/build-coin-pages.mjs   # regenerate pages, sitemap, redirects
+node scripts/seo-lint.mjs           # must pass before anything ships
+```
+
+**Check the live site:** `node scripts/check-live.mjs` (or pass a preview URL).
+
+**Change an SEO title or description:** edit `content/seo-overrides.json`, add an entry to
+`content/experiments.json`, rebuild, and run `node scripts/seo-lint.mjs --base main`. Rules are in
+`docs/SELF-IMPROVING.md`.
 
 **Add a new data source or third-party script.** Add its host to the `Content-Security-Policy` line
 in `_headers`, or browsers will block it.

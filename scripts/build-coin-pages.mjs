@@ -20,8 +20,14 @@ const SECTOR_NAMES = {
   Privacy: "Privacy", Gaming: "Gaming", Meme: "Memecoin", Stable: "Stablecoin"
 };
 
-const { coins, updated } = loadRegistry();
+const { coins, updated: registryUpdated } = loadRegistry();
 const about = JSON.parse(readFileSync(ROOT + "content/coin-about.json", "utf8"));
+// Per-coin performance figures from scripts/fetch-coin-stats.mjs (optional).
+const statsFile = existsSync(ROOT + "content/coin-stats.json") ? JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")) : { coins: {} };
+const stats = statsFile.coins;
+const updated = [registryUpdated, statsFile.updated].filter(Boolean).sort().pop();
+// Hand- or agent-edited title/description/h1 per coin; validated by scripts/seo-lint.mjs.
+const overrides = existsSync(ROOT + "content/seo-overrides.json") ? JSON.parse(readFileSync(ROOT + "content/seo-overrides.json", "utf8")) : {};
 const byCap = [...coins].sort((a, b) => b.supply * b.price - a.supply * a.price);
 const rankOf = new Map(byCap.map((c, i) => [c.sym, i + 1]));
 
@@ -52,11 +58,66 @@ const themeButtons = ["kali", "green", "slate", "oled", "light"]
 const currencyButtons = [["USD", "$"], ["BTC", "₿"], ["ETH", "Ξ"], ["SOL", "◎"]]
   .map(([c, s]) => `<button type="button" class="btn-toggle" data-action="curr" data-curr="${c}">${c} ${s}</button>`).join("");
 
+const shortName = c => c.name.replace(/\s*\(formerly [^)]+\)/, "");
+const firstFit = (options, max) => options.find(o => o.length <= max) || options[options.length - 1];
+const pctText = v => (v === null || v === undefined ? "—" : `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`);
+const pctClass = v => (v === null || v === undefined ? "" : v >= 0 ? "chg-up" : "chg-down");
+const monthName = ym => new Date(ym + "-01T00:00:00Z").toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+
+// Plain, data-derived sentences (no generated prose): what the numbers say, with dates.
+function performanceSummary(c, st) {
+  const n = shortName(c);
+  const parts = [];
+  if (c.sectors.includes("Stable")) {
+    parts.push(`Over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}, ${esc(n)} closed between ${usd(st.low52w)} and ${usd(st.high52w)} per day, a range of ${(((st.high52w - st.low52w) / st.low52w) * 100).toFixed(2)}% around its US-dollar peg.`);
+  } else {
+    if (st.change1y !== null) parts.push(`Over the past year, ${esc(n)} has ${st.change1y >= 0 ? "risen" : "fallen"} ${Math.abs(st.change1y).toFixed(1)}%.`);
+    parts.push(`Its daily closes ranged from ${usd(st.low52w)} (${longDate(st.low52wDate)}) to ${usd(st.high52w)} (${longDate(st.high52wDate)})${st.historyDays < 365 ? ` over the ${st.historyDays} days of data available on ${st.source}` : " over the last 52 weeks"}.`);
+    const fromHigh = ((st.close - st.high52w) / st.high52w) * 100;
+    parts.push(`On ${longDate(st.asOf)} it closed at ${usd(st.close)}, ${Math.abs(fromHigh) < 0.5 ? "at its 52-week high" : `${Math.abs(fromHigh).toFixed(1)}% below that high`}, with 30-day annualized volatility of ${st.volatility30d}%.`);
+  }
+  return parts.join(" ");
+}
+
+function statsSection(c, st) {
+  if (!st) return "";
+  const s = esc(c.sym);
+  const cell = (label, v) => `<div class="metric-box"><div class="metric-label">${label}</div><div class="metric-val"><span class="chg-pill ${pctClass(v)}">${pctText(v)}</span></div></div>`;
+  const rows = st.monthly.slice().reverse().map(m =>
+    `<tr><td class="col-left">${monthName(m.month)}</td><td>${usd(m.close)}</td><td><span class="chg-pill ${pctClass(m.change)}">${pctText(m.change)}</span></td></tr>`).join("\n          ");
+  return `
+    <section class="page-section" aria-labelledby="perf-h">
+      <h2 id="perf-h">${s} price performance</h2>
+      <p class="prose">${performanceSummary(c, st)}</p>
+      <div class="stat-grid">
+        ${cell("7 days", st.change7d)}
+        ${cell("30 days", st.change30d)}
+        ${cell("90 days", st.change90d)}
+        ${cell("1 year", st.change1y)}
+        <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">${usd(st.high52w)}</div><div class="metric-label">${longDate(st.high52wDate)}</div></div>
+        <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">${usd(st.low52w)}</div><div class="metric-label">${longDate(st.low52wDate)}</div></div>
+      </div>
+      <h3 style="font-size:13px;margin:14px 0 8px">${s} monthly closing prices</h3>
+      <div class="table-wrap">
+        <table class="history-table">
+          <caption class="sr-only">${esc(shortName(c))} month-end closing price in USD and monthly change</caption>
+          <thead><tr><th scope="col" class="col-left">Month</th><th scope="col">Close (USD)</th><th scope="col">Change</th></tr></thead>
+          <tbody>
+          ${rows}
+          </tbody>
+        </table>
+      </div>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from ${st.source}, as of ${longDate(st.asOf)}. Updated weekly.</p>
+    </section>`;
+}
+
 function relatedCoins(c) {
   const primary = c.sectors[0];
   const same = byCap.filter(o => o.sym !== c.sym && o.sectors.includes(primary)).slice(0, 8);
-  const top = byCap.filter(o => o.sym !== c.sym && !same.includes(o)).slice(0, Math.max(4, 12 - same.length));
-  return { primary, same, top };
+  const i = byCap.indexOf(c);
+  const nearby = byCap.slice(Math.max(0, i - 3), i + 4).filter(o => o !== c);
+  const top = byCap.filter(o => o.sym !== c.sym && !same.includes(o) && !nearby.includes(o)).slice(0, Math.max(4, 12 - same.length));
+  return { primary, same, nearby, top };
 }
 
 function coinPage(c) {
@@ -66,9 +127,22 @@ function coinPage(c) {
   const exNames = c.feeds.map(f => EXCHANGES[f]);
   const pairs = c.feeds.map(f => `${EXCHANGES[f]} (${PAIR[f](c.tickers?.[f] || c.sym)})`);
   const sectors = c.sectors.map(x => SECTOR_NAMES[x] || x);
-  const { primary, same, top } = relatedCoins(c);
-  const title = `${c.name} (${c.sym}) Live Price & Chart | CryptoPriceTicker.com`;
-  const description = `Live ${c.name} (${c.sym}) price in USD, streamed from ${list(exNames)}. 24h change, chart, market cap, order-book depth and cross-exchange spread. No login, no ads.`;
+  const { primary, same, nearby, top } = relatedCoins(c);
+  const st = stats[c.sym];
+  const o = overrides[c.sym] || {};
+  const n = shortName(c);
+  // Titles skip the brand suffix: Google shows the site name separately, and ≤60 chars avoids truncation.
+  const title = o.title || firstFit([
+    `${n} (${c.sym}) Price: Live Chart & Market Cap`,
+    `${n} (${c.sym}) Price & Live Chart`,
+    `${n} (${c.sym}) Live Price`
+  ], 60);
+  const description = o.description || firstFit([
+    `${n} (${c.sym}) price today in USD, live from ${list(exNames)}. 24h change, chart, market cap, 1-year performance and 52-week range.`,
+    `${n} (${c.sym}) price today in USD, live from ${list(exNames)}. Chart, market cap and 1-year performance.`,
+    `Live ${n} (${c.sym}) price in USD with chart, market cap and 1-year performance.`
+  ], 160);
+  const h1 = o.h1 || `${c.name} (${c.sym}) price`;
   const supplyText = c.supply >= 1000 ? compact(c.supply * 1e6, "") : (c.supply * 1e6).toLocaleString("en-US", { maximumFractionDigits: 0 });
   const relatedLinks = arr => arr.map(o => `<a href="/coin/${slug(o.sym)}/">${esc(o.sym)} <span>${esc(o.name)}</span></a>`).join("\n          ");
   const jsonLd = {
@@ -147,7 +221,7 @@ function coinPage(c) {
 
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
-        <h1 id="coin-h"><span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span> ${name} (${s}) price</h1>
+        <h1 id="coin-h"><span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span> ${esc(h1)}</h1>
         <p class="hero-price is-stale" id="cpPrice">${usd(c.price)}</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
@@ -178,6 +252,8 @@ function coinPage(c) {
       </div>
     </div>
 
+    ${statsSection(c, st)}
+
     <section class="page-section" aria-labelledby="ex-h">
       <h2 id="ex-h">${s} price on each exchange</h2>
       <div id="coinDetail" style="display:flex;flex-direction:column;gap:12px"></div>
@@ -197,6 +273,10 @@ function coinPage(c) {
       <div class="related-list">
           ${relatedLinks(same)}
       </div>
+      <h3 style="font-size:13px;margin:14px 0 8px">Similar market cap</h3>
+      <div class="related-list">
+          ${relatedLinks(nearby)}
+      </div>
       <h3 style="font-size:13px;margin:14px 0 8px">Top coins by market cap</h3>
       <div class="related-list">
           ${relatedLinks(top)}
@@ -205,7 +285,7 @@ function coinPage(c) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads.</span>
+    <span><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a></span>
   </footer>
 </body>
 </html>
@@ -223,7 +303,7 @@ for (const c of coins) {
 }
 
 // 2. Sitemap
-const urls = [`${SITE}/`, ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/about/`, ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${updated}</lastmod></url>`).join("\n")}
