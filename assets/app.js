@@ -4,6 +4,7 @@
  *   home   index.html — full table, movers, portfolio, widget builder
  *   coin   /coin/<sym>/ — one coin: live hero, 24h chart, exchange spread, order-book depth
  *   embed  /embed/ (or legacy /?embed=1) — the iframe widget other sites embed
+ *   convert /convert/ — converter between any tracked coin and 20 fiat currencies
  *
  * Needs assets/coins.js (CPT_COINS) loaded first. No dependencies, no inline handlers
  * (everything is wired through data-action attributes so the CSP can forbid inline JS).
@@ -550,6 +551,7 @@
     if (MODE === "coin") {
       if (dirty.includes(state.coinPageSym) || dirty.some(s => RATE_COINS.includes(s))) updateCoinPage();
     }
+    if ((MODE === "coin" || MODE === "convert") && (dirty.includes(conv.from) || dirty.includes(conv.to) || dirty.includes(pageCoin))) updateConverter();
 
     if (MODE === "home") {
       $("tickCounter").textContent = state.tickCount.toLocaleString();
@@ -606,6 +608,7 @@
    * ------------------------------------------------------------------ */
   function activeSymbols() {
     if (MODE === "home") return Array.from(state.coins.keys());
+    if (MODE === "convert") return [conv.from, conv.to].filter(s => state.coins.has(s));
     // Widgets have a fixed currency, so they only need its rate coin; coin pages can switch currency.
     const rates = MODE === "coin" ? RATE_COINS : state.currency === "USD" ? [] : [state.currency];
     const base = MODE === "coin" ? [state.coinPageSym] : state.embed.coins;
@@ -678,13 +681,16 @@
   }
   const extraBinanceStreams = []; // pairs added via "Load more pairs"
 
+  let coinbaseSocket = null;
+  const extraCoinbaseIds = []; // products added later (converter)
   function connectCoinbase(syms) {
     const ids = onExchange("CB", syms).map(c => tickerOf(c, "CB") + "-USD");
     if (!ids.length) return;
     keepAlive("CB", () => {
       const ws = new WebSocket(COINBASE_WS);
+      coinbaseSocket = ws;
       // ticker_batch (one update per product every 5s) instead of every trade: Binance already ticks each second.
-      ws.onopen = () => ws.send(JSON.stringify({ type: "subscribe", product_ids: ids, channels: ["ticker_batch"] }));
+      ws.onopen = () => ws.send(JSON.stringify({ type: "subscribe", product_ids: ids.concat(extraCoinbaseIds), channels: ["ticker_batch"] }));
       ws.onmessage = ev => {
         try {
           const m = JSON.parse(ev.data);
@@ -741,12 +747,37 @@
     });
   }
 
+  const subscribed = new Set();
   function startFeeds() {
     const syms = activeSymbols();
+    syms.forEach(s => subscribed.add(s));
     bootstrapBinance(syms);
     connectBinance(syms);
     connectCoinbase(syms);
     connectKraken(syms);
+  }
+
+  // Adds coins to the running feeds (the converter can pick any coin after the page has loaded).
+  function watchCoins(syms) {
+    const fresh = syms.filter(s => state.coins.has(s) && !subscribed.has(s));
+    if (!fresh.length) return;
+    fresh.forEach(s => subscribed.add(s));
+    bootstrapBinance(fresh);
+    const send = (ws, msg) => {
+      if (ws.readyState === 1) ws.send(JSON.stringify(msg));
+      else if (ws.readyState === 0) ws.addEventListener("open", () => ws.send(JSON.stringify(msg)), { once: true });
+    };
+    const bn = onExchange("BN", fresh).map(c => tickerOf(c, "BN").toLowerCase() + "usdt@miniTicker");
+    if (bn.length && binanceSocket) {
+      extraBinanceStreams.push(...bn);
+      send(binanceSocket, { method: "SUBSCRIBE", params: bn, id: Date.now() });
+    } else if (bn.length) connectBinance(fresh);
+    const cb = onExchange("CB", fresh).map(c => tickerOf(c, "CB") + "-USD");
+    if (cb.length && coinbaseSocket) {
+      extraCoinbaseIds.push(...cb);
+      send(coinbaseSocket, { type: "subscribe", product_ids: cb, channels: ["ticker_batch"] });
+    } else if (cb.length) connectCoinbase(fresh);
+    onExchange("KR", fresh).forEach(c => krakenAdd(c.sym));
   }
 
   /* ------------------------------------------------------------------
@@ -1142,6 +1173,129 @@
   }
 
   /* ------------------------------------------------------------------
+   * Converter (coin pages and /convert/): any coin ⇄ any coin or fiat currency
+   * ------------------------------------------------------------------ */
+  const FIATS = ["USD", "EUR", "GBP", "CAD", "AUD", "JPY", "INR", "CHF", "CNY", "KRW", "BRL", "MXN", "TRY", "ZAR", "NGN", "PHP", "SGD", "HKD", "AED", "PLN"];
+  const FX_URL = "https://api.coinbase.com/v2/exchange-rates?currency=USD";
+  const fx = { USD: 1 }; // units of each fiat currency per 1 USD
+  const isCode = code => FIATS.includes(code) || state.coins.has(code);
+  const pageCoin = PAGE === "coin" ? state.coinPageSym : null;
+  const conv = {
+    from: renamed((params.get("from") || "").toUpperCase()),
+    to: renamed((params.get("to") || "").toUpperCase()),
+    amount: parseFloat(params.get("amount")),
+    edited: "A" // the side the visitor typed in; the other side follows the live price
+  };
+  if (!isCode(conv.from)) conv.from = pageCoin || "BTC";
+  if (!isCode(conv.to) || conv.to === conv.from) conv.to = conv.from === "USD" ? "BTC" : "USD";
+  if (!(conv.amount > 0)) conv.amount = 1;
+
+  async function loadFx() {
+    try {
+      const cached = JSON.parse(sessionStorage.getItem("cpt_fx") || "null");
+      if (cached && Date.now() - cached.t < 15 * 60e3) { Object.assign(fx, cached.rates); return; }
+    } catch (_) {}
+    try {
+      const res = await fetch(FX_URL);
+      if (!res.ok) throw new Error(res.status);
+      const rates = (await res.json()).data.rates;
+      const picked = {};
+      FIATS.forEach(f => { if (+rates[f] > 0) picked[f] = +rates[f]; });
+      Object.assign(fx, picked);
+      try { sessionStorage.setItem("cpt_fx", JSON.stringify({ t: Date.now(), rates: picked })); } catch (_) {}
+    } catch (_) { /* fiat other than USD shows "—" until the rates load */ }
+  }
+
+  // Value of one unit in USD (null while unknown).
+  function unitUsd(code) {
+    if (FIATS.includes(code)) return fx[code] ? 1 / fx[code] : null;
+    const c = state.coins.get(code);
+    return c && c.price > 0 ? c.price : null;
+  }
+  function convert(amount, from, to) {
+    const a = unitUsd(from), b = unitUsd(to);
+    return a && b && isFinite(amount) ? (amount * a) / b : null;
+  }
+  function fmtAmount(v, code) {
+    if (v === null || !isFinite(v)) return "—";
+    if (FIATS.includes(code)) {
+      const digits = v >= 1 || v === 0 ? 2 : Math.min(8, 2 - Math.floor(Math.log10(v)));
+      return v.toLocaleString("en-US", { style: "currency", currency: code, minimumFractionDigits: Math.min(2, digits), maximumFractionDigits: digits });
+    }
+    const digits = v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
+    return v.toLocaleString("en-US", { maximumFractionDigits: digits }) + " " + code;
+  }
+  // Plain number for an <input type="number"> (no grouping separators).
+  const inputValue = v => (v === null || !isFinite(v) ? "" : String(+v.toPrecision(v >= 1 ? 12 : 8)));
+
+  function updateConverter() {
+    const box = $("converter");
+    if (!box) return;
+    const a = $("cvA"), b = $("cvB");
+    if (conv.edited === "A") {
+      const out = convert(conv.amount, conv.from, conv.to);
+      if (document.activeElement !== b) b.value = inputValue(out);
+    } else {
+      const back = convert(parseFloat(b.value), conv.to, conv.from);
+      if (back !== null) conv.amount = back;
+      if (document.activeElement !== a) a.value = inputValue(back);
+    }
+    const rate = convert(1, conv.from, conv.to);
+    $("cvRate").textContent = rate === null ? "Loading live rate…" : `1 ${conv.from} = ${fmtAmount(rate, conv.to)}`;
+    $("cvInverse").textContent = rate ? `1 ${conv.to} = ${fmtAmount(1 / rate, conv.from)}` : "";
+    const live = [conv.from, conv.to].every(code => FIATS.includes(code) || state.coins.get(code)?.live);
+    box.classList.toggle("is-stale", !live);
+    // Coin-page tables: fixed amounts of the page's coin ⇄ the other side of the converter.
+    const other = pageCoin && (conv.from === pageCoin ? conv.to : conv.to === pageCoin ? conv.from : "USD");
+    if (other) {
+      document.querySelectorAll("[data-cv-other]").forEach(el => { el.textContent = other; });
+      document.querySelectorAll("[data-cv-amt]").forEach(el => {
+        const amt = +el.dataset.cvAmt;
+        el.textContent = el.dataset.cvDir === "rev" ? fmtAmount(convert(amt, other, pageCoin), pageCoin) : fmtAmount(convert(amt, pageCoin, other), other);
+      });
+      document.querySelectorAll("[data-cv-label]").forEach(el => { el.textContent = `${+el.dataset.cvLabel} ${other}`; });
+    }
+  }
+
+  function syncConverterUrl() {
+    if (MODE !== "convert") return;
+    const q = new URLSearchParams({ from: conv.from.toLowerCase(), to: conv.to.toLowerCase() });
+    if (conv.amount !== 1 && conv.edited === "A") q.set("amount", String(+conv.amount.toPrecision(10)));
+    history.replaceState(null, "", `${location.pathname}?${q}`);
+    document.title = `${conv.from} to ${conv.to} converter | CryptoPriceTicker`;
+  }
+
+  function setConverterPair(from, to) {
+    if (!isCode(from) || !isCode(to)) return;
+    if (from === to) to = from === "USD" ? "BTC" : "USD";
+    conv.from = from;
+    conv.to = to;
+    conv.edited = "A";
+    $("cvFrom").value = from;
+    $("cvTo").value = to;
+    $("cvA").value = inputValue(conv.amount);
+    if (MODE === "convert") watchCoins([from, to]);
+    syncConverterUrl();
+    updateConverter();
+  }
+
+  function initConverter() {
+    if (!$("converter")) return;
+    const a = $("cvA"), b = $("cvB");
+    $("cvFrom").value = conv.from;
+    $("cvTo").value = conv.to;
+    a.value = inputValue(conv.amount);
+    a.addEventListener("input", () => { conv.edited = "A"; conv.amount = parseFloat(a.value) || 0; updateConverter(); });
+    b.addEventListener("input", () => { conv.edited = "B"; updateConverter(); });
+    a.addEventListener("change", syncConverterUrl);
+    $("cvFrom").addEventListener("change", e => setConverterPair(e.target.value, conv.to === e.target.value ? conv.from : conv.to));
+    $("cvTo").addEventListener("change", e => setConverterPair(conv.from === e.target.value ? conv.to : conv.from, e.target.value));
+    if (MODE === "convert" && params.has("from")) syncConverterUrl();
+    updateConverter();
+    loadFx().then(updateConverter);
+  }
+
+  /* ------------------------------------------------------------------
    * Shared controls: theme, currency, events
    * ------------------------------------------------------------------ */
   function applyTheme(t) {
@@ -1172,6 +1326,16 @@
   }
 
   const actions = {
+    "cv-swap"() {
+      const out = parseFloat($("cvB").value);
+      if (out > 0) conv.amount = out;
+      setConverterPair(conv.to, conv.from);
+    },
+    "cv-pair"(el) {
+      conv.amount = parseFloat(el.dataset.amount) || 1;
+      setConverterPair(el.dataset.from, el.dataset.to);
+      $("cvA").focus();
+    },
     "toggle-fav"(el) {
       const sym = el.dataset.sym;
       if (state.watchlist.has(sym)) state.watchlist.delete(sym); else state.watchlist.add(sym);
@@ -1318,11 +1482,15 @@
   } else if (MODE === "coin") {
     recomputeRanks();
     initCoinPage();
+    initConverter();
+  } else if (MODE === "convert") {
+    recomputeRanks();
+    initConverter();
   } else {
     recomputeRanks(); // about / sector / widgets pages: header menu and widget builder only
   }
 
-  if (MODE === "home" || MODE === "coin" || MODE === "embed") startFeeds();
+  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert") startFeeds();
 
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt

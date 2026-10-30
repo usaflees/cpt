@@ -46,6 +46,7 @@
           <p><span class="feed-badge" id="badgeKR">KR: INIT</span> Kraken</p>
         </div>
       </details>
+
       <div class="btn-group" role="group" aria-label="Price currency"><button type="button" class="btn-toggle" data-action="curr" data-curr="USD" aria-label="Prices in USD">$</button><button type="button" class="btn-toggle" data-action="curr" data-curr="BTC" aria-label="Prices in BTC">₿</button><button type="button" class="btn-toggle" data-action="curr" data-curr="ETH" aria-label="Prices in ETH">Ξ</button><button type="button" class="btn-toggle" data-action="curr" data-curr="SOL" aria-label="Prices in SOL">◎</button></div>
       <details class="pop menu-pop">
         <summary aria-label="Menu">☰</summary>
@@ -54,6 +55,7 @@
           <div class="theme-switcher" role="group" aria-label="Colour theme"><button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)"><span class="swatch sw-kali"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green"><span class="swatch sw-green"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate"><span class="swatch sw-slate"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="oled" title="Pure black"><span class="swatch sw-oled"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light"><span class="swatch sw-light"></span></button></div>
           <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
+          <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
         </div>
       </details>
@@ -95,6 +97,55 @@
         <div class="range-track" style="margin-top:5px"><div class="range-fill" id="cpRange" style="width:50%"></div></div>
       </div>
     </div>
+
+    <section class="page-section" id="convert" aria-labelledby="conv-h">
+      <h2 id="conv-h">Convert AERO to USD</h2>
+      <div class="converter is-stale" id="converter">
+        <div class="conv-side">
+          <label class="metric-label" for="cvA">Amount</label>
+          <div class="conv-field"><input id="cvA" type="number" inputmode="decimal" step="any" min="0" value="1" />
+          <select id="cvFrom" aria-label="Convert from"><optgroup label="Cryptocurrencies"><option value="AERO" selected>AERO · Aerodrome Finance</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD">USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
+        </div>
+        <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
+        <div class="conv-side">
+          <label class="metric-label" for="cvB">Converted to</label>
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.6218" />
+          <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="AERO">AERO · Aerodrome Finance</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
+        </div>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 AERO = $0.6218</strong> <span id="cvInverse"></span></p>
+      </div>
+      <div class="conv-tables">
+        <table class="history-table conv-table">
+          <caption>AERO to <span data-cv-other>USD</span></caption>
+          <thead><tr><th scope="col" class="col-left">AERO</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
+          <tbody>
+            <tr><td class="col-left">10 AERO</td><td data-cv-amt="10">$6.218</td></tr>
+            <tr><td class="col-left">100 AERO</td><td data-cv-amt="100">$62.180</td></tr>
+            <tr><td class="col-left">500 AERO</td><td data-cv-amt="500">$310.900</td></tr>
+            <tr><td class="col-left">1,000 AERO</td><td data-cv-amt="1000">$621.800</td></tr>
+            <tr><td class="col-left">5,000 AERO</td><td data-cv-amt="5000">$3,109.00</td></tr>
+            <tr><td class="col-left">10,000 AERO</td><td data-cv-amt="10000">$6,218.00</td></tr>
+            <tr><td class="col-left">50,000 AERO</td><td data-cv-amt="50000">$31,090.00</td></tr>
+            <tr><td class="col-left">100,000 AERO</td><td data-cv-amt="100000">$62,180.00</td></tr>
+          </tbody>
+        </table>
+        <table class="history-table conv-table">
+          <caption><span data-cv-other>USD</span> to AERO</caption>
+          <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">AERO</th></tr></thead>
+          <tbody>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">1.608234 AERO</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">16.082342 AERO</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">80.411708 AERO</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">160.823416 AERO</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">804.117079 AERO</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">1,608.23 AERO</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">8,041.17 AERO</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">16,082.34 AERO</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="disclaimer">Uses the live AERO price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=aero">Convert AERO to any other coin →</a></p>
+    </section>
 
     
     <section class="page-section" aria-labelledby="perf-h">

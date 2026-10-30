@@ -3,6 +3,7 @@
 //   coin/<sym>/index.html   one page per coin (live data is filled in by assets/app.js)
 //   sitemap.xml             home + every coin page
 //   _redirects              old tickers (e.g. /coin/ton/ → /coin/gram/)
+//   convert/index.html      the crypto converter page
 //   index.html              the "Live price pages" link list between the coin-index markers
 //
 //   node scripts/build-coin-pages.mjs
@@ -53,6 +54,60 @@ function compact(v, prefix = "$") {
   return prefix + v.toFixed(2);
 }
 
+// Converter (filled live by assets/app.js; FIATS must match the list there).
+const FIATS = [["USD", "US dollar"], ["EUR", "Euro"], ["GBP", "British pound"], ["CAD", "Canadian dollar"], ["AUD", "Australian dollar"],
+  ["JPY", "Japanese yen"], ["INR", "Indian rupee"], ["CHF", "Swiss franc"], ["CNY", "Chinese yuan"], ["KRW", "South Korean won"],
+  ["BRL", "Brazilian real"], ["MXN", "Mexican peso"], ["TRY", "Turkish lira"], ["ZAR", "South African rand"], ["NGN", "Nigerian naira"],
+  ["PHP", "Philippine peso"], ["SGD", "Singapore dollar"], ["HKD", "Hong Kong dollar"], ["AED", "UAE dirham"], ["PLN", "Polish złoty"]];
+const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed on coin pages
+const num = v => +v.toPrecision(12);
+function coinAmount(v, sym) {
+  const digits = v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v)));
+  return v.toLocaleString("en-US", { maximumFractionDigits: digits }) + " " + sym;
+}
+function converterHtml(coinList, from, to, seedOut) {
+  const options = selected => `<optgroup label="Cryptocurrencies">${coinList.map(c => `<option value="${esc(c.sym)}"${c.sym === selected ? " selected" : ""}>${esc(c.sym)} · ${esc(shortName(c))}</option>`).join("")}</optgroup>` +
+    `<optgroup label="Currencies">${FIATS.map(([f, n]) => `<option value="${f}"${f === selected ? " selected" : ""}>${f} · ${esc(n)}</option>`).join("")}</optgroup>`;
+  return `<div class="converter is-stale" id="converter">
+        <div class="conv-side">
+          <label class="metric-label" for="cvA">Amount</label>
+          <div class="conv-field"><input id="cvA" type="number" inputmode="decimal" step="any" min="0" value="1" />
+          <select id="cvFrom" aria-label="Convert from">${options(from)}</select></div>
+        </div>
+        <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
+        <div class="conv-side">
+          <label class="metric-label" for="cvB">Converted to</label>
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="${seedOut}" />
+          <select id="cvTo" aria-label="Convert to">${options(to)}</select></div>
+        </div>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 ${esc(from)} = ${seedOut ? usd(seedOut) : "…"}</strong> <span id="cvInverse"></span></p>
+      </div>`;
+}
+function conversionTables(c) {
+  const p = c.price, s = esc(c.sym);
+  const amounts = p >= 1000 ? [0.001, 0.01, 0.05, 0.1, 0.5, 1, 5, 10] : p >= 1 ? [1, 5, 10, 25, 50, 100, 500, 1000]
+    : p >= 0.01 ? [10, 100, 500, 1000, 5000, 10000, 50000, 100000] : [10000, 100000, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11];
+  const dollars = [1, 10, 50, 100, 500, 1000, 5000, 10000];
+  const fwd = amounts.map(a => `<tr><td class="col-left">${a.toLocaleString("en-US", { maximumFractionDigits: 3 })} ${s}</td><td data-cv-amt="${a}">${usd(num(a * p))}</td></tr>`).join("\n            ");
+  const rev = dollars.map(d => `<tr><td class="col-left" data-cv-label="${d}">${d.toLocaleString("en-US")} USD</td><td data-cv-amt="${d}" data-cv-dir="rev">${coinAmount(d / p, s)}</td></tr>`).join("\n            ");
+  return `<div class="conv-tables">
+        <table class="history-table conv-table">
+          <caption>${s} to <span data-cv-other>USD</span></caption>
+          <thead><tr><th scope="col" class="col-left">${s}</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
+          <tbody>
+            ${fwd}
+          </tbody>
+        </table>
+        <table class="history-table conv-table">
+          <caption><span data-cv-other>USD</span> to ${s}</caption>
+          <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">${s}</th></tr></thead>
+          <tbody>
+            ${rev}
+          </tbody>
+        </table>
+      </div>`;
+}
+
 const THEMES = [["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];
 const themeButtons = THEMES.map(([t, label]) => `<button type="button" class="theme-btn" data-action="theme" data-theme-val="${t}" title="${label}"><span class="swatch sw-${t}"></span></button>`).join("");
 const currencyButtons = [["USD", "$"], ["BTC", "₿"], ["ETH", "Ξ"], ["SOL", "◎"]]
@@ -64,7 +119,7 @@ const sectorOf = key => sectors.find(x => x.keys.includes(key));
 const sectorUrl = x => `${SITE}/sector/${x.slug}/`;
 
 // Same header as index.html: brand, link home, live-feed status, currency and menu.
-function topbar(withFeeds) {
+function topbar(withFeeds, withCurrency = withFeeds) {
   return `<header class="topbar">
     <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
     <a class="topbar-link" href="/">← All prices</a>
@@ -78,6 +133,7 @@ function topbar(withFeeds) {
           <p><span class="feed-badge" id="badgeKR">KR: INIT</span> Kraken</p>
         </div>
       </details>
+` : ""}${withCurrency ? `
       <div class="btn-group" role="group" aria-label="Price currency">${currencyButtons}</div>` : ""}
       <details class="pop menu-pop">
         <summary aria-label="Menu">☰</summary>
@@ -86,6 +142,7 @@ function topbar(withFeeds) {
           <div class="theme-switcher" role="group" aria-label="Colour theme">${themeButtons}</div>
           <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
+          <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
         </div>
       </details>
@@ -278,6 +335,13 @@ function coinPage(c) {
       </div>
     </div>
 
+    <section class="page-section" id="convert" aria-labelledby="conv-h">
+      <h2 id="conv-h">Convert ${s} to USD</h2>
+      ${converterHtml([c, ...RATE_COINS.filter(x => x !== c.sym).map(x => coins.find(o => o.sym === x))], c.sym, "USD", num(c.price))}
+      ${conversionTables(c)}
+      <p class="disclaimer">Uses the live ${s} price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=${slug(c.sym)}">Convert ${s} to any other coin →</a></p>
+    </section>
+
     ${statsSection(c, st)}
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -449,8 +513,108 @@ for (const x of sectors) {
   writeFileSync(`${sectorDir}${x.slug}/index.html`, sectorPage(x));
 }
 
+// 1c. Converter page
+function convertPage() {
+  const pageUrl = `${SITE}/convert/`;
+  const title = "Crypto Converter: Live Rates for Coins & 20 Currencies";
+  const description = `Convert ${coins.length} cryptocurrencies to each other or to USD, EUR, GBP, INR and 16 more currencies at live exchange prices. Free, no sign-up.`;
+  const btc = coins.find(c => c.sym === "BTC");
+  const pairs = [["BTC", "USD"], ["ETH", "USD"], ["SOL", "USD"], ["XRP", "USD"], ["BTC", "EUR"], ["BTC", "GBP"], ["BTC", "INR"], ["ETH", "BTC"],
+    ["SOL", "ETH"], ["USDT", "EUR"], ["DOGE", "USD"], ["USD", "BTC", 100], ["EUR", "ETH", 100]]
+    .filter(([a, b]) => [a, b].every(x => FIATS.some(f => f[0] === x) || coins.some(c => c.sym === x)));
+  const pairButtons = pairs.map(([a, b, amt]) => `<button type="button" class="chip" data-action="cv-pair" data-from="${a}" data-to="${b}" data-amount="${amt || 1}">${amt ? amt + " " : ""}${a} → ${b}</button>`).join("\n        ");
+  const top = byCap.slice(0, 24).map(c => `<a href="/coin/${slug(c.sym)}/#convert">${esc(c.sym)} to USD</a>`).join("\n        ");
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "WebApplication", "@id": `${pageUrl}#app`, name: "CryptoPriceTicker crypto converter", url: pageUrl, description,
+        applicationCategory: "FinanceApplication", operatingSystem: "Any", isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, isPartOf: { "@id": `${SITE}/#website` } },
+      { "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Live crypto prices", item: `${SITE}/` },
+        { "@type": "ListItem", position: 2, name: "Crypto converter", item: pageUrl }
+      ] }
+    ]
+  };
+  return `<!DOCTYPE html>
+<!-- Generated by scripts/build-coin-pages.mjs — edit the generator, not this file. -->
+<html lang="en" data-theme="kali">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(description)}" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="${pageUrl}" />
+  <meta name="theme-color" content="#0a0e17" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="preload" href="/assets/app.css" as="style" />
+  <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
+  <link rel="preconnect" href="https://api.coinbase.com" crossorigin />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CryptoPriceTicker.com" />
+  <meta property="og:title" content="Live crypto converter" />
+  <meta property="og:description" content="${esc(description)}" />
+  <meta property="og:url" content="${pageUrl}" />
+  <meta property="og:image" content="${SITE}/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+  <script src="/assets/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/app.css" />
+  <script src="/assets/coins.js" defer></script>
+  <script src="/assets/app.js" defer></script>
+</head>
+<body data-page="convert">
+  <a class="skip-link" href="#main">Skip to content</a>
+  ${topbar(true, false)}
+
+  <main class="container" id="main">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">Crypto converter</span></nav>
+    <section class="hero" aria-labelledby="conv-h">
+      <h1 id="conv-h" class="hero-title">Crypto converter</h1>
+      <p class="hero-sub">Convert between ${coins.length} coins and 20 currencies at the live price from Coinbase, Binance and Kraken. Type in either box.</p>
+    </section>
+
+    <section class="page-section conv-page" aria-label="Converter">
+      ${converterHtml(byCap, "BTC", "USD", num(btc.price))}
+      <p class="pop-title" style="margin-top:14px">Popular conversions</p>
+      <div class="chips conv-pairs">
+        ${pairButtons}
+      </div>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="how-h">
+      <h2 id="how-h">How the conversion works</h2>
+      <p>Each coin's price is streamed live from the exchanges' public USD and USDT markets, and the result updates as new trades arrive. Converting one coin to another goes through its US dollar price, so 1 ETH in BTC is the ETH price divided by the BTC price.</p>
+      <p>Currencies other than the US dollar use Coinbase's public reference exchange rates, refreshed every 15 minutes. Exchanges, banks and payment apps add their own fees and spreads, so the amount you actually receive will usually be a little lower.</p>
+      <p>The converter remembers nothing: the address bar keeps the pair you picked, so you can bookmark or share it.</p>
+      <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
+    </section>
+
+    <nav class="page-section" aria-labelledby="pop-h">
+      <h2 id="pop-h">Coin to US dollar converters</h2>
+      <div class="coin-index">
+        ${top}
+      </div>
+    </nav>
+  </main>
+
+  <footer class="container site-footer" style="padding-top:0">
+    <span><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a></span>
+  </footer>
+</body>
+</html>
+`;
+}
+mkdirSync(ROOT + "convert", { recursive: true });
+writeFileSync(ROOT + "convert/index.html", convertPage());
+
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/about/`, `${SITE}/widgets/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${updated}</lastmod></url>`).join("\n")}
@@ -479,5 +643,5 @@ const startLineEnd = html.indexOf("\n", start) + 1;
 const links = byCap.map(c => `          <a href="/coin/${slug(c.sym)}/">${esc(c.name)} (${esc(c.sym)})</a>`).join("\n");
 writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice(end));
 
-console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
+console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
 if (!existsSync(ROOT + "og-image.png")) console.warn("⚠ og-image.png is missing");

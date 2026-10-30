@@ -10,7 +10,7 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://data-api.binance.vision wss://data-stream.binance.vision wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com https://cloudflareinsights.com; manifest-src 'self'; frame-ancestors *; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://data-api.binance.vision https://api.coinbase.com wss://data-stream.binance.vision wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com https://cloudflareinsights.com; manifest-src 'self'; frame-ancestors *; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
 
 # The service worker must always be revalidated so updates reach visitors.
 /sw.js

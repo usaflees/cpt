@@ -19,6 +19,7 @@ whatever is in this repository is what gets deployed.
 | `about/index.html` | About & data methodology page |
 | `widgets/index.html` | Free widget landing page: live examples and how to embed |
 | `sector/<slug>/index.html` | Sector hub pages (**generated** from `content/sectors.json`) |
+| `convert/index.html` | Crypto converter: any coin ⇄ any coin or 20 fiat currencies (**generated**; fiat rates from Coinbase's public exchange-rates API) |
 | `og/<sym>.jpg` | Per-coin social share images (`node scripts/build-og-images.cjs`, needs Playwright) |
 | `sw.js` | Service worker: installable app + offline fallback (always network-first) |
 | `llms.txt`, `.well-known/security.txt`, `<key>.txt` | AI-crawler summary, security contact, IndexNow key |
