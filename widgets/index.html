@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="kali">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Live Crypto Price Widget for Any Website</title>
+  <meta name="description" content="Add a free, ad-free live crypto price ticker to your website, blog, Notion or WordPress in one copy-paste. Real-time prices from Coinbase, Binance and Kraken." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://cryptopriceticker.com/widgets/" />
+  <meta name="theme-color" content="#0a0e17" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CryptoPriceTicker.com" />
+  <meta property="og:title" content="Free live crypto price widget for your website" />
+  <meta property="og:description" content="One copy-paste, no scripts, no ads: a live crypto ticker for blogs, docs, Notion and WordPress." />
+  <meta property="og:url" content="https://cryptopriceticker.com/widgets/" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://cryptopriceticker.com/widgets/",
+        "url": "https://cryptopriceticker.com/widgets/",
+        "name": "Free Live Crypto Price Widget for Any Website",
+        "isPartOf": { "@id": "https://cryptopriceticker.com/#website" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Live crypto prices", "item": "https://cryptopriceticker.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Widgets", "item": "https://cryptopriceticker.com/widgets/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script src="/assets/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/app.css" />
+  <script src="/assets/coins.js" defer></script>
+  <script src="/assets/app.js" defer></script>
+</head>
+<body data-page="widgets">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-link" href="/">← All prices</a>
+    <div class="topbar-actions">
+      <details class="pop menu-pop">
+        <summary aria-label="Menu">☰</summary>
+        <div class="pop-panel menu-list">
+          <p class="pop-title">Theme</p>
+          <div class="theme-switcher" role="group" aria-label="Colour theme">
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)"><span class="swatch sw-kali"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green"><span class="swatch sw-green"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate"><span class="swatch sw-slate"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled" title="Pure black"><span class="swatch sw-oled"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light"><span class="swatch sw-light"></span></button>
+          </div>
+          <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main class="container" id="main">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">Widgets</span></nav>
+
+    <section class="hero" aria-labelledby="w-h">
+      <h1 id="w-h" class="hero-title">A free live crypto ticker for your website</h1>
+      <p class="hero-sub">One copy-paste. No scripts on your page, no ads, no account. Prices stream live from Coinbase, Binance and Kraken.</p>
+      <p class="hero-actions"><button type="button" class="action-btn btn-accent" data-action="open-widget">🧩 Build your widget</button></p>
+    </section>
+
+    <section class="page-section" aria-labelledby="ex-h">
+      <h2 id="ex-h">Three layouts</h2>
+      <h3>Scrolling ticker bar</h3>
+      <p class="prose">A slim, full-width bar for headers, footers or the top of an article.</p>
+      <iframe class="widget-demo" src="/embed/?layout=marquee&amp;coins=BTC,ETH,SOL,XRP,HYPE,TAO,KAS,SUI" height="54" loading="lazy" title="Example: scrolling crypto ticker"></iframe>
+      <h3>Coin cards</h3>
+      <p class="prose">Up to eight coins with price, 24h change and a small chart.</p>
+      <iframe class="widget-demo" src="/embed/?layout=grid&amp;coins=BTC,ETH,SOL,TAO,RENDER,FET,NEAR,AKT" height="225" loading="lazy" title="Example: crypto price cards"></iframe>
+      <h3>Single coin</h3>
+      <p class="prose">One coin in detail: price, change, market cap, volume and 24h range.</p>
+      <iframe class="widget-demo" src="/embed/?layout=single&amp;coins=BTC" height="180" loading="lazy" title="Example: Bitcoin price card"></iframe>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="how-h">
+      <h2 id="how-h">How to add it</h2>
+      <ol class="steps">
+        <li>Click <strong>Build your widget</strong>, pick a layout, coins, theme and currency.</li>
+        <li>Click <strong>Copy HTML</strong>.</li>
+        <li>Paste it where you want the ticker:
+          <ul>
+            <li><strong>WordPress:</strong> add a <em>Custom HTML</em> block and paste the snippet.</li>
+            <li><strong>Ghost, Webflow, Squarespace, Wix:</strong> use the <em>HTML / Embed / Code</em> block.</li>
+            <li><strong>Notion:</strong> type <code>/embed</code> and paste just the iframe URL (the address that starts with <code>https://cryptopriceticker.com/embed/</code>).</li>
+            <li><strong>Plain HTML or docs sites:</strong> paste it anywhere in the page body.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>The widget lives in a lazy-loaded iframe, so it adds no JavaScript to your page and doesn't slow down your first paint. It works on phones and in dark or light designs (pick the matching theme).</p>
+    </section>
+
+    <section class="page-section prose faq" aria-labelledby="wfaq-h">
+      <h2 id="wfaq-h">Questions</h2>
+      <details>
+        <summary>Is it really free?</summary>
+        <p>Yes. There are no fees, ads, sign-ups or usage limits. The snippet includes a small "Live prices by CryptoPriceTicker.com" credit link; you're welcome to keep it, restyle it or remove it.</p>
+      </details>
+      <details>
+        <summary>Where do the prices come from?</summary>
+        <p>Directly from the public market-data feeds of Coinbase, Binance and Kraken, streamed into the widget in your visitors' browsers. See <a href="/about/">how the data works</a>.</p>
+      </details>
+      <details>
+        <summary>Does it track my visitors?</summary>
+        <p>No. The widget sets no cookies and stores nothing about your visitors. As with any embedded content, their browsers connect to our site and to the exchanges to load prices.</p>
+      </details>
+      <details>
+        <summary>Which coins can I show?</summary>
+        <p>Any of the <a href="/">110+ coins on the home page</a>, in US dollars or priced in BTC, ETH or SOL.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="container site-footer" style="padding-top:0">
+    <span><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a></span>
+  </footer>
+</body>
+</html>

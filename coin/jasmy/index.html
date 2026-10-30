@@ -21,11 +21,11 @@
   <meta property="og:title" content="JasmyCoin (JASMY) live price" />
   <meta property="og:description" content="JasmyCoin (JASMY) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range." />
   <meta property="og:url" content="https://cryptopriceticker.com/coin/jasmy/" />
-  <meta property="og:image" content="https://cryptopriceticker.com/og-image.png" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og/jasmy.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/jasmy/","url":"https://cryptopriceticker.com/coin/jasmy/","name":"JasmyCoin (JASMY) Price: Live Chart & Market Cap","description":"JasmyCoin (JASMY) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-10-30","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"JasmyCoin","alternateName":"JASMY"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"JasmyCoin (JASMY)","item":"https://cryptopriceticker.com/coin/jasmy/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/jasmy/","url":"https://cryptopriceticker.com/coin/jasmy/","name":"JasmyCoin (JASMY) Price: Live Chart & Market Cap","description":"JasmyCoin (JASMY) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-10-30","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"JasmyCoin","alternateName":"JASMY"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"DePIN","item":"https://cryptopriceticker.com/sector/depin/"},{"@type":"ListItem","position":3,"name":"JasmyCoin (JASMY)","item":"https://cryptopriceticker.com/coin/jasmy/"}]}]}</script>
   <script src="/assets/theme-init.js"></script>
   <link rel="stylesheet" href="/assets/app.css" />
   <script src="/assets/coins.js" defer></script>
@@ -33,29 +33,39 @@
 </head>
 <body data-page="coin" data-sym="JASMY">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-bar">
-    <a class="brand" href="/"><span class="brand-logo" aria-hidden="true">⚡</span> CryptoPriceTicker.com</a>
-    <div class="site-bar-controls">
-      <span class="feed-badge" id="badgeCB">CB: INIT</span>
-      <span class="feed-badge" id="badgeBN">BN: INIT</span>
-      <span class="feed-badge" id="badgeKR">KR: INIT</span>
-      <div class="btn-group" role="group" aria-label="Price currency"><button type="button" class="btn-toggle" data-action="curr" data-curr="USD">USD $</button><button type="button" class="btn-toggle" data-action="curr" data-curr="BTC">BTC ₿</button><button type="button" class="btn-toggle" data-action="curr" data-curr="ETH">ETH Ξ</button><button type="button" class="btn-toggle" data-action="curr" data-curr="SOL">SOL ◎</button></div>
-      <div class="theme-switcher" role="group" aria-label="Colour theme">
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali">KALI</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="green">GREEN</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate">SLATE</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled">OLED</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="light">LIGHT</button>
-      </div>
+  <header class="topbar">
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-link" href="/">← All prices</a>
+    <div class="topbar-actions">
+      <details class="pop live-pop">
+        <summary aria-label="Live feed status"><span class="pulse-dot" aria-hidden="true"></span><span class="hide-mobile">Live</span></summary>
+        <div class="pop-panel" role="group" aria-label="Exchange feeds">
+          <p class="pop-title">Streaming from the exchanges</p>
+          <p><span class="feed-badge" id="badgeCB">CB: INIT</span> Coinbase</p>
+          <p><span class="feed-badge" id="badgeBN">BN: INIT</span> Binance</p>
+          <p><span class="feed-badge" id="badgeKR">KR: INIT</span> Kraken</p>
+        </div>
+      </details>
+      <div class="btn-group" role="group" aria-label="Price currency"><button type="button" class="btn-toggle" data-action="curr" data-curr="USD" aria-label="Prices in USD">$</button><button type="button" class="btn-toggle" data-action="curr" data-curr="BTC" aria-label="Prices in BTC">₿</button><button type="button" class="btn-toggle" data-action="curr" data-curr="ETH" aria-label="Prices in ETH">Ξ</button><button type="button" class="btn-toggle" data-action="curr" data-curr="SOL" aria-label="Prices in SOL">◎</button></div>
+      <details class="pop menu-pop">
+        <summary aria-label="Menu">☰</summary>
+        <div class="pop-panel menu-list">
+          <p class="pop-title">Theme</p>
+          <div class="theme-switcher" role="group" aria-label="Colour theme"><button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)"><span class="swatch sw-kali"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green"><span class="swatch sw-green"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate"><span class="swatch sw-slate"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="oled" title="Pure black"><span class="swatch sw-oled"></span></button><button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light"><span class="swatch sw-light"></span></button></div>
+          <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
+          <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
+          <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
+        </div>
+      </details>
     </div>
   </header>
 
   <main class="container" id="main">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">JasmyCoin</span></nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <a href="/sector/depin/">DePIN</a> › <span aria-current="page">JasmyCoin</span></nav>
 
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
-        <h1 id="coin-h"><span class="coin-avatar" aria-hidden="true">JASM</span> JasmyCoin (JASMY) price</h1>
+        <div class="coin-title"><span class="coin-avatar" aria-hidden="true">JASM</span><h1 id="coin-h">JasmyCoin (JASMY) price</h1></div>
         <p class="hero-price is-stale" id="cpPrice">$0.003710</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>

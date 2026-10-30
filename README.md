@@ -17,6 +17,11 @@ whatever is in this repository is what gets deployed.
 | `assets/app.css` | All styles, including the 5 colour themes |
 | `assets/theme-init.js` | Tiny script that applies the saved theme before first paint |
 | `about/index.html` | About & data methodology page |
+| `widgets/index.html` | Free widget landing page: live examples and how to embed |
+| `sector/<slug>/index.html` | Sector hub pages (**generated** from `content/sectors.json`) |
+| `og/<sym>.jpg` | Per-coin social share images (`node scripts/build-og-images.cjs`, needs Playwright) |
+| `sw.js` | Service worker: installable app + offline fallback (always network-first) |
+| `llms.txt`, `.well-known/security.txt`, `<key>.txt` | AI-crawler summary, security contact, IndexNow key |
 | `content/coin-about.json` | Short description of each coin, shown on its coin page |
 | `content/coin-stats.json` | **Generated** performance figures (7d–1y change, 52-week range, monthly closes) |
 | `content/seo-overrides.json` | Optional per-coin `title` / `description` / `h1` overrides (the self-improving loop's only content lever) |
@@ -29,6 +34,7 @@ whatever is in this repository is what gets deployed.
 | `scripts/telemetry/` | Google Apps Script that collects Search Console + Cloudflare data into a private Sheet |
 | `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` |
 | `docs/SELF-IMPROVING.md` | How the weekly self-improvement loop works and the rules it must follow |
+| `docs/LAUNCH-KIT.md` | Launch & growth plan: indexing checklist, where to post (and the rules), post drafts |
 | `docs/AUDIT.md` | The October 2026 audit: what was wrong, what changed, and the evidence |
 
 ## Common tasks

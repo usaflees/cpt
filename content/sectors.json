@@ -1,0 +1,102 @@
+[
+  {
+    "slug": "layer-1",
+    "keys": [
+      "L1"
+    ],
+    "name": "Layer 1",
+    "title": "Layer 1 Crypto Prices: Live Blockchain Coin Prices",
+    "h1": "Layer 1 blockchain coins: live prices",
+    "intro": "Layer 1 coins are the native assets of base blockchains such as Bitcoin, Ethereum and Solana. They pay transaction fees and, on proof-of-stake chains, secure the network through staking.",
+    "noun": "Layer 1 coins"
+  },
+  {
+    "slug": "layer-2",
+    "keys": [
+      "L2"
+    ],
+    "name": "Layer 2",
+    "title": "Layer 2 Crypto Prices: Live Rollup Token Prices",
+    "h1": "Layer 2 tokens: live prices",
+    "intro": "Layer 2 networks process transactions off a base chain, usually Ethereum, and post the results back to it, making transfers faster and cheaper. Their tokens are mostly used for governance, fees and staking.",
+    "noun": "Layer 2 tokens"
+  },
+  {
+    "slug": "ai",
+    "keys": [
+      "AI"
+    ],
+    "name": "AI",
+    "title": "AI Crypto Coins: Live Prices & Performance",
+    "h1": "AI crypto coins: live prices",
+    "intro": "AI tokens belong to networks that coordinate machine-learning work, GPU compute, autonomous agents or the data they use, from decentralized model training to marketplaces for spare graphics cards.",
+    "noun": "AI coins"
+  },
+  {
+    "slug": "depin",
+    "keys": [
+      "DePIN"
+    ],
+    "name": "DePIN",
+    "title": "DePIN Crypto Prices: Live Infrastructure Token Prices",
+    "h1": "DePIN tokens: live prices",
+    "intro": "DePIN (decentralized physical infrastructure networks) projects pay people in tokens for providing real-world resources such as storage, wireless coverage, GPUs, bandwidth or sensor data.",
+    "noun": "DePIN tokens"
+  },
+  {
+    "slug": "defi",
+    "keys": [
+      "DeFi",
+      "RWA"
+    ],
+    "name": "DeFi & real-world assets",
+    "title": "DeFi & RWA Crypto Prices: Live Token Prices",
+    "h1": "DeFi and real-world asset tokens: live prices",
+    "intro": "DeFi tokens govern on-chain exchanges, lending markets and derivatives protocols. Real-world asset (RWA) tokens represent off-chain assets such as gold or US Treasuries on a blockchain.",
+    "noun": "DeFi and RWA tokens"
+  },
+  {
+    "slug": "privacy",
+    "keys": [
+      "Privacy"
+    ],
+    "name": "Privacy",
+    "title": "Privacy Coin Prices: Live Monero, Zcash & More",
+    "h1": "Privacy coins: live prices",
+    "intro": "Privacy coins hide some or all transaction details, such as sender, receiver or amount, using techniques like ring signatures, stealth addresses or zero-knowledge proofs.",
+    "noun": "privacy coins"
+  },
+  {
+    "slug": "gaming",
+    "keys": [
+      "Gaming"
+    ],
+    "name": "Gaming",
+    "title": "Gaming Crypto Prices: Live GameFi Token Prices",
+    "h1": "Gaming and metaverse tokens: live prices",
+    "intro": "Gaming tokens are used inside blockchain games and virtual worlds for purchases, rewards, staking and governance, and by the networks built specifically for games.",
+    "noun": "gaming tokens"
+  },
+  {
+    "slug": "memecoins",
+    "keys": [
+      "Meme"
+    ],
+    "name": "Memecoins",
+    "title": "Memecoin Prices: Live Dogecoin, Pepe & More",
+    "h1": "Memecoins: live prices",
+    "intro": "Memecoins are tokens built around internet jokes, animals or communities rather than a product. Their prices are driven mostly by attention and sentiment, which makes them some of the most volatile assets on this site.",
+    "noun": "memecoins"
+  },
+  {
+    "slug": "stablecoins",
+    "keys": [
+      "Stable"
+    ],
+    "name": "Stablecoins",
+    "title": "Stablecoin Prices: Live USDT, USDC & Peg Tracker",
+    "h1": "Stablecoins: live prices and peg",
+    "intro": "Stablecoins aim to hold a steady value, usually one US dollar, backed by cash and short-term government debt, crypto collateral or hedged positions. Small moves away from $1.00 show how well each peg is holding.",
+    "noun": "stablecoins"
+  }
+]

@@ -21,7 +21,9 @@ const decode = s => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&l
 
 // ---------- 1. Pages: titles, descriptions, H1, canonical, JSON-LD ----------
 const { coins } = loadRegistry();
-const pages = ["index.html", "about/index.html", ...coins.map(c => `coin/${c.sym.toLowerCase()}/index.html`)];
+const sectorSlugs = JSON.parse(read("content/sectors.json")).map(x => x.slug);
+const pages = ["index.html", "about/index.html", "widgets/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
+  ...coins.map(c => `coin/${c.sym.toLowerCase()}/index.html`)];
 const seen = { title: new Map(), description: new Map() };
 for (const p of pages) {
   if (!existsSync(join(ROOT, p))) { err(`${p}: missing (run node scripts/build-coin-pages.mjs)`); continue; }

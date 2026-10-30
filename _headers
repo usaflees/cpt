@@ -12,7 +12,13 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://data-api.binance.vision wss://data-stream.binance.vision wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com https://cloudflareinsights.com; manifest-src 'self'; frame-ancestors *; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
 
-# Icons and the social image rarely change: let browsers cache them for a week.
+# The service worker must always be revalidated so updates reach visitors.
+/sw.js
+  Cache-Control: no-cache
+
+# Icons and the social images rarely change: let browsers cache them for a week.
+/og/*
+  Cache-Control: public, max-age=604800
 /favicon.svg
   Cache-Control: public, max-age=604800
 /favicon.ico

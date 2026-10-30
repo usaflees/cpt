@@ -2,6 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://cryptopriceticker.com/</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://cryptopriceticker.com/about/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/widgets/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/layer-1/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/layer-2/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/ai/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/depin/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/defi/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/privacy/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/gaming/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/memecoins/</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://cryptopriceticker.com/sector/stablecoins/</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://cryptopriceticker.com/coin/btc/</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://cryptopriceticker.com/coin/eth/</loc><lastmod>2026-10-30</lastmod></url>
   <url><loc>https://cryptopriceticker.com/coin/usdt/</loc><lastmod>2026-10-30</lastmod></url>

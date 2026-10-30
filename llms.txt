@@ -1,0 +1,26 @@
+# CryptoPriceTicker.com
+
+> Free, ad-free live cryptocurrency prices streamed directly from the public market-data feeds of Coinbase, Binance and Kraken. No account needed. Covers 110+ coins with per-coin pages (performance, 52-week range, monthly price history, per-exchange prices and spread) and sector overviews.
+
+## Main pages
+- [Live crypto prices](https://cryptopriceticker.com/): live table of 110+ coins by market cap, sector filters, biggest movers
+- [About & data methodology](https://cryptopriceticker.com/about/): data sources and how market cap, volume, depth and performance are calculated
+- [Free website widget](https://cryptopriceticker.com/widgets/): embeddable live crypto ticker (iframe)
+
+## Sectors
+- [Layer 1](https://cryptopriceticker.com/sector/layer-1/)
+- [Layer 2](https://cryptopriceticker.com/sector/layer-2/)
+- [AI](https://cryptopriceticker.com/sector/ai/)
+- [DePIN](https://cryptopriceticker.com/sector/depin/)
+- [DeFi & real-world assets](https://cryptopriceticker.com/sector/defi/)
+- [Privacy](https://cryptopriceticker.com/sector/privacy/)
+- [Gaming](https://cryptopriceticker.com/sector/gaming/)
+- [Memecoins](https://cryptopriceticker.com/sector/memecoins/)
+- [Stablecoins](https://cryptopriceticker.com/sector/stablecoins/)
+
+## Coin pages
+Every coin has a page at `https://cryptopriceticker.com/coin/<ticker>/` (lowercase), for example [Bitcoin](https://cryptopriceticker.com/coin/btc/) and [Ethereum](https://cryptopriceticker.com/coin/eth/). The full list is in the [sitemap](https://cryptopriceticker.com/sitemap.xml).
+
+## Notes
+- Prices on the pages update live in the browser; the static HTML contains weekly snapshots with their dates.
+- Not financial advice.

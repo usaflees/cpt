@@ -34,6 +34,9 @@ const prodOnly = IS_PROD ? { "x-robots-tag": /^(?!.*noindex)/ } : {};
 await check("/", { headers: { "content-security-policy": /default-src 'self'/, ...prodOnly }, body: /<h1/ });
 for (const c of sample) await check(`/coin/${c.sym.toLowerCase()}/`, { headers: prodOnly, body: new RegExp(`data-sym="${c.sym}"`) });
 await check("/about/", { headers: prodOnly });
+await check("/widgets/", { headers: prodOnly });
+await check("/sector/ai/", { headers: prodOnly, body: /<table/ });
+await check("/sw.js");
 await check("/embed/", { headers: { "x-robots-tag": /noindex/ } });
 await check("/this-page-does-not-exist", { status: 404 });
 await check("/coin/ton/", { status: 301, headers: { location: /\/coin\/gram\/$/ } });
@@ -42,7 +45,8 @@ await check("/assets/app.js");
 const sitemap = await check("/sitemap.xml", { body: /<urlset/ });
 if (sitemap) {
   const n = (sitemap.match(/<loc>/g) || []).length;
-  if (n !== coins.length + 2) problems.push(`/sitemap.xml: ${n} URLs, expected ${coins.length + 2}`);
+  const expected = (sitemap.match(/\/coin\//g) || []).length === coins.length && (sitemap.match(/\/sector\//g) || []).length >= 1;
+  if (!expected) problems.push(`/sitemap.xml: ${n} URLs; expected all ${coins.length} coin pages and the sector pages`);
 }
 
 console.log(`${BASE}: ${ok.length} checks passed, ${problems.length} problem(s)`);

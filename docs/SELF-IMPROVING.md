@@ -30,7 +30,9 @@ queries, and never changes code, headers or workflows on its own.
   `scripts/`, `content/coin-about.json`, `CLAUDE.md`, `.mcp.json`.
 
 ## Rules for SEO proposals
-1. At most **2 coins** per week, one hypothesis each, recorded in `content/experiments.json` **before** the change ships.
+1. Analyse weekly, but **ship SEO proposals at most once every 4 weeks** (the first weekly run of each month): Google typically
+   re-crawls a page about monthly, so faster changes only chase noise. At most **2 coins** per batch, one hypothesis each,
+   recorded in `content/experiments.json` **before** the change ships.
 2. **28-day cooldown** per page; evaluate no earlier than 14 days (titles/descriptions) or 28 days (content).
 3. Pick candidates by *impressions × (the site's own expected CTR at that position − current CTR)*, with
    ≥ 100 impressions in 28 days. Ignore "striking distance" ranges on their own.

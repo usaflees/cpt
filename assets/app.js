@@ -339,11 +339,10 @@
       return true;
     });
     const dir = state.sortAsc ? 1 : -1;
-    const pos = c => (c.price - c.low24h) / ((c.high24h - c.low24h) || 1);
     const key = {
-      rank: c => c.rank, price: c => c.price, change24h: c => c.change24h, rangePos: pos,
-      mcap: c => c.mcap, vol24h: c => c.vol24h, liq: c => c.liq, bagVal: c => (state.bag[c.sym] || 0) * c.price
-    }[state.sortBy];
+      rank: c => c.rank, price: c => c.price, change24h: c => c.change24h, change7d: c => change7d(c) ?? -1e9,
+      mcap: c => c.mcap, vol24h: c => c.vol24h, bagVal: c => (state.bag[c.sym] || 0) * c.price
+    }[state.sortBy] || (c => c.rank);
     list.sort((a, b) => (state.sortBy === "name" ? a.name.localeCompare(b.name) : key(a) - key(b)) * dir);
     return list;
   }
@@ -351,70 +350,106 @@
   function rowHtml(c) {
     const s = esc(c.sym);
     const isFav = state.watchlist.has(c.sym);
-    const isPin = state.pinnedSym === c.sym;
     const hasAlert = Boolean(state.alerts[c.sym]);
     const bagUsd = (state.bag[c.sym] || 0) * c.price;
-    const badges = c.sectors.map(x => `<span class="tag-badge">${esc(x)}</span>`).join("");
-    const ident = `<div class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</div>
-              <div class="coin-main">
-                <div class="coin-sym-row">
-                  <span class="coin-sym">${s}</span>
-                  ${badges}
-                  <span class="ex-badge" id="src-${s}" title="Last price source">${c.lastSource}</span>
-                </div>
+    const ident = `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>
+              <span class="coin-main">
                 <span class="coin-name">${esc(c.name)}</span>
-              </div>`;
+                <span class="coin-sym-row"><span class="coin-sym">${s}</span><span class="ex-badge" id="src-${s}" title="Exchange that sent the latest price">${c.lastSource === "BOOT" ? "…" : c.lastSource}</span></span>
+              </span>`;
     const coinCell = c.hasPage
       ? `<a class="coin-cell" href="${coinUrl(c.sym)}">${ident}</a>`
       : `<button type="button" class="coin-cell" data-action="open-coin" data-sym="${s}">${ident}</button>`;
-    return `<tr id="row-${s}">
-          <td class="col-center" style="color:var(--text-muted)">${c.rank}</td>
-          <td class="col-center">
-            <button type="button" class="icon-btn ${isFav ? "active-fav" : ""}" data-action="toggle-fav" data-sym="${s}" aria-pressed="${isFav}" aria-label="${isFav ? "Remove" : "Add"} ${s} ${isFav ? "from" : "to"} watchlist" title="Watchlist">♥</button>
-            <button type="button" class="icon-btn ${isPin ? "active-pin" : ""}" data-action="toggle-pin" data-sym="${s}" aria-pressed="${isPin}" aria-label="Pin ${s} price to browser tab" title="Pin live price to browser tab">📌</button>
-            <button type="button" class="icon-btn ${hasAlert ? "active-alert" : ""}" data-action="open-coin" data-sym="${s}" aria-label="${s} price alert and exchange spread" title="Price alert / spread inspector">🔔</button>
-          </td>
-          <td class="col-left">${coinCell}</td>
-          <td id="price-${s}" class="${c.live ? "" : "is-stale"}" style="font-weight:700">${fmtPrice(c.price)}</td>
-          <td id="chg-${s}">${chgPill(c)}</td>
-          <td class="col-center hide-mobile" id="spark-${s}">${buildSparkline(c.history, c.change24h >= 0)}</td>
-          <td class="col-center hide-mobile" id="range-${s}">${rangeHtml(c)}</td>
-          <td id="mcap-${s}">${fmtCompact(c.mcap)}</td>
-          <td class="hide-mobile" id="vol-${s}" style="color:var(--text-secondary)">${fmtCompact(c.vol24h)}</td>
-          <td class="hide-mobile" id="liq-${s}" style="color:var(--accent)">${fmtCompact(c.liq)}</td>
-          <td>
+    return `<tr id="row-${s}" data-sym="${s}">
+          <td class="col-center col-star"><button type="button" class="star-btn${isFav ? " on" : ""}" data-action="toggle-fav" data-sym="${s}" aria-pressed="${isFav}" aria-label="${isFav ? "Remove" : "Add"} ${s} ${isFav ? "from" : "to"} watchlist">${isFav ? "★" : "☆"}</button></td>
+          <td class="col-center col-rank">${c.rank}</td>
+          <td class="col-left col-coin">${coinCell}</td>
+          <td id="price-${s}" class="col-price${c.live ? "" : " is-stale"}">${fmtPrice(c.price)}</td>
+          <td id="chg-${s}" class="col-chg">${chgPill(c)}</td>
+          <td class="hide-mobile" id="chg7-${s}">${pct7(c)}</td>
+          <td class="col-center hide-mobile col-spark" id="spark-${s}">${spark7(c)}</td>
+          <td class="hide-mobile" id="mcap-${s}">${fmtCompact(c.mcap)}</td>
+          <td class="hide-tablet muted" id="vol-${s}">${fmtCompact(c.vol24h)}</td>
+          <td class="col-bag">
             <div class="bag-cell">
-              <input type="number" step="any" min="0" class="bag-input" placeholder="0.00" value="${state.bag[c.sym] || ""}" data-sym="${s}" aria-label="${s} quantity held" />
+              <input type="number" step="any" min="0" class="bag-input" placeholder="0" value="${state.bag[c.sym] || ""}" data-sym="${s}" aria-label="How much ${s} you hold" />
               <span class="bag-val" id="bagval-${s}">${bagUsd > 0 ? fmtPrice(bagUsd) : ""}</span>
             </div>
           </td>
+          <td class="col-center col-more"><button type="button" class="more-btn${hasAlert ? " has-alert" : ""}" data-action="open-coin" data-sym="${s}" aria-label="${s} details: alerts, holdings and exchange prices">⋯</button></td>
         </tr>`;
   }
 
-  const rangeHtml = c => `<div class="range-wrap" title="24h low / high">
-              <div class="range-labels"><span>${fmtPrice(c.low24h)}</span><span>${fmtPrice(c.high24h)}</span></div>
-              <div class="range-track"><div class="range-fill" style="width:${rangePct(c).toFixed(0)}%"></div></div>
-            </div>`;
+  /* 7-day trend: 4-hour Binance candles, fetched lazily (4 at a time) for rows that scroll into view.
+   * Coins without a Binance market fall back to the live ticks collected since the page opened. */
+  const change7d = c => (c.spark7 && c.spark7[0] > 0 ? ((c.price - c.spark7[0]) / c.spark7[0]) * 100 : null);
+  const pct7 = c => {
+    const v = change7d(c);
+    return v === null ? `<span class="muted">—</span>` : `<span class="${v >= 0 ? "txt-up" : "txt-down"}">${v >= 0 ? "+" : ""}${v.toFixed(2)}%</span>`;
+  };
+  const spark7 = c => (c.spark7
+    ? buildSparkline(c.spark7.concat(c.price), (change7d(c) || 0) >= 0, 110, 32, { label: `${c.sym} last 7 days` })
+    : buildSparkline(c.history, c.change24h >= 0, 110, 32));
+  let sparkObserver = null;
+  const sparkQueue = [];
+  let sparkActive = 0;
+  function observeSparks() {
+    if (!("IntersectionObserver" in window)) return;
+    sparkObserver = sparkObserver || new IntersectionObserver(entries => entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      sparkObserver.unobserve(e.target);
+      queueSpark(e.target.dataset.sym);
+    }), { rootMargin: "300px" });
+    document.querySelectorAll("#tableBody tr[data-sym]").forEach(tr => {
+      const c = state.coins.get(tr.dataset.sym);
+      if (c && !c.spark7 && c.feeds.includes("BN")) sparkObserver.observe(tr);
+    });
+  }
+  function queueSpark(sym) {
+    const c = state.coins.get(sym);
+    if (!c || c.spark7 || c.sparkLoading || !c.feeds.includes("BN")) return;
+    c.sparkLoading = true;
+    sparkQueue.push(c);
+    pumpSparks();
+  }
+  function pumpSparks() {
+    while (sparkActive < 4 && sparkQueue.length) {
+      const c = sparkQueue.shift();
+      sparkActive++;
+      fetch(`${BINANCE_REST}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=4h&limit=43`)
+        .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then(k => { c.spark7 = k.slice(0, -1).map(x => +x[4]); state.dirty.add(c.sym); state.moversDirty = true; })
+        .catch(() => { c.sparkLoading = false; })
+        .finally(() => { sparkActive--; pumpSparks(); });
+    }
+  }
 
   function renderTable() {
     const list = filteredSorted();
     $("showingCount").textContent = list.length;
+    const showBag = state.sector === "BAG";
+    $("cryptoTable").classList.toggle("show-bag", showBag);
+    $("bagBanner").hidden = !showBag;
     $("tableBody").innerHTML = list.map(rowHtml).join("") ||
-      `<tr><td colspan="11" class="col-center" style="padding:20px;color:var(--text-muted)">No coins match this filter.</td></tr>`;
+      `<tr><td colspan="11" class="col-center empty-row">${state.sector === "WATCH" ? "Your watchlist is empty — tap ☆ next to any coin to add it." : state.sector === "BAG" ? "No holdings yet — switch to All and tap ⋯ on a coin to add how much you hold." : "No coins match your search."}</td></tr>`;
     document.querySelectorAll("th[data-sort]").forEach(th => {
       const col = th.getAttribute("data-sort");
       th.setAttribute("aria-sort", col === state.sortBy ? (state.sortAsc ? "ascending" : "descending") : "none");
     });
-    updateSummary();
+    observeSparks();
+    updateSummary(true);
     renderTape();
   }
 
-  function updateSummary() {
-    let mcap = 0, vol = 0, liq = 0, bagTotal = 0, bagPnl = 0;
+  let lastMovers = 0;
+  function updateSummary(force) {
+    let mcap = 0, vol = 0, bagTotal = 0, bagPnl = 0;
     state.coins.forEach(c => {
+      if (c.estimated) return; // "Load more pairs" coins have guessed market caps
       mcap += c.mcap || 0;
       vol += c.vol24h || 0;
-      liq += c.liq || 0;
+    });
+    state.coins.forEach(c => {
       const qty = state.bag[c.sym] || 0;
       if (qty > 0) {
         bagTotal += qty * c.price;
@@ -423,27 +458,30 @@
     });
     $("globalMcap").textContent = fmtCompact(mcap);
     $("globalVol").textContent = fmtCompact(vol);
-    $("globalLiq").textContent = fmtCompact(liq);
-    $("lastUpdateClock").textContent = new Date().toLocaleTimeString();
+    const btc = state.coins.get("BTC");
+    $("btcDom").textContent = btc && mcap ? ((btc.mcap / mcap) * 100).toFixed(1) + "%" : "—";
+    $("heroBag").hidden = !(bagTotal > 0);
+    $("heroBagVal").textContent = fmtPrice(bagTotal);
     $("bagTotalVal").textContent = fmtPrice(bagTotal);
     const pct = bagTotal > 0 ? (bagPnl / bagTotal) * 100 : 0;
     const sign = bagPnl >= 0 ? "+" : "-";
     const pnlEl = $("bagPnlVal");
     pnlEl.textContent = `${sign}${fmtPrice(Math.abs(bagPnl))} (${sign}${Math.abs(pct).toFixed(2)}%)`;
     pnlEl.style.color = bagPnl >= 0 ? "var(--up)" : "var(--down)";
-    $("watchlistCountVal").textContent = `${state.watchlist.size} / ${Object.keys(state.alerts).length} 🔔`;
+    $("watchlistCountVal").textContent = `${state.watchlist.size} / ${Object.keys(state.alerts).length}`;
 
+    // Movers cards re-render at most every 3s so they don't jump around under the cursor.
+    if (!force && Date.now() - lastMovers < 3000) return;
+    lastMovers = Date.now();
     const movers = Array.from(state.coins.values())
-      .filter(c => c.live && !c.sectors.includes("Stable"))
+      .filter(c => c.live && c.hasPage && !c.sectors.includes("Stable"))
       .sort((a, b) => (state.moverMode === "gainers" ? b.change24h - a.change24h : a.change24h - b.change24h))
-      .slice(0, 3);
-    $("moversList").innerHTML = movers.length ? movers.map(m => {
-      const inner = `<span><strong>${esc(m.sym)}</strong> <span style="color:var(--text-muted);font-size:11px">${esc(m.name)}</span></span>
-          <span>${fmtPrice(m.price)} <strong style="color:${m.change24h >= 0 ? "var(--up)" : "var(--down)"}">${fmtChange(m)}</strong></span>`;
-      return m.hasPage
-        ? `<a class="mover-row" href="${coinUrl(m.sym)}">${inner}</a>`
-        : `<button type="button" class="mover-row" style="width:100%" data-action="open-coin" data-sym="${esc(m.sym)}">${inner}</button>`;
-    }).join("") : `<div class="mover-row" style="color:var(--text-muted)">Waiting for live prices…</div>`;
+      .slice(0, 6);
+    $("moversList").innerHTML = movers.length ? movers.map(m => `<a class="mover-card" href="${coinUrl(m.sym)}">
+          <span class="mc-head"><span class="coin-avatar sm" aria-hidden="true">${esc(m.sym.slice(0, 4))}</span><span><strong>${esc(m.sym)}</strong><span class="mc-name">${esc(m.name)}</span></span></span>
+          <span class="mc-price">${fmtPrice(m.price)}</span>
+          ${chgPill(m)}
+        </a>`).join("") : Array.from({ length: 6 }, () => `<div class="mover-card skeleton" aria-hidden="true"></div>`).join("");
   }
 
   // The tape repeats the top coins twice for a seamless loop; it is decorative (the table has the same
@@ -453,7 +491,7 @@
     const html = top.map(c => `<a class="tape-item" href="${coinUrl(c.sym)}" tabindex="-1">
           <span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-tape="${esc(c.sym)}">${fmtPrice(c.price)}</span>
-          <span data-tape-chg="${esc(c.sym)}" style="color:${c.change24h >= 0 ? "var(--up)" : "var(--down)"}">${c.live ? (c.change24h >= 0 ? "▲ " : "▼ ") + Math.abs(c.change24h).toFixed(2) + "%" : ""}</span>
+          <span style="color:${c.change24h >= 0 ? "var(--up)" : "var(--down)"}">${c.live ? (c.change24h >= 0 ? "▲ " : "▼ ") + Math.abs(c.change24h).toFixed(2) + "%" : ""}</span>
         </a>`).join("");
     $("tickerTape").innerHTML = html + html;
   }
@@ -524,11 +562,10 @@
         flash(priceEl, c.lastDir);
         $(`src-${sym}`).textContent = c.lastSource;
         $(`chg-${sym}`).innerHTML = chgPill(c);
-        $(`spark-${sym}`).innerHTML = buildSparkline(c.history, c.change24h >= 0);
-        $(`range-${sym}`).innerHTML = rangeHtml(c);
+        $(`chg7-${sym}`).innerHTML = pct7(c);
+        $(`spark-${sym}`).innerHTML = spark7(c);
         $(`mcap-${sym}`).textContent = fmtCompact(c.mcap);
         $(`vol-${sym}`).textContent = fmtCompact(c.vol24h);
-        $(`liq-${sym}`).textContent = fmtCompact(c.liq);
         if (state.bag[sym] > 0) $(`bagval-${sym}`).textContent = fmtPrice(state.bag[sym] * c.price);
         document.querySelectorAll(`[data-tape="${sym}"]`).forEach(el => { el.textContent = fmtPrice(c.price); });
       });
@@ -540,7 +577,15 @@
       const curr = $("wgCurr").value;
       dirty.forEach(sym => patchWidget(stage, sym, curr));
     }
-    if (state.activeModalSym && dirty.includes(state.activeModalSym)) updateCoinDetail(state.activeModalSym, "md");
+    if (state.activeModalSym && dirty.includes(state.activeModalSym)) {
+      const c = state.coins.get(state.activeModalSym);
+      updateCoinDetail(c.sym, "md");
+      if ($("md-price")) {
+        $("md-price").textContent = fmtPrice(c.price);
+        $("md-chg").innerHTML = chgPill(c);
+        $("md-holdval").textContent = state.bag[c.sym] > 0 ? "= " + fmtPrice(state.bag[c.sym] * c.price) : "";
+      }
+    }
   }
 
   // Timer-driven (not requestAnimationFrame) so the pinned tab title keeps updating in background tabs.
@@ -840,7 +885,12 @@
     document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
     state.activeModalSym = null;
     state.widgetModalOpen = false;
-    if (modalOpener && document.contains(modalOpener)) modalOpener.focus();
+    // The table may have re-rendered while the sheet was open: refocus the same row's button if needed.
+    let target = modalOpener;
+    if (target && !document.contains(target) && target.dataset?.sym) {
+      target = document.querySelector(`#row-${CSS.escape(target.dataset.sym)} [data-action="${target.dataset.action}"]`);
+    }
+    if (target) target.focus();
     modalOpener = null;
   }
 
@@ -849,17 +899,37 @@
     if (!c) return;
     ensureModals();
     state.activeModalSym = sym;
-    $("modalCoinTitle").textContent = `${c.sym} — ${c.name} (#${c.rank})`;
-    $("modalCoinBody").innerHTML = coinDetailHtml(sym, "md") + `
-      <div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap">
-        ${c.hasPage ? `<a class="action-btn" href="${coinUrl(sym)}">Open ${esc(sym)} page →</a>` : ""}
-        <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${esc(sym)}">🧩 Embed ${esc(sym)} widget</button>
+    $("modalCoinTitle").textContent = `${c.name} (${c.sym})`;
+    $("modalCoinBody").innerHTML = `
+      <div class="qv-head">
+        <span class="qv-price" id="md-price">${fmtPrice(c.price)}</span>
+        <span id="md-chg">${chgPill(c)}</span>
+        <span class="muted">#${c.rank}</span>
+      </div>
+      <div class="qv-actions" id="md-actions">${quickActions(sym)}</div>
+      <div class="qv-hold">
+        <label class="metric-label" for="md-hold">💼 How much ${esc(sym)} do you hold? <span class="muted">(saved only in this browser)</span></label>
+        <div class="qv-hold-row">
+          <input type="number" step="any" min="0" id="md-hold" class="bag-input" data-sym="${esc(sym)}" placeholder="0" value="${state.bag[sym] || ""}" />
+          <span class="muted" id="md-holdval">${state.bag[sym] > 0 ? "= " + fmtPrice(state.bag[sym] * c.price) : ""}</span>
+        </div>
+      </div>` + coinDetailHtml(sym, "md") + `
+      <div class="qv-foot">
+        ${c.hasPage ? `<a class="action-btn btn-accent" href="${coinUrl(sym)}">Full ${esc(sym)} page: chart &amp; history →</a>` : ""}
+        <button type="button" class="action-btn" data-action="open-widget" data-sym="${esc(sym)}">🧩 Put ${esc(sym)} on your website</button>
       </div>`;
     updateCoinDetail(sym, "md");
     loadDepth(sym, "md");
     krakenAdd(sym);
     openModal("coinModal");
   }
+
+  function quickActions(sym) {
+    const fav = state.watchlist.has(sym), pin = state.pinnedSym === sym;
+    return `<button type="button" class="action-btn${fav ? " btn-accent" : ""}" data-action="toggle-fav" data-sym="${esc(sym)}" aria-pressed="${fav}">${fav ? "★ In watchlist" : "☆ Add to watchlist"}</button>
+        ${MODE === "home" ? `<button type="button" class="action-btn${pin ? " btn-accent" : ""}" data-action="toggle-pin" data-sym="${esc(sym)}" aria-pressed="${pin}">${pin ? "📌 Pinned to tab" : "📌 Show price in tab title"}</button>` : ""}`;
+  }
+  const refreshQuickActions = () => { if (state.activeModalSym && $("md-actions")) $("md-actions").innerHTML = quickActions(state.activeModalSym); };
 
   /* ------------------------------------------------------------------
    * Alerts, toasts, sound
@@ -1107,11 +1177,13 @@
       if (state.watchlist.has(sym)) state.watchlist.delete(sym); else state.watchlist.add(sym);
       store.set("cpt_watch", Array.from(state.watchlist));
       if (MODE === "home") renderTable(); else syncFavButton();
+      refreshQuickActions();
     },
     "toggle-pin"(el) {
       state.pinnedSym = state.pinnedSym === el.dataset.sym ? "" : el.dataset.sym;
       store.set("cpt_pin", state.pinnedSym);
       renderTable();
+      refreshQuickActions();
       if (state.pinnedSym) showToast(`📌 ${state.pinnedSym} live price pinned to this tab's title.`);
     },
     "open-coin": el => openCoinModal(el.dataset.sym),
@@ -1181,6 +1253,13 @@
     expand: el => expandPairs(el)
   };
 
+  // Header popovers (<details>): close when clicking outside or after choosing a menu item.
+  document.addEventListener("click", e => {
+    document.querySelectorAll("details.pop[open]").forEach(d => {
+      if (!d.contains(e.target) || e.target.closest(".menu-item, .theme-btn")) d.removeAttribute("open");
+    });
+  });
+
   document.addEventListener("click", e => {
     const backdrop = e.target.classList?.contains("modal-backdrop");
     if (backdrop || e.target.closest("[data-close]")) return closeModals();
@@ -1196,6 +1275,9 @@
     if (qty > 0) state.bag[sym] = qty; else delete state.bag[sym];
     store.set("cpt_bag", state.bag);
     if (MODE === "home") renderTable();
+    const c = state.coins.get(sym);
+    if ($("md-holdval") && state.activeModalSym === sym) $("md-holdval").textContent = qty > 0 ? "= " + fmtPrice(qty * c.price) : "";
+    if (qty > 0 && input.id === "md-hold") showToast(`💼 Saved: ${qty} ${sym}. See it under “My bag”.`);
   });
 
   document.addEventListener("keydown", e => {
@@ -1206,6 +1288,8 @@
       search.focus();
     } else if (e.key === "Escape" && document.querySelector(".modal-backdrop.open")) {
       closeModals();
+    } else if (e.key === "Escape") {
+      document.querySelectorAll("details.pop[open]").forEach(d => d.removeAttribute("open"));
     }
   });
 
@@ -1227,11 +1311,49 @@
     });
     $("cryptoTable").classList.toggle("compact-mode", state.compact);
     $("densityBtn").setAttribute("aria-pressed", state.compact);
-    renderTable();
+    // Sector hub pages link here as /?sector=AI etc.
+    const pre = params.get("sector");
+    const chip = pre && document.querySelector(`[data-action=sector][data-sector="${CSS.escape(pre)}"]`);
+    if (chip) actions.sector(chip); else renderTable();
   } else if (MODE === "coin") {
     recomputeRanks();
     initCoinPage();
+  } else {
+    recomputeRanks(); // about / sector / widgets pages: header menu and widget builder only
   }
 
   if (MODE === "home" || MODE === "coin" || MODE === "embed") startFeeds();
+
+  /* ------------------------------------------------------------------
+   * Installable app: service worker (offline fallback only — always network-first) + install prompt
+   * ------------------------------------------------------------------ */
+  if (MODE !== "embed" && "serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+  }
+  let installPrompt = null;
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  function addInstallItem(label, onClick) {
+    document.querySelectorAll(".menu-list").forEach(menu => {
+      if (menu.querySelector(".install-item")) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "menu-item install-item";
+      btn.textContent = label;
+      btn.addEventListener("click", onClick);
+      menu.insertBefore(btn, menu.querySelector(".menu-item"));
+    });
+  }
+  window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    installPrompt = e;
+    addInstallItem("📲 Install as an app", async () => {
+      installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      if (choice.outcome === "accepted") document.querySelectorAll(".install-item").forEach(b => b.remove());
+    });
+  });
+  if (isIOS && !standalone && MODE !== "embed") {
+    addInstallItem("📲 Add to Home Screen", () => showToast("In Safari, tap the Share button, then “Add to Home Screen”."));
+  }
 })();

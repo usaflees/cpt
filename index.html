@@ -80,132 +80,100 @@
   </div>
 
   <div id="appShell">
-    <div class="telemetry-bar" role="region" aria-label="Live feed status">
-      <div class="telemetry-left">
-        <span class="status-pill"><span class="pulse-dot" aria-hidden="true"></span><span>LIVE: TRI-EXCHANGE WS</span></span>
-        <span class="feed-badge" id="badgeCB" title="Coinbase WebSocket feed">CB: INIT</span>
-        <span class="feed-badge" id="badgeBN" title="Binance WebSocket feed">BN: INIT</span>
-        <span class="feed-badge" id="badgeKR" title="Kraken WebSocket feed">KR: INIT</span>
-        <span>⚡ TICKS: <strong id="tickCounter" style="color:var(--accent)">0</strong></span>
-        <span class="hide-mobile">📊 ASSETS: <strong id="assetCountTop" style="color:var(--text-primary)">0</strong></span>
-        <span class="hide-mobile">🔒 DATA STAYS IN YOUR BROWSER</span>
+    <header class="topbar">
+      <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+      <div class="search-box">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="searchInput" placeholder="Search coins…" aria-label="Search coins by name, ticker or sector" autocomplete="off" />
+        <kbd class="search-kbd" aria-hidden="true">/</kbd>
       </div>
-      <div class="telemetry-right">
-        <div class="theme-switcher" role="group" aria-label="Colour theme">
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali">KALI</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="green">GREEN</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate">SLATE</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled">OLED</button>
-          <button type="button" class="theme-btn" data-action="theme" data-theme-val="light">LIGHT</button>
+      <div class="topbar-actions">
+        <details class="pop live-pop">
+          <summary aria-label="Live feed status"><span class="pulse-dot" aria-hidden="true"></span><span class="hide-mobile">Live</span></summary>
+          <div class="pop-panel" role="group" aria-label="Exchange feeds">
+            <p class="pop-title">Streaming from the exchanges</p>
+            <p><span class="feed-badge" id="badgeCB">CB: INIT</span> Coinbase</p>
+            <p><span class="feed-badge" id="badgeBN">BN: INIT</span> Binance</p>
+            <p><span class="feed-badge" id="badgeKR">KR: INIT</span> Kraken</p>
+            <p class="pop-note"><strong id="tickCounter">0</strong> price updates • <strong id="assetCountTop">0</strong> coins • data stays in your browser</p>
+          </div>
+        </details>
+        <div class="btn-group" role="group" aria-label="Price currency">
+          <button type="button" class="btn-toggle" data-action="curr" data-curr="USD">$</button>
+          <button type="button" class="btn-toggle" data-action="curr" data-curr="BTC">₿</button>
+          <button type="button" class="btn-toggle" data-action="curr" data-curr="ETH">Ξ</button>
+          <button type="button" class="btn-toggle" data-action="curr" data-curr="SOL">◎</button>
         </div>
+        <details class="pop menu-pop">
+          <summary aria-label="Menu">☰</summary>
+          <div class="pop-panel menu-list">
+            <p class="pop-title">Theme</p>
+            <div class="theme-switcher" role="group" aria-label="Colour theme">
+              <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)"><span class="swatch sw-kali"></span></button>
+              <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green"><span class="swatch sw-green"></span></button>
+              <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate"><span class="swatch sw-slate"></span></button>
+              <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled" title="Pure black"><span class="swatch sw-oled"></span></button>
+              <button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light"><span class="swatch sw-light"></span></button>
+            </div>
+            <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
+            <button type="button" class="menu-item" data-action="sync">💾 Copy my list to another device</button>
+            <button type="button" class="menu-item" data-action="csv">📥 Download table (CSV)</button>
+            <button type="button" class="menu-item" id="densityBtn" data-action="density" aria-pressed="false">📐 Compact rows</button>
+            <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
+          </div>
+        </details>
       </div>
-    </div>
+    </header>
 
     <div class="ticker-tape-wrap" aria-hidden="true">
       <div class="ticker-tape" id="tickerTape"></div>
     </div>
 
     <main class="container" id="main">
-      <header class="brand-header">
-        <div class="brand-title-group">
-          <div class="brand-logo" aria-hidden="true">⚡</div>
-          <div class="brand-title">
-            <p class="brand-name">CryptoPriceTicker.com</p>
-            <h1 class="brand-sub">Live crypto prices from Coinbase, Binance &amp; Kraken <span aria-hidden="true">•</span> No login <span aria-hidden="true">•</span> Ad-free</h1>
-          </div>
-        </div>
-
-        <div class="header-controls">
-          <div class="search-box">
-            <span class="search-icon" aria-hidden="true">🔍</span>
-            <input type="search" id="searchInput" placeholder="Filter coins, tickers, sectors…" aria-label="Filter cryptocurrencies" />
-            <kbd class="search-kbd" aria-hidden="true">/</kbd>
-          </div>
-
-          <div class="btn-group" role="group" aria-label="Price currency">
-            <button type="button" class="btn-toggle" data-action="curr" data-curr="USD">USD $</button>
-            <button type="button" class="btn-toggle" data-action="curr" data-curr="BTC">BTC ₿</button>
-            <button type="button" class="btn-toggle" data-action="curr" data-curr="ETH">ETH Ξ</button>
-            <button type="button" class="btn-toggle" data-action="curr" data-curr="SOL">SOL ◎</button>
-          </div>
-
-          <button type="button" class="action-btn" id="densityBtn" data-action="density" aria-pressed="false" title="Toggle compact rows">📐 Compact</button>
-          <button type="button" class="action-btn" data-action="csv" title="Download the current table as CSV">📥 CSV</button>
-          <button type="button" class="action-btn btn-accent" data-action="open-widget" title="Embed a live ticker on your website">🧩 Get Widget</button>
-          <button type="button" class="action-btn" data-action="sync" title="Copy your watchlist and bag to another device">💾 Sync</button>
-        </div>
-      </header>
-
-      <section class="bento-grid" aria-label="Market summary">
-        <div class="bento-card">
-          <div class="bento-head">
-            <h2 style="font-size:inherit">🌐 Market pulse (tracked coins)</h2>
-            <span id="lastUpdateClock">--:--:--</span>
-          </div>
-          <div class="bento-metrics">
-            <div class="metric-box">
-              <div class="metric-label">Market cap</div>
-              <div class="metric-val" id="globalMcap">—</div>
-            </div>
-            <div class="metric-box">
-              <div class="metric-label">24h volume (CB+BN+KR)</div>
-              <div class="metric-val" id="globalVol">—</div>
-            </div>
-            <div class="metric-box">
-              <div class="metric-label" title="Rough estimate: 6.5% of 24h exchange volume">Est. liquidity ±2%</div>
-              <div class="metric-val" id="globalLiq" style="color:var(--accent)">—</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bento-card">
-          <div class="bento-head">
-            <h2 style="font-size:inherit">🔥 Top 24h movers</h2>
-            <div style="display:flex;gap:6px" role="group" aria-label="Movers">
-              <button type="button" class="theme-btn active" data-action="movers" data-mode="gainers" aria-pressed="true">Gainers</button>
-              <button type="button" class="theme-btn" data-action="movers" data-mode="losers" aria-pressed="false">Losers</button>
-            </div>
-          </div>
-          <div id="moversList"></div>
-        </div>
-
-        <div class="bento-card">
-          <div class="bento-head">
-            <h2 style="font-size:inherit">💼 My private bag</h2>
-            <button type="button" class="theme-btn" data-action="reset-bag" title="Clear all bag quantities">Reset</button>
-          </div>
-          <div class="bento-metrics">
-            <div class="metric-box">
-              <div class="metric-label">Total value</div>
-              <div class="metric-val" id="bagTotalVal">$0.00</div>
-            </div>
-            <div class="metric-box">
-              <div class="metric-label">24h P&amp;L</div>
-              <div class="metric-val" id="bagPnlVal">$0.00</div>
-            </div>
-            <div class="metric-box">
-              <div class="metric-label">Watch / alerts</div>
-              <div class="metric-val" id="watchlistCountVal">0 / 0</div>
-            </div>
-          </div>
+      <section class="hero" aria-labelledby="hero-h">
+        <p class="brand-name">CryptoPriceTicker.com</p>
+        <h1 id="hero-h" class="hero-title">Live crypto prices from Coinbase, Binance &amp; Kraken</h1>
+        <p class="hero-sub">Every trade, the moment it happens. No login, no ads, nothing to install.</p>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-label">Market cap</span><span class="stat-val" id="globalMcap">—</span></div>
+          <div class="stat"><span class="stat-label">24h volume</span><span class="stat-val" id="globalVol">—</span></div>
+          <div class="stat"><span class="stat-label">BTC dominance</span><span class="stat-val" id="btcDom">—</span></div>
+          <div class="stat stat-bag" id="heroBag" hidden><span class="stat-label">My bag</span><span class="stat-val" id="heroBagVal">—</span></div>
         </div>
       </section>
 
-      <div class="filter-bar">
-        <div class="sector-pills" role="group" aria-label="Filter by sector">
-          <button type="button" class="sector-pill active" data-action="sector" data-sector="ALL" aria-pressed="true">All <span class="count" id="cnt-ALL">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="WATCH" aria-pressed="false">❤️ Watchlist <span class="count" id="cnt-WATCH">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="BAG" aria-pressed="false">💼 My Bag <span class="count" id="cnt-BAG">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="L1" aria-pressed="false">⛓️ Layer 1 <span class="count" id="cnt-L1">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="L2" aria-pressed="false">⚡ Layer 2 <span class="count" id="cnt-L2">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="DePIN" aria-pressed="false">📡 DePIN <span class="count" id="cnt-DePIN">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="AI" aria-pressed="false">🧠 AI <span class="count" id="cnt-AI">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="DeFi" aria-pressed="false">🏦 DeFi &amp; RWA <span class="count" id="cnt-DeFi">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="Privacy" aria-pressed="false">🛡️ Privacy <span class="count" id="cnt-Privacy">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="Gaming" aria-pressed="false">🎮 Gaming <span class="count" id="cnt-Gaming">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="Meme" aria-pressed="false">🐸 Memes <span class="count" id="cnt-Meme">0</span></button>
-          <button type="button" class="sector-pill" data-action="sector" data-sector="Stable" aria-pressed="false">💵 Stables <span class="count" id="cnt-Stable">0</span></button>
+      <section class="movers" aria-labelledby="movers-h">
+        <div class="section-head">
+          <h2 id="movers-h">Biggest movers <span class="muted">· 24h</span></h2>
+          <div class="seg" role="group" aria-label="Show">
+            <button type="button" class="seg-btn active" data-action="movers" data-mode="gainers" aria-pressed="true">Gainers</button>
+            <button type="button" class="seg-btn" data-action="movers" data-mode="losers" aria-pressed="false">Losers</button>
+          </div>
         </div>
+        <div class="mover-cards" id="moversList"></div>
+      </section>
+
+      <div class="chips" role="group" aria-label="Filter coins">
+        <button type="button" class="chip active" data-action="sector" data-sector="ALL" aria-pressed="true">All <span class="count" id="cnt-ALL">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="WATCH" aria-pressed="false">★ Watchlist <span class="count" id="cnt-WATCH">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="BAG" aria-pressed="false">💼 My bag <span class="count" id="cnt-BAG">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="L1" aria-pressed="false">Layer 1 <span class="count" id="cnt-L1">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="AI" aria-pressed="false">AI <span class="count" id="cnt-AI">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="DePIN" aria-pressed="false">DePIN <span class="count" id="cnt-DePIN">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="DeFi" aria-pressed="false">DeFi &amp; RWA <span class="count" id="cnt-DeFi">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="L2" aria-pressed="false">Layer 2 <span class="count" id="cnt-L2">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="Meme" aria-pressed="false">Memes <span class="count" id="cnt-Meme">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="Privacy" aria-pressed="false">Privacy <span class="count" id="cnt-Privacy">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="Gaming" aria-pressed="false">Gaming <span class="count" id="cnt-Gaming">0</span></button>
+        <button type="button" class="chip" data-action="sector" data-sector="Stable" aria-pressed="false">Stablecoins <span class="count" id="cnt-Stable">0</span></button>
+      </div>
+
+      <div class="bag-banner" id="bagBanner" hidden>
+        <div><span class="stat-label">Total value</span><strong id="bagTotalVal">$0.00</strong></div>
+        <div><span class="stat-label">24h change</span><strong id="bagPnlVal">$0.00</strong></div>
+        <div><span class="stat-label">Watchlist / alerts</span><strong id="watchlistCountVal">0 / 0</strong></div>
+        <p class="muted">Type how much you hold in the <em>Holdings</em> column. It's saved only in this browser.</p>
+        <button type="button" class="action-btn" data-action="reset-bag">Clear holdings</button>
       </div>
 
       <div class="table-wrap" id="prices">
@@ -213,17 +181,17 @@
           <caption class="sr-only">Live cryptocurrency prices, ranked by market cap. Select a column header to sort.</caption>
           <thead>
             <tr>
-              <th scope="col" class="col-center" data-sort="rank" style="width:44px"><button type="button" class="th-sort" data-action="sort">#</button></th>
-              <th scope="col" class="col-center" style="width:74px">Tools</th>
+              <th scope="col" class="col-center col-star"><span class="sr-only">Watchlist</span></th>
+              <th scope="col" class="col-center col-rank" data-sort="rank"><button type="button" class="th-sort" data-action="sort">#</button></th>
               <th scope="col" class="col-left" data-sort="name"><button type="button" class="th-sort" data-action="sort">Coin</button></th>
               <th scope="col" data-sort="price"><button type="button" class="th-sort" data-action="sort">Price</button></th>
-              <th scope="col" data-sort="change24h"><button type="button" class="th-sort" data-action="sort">24h %</button></th>
-              <th scope="col" class="col-center hide-mobile">Live trend</th>
-              <th scope="col" class="col-center hide-mobile" data-sort="rangePos"><button type="button" class="th-sort" data-action="sort">24h low / high</button></th>
-              <th scope="col" data-sort="mcap"><button type="button" class="th-sort" data-action="sort">Market cap</button></th>
-              <th scope="col" class="hide-mobile" data-sort="vol24h"><button type="button" class="th-sort" data-action="sort">Volume 24h</button></th>
-              <th scope="col" class="hide-mobile" data-sort="liq" title="Rough estimate: 6.5% of 24h exchange volume"><button type="button" class="th-sort" data-action="sort">Est. liq. ±2%</button></th>
-              <th scope="col" data-sort="bagVal"><button type="button" class="th-sort" data-action="sort">My bag</button></th>
+              <th scope="col" data-sort="change24h"><button type="button" class="th-sort" data-action="sort">24h</button></th>
+              <th scope="col" class="hide-mobile" data-sort="change7d"><button type="button" class="th-sort" data-action="sort">7d</button></th>
+              <th scope="col" class="col-center hide-mobile">Last 7 days</th>
+              <th scope="col" class="hide-mobile" data-sort="mcap"><button type="button" class="th-sort" data-action="sort">Market cap</button></th>
+              <th scope="col" class="hide-tablet" data-sort="vol24h"><button type="button" class="th-sort" data-action="sort">Volume (24h)</button></th>
+              <th scope="col" class="col-bag" data-sort="bagVal"><button type="button" class="th-sort" data-action="sort">Holdings</button></th>
+              <th scope="col" class="col-center col-more"><span class="sr-only">Details</span></th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -231,13 +199,8 @@
       </div>
 
       <div class="table-footer">
-        <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">
-          Showing <strong id="showingCount" style="color:var(--text-primary)">0</strong> assets • Click a coin for its live page, or 🔔 for the cross-exchange spread &amp; alerts
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button type="button" class="action-btn" data-action="expand">🌐 + Load ~100 more Binance pairs</button>
-          <button type="button" class="action-btn btn-accent" data-action="open-widget">🧩 Embed a ticker widget</button>
-        </div>
+        <span class="muted">Showing <strong id="showingCount">0</strong> coins. Tap a coin for its full page, or <span aria-hidden="true">⋯</span> for alerts, holdings and exchange prices.</span>
+        <button type="button" class="action-btn" data-action="expand">+ Show ~100 more Binance pairs</button>
       </div>
 
       <section class="page-section prose" aria-labelledby="how-h">
@@ -249,7 +212,7 @@
           </div>
           <div>
             <h3>📊 Market cap, volume &amp; liquidity</h3>
-            <p>Market cap is the live price × circulating supply (supply data last refreshed <span id="registryDate">recently</span>). Volume is the 24h total of the coin's USD/USDT markets on those three exchanges. “Est. liquidity” is a rough estimate (6.5% of that volume); each coin page shows real order-book depth within ±2% measured from Binance.</p>
+            <p>Market cap is the live price × circulating supply (supply data last refreshed <span id="registryDate">recently</span>). Volume is the 24h total of the coin's USD/USDT markets on those three exchanges. Each coin's details panel and page show real order-book depth within ±2% of the price, measured live from Binance.</p>
           </div>
           <div>
             <h3>🔒 Private by design</h3>
