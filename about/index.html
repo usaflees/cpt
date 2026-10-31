@@ -42,20 +42,41 @@
   }
   </script>
   <script src="/assets/theme-init.js"></script>
+  <script src="/assets/coins.js" defer></script>
+  <script src="/assets/app.js" defer></script>
   <link rel="stylesheet" href="/assets/app.css" />
 </head>
 <body data-page="about">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-bar">
-    <a class="brand" href="/"><span class="brand-logo" aria-hidden="true">⚡</span> CryptoPriceTicker.com</a>
+  <header class="topbar">
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-link" href="/">← All prices</a>
+    <div class="topbar-actions">
+      <details class="pop menu-pop">
+        <summary aria-label="Menu">☰</summary>
+        <div class="pop-panel menu-list">
+          <p class="pop-title">Theme</p>
+          <div class="theme-switcher" role="group" aria-label="Colour theme">
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)"><span class="swatch sw-kali"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green"><span class="swatch sw-green"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate"><span class="swatch sw-slate"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled" title="Pure black"><span class="swatch sw-oled"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light"><span class="swatch sw-light"></span></button>
+          </div>
+          <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
+          <a class="menu-item" href="/widgets/">🧩 Free website widget</a>
+        </div>
+      </details>
+    </div>
   </header>
 
   <main class="container" id="main">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">About</span></nav>
 
-    <section class="page-section prose" aria-labelledby="about-h">
-      <h1 id="about-h" style="font-size:20px;margin-bottom:10px">About CryptoPriceTicker.com</h1>
-      <p>CryptoPriceTicker.com is a free, ad-free crypto price tracker. It shows live prices for 110+ cryptocurrencies streamed directly from three of the largest exchanges, with no account, no cookies for tracking and no paid placements. Nothing on this site is investment advice.</p>
+    <section class="hero" aria-labelledby="about-h">
+      <h1 id="about-h" class="hero-title">About CryptoPriceTicker.com</h1>
+      <p class="hero-sub">CryptoPriceTicker.com is a free, ad-free crypto price tracker. It shows live prices for 110+ cryptocurrencies streamed directly from three of the largest exchanges, with no account, no cookies for tracking and no paid placements. Nothing on this site is investment advice.</p>
     </section>
 
     <section class="page-section prose" aria-labelledby="data-h">

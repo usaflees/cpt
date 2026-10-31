@@ -391,7 +391,7 @@
   };
   const spark7 = c => (c.spark7
     ? buildSparkline(c.spark7.concat(c.price), (change7d(c) || 0) >= 0, 110, 32, { label: `${c.sym} last 7 days` })
-    : buildSparkline(c.history, c.change24h >= 0, 110, 32));
+    : buildSparkline([], true, 110, 32)); // no 7-day candles (yet): neutral placeholder, never a few live ticks
   let sparkObserver = null;
   const sparkQueue = [];
   let sparkActive = 0;
@@ -426,9 +426,15 @@
     }
   }
 
+  // The default view lists the top 50 so the page stays short; filters, search and "Show all" list everything.
+  const DEFAULT_ROWS = 50;
   function renderTable() {
-    const list = filteredSorted();
-    $("showingCount").textContent = list.length;
+    const all = filteredSorted();
+    const capped = !state.showAll && state.sector === "ALL" && !state.search.trim() && all.length > DEFAULT_ROWS + 10;
+    const list = capped ? all.slice(0, DEFAULT_ROWS) : all;
+    $("showingCount").textContent = capped ? `${list.length} of ${all.length}` : list.length;
+    $("showAllBtn").hidden = !capped;
+    if (capped) $("showAllBtn").textContent = `Show all ${all.length} coins`;
     const showBag = state.sector === "BAG";
     $("cryptoTable").classList.toggle("show-bag", showBag);
     $("bagBanner").hidden = !showBag;
@@ -1225,7 +1231,7 @@
       const digits = v >= 1 || v === 0 ? 2 : Math.min(8, 2 - Math.floor(Math.log10(v)));
       return v.toLocaleString("en-US", { style: "currency", currency: code, minimumFractionDigits: Math.min(2, digits), maximumFractionDigits: digits });
     }
-    const digits = v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
+    const digits = v >= 100000 ? 0 : v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
     return v.toLocaleString("en-US", { maximumFractionDigits: digits }) + " " + code;
   }
   // Plain number for an <input type="number"> (no grouping separators).
@@ -1256,7 +1262,7 @@
         const amt = +el.dataset.cvAmt;
         el.textContent = el.dataset.cvDir === "rev" ? fmtAmount(convert(amt, other, pageCoin), pageCoin) : fmtAmount(convert(amt, pageCoin, other), other);
       });
-      document.querySelectorAll("[data-cv-label]").forEach(el => { el.textContent = `${+el.dataset.cvLabel} ${other}`; });
+      document.querySelectorAll("[data-cv-label]").forEach(el => { el.textContent = `${(+el.dataset.cvLabel).toLocaleString("en-US")} ${other}`; });
     }
   }
 
@@ -1469,6 +1475,10 @@
   }
 
   const actions = {
+    "show-all"() {
+      state.showAll = true;
+      renderTable();
+    },
     "hm-group"(el) {
       hm.group = el.dataset.group === "sector";
       document.querySelectorAll("[data-action=hm-group]").forEach(b => b.setAttribute("aria-pressed", String(b === el)));

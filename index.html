@@ -203,7 +203,10 @@
 
       <div class="table-footer">
         <span class="muted">Showing <strong id="showingCount">0</strong> coins. Tap a coin for its full page, or <span aria-hidden="true">⋯</span> for alerts, holdings and exchange prices.</span>
-        <button type="button" class="action-btn" data-action="expand">+ Show ~100 more Binance pairs</button>
+        <span class="table-footer-actions">
+          <button type="button" class="action-btn btn-accent" id="showAllBtn" data-action="show-all" hidden>Show all coins</button>
+          <button type="button" class="action-btn" data-action="expand">+ Show ~100 more Binance pairs</button>
+        </span>
       </div>
 
       <section class="page-section prose" aria-labelledby="how-h">

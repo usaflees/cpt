@@ -1351,3 +1351,60 @@ body {
   color: var(--text-secondary); text-decoration: none; background: var(--bg-secondary); border: 1px solid var(--border);
 }
 .hero-links a:hover { color: var(--text-primary); border-color: var(--accent); }
+
+/* ---------- Readability pass: one type scale, larger small text, roomier touch targets ---------- */
+.page-section h2 { font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 12px; }
+.page-section h3 { font-size: 15px; line-height: 1.35; margin: 18px 0 8px; }
+.page-section > h2:first-child { margin-top: 0; }
+.coin-hero h1, .coin-title h1 { font-size: 26px; line-height: 1.2; letter-spacing: -0.02em; }
+.metric-label { font-size: 12px; line-height: 1.35; }
+.metric-val { font-size: 14.5px; }
+.tag-badge { font-size: 11px; padding: 2px 6px; border-radius: 5px; }
+.chart-caption { font-size: 12px; margin-top: 6px; }
+.history-table th { font-size: 11.5px; }
+.history-table td { font-size: 13px; }
+.conv-table caption { font-size: 14px; }
+.hm-legend { font-size: 12px; }
+.disclaimer { font-size: 12px; line-height: 1.5; }
+.stat-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.notfound h1 { font-size: 30px; letter-spacing: -0.02em; }
+
+@media (max-width: 640px) {
+  .coin-hero h1, .coin-title h1 { font-size: 22px; }
+  .page-section { padding: 16px 14px; }
+  .page-section h2 { font-size: 17px; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Exchange prices and other 3-up metric rows: one labelled row each instead of cramped columns */
+  .bento-metrics { grid-template-columns: 1fr; gap: 6px; }
+  .bento-metrics .metric-box { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 9px 12px; }
+  .bento-metrics .metric-label { margin: 0; }
+  .bento-metrics .metric-val { text-align: right; overflow-wrap: anywhere; }
+  /* Touch targets ≥ 38px */
+  .topbar .btn-toggle { min-width: 34px; height: 38px; padding: 0 6px; }
+  .pop > summary { min-width: 38px; justify-content: center; }
+  .seg-btn { min-height: 38px; }
+  .hm-toggle { min-height: 38px; }
+  .conv-field select { max-width: 52%; font-size: 13px; padding: 0 6px; }
+}
+.section-head h2 { font-size: 18px; }
+@media (max-width: 640px) { .section-head h2 { font-size: 17px; } }
+@media (max-width: 640px) {
+  /* Converter: amount on its own full-width line so long decimals are never cut off */
+  .conv-field { flex-direction: column; }
+  .conv-field select { max-width: none; width: 100%; height: 40px; border-left: 0; border-top: 1px solid var(--border); padding: 0 10px; font-size: 14px; }
+}
+/* Comfortable reading measure and size for explanatory text */
+.prose { font-size: 14.5px; line-height: 1.65; }
+.prose p, .prose li { max-width: 72ch; }
+.prose p + p { margin-top: 10px; }
+.hero-sub { max-width: 68ch; line-height: 1.55; }
+@media (max-width: 640px) { .prose { font-size: 14px; } }
+.table-footer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.tape-item { padding-top: 8px; padding-bottom: 8px; }
+.ticker-tape { padding-top: 0; padding-bottom: 0; }
+@media (max-width: 640px) {
+  /* Header: logo + controls on the first row, full-width search on the second */
+  .topbar { flex-wrap: wrap; row-gap: 8px; }
+  .topbar .search-box { order: 10; flex: 1 0 100%; max-width: none; }
+  .search-kbd { display: none; }
+}

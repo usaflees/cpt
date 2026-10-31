@@ -63,7 +63,7 @@ const FIATS = [["USD", "US dollar"], ["EUR", "Euro"], ["GBP", "British pound"], 
 const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed on coin pages
 const num = v => +v.toPrecision(12);
 function coinAmount(v, sym) {
-  const digits = v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v)));
+  const digits = v >= 100000 ? 0 : v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v)));
   return v.toLocaleString("en-US", { maximumFractionDigits: digits }) + " " + sym;
 }
 function converterHtml(coinList, from, to, seedOut) {
@@ -191,7 +191,7 @@ function statsSection(c, st) {
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">${usd(st.high52w)}</div><div class="metric-label">${longDate(st.high52wDate)}</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">${usd(st.low52w)}</div><div class="metric-label">${longDate(st.low52wDate)}</div></div>
       </div>
-      <h3 style="font-size:13px;margin:14px 0 8px">${s} monthly closing prices</h3>
+      <h3>${s} monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
           <caption class="sr-only">${esc(shortName(c))} month-end closing price in USD and monthly change</caption>
@@ -365,11 +365,11 @@ function coinPage(c) {
       <div class="related-list">
           ${relatedLinks(same)}
       </div>
-      <h3 style="font-size:13px;margin:14px 0 8px">Similar market cap</h3>
+      <h3>Similar market cap</h3>
       <div class="related-list">
           ${relatedLinks(nearby)}
       </div>
-      <h3 style="font-size:13px;margin:14px 0 8px">Top coins by market cap</h3>
+      <h3>Top coins by market cap</h3>
       <div class="related-list">
           ${relatedLinks(top)}
       </div>
