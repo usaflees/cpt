@@ -13,7 +13,7 @@ const changed = execSync(`git diff --name-only ${fork}`, { cwd: ROOT, encoding: 
 const untracked = execSync("git ls-files --others --exclude-standard", { cwd: ROOT, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const reasons = [];
 
-const DATA_FILES = [/^assets\/coins\.js$/, /^content\/coin-stats\.json$/, /^coin\/[a-z0-9]+\/index\.html$/, /^sector\/[a-z0-9-]+\/index\.html$/, /^convert\/index\.html$/, /^sitemap\.xml$/, /^index\.html$/];
+const DATA_FILES = [/^assets\/coins\.js$/, /^content\/coin-stats\.json$/, /^coin\/[a-z0-9]+\/index\.html$/, /^sector\/[a-z0-9-]+\/index\.html$/, /^convert\/index\.html$/, /^heatmap\/index\.html$/, /^sitemap\.xml$/, /^index\.html$/];
 for (const f of [...changed, ...untracked]) if (!DATA_FILES.some(r => r.test(f))) reasons.push(`${f} is not a data file`);
 
 // Registry: only supply/price numbers may change — not the coin list, names, sectors, feeds or tickers.

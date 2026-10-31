@@ -5,6 +5,7 @@
  *   coin   /coin/<sym>/ — one coin: live hero, 24h chart, exchange spread, order-book depth
  *   embed  /embed/ (or legacy /?embed=1) — the iframe widget other sites embed
  *   convert /convert/ — converter between any tracked coin and 20 fiat currencies
+ *   heatmap /heatmap/ — live treemap of every coin, sized by market cap, coloured by 24h change
  *
  * Needs assets/coins.js (CPT_COINS) loaded first. No dependencies, no inline handlers
  * (everything is wired through data-action attributes so the CSP can forbid inline JS).
@@ -551,6 +552,7 @@
     if (MODE === "coin") {
       if (dirty.includes(state.coinPageSym) || dirty.some(s => RATE_COINS.includes(s))) updateCoinPage();
     }
+    if (MODE === "heatmap") updateHeatmap(dirty);
     if ((MODE === "coin" || MODE === "convert") && (dirty.includes(conv.from) || dirty.includes(conv.to) || dirty.includes(pageCoin))) updateConverter();
 
     if (MODE === "home") {
@@ -607,7 +609,7 @@
    * Data feeds — each subscribes only to the coins the current page shows
    * ------------------------------------------------------------------ */
   function activeSymbols() {
-    if (MODE === "home") return Array.from(state.coins.keys());
+    if (MODE === "home" || MODE === "heatmap") return Array.from(state.coins.keys());
     if (MODE === "convert") return [conv.from, conv.to].filter(s => state.coins.has(s));
     // Widgets have a fixed currency, so they only need its rate coin; coin pages can switch currency.
     const rates = MODE === "coin" ? RATE_COINS : state.currency === "USD" ? [] : [state.currency];
@@ -663,6 +665,7 @@
       flush();
       if (MODE === "home") renderTable();
       if (MODE === "embed") renderEmbed();
+      if (MODE === "heatmap") renderHeatmap();
     } catch (_) { /* the WebSocket snapshot fills in shortly */ }
   }
 
@@ -726,7 +729,7 @@
   }
 
   function connectKraken(syms) {
-    onExchange("KR", syms).filter(c => MODE !== "home" || !c.feeds.includes("BN")).forEach(c => krakenSubs.add(c.sym));
+    onExchange("KR", syms).filter(c => (MODE !== "home" && MODE !== "heatmap") || !c.feeds.includes("BN")).forEach(c => krakenSubs.add(c.sym));
     if (!krakenSubs.size) return;
     keepAlive("KR", () => {
       const ws = new WebSocket(KRAKEN_WS);
@@ -1296,6 +1299,146 @@
   }
 
   /* ------------------------------------------------------------------
+   * Heatmap (/heatmap/): squarified treemap, area = market cap, colour = 24h change
+   * ------------------------------------------------------------------ */
+  const SECTOR_LABELS = { L1: "Layer 1", L2: "Layer 2", DePIN: "DePIN", AI: "AI", DeFi: "DeFi", RWA: "Real-world assets", Privacy: "Privacy", Gaming: "Gaming", Meme: "Memecoins", Stable: "Stablecoins" };
+  const hm = { group: params.get("group") === "sector", balanced: params.get("size") !== "cap", stables: false, tiles: new Map(), laidOut: 0 };
+  // "Balanced" sizes boxes by √market cap: still ordered by size, but Bitcoin no longer hides the small coins.
+  const hmWeight = c => (hm.balanced ? Math.sqrt(c.mcap) : c.mcap);
+  function syncHeatmapUrl() {
+    const q = new URLSearchParams();
+    if (hm.group) q.set("group", "sector");
+    if (!hm.balanced) q.set("size", "cap");
+    history.replaceState(null, "", q.toString() ? `?${q}` : location.pathname);
+  }
+
+  // Bruls/Huizing/van Wijk squarify: values must already sum to w*h.
+  function squarify(items, x, y, w, h) {
+    const out = [];
+    const worst = (row, side) => {
+      const sum = row.reduce((t, r) => t + r.v, 0);
+      const max = Math.max(...row.map(r => r.v)), min = Math.min(...row.map(r => r.v));
+      return Math.max((side * side * max) / (sum * sum), (sum * sum) / (side * side * min));
+    };
+    let rest = items.filter(r => r.v > 0);
+    while (rest.length) {
+      const side = Math.min(w, h);
+      let row = [rest[0]], best = worst(row, side), i = 1;
+      for (; i < rest.length; i++) {
+        const next = worst(row.concat(rest[i]), side);
+        if (next > best) break;
+        row = row.concat(rest[i]);
+        best = next;
+      }
+      rest = rest.slice(i);
+      const sum = row.reduce((t, r) => t + r.v, 0);
+      if (w >= h) {
+        const rw = sum / h;
+        let yy = y;
+        row.forEach(r => { const rh = r.v / rw; out.push({ ...r, x, y: yy, w: rw, h: rh }); yy += rh; });
+        x += rw; w -= rw;
+      } else {
+        const rh = sum / w;
+        let xx = x;
+        row.forEach(r => { const rw = r.v / rh; out.push({ ...r, x: xx, y, w: rw, h: rh }); xx += rw; });
+        y += rh; h -= rh;
+      }
+    }
+    return out;
+  }
+  const scaleTo = (items, area) => { const sum = items.reduce((t, r) => t + r.v, 0) || 1; return items.map(r => ({ ...r, v: (r.v / sum) * area })); };
+
+  // Fixed dark palette (white text stays readable on every theme): red ← grey → green, saturating at ±8%.
+  function heatColor(c) {
+    if (!c.live) return "rgb(55,65,81)";
+    const t = Math.max(-1, Math.min(1, c.change24h / 8));
+    const from = [55, 65, 81], to = t >= 0 ? [4, 120, 87] : [185, 28, 28];
+    const k = Math.sqrt(Math.abs(t));
+    return `rgb(${from.map((f, i) => Math.round(f + (to[i] - f) * k)).join(",")})`;
+  }
+
+  function heatmapCoins() {
+    const max = window.innerWidth < 640 ? 50 : 110;
+    return recomputeRanks().filter(c => c.mcap > 0 && !c.estimated && (hm.stables || !c.sectors.includes("Stable"))).slice(0, max);
+  }
+
+  function renderHeatmap() {
+    const box = $("heatmap");
+    if (!box) return;
+    const W = box.clientWidth, H = box.clientHeight;
+    const coins = heatmapCoins();
+    let rects = [];
+    const groupsHtml = [];
+    if (hm.group) {
+      const groups = new Map();
+      coins.forEach(c => { const k = c.sectors[0] || "Other"; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(c); });
+      const gItems = Array.from(groups, ([k, list]) => ({ k, list, v: list.reduce((t, c) => t + hmWeight(c), 0) })).sort((a, b) => b.v - a.v);
+      squarify(scaleTo(gItems, W * H), 0, 0, W, H).forEach(g => {
+        const head = g.h > 44 && g.w > 48 ? 18 : 0;
+        groupsHtml.push(`<div class="hm-group" style="left:${g.x}px;top:${g.y}px;width:${g.w}px;height:${g.h}px">${head ? `<span class="hm-group-label">${esc(SECTOR_LABELS[g.k] || g.k)}</span>` : ""}</div>`);
+        const inner = g.list.map(c => ({ c, v: hmWeight(c) }));
+        rects = rects.concat(squarify(scaleTo(inner, (g.w - 2) * (g.h - head - 2)), g.x + 1, g.y + head + 1, g.w - 2, g.h - head - 2));
+      });
+    } else {
+      rects = squarify(scaleTo(coins.map(c => ({ c, v: hmWeight(c) })), W * H), 0, 0, W, H);
+    }
+    hm.tiles.clear();
+    box.innerHTML = groupsHtml.join("") + rects.map(r => {
+      const c = r.c, s = esc(c.sym);
+      const side = Math.min(r.w, r.h);
+      const fs = Math.max(8, Math.min(30, side / 3.6, (r.w - 4) / (c.sym.length * 0.72)));
+      const show = r.w > 26 && r.h > 16;
+      return `<a class="hm-tile" id="hm-${s}" href="${coinUrl(c.sym)}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;font-size:${fs.toFixed(1)}px;background:${heatColor(c)}">` +
+        (show ? `<span class="hm-sym">${s}</span>` : "") +
+        (r.h > 38 && r.w > 46 ? `<span class="hm-chg">${fmtChange(c)}</span>` : "") +
+        (r.h > 70 && r.w > 80 ? `<span class="hm-price">${fmtPrice(c.price, "USD")}</span>` : "") + `</a>`;
+    }).join("");
+    rects.forEach(r => { const el = $(`hm-${r.c.sym}`); if (el) { hm.tiles.set(r.c.sym, el); labelTile(el, r.c); } });
+    hm.laidOut = Date.now();
+    heatmapSummary(coins);
+  }
+
+  function labelTile(el, c) {
+    const label = `${c.name} (${c.sym}) ${fmtPrice(c.price, "USD")}, ${c.live ? fmtChange(c) + " in 24 hours" : "connecting"}, market cap ${fmtCompact(c.mcap, "USD")}`;
+    el.setAttribute("aria-label", label);
+    el.title = label;
+  }
+
+  function heatmapSummary(coins) {
+    const live = coins.filter(c => c.live);
+    if (!live.length) return;
+    const up = live.filter(c => c.change24h >= 0).length;
+    const cap = live.reduce((t, c) => t + c.mcap, 0);
+    const weighted = live.reduce((t, c) => t + c.change24h * c.mcap, 0) / (cap || 1);
+    const best = live.reduce((a, b) => (b.change24h > a.change24h ? b : a));
+    const worst = live.reduce((a, b) => (b.change24h < a.change24h ? b : a));
+    $("hmSummary").innerHTML = `<strong>${up} of ${live.length}</strong> coins are up over 24 hours · market-cap-weighted move <strong class="${weighted >= 0 ? "chg-up" : "chg-down"}">${weighted >= 0 ? "+" : ""}${weighted.toFixed(2)}%</strong> · best <a href="${coinUrl(best.sym)}">${esc(best.sym)} ${fmtChange(best)}</a> · worst <a href="${coinUrl(worst.sym)}">${esc(worst.sym)} ${fmtChange(worst)}</a>`;
+  }
+
+  function updateHeatmap(dirty) {
+    // Areas drift slowly with price, so re-lay out at most every 20 s; recolour on every flush.
+    if (Date.now() - hm.laidOut > 20000) return renderHeatmap();
+    dirty.forEach(sym => {
+      const el = hm.tiles.get(sym), c = state.coins.get(sym);
+      if (!el || !c) return;
+      el.style.background = heatColor(c);
+      const chg = el.querySelector(".hm-chg"), price = el.querySelector(".hm-price");
+      if (chg) chg.textContent = fmtChange(c);
+      if (price) price.textContent = fmtPrice(c.price, "USD");
+      labelTile(el, c);
+    });
+    if (dirty.length) heatmapSummary(heatmapCoins());
+  }
+
+  function initHeatmap() {
+    document.querySelectorAll("[data-action=hm-group]").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.group === "sector") === hm.group)));
+    document.querySelectorAll("[data-action=hm-size]").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.size === "balanced") === hm.balanced)));
+    renderHeatmap();
+    let t;
+    window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(renderHeatmap, 150); });
+  }
+
+  /* ------------------------------------------------------------------
    * Shared controls: theme, currency, events
    * ------------------------------------------------------------------ */
   function applyTheme(t) {
@@ -1326,6 +1469,23 @@
   }
 
   const actions = {
+    "hm-group"(el) {
+      hm.group = el.dataset.group === "sector";
+      document.querySelectorAll("[data-action=hm-group]").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
+      syncHeatmapUrl();
+      renderHeatmap();
+    },
+    "hm-size"(el) {
+      hm.balanced = el.dataset.size === "balanced";
+      document.querySelectorAll("[data-action=hm-size]").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
+      syncHeatmapUrl();
+      renderHeatmap();
+    },
+    "hm-stables"(el) {
+      hm.stables = !hm.stables;
+      el.setAttribute("aria-pressed", String(hm.stables));
+      renderHeatmap();
+    },
     "cv-swap"() {
       const out = parseFloat($("cvB").value);
       if (out > 0) conv.amount = out;
@@ -1483,6 +1643,8 @@
     recomputeRanks();
     initCoinPage();
     initConverter();
+  } else if (MODE === "heatmap") {
+    initHeatmap();
   } else if (MODE === "convert") {
     recomputeRanks();
     initConverter();
@@ -1490,7 +1652,7 @@
     recomputeRanks(); // about / sector / widgets pages: header menu and widget builder only
   }
 
-  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert") startFeeds();
+  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap") startFeeds();
 
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt

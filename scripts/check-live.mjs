@@ -35,6 +35,7 @@ await check("/", { headers: { "content-security-policy": /default-src 'self'/, .
 for (const c of sample) await check(`/coin/${c.sym.toLowerCase()}/`, { headers: prodOnly, body: new RegExp(`data-sym="${c.sym}"`) });
 await check("/about/", { headers: prodOnly });
 await check("/widgets/", { headers: prodOnly });
+await check("/heatmap/", { headers: prodOnly, body: /id="heatmap"/ });
 await check("/convert/", { headers: { "content-security-policy": /api\.coinbase\.com/, ...prodOnly }, body: /id="converter"/ });
 await check("/sector/ai/", { headers: prodOnly, body: /<table/ });
 await check("/sw.js");
