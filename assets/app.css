@@ -515,8 +515,13 @@ td {
   0% { background-color: rgba(244, 63, 94, 0.28); }
   100% { background-color: transparent; }
 }
+/* Two copies of each animation: switching between them restarts the flash without a forced layout */
+@keyframes flashUp2 { 0% { background-color: rgba(16, 185, 129, 0.28); } 100% { background-color: transparent; } }
+@keyframes flashDown2 { 0% { background-color: rgba(244, 63, 94, 0.28); } 100% { background-color: transparent; } }
 .tick-up { animation: flashUp 0.7s ease-out; }
 .tick-down { animation: flashDown 0.7s ease-out; }
+.tick-up.alt { animation-name: flashUp2; }
+.tick-down.alt { animation-name: flashDown2; }
 
 /* Coin Identity Cell */
 .coin-cell {
@@ -1400,11 +1405,28 @@ body {
 .hero-sub { max-width: 68ch; line-height: 1.55; }
 @media (max-width: 640px) { .prose { font-size: 14px; } }
 .table-footer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.tape-item { padding-top: 8px; padding-bottom: 8px; }
-.ticker-tape { padding-top: 0; padding-bottom: 0; }
+/* Fixed-height tape: it fills in after the first prices arrive and must not push the page down */
+.ticker-tape-wrap { height: 34px; padding: 0; box-sizing: border-box; }
+.ticker-tape { height: 100%; align-items: stretch; }
+.tape-item { height: 100%; }
+/* Coin hero: the "last tick" line always has its own row, before and after live data */
+#cpSource { flex-basis: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 640px) {
   /* Header: logo + controls on the first row, full-width search on the second */
   .topbar { flex-wrap: wrap; row-gap: 8px; }
   .topbar .search-box { order: 10; flex: 1 0 100%; max-width: none; }
   .search-kbd { display: none; }
 }
+/* Hold the table's space until its rows render, so the sections below don't jump */
+.table-wrap:has(#tableBody:empty) { min-height: 1400px; }
+@media (max-width: 640px) { .table-wrap:has(#tableBody:empty) { min-height: 2600px; } }
+.chart-box { height: 150px; box-sizing: border-box; overflow: hidden; }
+.chart-box svg { display: block; width: 100%; height: 100%; }
+@media (max-width: 640px) { .hm-summary { min-height: 2.9em; } }
+/* Link lists (coin index, sectors): tap-sized pills */
+.coin-index { gap: 8px; }
+.coin-index a {
+  display: inline-flex; align-items: center; min-height: 32px; padding: 4px 10px; border-radius: 8px;
+  background: var(--bg-primary); border: 1px solid var(--border);
+}
+.coin-index a:hover { border-color: var(--accent); }

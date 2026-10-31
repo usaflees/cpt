@@ -166,13 +166,16 @@
   }
   const currSymbol = (curr = state.currency) => ({ BTC: "₿", ETH: "Ξ", SOL: "◎" }[curr] || "$");
 
+  // Reused formatters: toLocaleString with options builds a new one on every call, which adds up at ~10 ticks/s.
+  const NF2 = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const NF3 = new Intl.NumberFormat("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
   function fmtPrice(usd, curr) {
     if (usd === null || usd === undefined || isNaN(usd)) return "—";
     const val = usd / getRate(curr);
     const sym = currSymbol(curr);
     if (val === 0) return sym + "0.00";
-    if (val >= 1000) return sym + val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    if (val >= 1) return sym + val.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+    if (val >= 1000) return sym + NF2.format(val);
+    if (val >= 1) return sym + NF3.format(val);
     if (val >= 0.01) return sym + val.toFixed(4);
     if (val >= 0.0001) return sym + val.toFixed(6);
     return sym + val.toFixed(8);
@@ -420,7 +423,7 @@
       sparkActive++;
       fetch(`${BINANCE_REST}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=4h&limit=43`)
         .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-        .then(k => { c.spark7 = k.slice(0, -1).map(x => +x[4]); state.dirty.add(c.sym); state.moversDirty = true; })
+        .then(k => { c.spark7 = k.slice(0, -1).map(x => +x[4]); c.sparkDrawn = undefined; state.dirty.add(c.sym); state.moversDirty = true; })
         .catch(() => { c.sparkLoading = false; })
         .finally(() => { sparkActive--; pumpSparks(); });
     }
@@ -502,7 +505,10 @@
           <span style="color:${c.change24h >= 0 ? "var(--up)" : "var(--down)"}">${c.live ? (c.change24h >= 0 ? "▲ " : "▼ ") + Math.abs(c.change24h).toFixed(2) + "%" : ""}</span>
         </a>`).join("");
     $("tickerTape").innerHTML = html + html;
+    tapeEls.clear();
+    document.querySelectorAll("[data-tape]").forEach(el => tapeEls.set(el.dataset.tape, (tapeEls.get(el.dataset.tape) || []).concat(el)));
   }
+  const tapeEls = new Map();
 
   /* ------------------------------------------------------------------
    * Live updates
@@ -530,7 +536,8 @@
     const wasLive = c.live;
     c.live = true;
     if (prev !== price || !wasLive) {
-      if (prev !== price) c.lastDir = price > prev ? "up" : "down";
+      // The first live price replaces the build-time snapshot: not a move, so nothing flashes.
+      if (prev !== price) c.lastDir = wasLive ? (price > prev ? "up" : "down") : null;
       c.history.push(price);
       if (c.history.length > 40) c.history.shift();
       state.tickCount++;
@@ -539,11 +546,19 @@
     }
   }
 
+  // Restart the flash by switching to the other copy of the animation (see .alt in app.css):
+  // no forced layout, so a burst of ticks stays cheap.
   function flash(el, dir) {
+    if (!dir) return;
+    const alt = !el.classList.contains("alt");
     el.classList.remove("tick-up", "tick-down");
-    void el.offsetWidth;
     el.classList.add(dir === "up" ? "tick-up" : "tick-down");
+    el.classList.toggle("alt", alt);
   }
+
+  // Skip DOM writes that would not change anything (most ticks only move the price).
+  const setText = (el, v) => { if (el && el.textContent !== v) el.textContent = v; };
+  const setHtml = (el, v) => { if (el && el._html !== v) { el.innerHTML = v; el._html = v; } };
 
   function flush() {
     if (!state.dirty.size || document.hidden) return;
@@ -562,6 +577,7 @@
     if ((MODE === "coin" || MODE === "convert") && (dirty.includes(conv.from) || dirty.includes(conv.to) || dirty.includes(pageCoin))) updateConverter();
 
     if (MODE === "home") {
+      const now = Date.now();
       $("tickCounter").textContent = state.tickCount.toLocaleString();
       dirty.forEach(sym => {
         const c = state.coins.get(sym);
@@ -570,14 +586,15 @@
         priceEl.textContent = fmtPrice(c.price);
         priceEl.classList.remove("is-stale");
         flash(priceEl, c.lastDir);
-        $(`src-${sym}`).textContent = c.lastSource;
-        $(`chg-${sym}`).innerHTML = chgPill(c);
-        $(`chg7-${sym}`).innerHTML = pct7(c);
-        $(`spark-${sym}`).innerHTML = spark7(c);
-        $(`mcap-${sym}`).textContent = fmtCompact(c.mcap);
-        $(`vol-${sym}`).textContent = fmtCompact(c.vol24h);
+        setText($(`src-${sym}`), c.lastSource);
+        setHtml($(`chg-${sym}`), chgPill(c));
+        setHtml($(`chg7-${sym}`), pct7(c));
+        // A 7-day chart barely moves per tick: redraw when its candles arrive, then at most every 10 s.
+        if (c.spark7 && (c.sparkDrawn === undefined || now - c.sparkDrawn > 10000)) { $(`spark-${sym}`).innerHTML = spark7(c); c.sparkDrawn = now; }
+        setText($(`mcap-${sym}`), fmtCompact(c.mcap));
+        setText($(`vol-${sym}`), fmtCompact(c.vol24h));
         if (state.bag[sym] > 0) $(`bagval-${sym}`).textContent = fmtPrice(state.bag[sym] * c.price);
-        document.querySelectorAll(`[data-tape="${sym}"]`).forEach(el => { el.textContent = fmtPrice(c.price); });
+        (tapeEls.get(sym) || []).forEach(el => { el.textContent = fmtPrice(c.price); });
       });
       updateSummary();
     }
@@ -1404,8 +1421,10 @@
     heatmapSummary(coins);
   }
 
+  // The accessible name starts with the box's visible text (voice control users say what they see).
   function labelTile(el, c) {
-    const label = `${c.name} (${c.sym}) ${fmtPrice(c.price, "USD")}, ${c.live ? fmtChange(c) + " in 24 hours" : "connecting"}, market cap ${fmtCompact(c.mcap, "USD")}`;
+    const visible = Array.from(el.children, x => x.textContent).join(" ");
+    const label = `${visible || c.sym}: ${c.name}, ${fmtPrice(c.price, "USD")}, ${c.live ? fmtChange(c) + " in 24 hours" : "connecting"}, market cap ${fmtCompact(c.mcap, "USD")}`;
     el.setAttribute("aria-label", label);
     el.title = label;
   }
