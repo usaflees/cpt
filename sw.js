@@ -1,8 +1,8 @@
 // CryptoPriceTicker service worker: makes the site installable and usable offline.
 // Strategy is network-first for everything, so visitors always get the latest deploy;
 // the cache is only a fallback when the network is unavailable. Exchange APIs are never cached.
-const CACHE = "cpt-v1";
-const CORE = ["/", "/assets/app.css", "/assets/app.js", "/assets/coins.js", "/assets/theme-init.js", "/favicon.svg", "/site.webmanifest"];
+const CACHE = "cpt-v2";
+const CORE = ["/", "/assets/app.css", "/assets/app.js", "/assets/coins.js", "/assets/theme-init.js", "/favicon.svg", "/brand/mark.svg", "/site.webmanifest"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));

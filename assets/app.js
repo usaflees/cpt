@@ -238,7 +238,7 @@
           <div class="ticker-tape-wrap" style="border:none;flex:1;background:transparent">
             <div class="ticker-tape" style="animation-duration:28s">${items}<span aria-hidden="true" style="display:contents">${items}</span></div>
           </div>
-          <a href="${SITE}/" target="_blank" rel="noopener" class="embed-brand-dock">⚡ CryptoPriceTicker.com</a>
+          <a href="${SITE}/" target="_blank" rel="noopener" class="embed-brand-dock"><img src="/brand/mark.svg" width="14" height="14" alt="" style="border-radius:3px" />CryptoPriceTicker.com</a>
         </div>`;
     }
 
