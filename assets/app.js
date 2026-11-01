@@ -232,7 +232,7 @@
       const items = picked.map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="tape-item">
           <span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</span>
-          <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "padding:1px 5px;font-size:11.5px")}</span>
+          <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "padding:1px 5px;font-size:12px")}</span>
         </a>`).join("");
       return `<div class="embed-marquee-bar">
           <div class="ticker-tape-wrap" style="border:none;flex:1;background:transparent">
@@ -277,11 +277,11 @@
     const cards = picked.slice(0, 8).map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="embed-card">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <strong style="font-family:var(--font-mono);font-size:12.5px">${esc(c.sym)}</strong>
-            <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "font-size:11.5px;padding:1px 5px")}</span>
+            <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "font-size:12px;padding:1px 5px")}</span>
           </div>
           <div style="font-family:var(--font-mono);font-size:14px;font-weight:800" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
-            <span style="font-size:11.5px;color:var(--text-muted)">MCap ${fmtCompact(c.mcap, curr)}</span>
+            <span style="font-size:12px;color:var(--text-muted)">MCap ${fmtCompact(c.mcap, curr)}</span>
             <span data-wg-spark="${esc(c.sym)}">${buildSparkline(liveTicks(c), c.change24h >= 0, 56, 18)}</span>
           </div>
         </a>`).join("");

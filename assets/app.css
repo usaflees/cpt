@@ -1448,7 +1448,7 @@ body {
 /* The snapshot price shows in a muted colour, not reduced opacity: same "not live yet" signal,
    but the browser counts it as painted immediately (it is the page's largest element). */
 .hero-price.is-stale { opacity: 1; color: var(--text-muted); }
-.embed-footer-bar { font-size: 11.5px; }
+.embed-footer-bar { font-size: 12px; }
 
 /* Widget (single coin): metric boxes reflow to the iframe's width; the tagline yields to the brand link */
 .embed-metrics { grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); }
