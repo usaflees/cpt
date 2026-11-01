@@ -1,3 +1,5 @@
+<p align="center"><img src="brand/lockup-1200x298.jpg" width="600" alt="CryptoPriceTicker"></p>
+
 # CryptoPriceTicker.com
 
 Live crypto prices streamed straight from Coinbase, Binance and Kraken into the browser.
