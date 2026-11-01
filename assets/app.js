@@ -199,6 +199,9 @@
   const chgPill = (c, style = "") => `<span class="chg-pill ${chgClass(c)}"${style ? ` style="${style}"` : ""}>${fmtChange(c)}</span>`;
   const rangePct = c => Math.max(2, Math.min(98, ((c.price - c.low24h) / ((c.high24h - c.low24h) || 1)) * 100));
 
+  // Tick-based mini charts only once there are enough ticks to show a shape (a 2-point line looks like a trend).
+  const liveTicks = c => (c.history.length >= 5 ? c.history : []);
+
   function buildSparkline(history, isUp, w = 88, h = 24, opts = {}) {
     if (!history || history.length < 2) {
       return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="0" y1="${h / 2}" x2="${w}" y2="${h / 2}" stroke="var(--border)" stroke-dasharray="3 3"/></svg>`;
@@ -229,7 +232,7 @@
       const items = picked.map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="tape-item">
           <span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</span>
-          <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "padding:1px 5px;font-size:10.5px")}</span>
+          <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "padding:1px 5px;font-size:11.5px")}</span>
         </a>`).join("");
       return `<div class="embed-marquee-bar">
           <div class="ticker-tape-wrap" style="border:none;flex:1;background:transparent">
@@ -257,9 +260,9 @@
                 </div>
               </div>
             </div>
-            <div data-wg-spark="${esc(c.sym)}">${buildSparkline(c.history, c.change24h >= 0, 120, 34)}</div>
+            <div data-wg-spark="${esc(c.sym)}">${buildSparkline(liveTicks(c), c.change24h >= 0, 120, 34)}</div>
           </div>
-          <div class="bento-metrics" style="grid-template-columns:repeat(3,1fr)">
+          <div class="bento-metrics embed-metrics">
             <div class="metric-box"><div class="metric-label">Market Cap</div><div class="metric-val" style="font-size:12px">${fmtCompact(c.mcap, curr)}</div></div>
             <div class="metric-box"><div class="metric-label">24h Volume</div><div class="metric-val" style="font-size:12px">${fmtCompact(c.vol24h, curr)}</div></div>
             <div class="metric-box"><div class="metric-label">24h Low / High</div><div class="range-track" style="margin-top:5px"><div class="range-fill" style="width:${rangePct(c).toFixed(0)}%"></div></div></div>
@@ -274,12 +277,12 @@
     const cards = picked.slice(0, 8).map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="embed-card">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <strong style="font-family:var(--font-mono);font-size:12.5px">${esc(c.sym)}</strong>
-            <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "font-size:10px;padding:1px 5px")}</span>
+            <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "font-size:11.5px;padding:1px 5px")}</span>
           </div>
           <div style="font-family:var(--font-mono);font-size:14px;font-weight:800" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
-            <span style="font-size:10px;color:var(--text-muted)">MCap ${fmtCompact(c.mcap, curr)}</span>
-            <span data-wg-spark="${esc(c.sym)}">${buildSparkline(c.history, c.change24h >= 0, 56, 18)}</span>
+            <span style="font-size:11.5px;color:var(--text-muted)">MCap ${fmtCompact(c.mcap, curr)}</span>
+            <span data-wg-spark="${esc(c.sym)}">${buildSparkline(liveTicks(c), c.change24h >= 0, 56, 18)}</span>
           </div>
         </a>`).join("");
     return `<div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-primary)">
@@ -306,7 +309,7 @@
     scope.querySelectorAll(`[data-wg-chg="${sym}"]`).forEach(el => { el.innerHTML = chgPill(c, el.firstElementChild?.getAttribute("style") || ""); });
     scope.querySelectorAll(`[data-wg-spark="${sym}"]`).forEach(el => {
       const svg = el.querySelector("svg");
-      el.innerHTML = buildSparkline(c.history, c.change24h >= 0, +svg.getAttribute("width"), +svg.getAttribute("height"));
+      el.innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, +svg.getAttribute("width"), +svg.getAttribute("height"));
     });
   }
 
@@ -1178,7 +1181,7 @@
     $("cpVol").textContent = fmtCompact(c.vol24h);
     $("cpRange").style.width = rangePct(c).toFixed(0) + "%";
     // Until the 24h candles load (or for coins without them), draw live ticks only once there are enough to mean something.
-    if (!chartLoaded) $("cpChart").innerHTML = buildSparkline(c.history.length >= 5 ? c.history : [], c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
+    if (!chartLoaded) $("cpChart").innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
     updateCoinDetail(c.sym, "cp");
   }
 
