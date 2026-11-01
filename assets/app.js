@@ -125,7 +125,9 @@
    * URL parameters: sync links, legacy widget links, embed config
    * ------------------------------------------------------------------ */
   state.currency = pick((params.get("curr") || (IS_EMBED ? "" : store.get("cpt_curr", ""))).toUpperCase(), CURRENCIES, "USD");
-  state.theme = pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, "kali");
+  // First visit follows the device's light/dark setting; widgets default to dark unless their embed code says otherwise.
+  const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "kali";
+  state.theme = pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, systemTheme);
 
   if (MODE === "home") {
     // Deep links (/?coin=BTC, and /?w=BTC from older widgets) go to the coin page and never touch the
@@ -1022,8 +1024,22 @@
       store.set("cpt_alerts", state.alerts);
       beep();
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
+      notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
       refreshAlertUi(c.sym);
     }
+  }
+
+  // System notification for alerts (only if the visitor allowed it when saving an alert).
+  function notify(title, body, tag) {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const opts = { body, tag, icon: "/icon-192.png", badge: "/icon-192.png" };
+    const fallback = () => { try { new Notification(title, opts); } catch (_) {} };
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts)).catch(fallback);
+    } else fallback();
+  }
+  function askNotifyPermission() {
+    if ("Notification" in window && Notification.permission === "default") Notification.requestPermission().catch(() => {});
   }
 
   let audioCtx = null;
@@ -1161,7 +1177,8 @@
     $("cpMcap").textContent = fmtCompact(c.mcap);
     $("cpVol").textContent = fmtCompact(c.vol24h);
     $("cpRange").style.width = rangePct(c).toFixed(0) + "%";
-    if (!chartLoaded) $("cpChart").innerHTML = buildSparkline(c.history, c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
+    // Until the 24h candles load (or for coins without them), draw live ticks only once there are enough to mean something.
+    if (!chartLoaded) $("cpChart").innerHTML = buildSparkline(c.history.length >= 5 ? c.history : [], c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
     updateCoinDetail(c.sym, "cp");
   }
 
@@ -1464,12 +1481,65 @@
   }
 
   /* ------------------------------------------------------------------
+   * Quick coin search in the header of every sub-page (combobox → coin page)
+   * ------------------------------------------------------------------ */
+  function searchCoins(q, limit = 8) {
+    q = q.trim().toLowerCase();
+    if (!q) return [];
+    const score = c => {
+      const sym = c.sym.toLowerCase(), name = c.name.toLowerCase(), old = (RENAMED_FROM[c.sym] || "").toLowerCase();
+      if (sym === q || old === q) return 0;
+      if (sym.startsWith(q)) return 1;
+      if (name.startsWith(q)) return 2;
+      if (name.includes(q)) return 3;
+      return 9;
+    };
+    return Array.from(state.coins.values()).filter(c => c.hasPage)
+      .map(c => ({ c, s: score(c) })).filter(x => x.s < 9)
+      .sort((a, b) => a.s - b.s || a.c.rank - b.c.rank).slice(0, limit).map(x => x.c);
+  }
+  const RENAMED_FROM = {};
+  REGISTRY.forEach(c => { if (c.formerly) RENAMED_FROM[c.sym] = c.formerly; });
+
+  function initQuickSearch() {
+    const input = $("quickSearch"), list = $("quickResults");
+    if (!input || !list) return;
+    let items = [], active = -1;
+    const close = () => { list.hidden = true; input.setAttribute("aria-expanded", "false"); input.removeAttribute("aria-activedescendant"); };
+    const render = () => {
+      if (!input.value.trim()) return close();
+      list.innerHTML = items.length ? items.map((c, i) => `<li role="option" id="qs-${i}" aria-selected="${i === active}"><a href="${coinUrl(c.sym)}" tabindex="-1"><span class="coin-avatar sm" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span><strong>${esc(c.sym)}</strong><span class="qs-name">${esc(c.name)}</span></a></li>`).join("")
+        : `<li class="qs-empty" role="option" aria-disabled="true">No coin matches “${esc(input.value.trim())}”</li>`;
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+      if (active >= 0) input.setAttribute("aria-activedescendant", `qs-${active}`); else input.removeAttribute("aria-activedescendant");
+    };
+    input.addEventListener("input", () => { items = searchCoins(input.value); active = items.length ? 0 : -1; render(); });
+    input.addEventListener("keydown", e => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        if (!items.length) return;
+        e.preventDefault();
+        active = (active + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+        render();
+      } else if (e.key === "Enter" && items[active]) {
+        e.preventDefault();
+        location.href = coinUrl(items[active].sym);
+      } else if (e.key === "Escape") {
+        input.value = "";
+        close();
+      }
+    });
+    input.addEventListener("focus", () => { if (items.length) render(); });
+    input.addEventListener("blur", () => setTimeout(close, 150));
+  }
+
+  /* ------------------------------------------------------------------
    * Shared controls: theme, currency, events
    * ------------------------------------------------------------------ */
-  function applyTheme(t) {
+  function applyTheme(t, persist = true) {
     state.theme = t;
     document.documentElement.setAttribute("data-theme", t);
-    store.set("cpt_theme", t);
+    if (persist) store.set("cpt_theme", t);
     document.querySelectorAll("[data-theme-val]").forEach(b => {
       const on = b.getAttribute("data-theme-val") === t;
       b.classList.toggle("active", on);
@@ -1541,7 +1611,7 @@
     },
     "open-coin": el => openCoinModal(el.dataset.sym),
     "open-widget": el => openWidgetModal(el.dataset.sym),
-    "save-alert": el => saveAlert(el.dataset.sym, el.dataset.input),
+    "save-alert": el => { saveAlert(el.dataset.sym, el.dataset.input); if (state.alerts[el.dataset.sym]) askNotifyPermission(); },
     "clear-alert": el => clearAlert(el.dataset.sym),
     theme: el => applyTheme(el.getAttribute("data-theme-val")),
     curr(el) { applyCurrency(el.getAttribute("data-curr")); rerender(); },
@@ -1634,7 +1704,7 @@
   });
 
   document.addEventListener("keydown", e => {
-    const search = $("searchInput");
+    const search = $("searchInput") || $("quickSearch");
     const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
     if (e.key === "/" && search && !typing) {
       e.preventDefault();
@@ -1649,7 +1719,7 @@
   /* ------------------------------------------------------------------
    * Boot
    * ------------------------------------------------------------------ */
-  applyTheme(state.theme);
+  applyTheme(state.theme, false);
   applyCurrency(state.currency);
   if ($("registryDate") && window.CPT_COINS_UPDATED) $("registryDate").textContent = "on " + window.CPT_COINS_UPDATED;
 
@@ -1661,6 +1731,11 @@
     $("searchInput").addEventListener("input", e => {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => { state.search = e.target.value; renderTable(); }, 120);
+    });
+    // Enter jumps straight to the best match's coin page.
+    $("searchInput").addEventListener("keydown", e => {
+      const hit = e.key === "Enter" && searchCoins(e.target.value, 1)[0];
+      if (hit) location.href = coinUrl(hit.sym);
     });
     $("cryptoTable").classList.toggle("compact-mode", state.compact);
     $("densityBtn").setAttribute("aria-pressed", state.compact);
@@ -1682,6 +1757,7 @@
   }
 
   if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap") startFeeds();
+  if (MODE !== "embed") initQuickSearch();
 
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt

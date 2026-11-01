@@ -124,6 +124,12 @@ function topbar(withFeeds, withCurrency = withFeeds) {
   return `<header class="topbar">
     <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
     <a class="topbar-link" href="/">← All prices</a>
+    <div class="search-box quick-search">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="quickSearch" placeholder="Search coins…" aria-label="Search coins" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="quickResults" />
+      <kbd class="search-kbd" aria-hidden="true">/</kbd>
+      <ul class="quick-results" id="quickResults" role="listbox" aria-label="Matching coins" hidden></ul>
+    </div>
     <div class="topbar-actions">${withFeeds ? `
       <details class="pop live-pop">
         <summary aria-label="Live feed status"><span class="pulse-dot" aria-hidden="true"></span><span class="hide-mobile">Live</span></summary>
