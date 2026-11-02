@@ -110,7 +110,7 @@ function conversionTables(c) {
 }
 
 const THEMES = [["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];
-const themeButtons = THEMES.map(([t, label]) => `<button type="button" class="theme-btn" data-action="theme" data-theme-val="${t}" title="${label}"><span class="swatch sw-${t}"></span></button>`).join("");
+const themeButtons = THEMES.map(([t, label]) => `<button type="button" class="theme-btn" data-action="theme" data-theme-val="${t}" title="${label}" aria-label="Theme: ${label}"><span class="swatch sw-${t}"></span></button>`).join("");
 const currencyButtons = [["USD", "$"], ["BTC", "₿"], ["ETH", "Ξ"], ["SOL", "◎"]]
   .map(([c, s]) => `<button type="button" class="btn-toggle" data-action="curr" data-curr="${c}" aria-label="Prices in ${c}">${s}</button>`).join("");
 
