@@ -1692,3 +1692,16 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
   .sector-table .coin-cell .coin-name { white-space: normal; overflow: visible; overflow-wrap: anywhere; line-height: 1.25; }
   .sector-table td.col-center:first-child, .sector-table th.col-center:first-child { width: 28px; padding-left: 8px; padding-right: 2px; }
 }
+
+/* Consent banner (assets/consent.js): a bar at the bottom, never covering the header */
+.consent-bar {
+  position: fixed; left: 50%; bottom: max(12px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 90;
+  width: min(760px, calc(100% - 24px)); display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 12px 14px; border-radius: var(--radius); background: var(--bg-secondary); border: 1px solid var(--border-accent);
+  box-shadow: var(--shadow), var(--card-glow);
+}
+.consent-text { flex: 1 1 320px; margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.consent-text strong { color: var(--text-primary); }
+.consent-actions { display: flex; gap: 8px; margin-left: auto; }
+.consent-actions .action-btn { min-height: 40px; padding: 8px 16px; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }

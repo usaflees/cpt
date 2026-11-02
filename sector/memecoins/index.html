@@ -8,7 +8,7 @@
   <meta name="description" content="Live prices for 11 memecoins from Coinbase, Binance and Kraken, with 7-day, 30-day and 1-year performance and market caps." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/sector/memecoins/" />
-  <link rel="preload" href="/assets/app.css?v=a14966d34c" as="style" />
+  <link rel="preload" href="/assets/app.css?v=8be7eb2b19" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -35,9 +35,10 @@ var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=a14966d34c" />
+  <link rel="stylesheet" href="/assets/app.css?v=8be7eb2b19" />
   <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
   <script src="/assets/app.js?v=a990b5915c" defer></script>
+  <script src="/assets/consent.js?v=a65a960b96" defer></script>
 </head>
 <body data-page="sector">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -203,7 +204,7 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
     <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
   </footer>
 </body>

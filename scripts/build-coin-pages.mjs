@@ -313,6 +313,7 @@ function coinPage(c) {
   <link rel="stylesheet" href="/assets/app.css" />
   <script src="/assets/coins.js" defer></script>
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/consent.js" defer></script>
 </head>
 <body data-page="coin" data-sym="${s}">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -394,7 +395,7 @@ function coinPage(c) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -481,6 +482,7 @@ function sectorPage(x) {
   <link rel="stylesheet" href="/assets/app.css" />
   <script src="/assets/coins.js" defer></script>
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/consent.js" defer></script>
 </head>
 <body data-page="sector">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -518,7 +520,7 @@ function sectorPage(x) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
     <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
   </footer>
 </body>
@@ -592,6 +594,7 @@ function convertPage() {
   <link rel="stylesheet" href="/assets/app.css" />
   <script src="/assets/coins.js" defer></script>
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/consent.js" defer></script>
 </head>
 <body data-page="convert">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -629,7 +632,7 @@ function convertPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -688,6 +691,7 @@ function heatmapPage() {
   <link rel="stylesheet" href="/assets/app.css" />
   <script src="/assets/coins.js" defer></script>
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/consent.js" defer></script>
 </head>
 <body data-page="heatmap">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -732,7 +736,7 @@ function heatmapPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -792,9 +796,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;

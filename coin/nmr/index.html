@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=a14966d34c" as="style" />
+  <link rel="preload" href="/assets/app.css?v=8be7eb2b19" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -41,9 +41,10 @@ var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=a14966d34c" />
+  <link rel="stylesheet" href="/assets/app.css?v=8be7eb2b19" />
   <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
   <script src="/assets/app.js?v=a990b5915c" defer></script>
+  <script src="/assets/consent.js?v=a65a960b96" defer></script>
 </head>
 <body data-page="coin" data-sym="NMR">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -250,7 +251,7 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
