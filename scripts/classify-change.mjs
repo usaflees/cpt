@@ -14,7 +14,18 @@ const untracked = execSync("git ls-files --others --exclude-standard", { cwd: RO
 const reasons = [];
 
 const DATA_FILES = [/^assets\/coins\.js$/, /^content\/coin-stats\.json$/, /^coin\/[a-z0-9]+\/index\.html$/, /^sector\/[a-z0-9-]+\/index\.html$/, /^convert\/index\.html$/, /^heatmap\/index\.html$/, /^sitemap\.xml$/, /^index\.html$/];
-for (const f of [...changed, ...untracked]) if (!DATA_FILES.some(r => r.test(f))) reasons.push(`${f} is not a data file`);
+// A refresh changes assets/coins.js, and build-coin-pages.mjs then re-stamps its content hash
+// (/assets/coins.js?v=…) in every page and in sw.js. A file whose only difference is those hashes
+// is part of the data refresh, not a code change.
+const unhash = t => t.replace(/\?v=[0-9a-f]+/g, "");
+const onlyAssetHashes = f => {
+  try {
+    const before = execSync(`git show ${fork}:${f}`, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+    const after = execSync(`cat ${JSON.stringify(f)}`, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+    return unhash(before) === unhash(after);
+  } catch (_) { return false; }
+};
+for (const f of [...changed, ...untracked]) if (!DATA_FILES.some(r => r.test(f)) && !onlyAssetHashes(f)) reasons.push(`${f} is not a data file`);
 
 // Registry: only supply/price numbers may change — not the coin list, names, sectors, feeds or tickers.
 if (changed.includes("assets/coins.js")) {
@@ -29,7 +40,7 @@ if (changed.includes("index.html")) {
   const strip = s => s.replace(/<!-- coin-index:start[\s\S]*?<!-- coin-index:end -->/, "");
   const before = execSync(`git show ${fork}:index.html`, { cwd: ROOT, encoding: "utf8" });
   const after = execSync("cat index.html", { cwd: ROOT, encoding: "utf8" });
-  if (strip(before) !== strip(after)) reasons.push("index.html changed outside the generated coin list");
+  if (unhash(strip(before)) !== unhash(strip(after))) reasons.push("index.html changed outside the generated coin list");
 }
 
 if (reasons.length) { console.log("needs-review: " + reasons.join("; ")); process.exit(2); }
