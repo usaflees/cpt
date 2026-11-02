@@ -714,6 +714,25 @@
   }, true);
   addEventListener("pageshow", () => document.querySelectorAll('.coin-avatar[style*="view-transition-name"]').forEach(el => { el.style.viewTransitionName = ""; }));
 
+  // Phones: the two-row header tucks away while scrolling down and comes back on any scroll up,
+  // near the top, or when focus moves into it (keyboard users). One passive listener, one rAF.
+  if (window.matchMedia && !IS_EMBED) {
+    const phone = matchMedia("(max-width: 640px)");
+    const bar = document.querySelector(".topbar");
+    let lastY = scrollY, ticking = false;
+    const update = () => {
+      ticking = false;
+      const y = scrollY, tuck = phone.matches && y > 160 && y > lastY + 4 && !bar.contains(document.activeElement) && !bar.querySelector("details[open]");
+      if (tuck) bar.classList.add("is-tucked");
+      else if (y < lastY - 4 || y <= 160 || !phone.matches) bar.classList.remove("is-tucked");
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    };
+    if (bar) {
+      addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      bar.addEventListener("focusin", () => bar.classList.remove("is-tucked"));
+    }
+  }
+
   // Back/forward cache: open WebSockets can keep a page out of it, so every page close drops the
   // feeds; if the page comes back from the cache, they reconnect with a fresh REST snapshot.
   addEventListener("pagehide", () => {
