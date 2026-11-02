@@ -1453,3 +1453,18 @@ body {
 /* Widget (single coin): metric boxes reflow to the iframe's width; the tagline yields to the brand link */
 .embed-metrics { grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); }
 @media (max-width: 380px) { .embed-footer-bar > span:first-child { display: none; } .embed-footer-bar { justify-content: flex-end; } }
+
+/* FAQ: clear +/− markers and comfortable tap rows */
+.faq details { padding: 0; }
+.faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 0; font-size: 15px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; flex-shrink: 0; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--border); color: var(--accent); font-size: 17px; font-weight: 600; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { margin: 0 0 14px; }
+/* Phone-only tidy-ups */
+.index-toggle { margin-top: 12px; }
+@media (max-width: 640px) {
+  .hero .brand-name { display: none; }
+  .coin-index.collapsed { max-height: 290px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+}
+@media (hover: none) { .kbd-hint { display: none; } }
