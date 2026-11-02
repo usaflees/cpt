@@ -38,6 +38,9 @@ whatever is in this repository is what gets deployed.
 | `docs/SELF-IMPROVING.md` | How the weekly self-improvement loop works and the rules it must follow |
 | `docs/LAUNCH-KIT.md` | Launch & growth plan: indexing checklist, where to post (and the rules), post drafts |
 | `docs/AUDIT.md` | The October 2026 audit: what was wrong, what changed, and the evidence |
+| `docs/knowledge/` | Knowledge base: playbook, decision log, current state, Opus 5.5 guide and dated research snapshots |
+| `tests/` | QA suite: `bash tests/run.sh` (local emulator, links, browser tests, accessibility) |
+| `CLAUDE.md`, `.claude/skills/ship/` | Instructions every Claude session loads, and the go-live procedure |
 
 ## Common tasks
 
@@ -89,6 +92,6 @@ These settings live in the Cloudflare dashboard, not in this repository:
 
 ## Local preview
 
-Any static server works, e.g. `npx serve .` or `python3 -m http.server`, then open http://localhost:8000.
-`_headers`/`_redirects` only apply on Cloudflare (or `npx wrangler pages dev .`). Every pushed branch
-also gets its own preview URL on Cloudflare Pages.
+`node tests/serve.mjs` serves the repo at http://localhost:8788 with `_headers` (including the CSP),
+`_redirects` and the 404 page applied, like Cloudflare Pages does. `bash tests/run.sh` starts it and runs the full
+QA suite (see `tests/README.md`). Every pushed branch also gets its own preview URL on Cloudflare Pages.

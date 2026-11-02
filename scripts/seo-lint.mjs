@@ -107,7 +107,7 @@ if (baseIdx > 0) {
   // Compare the working tree (committed + uncommitted) with the point where this branch left the base.
   const fork = execSync(`git merge-base ${base} HEAD`, { cwd: ROOT, encoding: "utf8" }).trim();
   const changed = execSync(`git diff --name-only ${fork}`, { cwd: ROOT, encoding: "utf8" }).trim().split("\n").filter(Boolean);
-  const FORBIDDEN = [/^_headers$/, /^_redirects$/, /^\.github\//, /^assets\/app\.(js|css)$/, /^assets\/theme-init\.js$/, /^scripts\//, /^CLAUDE\.md$/, /\.mcp\.json$/, /^content\/coin-about\.json$/];
+  const FORBIDDEN = [/^_headers$/, /^_redirects$/, /^\.github\//, /^assets\/app\.(js|css)$/, /^assets\/theme-init\.js$/, /^scripts\//, /^tests\//, /^\.claude\//, /^CLAUDE\.md$/, /\.mcp\.json$/, /^content\/coin-about\.json$/];
   for (const f of changed) if (FORBIDDEN.some(r => r.test(f))) err(`agent rules: ${f} may not be changed by the automated loop (needs a human-authored PR)`);
   const before = (() => { try { return JSON.parse(execSync(`git show ${fork}:content/seo-overrides.json`, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] })); } catch { return {}; } })();
   const touched = Object.keys({ ...before, ...overrides }).filter(s => JSON.stringify(before[s]) !== JSON.stringify(overrides[s]));
