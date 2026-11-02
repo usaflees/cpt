@@ -1,0 +1,40 @@
+{
+  "prerender": [
+    {
+      "relative_to": "document",
+      "where": {
+        "and": [
+          {
+            "href_matches": "/*"
+          },
+          {
+            "not": {
+              "href_matches": "/embed/*"
+            }
+          },
+          {
+            "not": {
+              "href_matches": "/scripts/*"
+            }
+          },
+          {
+            "not": {
+              "href_matches": "/content/*"
+            }
+          },
+          {
+            "not": {
+              "href_matches": "/docs/*"
+            }
+          },
+          {
+            "not": {
+              "selector_matches": "[download], [target=_blank], [rel~=nofollow], .no-prerender"
+            }
+          }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}

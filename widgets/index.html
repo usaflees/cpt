@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="kali">
+<html lang="en" data-theme="neon">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,8 @@
   <meta name="description" content="Add a free, ad-free live crypto price ticker to your website, blog, Notion or WordPress in one copy-paste. Real-time prices from Coinbase, Binance and Kraken." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/widgets/" />
-  <meta name="theme-color" content="#0a0e17" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -41,10 +42,10 @@
     ]
   }
   </script>
-  <script src="/assets/theme-init.js"></script>
-  <link rel="stylesheet" href="/assets/app.css" />
-  <script src="/assets/coins.js" defer></script>
-  <script src="/assets/app.js" defer></script>
+  <script src="/assets/theme-init.js?v=5726900a33"></script>
+  <link rel="stylesheet" href="/assets/app.css?v=cee0930c3d" />
+  <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
+  <script src="/assets/app.js?v=2d8458653f" defer></script>
 </head>
 <body data-page="widgets">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -63,6 +64,7 @@
         <div class="pop-panel menu-list">
           <p class="pop-title">Theme</p>
           <div class="theme-switcher" role="group" aria-label="Colour theme">
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="neon" title="Neon (brand)" aria-label="Theme: Neon (brand)"><span class="swatch sw-neon"></span></button>
             <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)" aria-label="Theme: Kali (dark blue)"><span class="swatch sw-kali"></span></button>
             <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green" aria-label="Theme: Terminal green"><span class="swatch sw-green"></span></button>
             <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate" aria-label="Theme: Slate"><span class="swatch sw-slate"></span></button>
@@ -138,7 +140,7 @@
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a></span>
   </footer>
 </body>
 </html>
