@@ -1585,6 +1585,11 @@
   }
 
   const actions = {
+    "toggle-index"(el) {
+      const open = $("coinIndex").classList.toggle("collapsed") === false;
+      el.textContent = open ? "Show fewer" : `Show all ${state.coins.size} coin pages`;
+      el.setAttribute("aria-expanded", String(open));
+    },
     "show-all"() {
       state.showAll = true;
       renderTable();
@@ -1753,6 +1758,15 @@
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => { state.search = e.target.value; renderTable(); }, 120);
     });
+    // Phones: the long coin-page list starts collapsed (links stay in the page for crawlers; no JS = fully open).
+    if (window.matchMedia("(max-width: 640px)").matches && $("coinIndex")) {
+      $("coinIndex").classList.add("collapsed");
+      const t = $("coinIndexToggle");
+      t.hidden = false;
+      t.textContent = `Show all ${$("coinIndex").querySelectorAll("a").length} coin pages`;
+      t.setAttribute("aria-expanded", "false");
+      t.setAttribute("aria-controls", "coinIndex");
+    }
     // Enter jumps straight to the best match's coin page.
     $("searchInput").addEventListener("keydown", e => {
       const hit = e.key === "Enter" && searchCoins(e.target.value, 1)[0];
