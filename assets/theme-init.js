@@ -10,4 +10,6 @@
   var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
   if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
   if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+  // A skipped cross-document view transition rejects its promises; handle them (see app.js, pageswap).
+  addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();

@@ -713,6 +713,10 @@
     if (av && !document.querySelector(".coin-title .coin-avatar")) av.style.viewTransitionName = "coin-logo";
   }, true);
   addEventListener("pageshow", () => document.querySelectorAll('.coin-avatar[style*="view-transition-name"]').forEach(el => { el.style.viewTransitionName = ""; }));
+  // A cross-document transition is skipped when the navigation is interrupted (a second click, a fast back, a closed tab).
+  // The browser then rejects its promises; handle them so a skipped animation isn't reported as an uncaught error.
+  const settleTransition = e => { const vt = e.viewTransition; if (vt) [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => p && p.catch(() => {})); };
+  addEventListener("pageswap", settleTransition); // the incoming page's side is in theme-init.js (it must run before first render)
 
   // Phones: the two-row header tucks away while scrolling down and comes back on any scroll up,
   // near the top, or when focus moves into it (keyboard users). One passive listener, one rAF.
