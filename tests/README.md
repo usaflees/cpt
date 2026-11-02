@@ -17,3 +17,7 @@ Needs Node 20+ and Playwright with Chromium (preinstalled in Claude Code cloud s
 Also run by `run.sh`: `scripts/build-coin-pages.mjs`, `scripts/seo-lint.mjs`, `scripts/check-live.mjs`.
 Screenshots go to `$TMPDIR/cpt-qa` (or the second argument of each `.cjs` file).
 The tests use live exchange data, so they need network access to Binance, Coinbase and Kraken.
+
+Chrome reports a cross-document view transition it skipped (an interrupted or instant automated navigation) as an
+error even though the navigation completes. The browser tests ignore exactly those two messages ("Transition was
+aborted because of invalid state", "Transition was skipped"); every other console or page error fails the run.

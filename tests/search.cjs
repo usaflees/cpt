@@ -6,8 +6,8 @@ const B = process.argv[2] || 'http://localhost:8788';
 (async () => { const b = await chromium.launch(); const issues = [];
   const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } }); const p = await ctx.newPage();
   // Chrome logs this when a cross-document view transition is skipped because the test navigates instantly; not a page error.
-  const BENIGN = /Transition was aborted because of invalid state/;
-  p.on('pageerror', e => issues.push(e.message)); p.on('console', m => m.type() === 'error' && !BENIGN.test(m.text()) && issues.push(m.text()));
+  const BENIGN = /Transition was (aborted because of invalid state|skipped)/;
+  p.on('pageerror', e => { if (!BENIGN.test(e.message)) issues.push(e.message); }); p.on('console', m => m.type() === 'error' && !BENIGN.test(m.text()) && issues.push(m.text()));
   for (const u of ['/coin/btc/', '/heatmap/', '/convert/', '/sector/ai/', '/widgets/', '/about/']) {
     await p.goto(B + u); await p.waitForTimeout(800);
     await p.keyboard.press('/'); const focused = await p.evaluate(() => document.activeElement.id);

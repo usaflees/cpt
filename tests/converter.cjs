@@ -1,14 +1,17 @@
 // Part of the QA suite (see tests/README.md). Usage: node tests/converter.cjs [base-url] [screenshot-dir]
 const OUT = process.argv[3] || require('node:path').join(require('node:os').tmpdir(), 'cpt-qa');
 require('node:fs').mkdirSync(OUT, { recursive: true });
+// Chrome reports a cross-document view transition it skipped (interrupted or instant automated navigation) as an
+// error even though navigation completes; that browser notice is not a page bug. Anything else still fails.
+const VT_SKIP = /Transition was (aborted because of invalid state|skipped)/;
 const { chromium } = require('playwright');
 const BASE = process.argv[2] || 'http://localhost:8788';
 (async () => {
   const browser = await chromium.launch();
   const issues = [];
   const page = await browser.newPage();
-  page.on('console', m => { if (m.type() === 'error') issues.push('console: ' + m.text()); });
-  page.on('pageerror', e => issues.push('pageerror: ' + e.message));
+  page.on('console', m => { if (m.type() === 'error' && !VT_SKIP.test(m.text())) issues.push('console: ' + m.text()); });
+  page.on('pageerror', e => { if (!VT_SKIP.test(e.message)) issues.push('pageerror: ' + e.message); });
   const wait = ms => page.waitForTimeout(ms);
   const txt = id => page.$eval('#' + id, e => e.textContent);
   const val = id => page.$eval('#' + id, e => e.value);
@@ -58,7 +61,7 @@ const BASE = process.argv[2] || 'http://localhost:8788';
   console.log('shib:', await txt('cvRate'), '|', await txt('cvInverse'), '| first row', await page.$eval('[data-cv-amt]', e => e.parentElement.textContent.replace(/\s+/g,' ')));
   // mobile
   const m = await browser.newPage({ viewport: { width: 375, height: 800 } });
-  m.on('pageerror', e => issues.push('mobile pageerror: ' + e.message));
+  m.on('pageerror', e => { if (!VT_SKIP.test(e.message)) issues.push('mobile pageerror: ' + e.message); });
   for (const u of ['/convert/', '/coin/eth/']) {
     await m.goto(BASE + u); await m.waitForTimeout(2500);
     const ov = await m.evaluate(() => document.documentElement.scrollWidth - innerWidth);

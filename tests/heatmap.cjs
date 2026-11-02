@@ -1,6 +1,9 @@
 // Part of the QA suite (see tests/README.md). Usage: node tests/heatmap.cjs [base-url] [screenshot-dir]
 const OUT = process.argv[3] || require('node:path').join(require('node:os').tmpdir(), 'cpt-qa');
 require('node:fs').mkdirSync(OUT, { recursive: true });
+// Chrome reports a cross-document view transition it skipped (interrupted or instant automated navigation) as an
+// error even though navigation completes; that browser notice is not a page bug. Anything else still fails.
+const VT_SKIP = /Transition was (aborted because of invalid state|skipped)/;
 const { chromium } = require('playwright');
 const BASE = process.argv[2] || 'http://localhost:8788';
 (async () => {
@@ -8,8 +11,8 @@ const BASE = process.argv[2] || 'http://localhost:8788';
   const issues = [];
   const run = async (vp, name) => {
     const page = await browser.newPage({ viewport: vp });
-    page.on('console', m => { if (m.type() === 'error') issues.push(name + ' console: ' + m.text()); });
-    page.on('pageerror', e => issues.push(name + ' pageerror: ' + e.message));
+    page.on('console', m => { if (m.type() === 'error' && !VT_SKIP.test(m.text())) issues.push(name + ' console: ' + m.text()); });
+    page.on('pageerror', e => { if (!VT_SKIP.test(e.message)) issues.push(name + ' pageerror: ' + e.message); });
     await page.goto(BASE + '/heatmap/');
     await page.waitForFunction(() => /coins are up/.test(document.getElementById('hmSummary').textContent), null, { timeout: 20000 }).catch(() => issues.push(name + ' no summary'));
     await page.waitForTimeout(4000);

@@ -1,13 +1,16 @@
 // Part of the QA suite (see tests/README.md). Usage: node tests/smoke.cjs [base-url] [screenshot-dir]
 const OUT = process.argv[3] || require('node:path').join(require('node:os').tmpdir(), 'cpt-qa');
 require('node:fs').mkdirSync(OUT, { recursive: true });
+// Chrome reports a cross-document view transition it skipped (interrupted or instant automated navigation) as an
+// error even though navigation completes; that browser notice is not a page bug. Anything else still fails.
+const VT_SKIP = /Transition was (aborted because of invalid state|skipped)/;
 const { chromium } = require('playwright');
 const B = process.argv[2] || 'http://localhost:8788';
 (async () => {
   const b = await chromium.launch(); const issues = [];
   const watch = (p, label) => {
-    p.on('console', m => { if (m.type() === 'error' || /Content Security Policy|Refused/.test(m.text())) issues.push(`${label}: ${m.text().slice(0, 160)}`); });
-    p.on('pageerror', e => issues.push(`${label}: PAGEERROR ${e.message}`));
+    p.on('console', m => { if ((m.type() === 'error' && !VT_SKIP.test(m.text())) || /Content Security Policy|Refused/.test(m.text())) issues.push(`${label}: ${m.text().slice(0, 160)}`); });
+    p.on('pageerror', e => { if (!VT_SKIP.test(e.message)) issues.push(`${label}: PAGEERROR ${e.message}`); });
   };
   const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } });
   const p = await ctx.newPage(); watch(p, 'home');
