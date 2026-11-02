@@ -296,6 +296,9 @@ function coinPage(c) {
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="preload" href="/assets/app.css" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
+  <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
+  <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
+  <link rel="dns-prefetch" href="https://ws.kraken.com" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="${esc(`${c.name} (${c.sym}) live price`)}" />
@@ -458,6 +461,7 @@ function sectorPage(x) {
   <meta name="description" content="${esc(description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="${sectorUrl(x)}" />
+  <link rel="preload" href="/assets/app.css" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -572,6 +576,9 @@ function convertPage() {
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="preload" href="/assets/app.css" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
+  <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
+  <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
+  <link rel="dns-prefetch" href="https://ws.kraken.com" />
   <link rel="preconnect" href="https://api.coinbase.com" crossorigin />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
@@ -666,6 +673,9 @@ function heatmapPage() {
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="preload" href="/assets/app.css" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
+  <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
+  <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
+  <link rel="dns-prefetch" href="https://ws.kraken.com" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="Live crypto heatmap" />
@@ -775,10 +785,22 @@ const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d =
   if (d.isDirectory()) walk(rel + "/"); else if (d.name.endsWith(".html")) htmlFiles.push(rel);
 });
 walk("");
+// The theme script must run before first paint, so it used to be a blocking request on every page.
+// It is now inlined (comment lines stripped) and allowed by its hash in the CSP in _headers, which
+// this script keeps in sync. assets/theme-init.js stays the one place to edit it.
+const themeJs = "/*theme*/" + readFileSync(ROOT + "assets/theme-init.js", "utf8").split("\n").filter(l => !/^\s*\/\//.test(l)).map(l => l.trim()).filter(Boolean).join("\n");
+const themeHash = "'sha256-" + createHash("sha256").update(themeJs).digest("base64") + "'";
+const themeTag = `<script>${themeJs}</script>`;
+const themeRe = /<script>\/\*theme\*\/[\s\S]*?<\/script>|<script src="\/assets\/theme-init\.js(\?v=[0-9a-f]+)?"><\/script>/g;
 for (const f of [...htmlFiles, "sw.js"]) {
   const before = readFileSync(ROOT + f, "utf8");
-  const after = before.replace(assetRe, (_, name) => `/assets/${name}?v=${ver[name]}`);
+  const after = before.replace(assetRe, (_, name) => `/assets/${name}?v=${ver[name]}`).replace(themeRe, () => themeTag);
   if (after !== before) writeFileSync(ROOT + f, after);
+}
+{
+  const headers = readFileSync(ROOT + "_headers", "utf8");
+  const next = headers.replace(/script-src 'self'( 'sha256-[A-Za-z0-9+\/=]+')?/, `script-src 'self' ${themeHash}`);
+  if (next !== headers) writeFileSync(ROOT + "_headers", next);
 }
 
 console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter and heatmap, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);

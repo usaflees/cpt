@@ -67,7 +67,17 @@
   }
   </script>
 
-  <script src="/assets/theme-init.js?v=5726900a33"></script>
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+})();</script>
   <link rel="stylesheet" href="/assets/app.css?v=cee0930c3d" />
   <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
   <script src="/assets/app.js?v=2d8458653f" defer></script>

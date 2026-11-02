@@ -17,7 +17,7 @@ whatever is in this repository is what gets deployed.
 | `assets/coins.js` | **Coin list.** The single source of truth for the table, widgets and coin pages |
 | `assets/app.js` | All site logic: feeds, table, coin pages, widgets, alerts, portfolio |
 | `assets/app.css` | All styles: the 6 colour themes (Neon, the brand theme, is the default) and the brand layer |
-| `assets/theme-init.js` | Tiny script that applies the saved theme before first paint |
+| `assets/theme-init.js` | Tiny script that applies the saved theme before first paint. `build-coin-pages.mjs` inlines it into every page and puts its hash in the CSP in `_headers`, so edit it here and rebuild |
 | `about/index.html` | About & data methodology page |
 | `widgets/index.html` | Free widget landing page: live examples and how to embed |
 | `sector/<slug>/index.html` | Sector hub pages (**generated** from `content/sectors.json`) |
