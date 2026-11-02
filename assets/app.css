@@ -149,8 +149,12 @@ html, body {
   font-size: 13.5px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
+/* No sideways scrolling. Only <html> may be "hidden" (it passes to the viewport); <body> uses
+   "clip", which doesn't create a scroll container. "hidden" on both turned <body> into a
+   scroll container that never scrolls, and the sticky header stuck to it instead of the window. */
+html { overflow-x: hidden; }
+body { overflow-x: clip; }
 
 /* Embed Mode Override */
 body.is-embed #appShell { display: none !important; }
@@ -1654,3 +1658,50 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .embed-live .pulse-dot { width: 6px; height: 6px; }
 .embed-credit { display: inline-flex; align-items: center; gap: 5px; }
 .embed-credit img { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+
+/* ---------- Phone polish ---------- */
+@media (max-width: 640px) {
+  /* The two-row header slides away while scrolling down and returns on any scroll up (app.js). */
+  .topbar { transition: transform .22s ease; will-change: transform; }
+  .topbar.is-tucked { transform: translateY(-100%); }
+
+  /* Price flash: a padded pill that lines up with the change pill under it, not a box hugging the digits. */
+  #cryptoTable td.col-price { padding: 1px 6px !important; border-radius: 4px; justify-self: end; }
+  #cryptoTable td.col-chg { justify-self: end; }
+
+  /* Wider phones and small tablets (480-640 px): use the empty middle of each row for the 7-day trend. */
+  #cryptoTable tbody tr { grid-template-columns: 28px minmax(0, 1fr) 56px 104px 30px; column-gap: 4px; grid-template-areas: "star coin spark price more" "star coin spark chg more" "bag bag bag bag bag"; }
+  /* Fixed price column: every row is its own grid, so a fixed width keeps sparklines and prices in straight columns. */
+  #cryptoTable td.col-spark { display: block; grid-area: spark; align-self: center; }
+  #cryptoTable td.col-spark svg { width: 56px; height: 24px; }
+  #cryptoTable td.col-price { font-size: 14px; }
+
+  /* Swipeable rows fade at the right edge so it's obvious there is more; padding lets the last item clear the fade. */
+  .mover-cards, .chips { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); padding-right: 28px; }
+}
+@media (max-width: 479px) {
+  /* Typical phones: coin names need the width more than a sparkline does (measured: 1 vs 22 truncated names at 412 px). */
+  #cryptoTable tbody tr { grid-template-columns: 34px minmax(0, 1fr) auto 36px; column-gap: 6px; grid-template-areas: "star coin price more" "star coin chg more" "bag bag bag bag"; }
+  #cryptoTable td.col-spark { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .topbar { transition: none; } }
+@media (max-width: 640px) {
+  /* Sector tables: long coin names wrap instead of pushing Price and 7d off the right edge. */
+  .sector-table td, .sector-table th { padding: 9px 6px; }
+  .sector-table td.col-left { white-space: normal; }
+  .sector-table .coin-cell .coin-name { white-space: normal; overflow: visible; overflow-wrap: anywhere; line-height: 1.25; }
+  .sector-table td.col-center:first-child, .sector-table th.col-center:first-child { width: 28px; padding-left: 8px; padding-right: 2px; }
+}
+
+/* Consent banner (assets/consent.js): a bar at the bottom, never covering the header */
+.consent-bar {
+  position: fixed; left: 50%; bottom: max(12px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 90;
+  width: min(760px, calc(100% - 24px)); display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 12px 14px; border-radius: var(--radius); background: var(--bg-secondary); border: 1px solid var(--border-accent);
+  box-shadow: var(--shadow), var(--card-glow);
+}
+.consent-text { flex: 1 1 320px; margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.consent-text strong { color: var(--text-primary); }
+.consent-actions { display: flex; gap: 8px; margin-left: auto; }
+.consent-actions .action-btn { min-height: 40px; padding: 8px 16px; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }

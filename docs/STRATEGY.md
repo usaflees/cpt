@@ -37,7 +37,7 @@ improvement loop (`docs/SELF-IMPROVING.md`) keeps its own rules; nothing here re
 
 **Constraints we keep on purpose:**
 - No framework and no build step beyond our own Node scripts.
-- No server, no cookies, and the portfolio never leaves the browser.
+- No server, and the portfolio never leaves the browser. Since 2 Nov 2026 Google Tag Manager / GA4 runs behind a consent banner (Consent Mode v2): analytics cookies only after "Accept", ads signals always denied, never inside widgets (`assets/consent.js`).
 - Prices come straight from the exchanges.
 
 These constraints are also the product's positioning. Anything that breaks one needs an explicit decision (see §6).
