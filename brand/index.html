@@ -7,6 +7,7 @@
   <meta name="description" content="Download the CryptoPriceTicker logo, app icon, badges, banners and colour palette, with simple usage rules for press, partners and widget embeds." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://cryptopriceticker.com/brand/" />
+  <link rel="preload" href="/assets/app.css?v=cee0930c3d" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -42,7 +43,17 @@
     ]
   }
   </script>
-  <script src="/assets/theme-init.js?v=5726900a33"></script>
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+})();</script>
   <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
   <script src="/assets/app.js?v=2d8458653f" defer></script>
   <link rel="stylesheet" href="/assets/app.css?v=cee0930c3d" />
@@ -86,7 +97,7 @@
     <section class="hero brand-hero" aria-labelledby="brand-h">
       <h1 id="brand-h" class="hero-title">CryptoPriceTicker brand kit</h1>
       <p class="hero-sub">Logos, icons, badges, banners and colours, free for press, partners and anyone embedding our widgets. Please keep them unaltered and link back to <a href="/">CryptoPriceTicker.com</a>.</p>
-      <div class="brand-lockup"><picture><source srcset="/brand/lockup-2000x496.webp" type="image/webp" /><img src="/brand/lockup-2000x496.jpg" width="2000" height="496" alt="CryptoPriceTicker neon logo lockup: the CPT badge beside the CryptoPriceTicker script wordmark" fetchpriority="high" class="" /></picture></div>
+      <div class="brand-lockup"><picture><source srcset="/brand/lockup-1200x298.webp 1200w, /brand/lockup-2000x496.webp 2000w" sizes="(max-width: 1480px) 100vw, 1450px" type="image/webp" /><img src="/brand/lockup-2000x496.jpg" srcset="/brand/lockup-1200x298.jpg 1200w, /brand/lockup-2000x496.jpg 2000w" sizes="(max-width: 1480px) 100vw, 1450px" width="2000" height="496" alt="CryptoPriceTicker neon logo lockup: the CPT badge beside the CryptoPriceTicker script wordmark" fetchpriority="high" class="" /></picture></div>
       <p class="asset-dl"><a href="/brand/lockup-2000x496.webp" download>Lockup WebP 2000px</a><a href="/brand/lockup-2000x496.jpg" download>JPG 2000px</a><a href="/brand/lockup-1200x298.jpg" download>JPG 1200px</a></p>
     </section>
 
@@ -106,17 +117,17 @@
       <p>The illustrated CPT badges are made for stickers, avatars and splash screens. They have transparent backgrounds, so they sit on any colour.</p>
       <div class="brand-grid">
         <figure class="asset-card asset-check"><picture><source srcset="/brand/cpt-badge-512.webp" type="image/webp" /><img src="/brand/cpt-badge-512.png" width="512" height="512" alt="CPT neon badge with candles, rising arrow and lightning bolt" loading="lazy" decoding="async" class="" /></picture><figcaption>CPT badge</figcaption><p class="asset-dl"><a href="/brand/cpt-badge-1024.png" download>PNG 1024</a><a href="/brand/cpt-badge-1024.webp" download>WebP 1024</a><a href="/brand/cpt-badge-512.png" download>PNG 512</a></p></figure>
-        <figure class="asset-card asset-check"><picture><source srcset="/brand/cpt-seal-1024.webp" type="image/webp" /><img src="/brand/cpt-seal-1024.png" width="1024" height="1024" alt="CPT seal badge ringed with the words Crypto Price Ticker and Real-time" loading="lazy" decoding="async" class="" /></picture><figcaption>CPT seal</figcaption><p class="asset-dl"><a href="/brand/cpt-seal-1024.png" download>PNG 1024</a><a href="/brand/cpt-seal-1024.webp" download>WebP 1024</a></p></figure>
+        <figure class="asset-card asset-check"><picture><source srcset="/brand/cpt-seal-512.webp 512w, /brand/cpt-seal-1024.webp 1024w" sizes="(max-width: 720px) 90vw, 300px" type="image/webp" /><img src="/brand/cpt-seal-512.png" width="1024" height="1024" alt="CPT seal badge ringed with the words Crypto Price Ticker and Real-time" loading="lazy" decoding="async" class="" /></picture><figcaption>CPT seal</figcaption><p class="asset-dl"><a href="/brand/cpt-seal-1024.png" download>PNG 1024</a><a href="/brand/cpt-seal-1024.webp" download>WebP 1024</a></p></figure>
       </div>
     </section>
 
     <section class="page-section prose" aria-labelledby="banner-h">
       <h2 id="banner-h">Banners &amp; social</h2>
       <div class="brand-stack">
-        <figure class="asset-card asset-wide"><picture><source srcset="/brand/hero-1920x1072.webp" type="image/webp" /><img src="/brand/hero-1920x1072.webp" width="1920" height="1072" alt="CryptoPriceTicker neon wordmark on a purple brick wall with a Real-time WebSocket Terminal plate" loading="lazy" decoding="async" class="" /></picture><figcaption>Hero, 1920×1072</figcaption><p class="asset-dl"><a href="/brand/hero-1920x1072.webp" download>WebP</a></p><p class="asset-dl"><a href="/og-image.jpg" download>Link preview 1200×630 JPG</a></p></figure>
-        <figure class="asset-card asset-wide"><picture><source srcset="/brand/banner-1500x500.webp" type="image/webp" /><img src="/brand/banner-1500x500.jpg" width="1500" height="500" alt="Wide banner: bolt-and-arrow emblem, CryptoPriceTicker wordmark, Real-time WebSocket Terminal, ±2% orderbook liquidity, 100% privacy tracker" loading="lazy" decoding="async" class="" /></picture><figcaption>Profile header, 1500×500 (X, LinkedIn, YouTube)</figcaption><p class="asset-dl"><a href="/brand/banner-1500x500.jpg" download>JPG</a><a href="/brand/banner-1500x500.webp" download>WebP</a><a href="/brand/banner-wide-2000.webp" download>Uncropped 2000px WebP</a></p></figure>
-        <figure class="asset-card asset-wide"><div class="brand-pair"><picture><source srcset="/brand/avatar-400.webp" type="image/webp" /><img src="/brand/avatar-400.jpg" width="400" height="400" alt="Square profile avatar with the CPT badge" loading="lazy" decoding="async" class="avatar-round" /></picture><img src="/brand/social-preview-1280x640.jpg" width="1280" height="640" alt="GitHub social preview image with the neon wordmark" loading="lazy" decoding="async" /></div><figcaption>Profile avatar 400×400 (safe for circular crops) and GitHub social preview 1280×640</figcaption><p class="asset-dl"><a href="/brand/avatar-400.jpg" download>Avatar JPG</a><a href="/brand/avatar-400.webp" download>Avatar WebP</a><a href="/brand/social-preview-1280x640.jpg" download>Social preview JPG</a></p></figure>
-        <figure class="asset-card asset-tall"><picture><source srcset="/brand/poster-1080x1936.webp" type="image/webp" /><img src="/brand/poster-1080x1936.webp" width="1080" height="1936" alt="Vertical poster with the CPT seal, the script wordmark and a neon lightning bolt" loading="lazy" decoding="async" class="" /></picture><figcaption>Story / phone wallpaper, 1080×1936</figcaption><p class="asset-dl"><a href="/brand/poster-1080x1936.webp" download>WebP</a></p></figure>
+        <figure class="asset-card asset-wide"><picture><source srcset="/brand/hero-960x536.webp 960w, /brand/hero-1920x1072.webp 1920w" sizes="(max-width: 720px) 92vw, 820px" type="image/webp" /><img src="/brand/hero-960x536.webp" width="1920" height="1072" alt="CryptoPriceTicker neon wordmark on a purple brick wall with a Real-time WebSocket Terminal plate" loading="lazy" decoding="async" class="" /></picture><figcaption>Hero, 1920×1072</figcaption><p class="asset-dl"><a href="/brand/hero-1920x1072.webp" download>WebP</a></p><p class="asset-dl"><a href="/og-image.jpg" download>Link preview 1200×630 JPG</a></p></figure>
+        <figure class="asset-card asset-wide"><picture><source srcset="/brand/banner-750x250.webp 750w, /brand/banner-1500x500.webp 1500w" sizes="(max-width: 720px) 92vw, 820px" type="image/webp" /><img src="/brand/banner-750x250.jpg" srcset="/brand/banner-750x250.jpg 750w, /brand/banner-1500x500.jpg 1500w" sizes="(max-width: 720px) 92vw, 820px" width="1500" height="500" alt="Wide banner: bolt-and-arrow emblem, CryptoPriceTicker wordmark, Real-time WebSocket Terminal, ±2% orderbook liquidity, 100% privacy tracker" loading="lazy" decoding="async" class="" /></picture><figcaption>Profile header, 1500×500 (X, LinkedIn, YouTube)</figcaption><p class="asset-dl"><a href="/brand/banner-1500x500.jpg" download>JPG</a><a href="/brand/banner-1500x500.webp" download>WebP</a><a href="/brand/banner-wide-2000.webp" download>Uncropped 2000px WebP</a></p></figure>
+        <figure class="asset-card asset-wide"><div class="brand-pair"><picture><source srcset="/brand/avatar-400.webp" type="image/webp" /><img src="/brand/avatar-400.jpg" width="400" height="400" alt="Square profile avatar with the CPT badge" loading="lazy" decoding="async" class="avatar-round" /></picture><img src="/brand/social-preview-640x320.jpg" srcset="/brand/social-preview-640x320.jpg 640w, /brand/social-preview-1280x640.jpg 1280w" sizes="(max-width: 720px) 60vw, 540px" width="1280" height="640" alt="GitHub social preview image with the neon wordmark" loading="lazy" decoding="async" /></div><figcaption>Profile avatar 400×400 (safe for circular crops) and GitHub social preview 1280×640</figcaption><p class="asset-dl"><a href="/brand/avatar-400.jpg" download>Avatar JPG</a><a href="/brand/avatar-400.webp" download>Avatar WebP</a><a href="/brand/social-preview-1280x640.jpg" download>Social preview JPG</a></p></figure>
+        <figure class="asset-card asset-tall"><picture><source srcset="/brand/poster-540x968.webp 540w, /brand/poster-1080x1936.webp 1080w" sizes="(max-width: 720px) 360px, 400px" type="image/webp" /><img src="/brand/poster-540x968.webp" width="1080" height="1936" alt="Vertical poster with the CPT seal, the script wordmark and a neon lightning bolt" loading="lazy" decoding="async" class="" /></picture><figcaption>Story / phone wallpaper, 1080×1936</figcaption><p class="asset-dl"><a href="/brand/poster-1080x1936.webp" download>WebP</a></p></figure>
       </div>
     </section>
 

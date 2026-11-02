@@ -8,6 +8,7 @@
 // Exits 1 on any error; warnings are printed but don't fail.
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
 
@@ -25,6 +26,7 @@ const sectorSlugs = JSON.parse(read("content/sectors.json")).map(x => x.slug);
 const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", "brand/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
   ...coins.map(c => `coin/${c.sym.toLowerCase()}/index.html`)];
 const seen = { title: new Map(), description: new Map() };
+const CSP = (read("_headers").match(/Content-Security-Policy: ([^\n]*)/) || [])[1] || "";
 for (const p of pages) {
   if (!existsSync(join(ROOT, p))) { err(`${p}: missing (run node scripts/build-coin-pages.mjs)`); continue; }
   const h = read(p);
@@ -48,7 +50,11 @@ for (const p of pages) {
     try { JSON.parse(m[1]); } catch (e) { err(`${p}: invalid JSON-LD (${e.message})`); }
   }
   if (!/<html lang="en"/.test(h)) err(`${p}: missing <html lang>`);
-  if (/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>/.test(h)) err(`${p}: inline <script> (blocked by the CSP in _headers)`);
+  // Inline scripts run only if the CSP in _headers allows their exact hash (the theme script does).
+  for (const m of h.matchAll(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g)) {
+    const hash = "'sha256-" + createHash("sha256").update(m[1]).digest("base64") + "'";
+    if (!CSP.includes(hash)) err(`${p}: inline <script> not allowed by the CSP in _headers (run node scripts/build-coin-pages.mjs)`);
+  }
   if (/\son[a-z]+="/i.test(h)) err(`${p}: inline event handler attribute (blocked by the CSP)`);
 }
 

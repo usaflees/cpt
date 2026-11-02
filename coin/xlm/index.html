@@ -17,6 +17,9 @@
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="preload" href="/assets/app.css?v=cee0930c3d" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
+  <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
+  <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
+  <link rel="dns-prefetch" href="https://ws.kraken.com" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="Stellar (XLM) live price" />
@@ -27,7 +30,17 @@
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/xlm/","url":"https://cryptopriceticker.com/coin/xlm/","name":"Stellar (XLM) Price: Live Chart & Market Cap","description":"Stellar (XLM) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-10-30","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Stellar","alternateName":"XLM"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Layer 1","item":"https://cryptopriceticker.com/sector/layer-1/"},{"@type":"ListItem","position":3,"name":"Stellar (XLM)","item":"https://cryptopriceticker.com/coin/xlm/"}]}]}</script>
-  <script src="/assets/theme-init.js?v=5726900a33"></script>
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+})();</script>
   <link rel="stylesheet" href="/assets/app.css?v=cee0930c3d" />
   <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
   <script src="/assets/app.js?v=2d8458653f" defer></script>
