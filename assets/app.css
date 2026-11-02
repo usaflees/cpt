@@ -1,4 +1,41 @@
-:root, [data-theme="kali"] {
+/* Neon is the brand theme and the default (palette and rationale: /brand/). Text colours all pass
+   WCAG AA on every background; gold is reserved for the primary call to action. */
+:root, [data-theme="neon"] {
+  --bg-primary: #0c0822;
+  --bg-secondary: #150e33;
+  --bg-tertiary: #1f1648;
+  --bg-hover: rgba(155, 92, 255, 0.10);
+  --border: #2d2260;
+  --border-accent: #9b5cff;
+  --text-primary: #f5f1ff;
+  --text-secondary: #bdb0e6;
+  --text-muted: #a194cf;
+  --accent: #2ee6ff;
+  --accent-glow: rgba(46, 230, 255, 0.16);
+  --up: #2ee8a5;
+  --up-bg: rgba(46, 232, 165, 0.14);
+  --down: #ff6b8b;
+  --down-bg: rgba(255, 107, 139, 0.15);
+  --warn: #ffc63a;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif;
+  /* Brand layer: other themes fall back to their own accent (see the bottom of this file). */
+  --brand-line: linear-gradient(90deg, transparent, #ff3fd8 18%, #9b5cff 50%, #22e8ff 82%, transparent);
+  --brand-ring: linear-gradient(45deg, #ff3fd8, #9b5cff 50%, #22e8ff);
+  --eyebrow: linear-gradient(90deg, #ffc63a, #ff3fd8 55%, #9b5cff);
+  --cta-bg: linear-gradient(135deg, #ff9a2a, #ffc63a 55%, #ffe38a);
+  --cta-border: #ffc63a;
+  --cta-text: #1a0f00;
+  --cta-glow: 0 6px 22px -8px rgba(255, 198, 58, 0.65);
+  --card-glow: 0 0 0 1px rgba(155, 92, 255, 0.35), 0 14px 34px -16px rgba(155, 92, 255, 0.55);
+  --card-edge: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --page-bg:
+    radial-gradient(900px 480px at 88% -160px, rgba(155, 92, 255, 0.30), transparent 70%),
+    radial-gradient(700px 420px at -4% -80px, rgba(255, 63, 216, 0.13), transparent 70%),
+    var(--bg-primary);
+}
+
+[data-theme="kali"] {
   --bg-primary: #0a0e17;
   --bg-secondary: #111827;
   --bg-tertiary: #1a2333;
@@ -74,21 +111,34 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #f8fafc;
+  --bg-primary: #f7f5ff;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f5f9;
-  --bg-hover: rgba(37, 99, 235, 0.05);
-  --border: #e2e8f0;
-  --border-accent: #1d4ed8;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #5b6b80;
-  --accent: #1d4ed8;
-  --accent-glow: rgba(37, 99, 235, 0.12);
+  --bg-tertiary: #f0ecfc;
+  --bg-hover: rgba(109, 40, 217, 0.05);
+  --border: #e3dcf7;
+  --border-accent: #6d28d9;
+  --text-primary: #1a1238;
+  --text-secondary: #4b4370;
+  --text-muted: #5f5883;
+  --accent: #6d28d9;
+  --accent-glow: rgba(109, 40, 217, 0.10);
   --up: #036a4b;
   --up-bg: rgba(5, 150, 105, 0.12);
   --down: #be123c;
   --down-bg: rgba(225, 29, 72, 0.12);
+  --brand-line: linear-gradient(90deg, transparent, #ff3fd8 18%, #9b5cff 50%, #22b8e0 82%, transparent);
+  --brand-ring: linear-gradient(45deg, #ff3fd8, #9b5cff 50%, #22b8e0);
+  --eyebrow: linear-gradient(90deg, #c2410c, #be1fa0 55%, #6d28d9);
+  --cta-bg: #6d28d9;
+  --cta-border: #6d28d9;
+  --cta-text: #ffffff;
+  --cta-glow: 0 6px 18px -8px rgba(109, 40, 217, 0.55);
+  --card-glow: 0 0 0 1px rgba(109, 40, 217, 0.25), 0 12px 28px -16px rgba(109, 40, 217, 0.35);
+  --card-edge: none;
+  --page-bg:
+    radial-gradient(900px 420px at 88% -160px, rgba(155, 92, 255, 0.16), transparent 70%),
+    radial-gradient(700px 380px at -4% -80px, rgba(255, 63, 216, 0.08), transparent 70%),
+    var(--bg-primary);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1044,12 +1094,10 @@ button.coin-cell, button.mover-row { background: none; border: 0; color: inherit
    2026 redesign: calmer, friendlier layer on top of the base styles
    =================================================================== */
 :root { --radius: 14px; --radius-sm: 10px; --shadow: 0 10px 30px rgba(0, 0, 0, 0.28); }
-[data-theme="light"] { --shadow: 0 10px 30px rgba(15, 23, 42, 0.10); }
+[data-theme="light"] { --shadow: 0 10px 30px rgba(26, 18, 56, 0.10); }
 html, body { font-size: 14px; }
 body {
-  background:
-    radial-gradient(1200px 420px at 50% -120px, var(--accent-glow), transparent 70%),
-    var(--bg-primary);
+  background: var(--page-bg);
   background-repeat: no-repeat;
 }
 .muted { color: var(--text-muted); font-weight: 400; }
@@ -1117,11 +1165,12 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .menu-list .theme-switcher { gap: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
 .menu-list .theme-btn { padding: 4px; border-radius: 50%; }
 .swatch { display: block; width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.15); }
+.sw-neon { background: linear-gradient(135deg, #0c0822 50%, #ffc63a 50%); box-shadow: 0 0 0 2px #9b5cff; }
 .sw-kali { background: linear-gradient(135deg, #0a0e17 50%, #38bdf8 50%); }
 .sw-green { background: linear-gradient(135deg, #040d08 50%, #00ff88 50%); }
 .sw-slate { background: linear-gradient(135deg, #0f172a 50%, #a5b4fc 50%); }
 .sw-oled { background: linear-gradient(135deg, #000 50%, #00e5ff 50%); }
-.sw-light { background: linear-gradient(135deg, #f8fafc 50%, #1d4ed8 50%); }
+.sw-light { background: linear-gradient(135deg, #f7f5ff 50%, #6d28d9 50%); }
 
 .ticker-tape-wrap { background: transparent; }
 
@@ -1521,3 +1570,58 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
   .brand-stack .asset-wide, .brand-stack .asset-tall { grid-column: 1; grid-row: auto; }
   .brand-stack .asset-tall img { max-width: 360px; margin: 0 auto; }
 }
+
+/* ------------------------------------------------------------------
+ * Brand layer: neon hairlines, gold call to action, glowing cards.
+ * Neon and Light define the brand tokens; the classic themes fall back
+ * to their own accent so they keep their character.
+ * ------------------------------------------------------------------ */
+[data-theme="kali"], [data-theme="green"], [data-theme="slate"], [data-theme="oled"] {
+  --brand-line: linear-gradient(90deg, transparent, var(--accent), transparent);
+  --brand-ring: linear-gradient(var(--border), var(--border));
+  --eyebrow: linear-gradient(90deg, var(--accent), var(--accent));
+  --cta-bg: var(--accent-glow);
+  --cta-border: var(--accent);
+  --cta-text: var(--accent);
+  --cta-glow: none;
+  --card-glow: 0 0 0 1px var(--accent);
+  --card-edge: none;
+  --page-bg: radial-gradient(1200px 420px at 50% -120px, var(--accent-glow), transparent 70%), var(--bg-primary);
+}
+::selection { background: rgba(155, 92, 255, 0.45); color: #fff; }
+:root:not([data-theme]), [data-theme="neon"] { scrollbar-color: #3a2c78 var(--bg-primary); }
+
+/* Neon hairlines under the header and ticker tape, and above the footer */
+.topbar { border-bottom-color: transparent; }
+.topbar::after, .ticker-tape-wrap::after, .site-footer::before {
+  content: ""; position: absolute; left: 0; right: 0; height: 1px; background: var(--brand-line); opacity: .8; pointer-events: none;
+}
+.topbar::after { bottom: -1px; }
+.ticker-tape-wrap { border-bottom-color: transparent; }
+.ticker-tape-wrap::after { bottom: 0; opacity: .35; }
+.site-footer { position: relative; border-top-color: transparent; }
+.site-footer::before { top: -1px; }
+
+/* Eyebrows and section headings carry the brand gradient */
+.hero .brand-name { background: var(--eyebrow); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.page-section h2 { display: flex; align-items: center; gap: 10px; }
+.page-section h2::before { content: ""; flex-shrink: 0; width: 4px; height: 1em; border-radius: 4px; background: var(--brand-ring); }
+
+/* The one warm element on the page: the primary call to action */
+.action-btn.btn-accent { background: var(--cta-bg); border-color: var(--cta-border); color: var(--cta-text); box-shadow: var(--cta-glow); font-weight: 700; }
+.action-btn.btn-accent:hover { color: var(--cta-text); filter: brightness(1.06) saturate(1.05); transform: translateY(-1px); }
+
+/* Cards: a faint top edge, and a neon glow on hover */
+.page-section, .stat, .mover-card, .coin-hero, .table-wrap, .pop-panel, .modal-card { box-shadow: var(--card-edge); }
+.pop-panel, .modal-card { box-shadow: var(--card-edge), var(--shadow); }
+.mover-card:hover, .stat:hover { border-color: transparent; box-shadow: var(--card-glow); }
+.stat { transition: box-shadow .2s ease, border-color .2s ease; }
+.stat-bag { border-color: var(--border-accent); }
+
+/* Coin avatars wear the neon ring */
+.coin-avatar { border-color: transparent; background: linear-gradient(var(--bg-tertiary), var(--bg-tertiary)) padding-box, var(--brand-ring) border-box; }
+
+/* Brand sign-offs: the mark in every footer, the animated mark on the home eyebrow */
+.footer-mark { display: inline-block; width: 18px; height: 18px; vertical-align: -4px; margin-right: 8px; border-radius: 5px; }
+@media (min-width: 641px) { .hero .brand-name { display: flex; align-items: center; gap: 8px; } }
+.eyebrow-mark { width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0; }

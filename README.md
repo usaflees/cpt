@@ -16,7 +16,7 @@ whatever is in this repository is what gets deployed.
 | `404.html` | Real "not found" page. Without it, Pages answers every unknown URL with the home page and a 200 status |
 | `assets/coins.js` | **Coin list.** The single source of truth for the table, widgets and coin pages |
 | `assets/app.js` | All site logic: feeds, table, coin pages, widgets, alerts, portfolio |
-| `assets/app.css` | All styles, including the 5 colour themes |
+| `assets/app.css` | All styles: the 6 colour themes (Neon, the brand theme, is the default) and the brand layer |
 | `assets/theme-init.js` | Tiny script that applies the saved theme before first paint |
 | `about/index.html` | About & data methodology page |
 | `widgets/index.html` | Free widget landing page: live examples and how to embed |

@@ -14,7 +14,7 @@
   "use strict";
 
   const SITE = "https://cryptopriceticker.com";
-  const THEMES = ["kali", "green", "slate", "oled", "light"];
+  const THEMES = ["neon", "kali", "green", "slate", "oled", "light"];
   const CURRENCIES = ["USD", "BTC", "ETH", "SOL"];
   const LAYOUTS = ["marquee", "grid", "single"];
   const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed so non-USD currencies work
@@ -63,7 +63,7 @@
   const state = {
     coins: new Map(),
     currency: "USD",
-    theme: "kali",
+    theme: "neon",
     compact: store.get("cpt_compact") === "1",
     sector: "ALL",
     search: "",
@@ -126,7 +126,7 @@
    * ------------------------------------------------------------------ */
   state.currency = pick((params.get("curr") || (IS_EMBED ? "" : store.get("cpt_curr", ""))).toUpperCase(), CURRENCIES, "USD");
   // First visit follows the device's light/dark setting; widgets default to dark unless their embed code says otherwise.
-  const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "kali";
+  const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
   state.theme = pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, systemTheme);
 
   if (MODE === "home") {
@@ -914,7 +914,7 @@
               </select></div>
             <div class="form-group"><label for="wgTheme">2. Theme</label>
               <select id="wgTheme" class="form-select">
-                <option value="kali">Kali cyber blue (dark)</option><option value="green">Terminal green</option>
+                <option value="neon">CryptoPriceTicker Neon (dark)</option><option value="kali">Kali cyber blue (dark)</option><option value="green">Terminal green</option>
                 <option value="slate">Slate</option><option value="oled">Pure black OLED</option><option value="light">Light</option>
               </select></div>
             <div class="form-group"><label for="wgCoins">3. Coins (comma-separated tickers)</label>
@@ -1133,7 +1133,7 @@
 <div class="cpt-widget-embed" style="width:100%;max-width:100%;overflow:hidden;border-radius:8px;font-family:sans-serif;">
   <iframe src="${embedUrl}" width="100%" height="${height}" style="border:0;display:block;width:100%;height:${height}px;" loading="lazy" title="${title} — CryptoPriceTicker.com"></iframe>
   <div style="text-align:right;font-size:11px;padding:3px 4px;opacity:0.85;">
-    <a href="${href}" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:none;font-weight:600;">${anchor}</a>
+    <a href="${href}" target="_blank" rel="noopener" style="color:#7c3aed;text-decoration:none;font-weight:600;">${anchor}</a>
   </div>
 </div>
 <!-- End CryptoPriceTicker.com widget -->`;
