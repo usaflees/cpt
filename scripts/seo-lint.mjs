@@ -23,7 +23,7 @@ const decode = s => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&l
 // ---------- 1. Pages: titles, descriptions, H1, canonical, JSON-LD ----------
 const { coins } = loadRegistry();
 const sectorSlugs = JSON.parse(read("content/sectors.json")).map(x => x.slug);
-const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", "brand/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
+const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", "brand/index.html", "accessibility/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
   ...coins.map(c => `coin/${c.sym.toLowerCase()}/index.html`)];
 const seen = { title: new Map(), description: new Map() };
 const CSP = (read("_headers").match(/Content-Security-Policy: ([^\n]*)/) || [])[1] || "";
@@ -104,6 +104,27 @@ for (const e of experiments) {
   for (const k of REQUIRED) if (!(k in e)) err(`experiments.json: ${e.id || "?"} is missing "${k}"`);
   if (e.start && e.evaluateOn && (Date.parse(e.evaluateOn) - Date.parse(e.start)) / 864e5 < 14) err(`experiments.json: ${e.id} evaluates less than 14 days after it starts`);
   if (!["running", "kept", "reverted", "inconclusive"].includes(e.status)) err(`experiments.json: ${e.id} has unknown status "${e.status}"`);
+}
+
+// ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
+// Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
+// change the number here in the same PR and say why.
+const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000 };
+for (const [f, max] of Object.entries(BUDGET)) {
+  const size = statSync(join(ROOT, f)).size;
+  if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
+  else if (size > max * 0.95) warn(`budget: ${f} is ${size} bytes, within 5% of its ${max} budget`);
+}
+for (const p of pages) {
+  if (!existsSync(join(ROOT, p))) continue;
+  const size = statSync(join(ROOT, p)).size;
+  if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
+}
+// Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
+const ORIGINS = ["https://api.coinbase.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
+  "wss://data-stream.binance.vision", "wss://ws-feed.exchange.coinbase.com", "wss://ws.kraken.com"];
+for (const o of new Set(CSP.match(/(?:https|wss):\/\/[^ ;]+/g) || [])) {
+  if (!ORIGINS.includes(o)) err(`budget: CSP allows a new third-party origin ${o} (add it to ORIGINS in seo-lint.mjs if intended)`);
 }
 
 // ---------- 6. Agent rules against a git base (used for claude/seo-* branches and the weekly task) ----------

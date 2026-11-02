@@ -1625,6 +1625,18 @@
     if (MODE === "embed") renderEmbed();
   }
 
+  // Interaction responsiveness (INP): a click first paints its own feedback (pressed state, active
+  // chip), then the heavy re-render runs in a later task. scheduler.yield() keeps the work at the
+  // front of the queue where supported (Chromium, Firefox); Safari falls back to setTimeout.
+  // Repeated clicks before the render runs collapse into one render.
+  const yieldToMain = () => (globalThis.scheduler && typeof scheduler.yield === "function") ? scheduler.yield() : new Promise(r => setTimeout(r, 0));
+  const pendingRenders = new Set();
+  function deferRender(fn) {
+    if (pendingRenders.has(fn)) return;
+    pendingRenders.add(fn);
+    yieldToMain().then(() => { pendingRenders.delete(fn); fn(); });
+  }
+
   const actions = {
     "toggle-index"(el) {
       const open = $("coinIndex").classList.toggle("collapsed") === false;
@@ -1633,24 +1645,24 @@
     },
     "show-all"() {
       state.showAll = true;
-      renderTable();
+      deferRender(renderTable);
     },
     "hm-group"(el) {
       hm.group = el.dataset.group === "sector";
       document.querySelectorAll("[data-action=hm-group]").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
       syncHeatmapUrl();
-      renderHeatmap();
+      deferRender(renderHeatmap);
     },
     "hm-size"(el) {
       hm.balanced = el.dataset.size === "balanced";
       document.querySelectorAll("[data-action=hm-size]").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
       syncHeatmapUrl();
-      renderHeatmap();
+      deferRender(renderHeatmap);
     },
     "hm-stables"(el) {
       hm.stables = !hm.stables;
       el.setAttribute("aria-pressed", String(hm.stables));
-      renderHeatmap();
+      deferRender(renderHeatmap);
     },
     "cv-swap"() {
       const out = parseFloat($("cvB").value);
@@ -1666,13 +1678,13 @@
       const sym = el.dataset.sym;
       if (state.watchlist.has(sym)) state.watchlist.delete(sym); else state.watchlist.add(sym);
       store.set("cpt_watch", Array.from(state.watchlist));
-      if (MODE === "home") renderTable(); else syncFavButton();
+      if (MODE === "home") deferRender(renderTable); else syncFavButton();
       refreshQuickActions();
     },
     "toggle-pin"(el) {
       state.pinnedSym = state.pinnedSym === el.dataset.sym ? "" : el.dataset.sym;
       store.set("cpt_pin", state.pinnedSym);
-      renderTable();
+      deferRender(renderTable);
       refreshQuickActions();
       if (state.pinnedSym) showToast(`📌 ${state.pinnedSym} live price pinned to this tab's title.`);
     },
@@ -1681,20 +1693,20 @@
     "save-alert": el => { saveAlert(el.dataset.sym, el.dataset.input); if (state.alerts[el.dataset.sym]) askNotifyPermission(); },
     "clear-alert": el => clearAlert(el.dataset.sym),
     theme: el => applyTheme(el.getAttribute("data-theme-val")),
-    curr(el) { applyCurrency(el.getAttribute("data-curr")); rerender(); },
+    curr(el) { applyCurrency(el.getAttribute("data-curr")); deferRender(rerender); },
     sector(el) {
       state.sector = el.dataset.sector;
       document.querySelectorAll("[data-action=sector]").forEach(p => {
         p.classList.toggle("active", p === el);
         p.setAttribute("aria-pressed", p === el);
       });
-      renderTable();
+      deferRender(renderTable);
     },
     sort(el) {
       const col = el.closest("th").dataset.sort;
       if (state.sortBy === col) state.sortAsc = !state.sortAsc;
       else { state.sortBy = col; state.sortAsc = col === "rank" || col === "name"; }
-      renderTable();
+      deferRender(renderTable);
     },
     movers(el) {
       state.moverMode = el.dataset.mode;
@@ -1707,7 +1719,7 @@
     "reset-bag"() {
       state.bag = {};
       store.set("cpt_bag", {});
-      renderTable();
+      deferRender(renderTable);
       showToast("💼 Bag quantities cleared.");
     },
     density() {

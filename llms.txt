@@ -5,7 +5,11 @@
 ## Main pages
 - [Live crypto prices](https://cryptopriceticker.com/): live table of 110+ coins by market cap, sector filters, biggest movers
 - [About & data methodology](https://cryptopriceticker.com/about/): data sources and how market cap, volume, depth and performance are calculated
-- [Free website widget](https://cryptopriceticker.com/widgets/): embeddable live crypto ticker (iframe)
+- [Market heatmap](https://cryptopriceticker.com/heatmap/): every coin sized by market cap and coloured by 24-hour change
+- [Crypto converter](https://cryptopriceticker.com/convert/): any coin to any coin or 20 fiat currencies at live prices
+- [Free website widget](https://cryptopriceticker.com/widgets/): embeddable live crypto ticker (iframe), three layouts, six themes
+- [Brand kit](https://cryptopriceticker.com/brand/): logos, colours and banners for press and partners
+- [Accessibility statement](https://cryptopriceticker.com/accessibility/): WCAG 2.1 AA / EN 301 549 status and how to report a barrier
 
 ## Sectors
 - [Layer 1](https://cryptopriceticker.com/sector/layer-1/)
@@ -23,4 +27,6 @@ Every coin has a page at `https://cryptopriceticker.com/coin/<ticker>/` (lowerca
 
 ## Notes
 - Prices on the pages update live in the browser; the static HTML contains weekly snapshots with their dates.
+- Each coin page states its performance figures (7-day to 1-year change, 52-week range, volatility, monthly closes) with the exchange and date of the latest daily close.
+- Citing a figure: please link the coin page and give the "as of" date shown on it.
 - Not financial advice.

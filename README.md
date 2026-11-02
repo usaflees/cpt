@@ -19,6 +19,7 @@ whatever is in this repository is what gets deployed.
 | `assets/app.css` | All styles: the 6 colour themes (Neon, the brand theme, is the default) and the brand layer |
 | `assets/theme-init.js` | Tiny script that applies the saved theme before first paint. `build-coin-pages.mjs` inlines it into every page and puts its hash in the CSP in `_headers`, so edit it here and rebuild |
 | `about/index.html` | About & data methodology page |
+| `accessibility/index.html` | Accessibility statement (WCAG 2.1 AA / EN 301 549 status, known limits, how to report a barrier) |
 | `widgets/index.html` | Free widget landing page: live examples and how to embed |
 | `sector/<slug>/index.html` | Sector hub pages (**generated** from `content/sectors.json`) |
 | `heatmap/index.html` | Live market heatmap: treemap sized by market cap, coloured by 24h change (**generated**) |
@@ -33,6 +34,7 @@ whatever is in this repository is what gets deployed.
 | `content/coin-stats.json` | **Generated** performance figures (7d–1y change, 52-week range, monthly closes) |
 | `content/seo-overrides.json` | Optional per-coin `title` / `description` / `h1` overrides (the self-improving loop's only content lever) |
 | `content/experiments.json` | Log of every SEO change: hypothesis, pages, start and evaluation dates, result |
+| `content/page-dates.json` | **Generated.** Content hash and last-changed date of each hand-written page, so its sitemap `lastmod` moves only when its content does |
 | `_headers` | Security headers (incl. Content-Security-Policy) and cache rules for Cloudflare Pages |
 | `_redirects` | Old tickers → new coin pages (**generated**) |
 | `sitemap.xml` | **Generated** list of all pages for search engines |
