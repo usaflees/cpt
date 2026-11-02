@@ -9,7 +9,7 @@ step() { echo; echo "== $*"; }
 run() { "$@" || { FAIL=1; echo "!! FAILED: $*"; }; }
 if [ -z "$BASE" ]; then
   step "generator is deterministic";   run node scripts/build-coin-pages.mjs
-  run git diff --quiet -- coin sector convert heatmap sitemap.xml _redirects || echo "(note: generated files changed — commit them)"
+  git diff --quiet -- coin sector convert heatmap sitemap.xml _redirects || echo "(note: generated files differ from the last commit; commit them)"
   step "seo-lint";                     run node scripts/seo-lint.mjs
   step "links / anchors / ids";        run node tests/links.mjs
   BASE=http://localhost:8788

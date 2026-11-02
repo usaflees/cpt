@@ -1,7 +1,6 @@
 {
   "prerender": [
     {
-      "relative_to": "document",
       "where": {
         "and": [
           {

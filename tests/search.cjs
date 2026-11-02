@@ -5,7 +5,9 @@ const { chromium } = require('playwright');
 const B = process.argv[2] || 'http://localhost:8788';
 (async () => { const b = await chromium.launch(); const issues = [];
   const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } }); const p = await ctx.newPage();
-  p.on('pageerror', e => issues.push(e.message)); p.on('console', m => m.type() === 'error' && issues.push(m.text()));
+  // Chrome logs this when a cross-document view transition is skipped because the test navigates instantly; not a page error.
+  const BENIGN = /Transition was aborted because of invalid state/;
+  p.on('pageerror', e => issues.push(e.message)); p.on('console', m => m.type() === 'error' && !BENIGN.test(m.text()) && issues.push(m.text()));
   for (const u of ['/coin/btc/', '/heatmap/', '/convert/', '/sector/ai/', '/widgets/', '/about/']) {
     await p.goto(B + u); await p.waitForTimeout(800);
     await p.keyboard.press('/'); const focused = await p.evaluate(() => document.activeElement.id);
@@ -33,9 +35,15 @@ const B = process.argv[2] || 'http://localhost:8788';
   await np.addInitScript(() => { window.__notes = []; const N = window.Notification; window.Notification = function (t, o) { window.__notes.push(t + ' | ' + o.body); }; window.Notification.permission = 'granted'; window.Notification.requestPermission = N.requestPermission.bind(N); Object.defineProperty(navigator, 'serviceWorker', { value: undefined }); });
   await np.goto(B + '/coin/btc/'); await np.waitForFunction(() => !document.getElementById('cpPrice').classList.contains('is-stale'), null, { timeout: 20000 });
   const price = await np.evaluate(() => parseFloat(document.getElementById('cpPrice').textContent.replace(/[$,]/g, '')));
-  await np.fill('#cp-alert', String(price + 0.01)); await np.click('[data-action=save-alert]');
-  await np.waitForFunction(() => window.__notes.length > 0, null, { timeout: 60000 }).catch(() => {});
-  console.log('notification fired:', await np.evaluate(() => window.__notes));
+  // The alert fires only when the live price crosses the target, so try just above, then just below, the current price.
+  const nowPrice = () => np.evaluate(() => parseFloat(document.getElementById('cpPrice').textContent.replace(/[^0-9.]/g, '')));
+  for (const delta of [0.01, -0.01, 0.01, -0.01]) {
+    await np.fill('#cp-alert', ((await nowPrice()) + delta).toFixed(2)); await np.click('[data-action=save-alert]');
+    if (await np.waitForFunction(() => window.__notes.length > 0, null, { timeout: 20000 }).then(() => true, () => false)) break;
+  }
+  const notes = await np.evaluate(() => window.__notes);
+  console.log('notification fired:', notes);
+  if (!notes.length) issues.push('alert notification never fired (price did not cross either way in 80 s, or alerts are broken)');
   // mobile look
   const mc = await b.newContext({ viewport: { width: 375, height: 812 } }); const mp = await mc.newPage(); await mp.goto(B + '/coin/btc/'); await mp.waitForTimeout(800);
   await mp.fill('#quickSearch', 'pe'); await mp.waitForTimeout(150); await mp.screenshot({ path: OUT + '/qs-mobile.png', clip: { x: 0, y: 0, width: 375, height: 520 } });

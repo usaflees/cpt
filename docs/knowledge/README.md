@@ -6,6 +6,8 @@ the evidence behind a rule.
 
 | File | What it holds | Update when |
 | --- | --- | --- |
+| [../STRATEGY.md](../STRATEGY.md) | **The roadmap**: measured baseline, pillars A–F, prioritized backlog, what we decided against, KPIs | Roadmap items ship or priorities change |
+| [../NEWS-AND-MONETIZATION.md](../NEWS-AND-MONETIZATION.md) | News block and phased, compliance-gated monetization plan; decisions only the owner can make | Owner decisions, phase changes |
 | [PLAYBOOK.md](PLAYBOOK.md) | The working rules: SEO, content, performance, accessibility, growth, measurement, security, each marked done / owner action / next / don't | A rule changes or a "next" item ships |
 | [DECISIONS.md](DECISIONS.md) | Dated decision log with the reason and source for each choice | Any non-obvious choice is made or reversed |
 | [STATE.md](STATE.md) | Snapshot of the live site: pages, features, scores, QA results, open owner actions, known trade-offs | After each release |

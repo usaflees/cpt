@@ -1705,3 +1705,4 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .consent-actions { display: flex; gap: 8px; margin-left: auto; }
 .consent-actions .action-btn { min-height: 40px; padding: 8px 16px; }
 .link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
+.asset-card figcaption { display: grid; gap: 8px; }

@@ -1,5 +1,8 @@
 # Playbook: what works for this site
 
+The roadmap (what to build next and in which order) is [../STRATEGY.md](../STRATEGY.md); this file holds the rules
+for doing it well.
+
 Consolidated from the research notes in [research/](research/README.md) (Oct 30 and Nov 2, 2026) and from what we
 measured while building the site. Status: ✅ in place · 👤 owner action · 🔜 good next step · ⛔ don't.
 Bracketed codes point to the research file: [SEO] seo-tactics-2026, [EXP] seo-experimentation, [DATA]
@@ -59,7 +62,13 @@ Techniques that measurably worked here:
   most every 10 s; cache element lookups that run on every tick.
 - ✅ Subscribe only to the coins a page shows (WebSocket traffic −75% on home, −95% in widgets); Binance REST
   `type=MINI` with a symbol list instead of the full 285 KB ticker.
-- ✅ Preload CSS, defer scripts, no web fonts, per-coin JPEG share images (82% quality).
+- ✅ Preload CSS, defer scripts, no web fonts, per-coin JPEG share images.
+- ✅ Content-hashed asset URLs (`/assets/app.js?v=…`) stamped by the build, with long-lived caching; the theme
+  script is inlined (allowed by its CSP hash); speculation rules prerender likely next pages (PRs #2–#3). Validate
+  `speculation-rules.json` by loading a page and reading Chrome's console: an invalid rule is silently ignored.
+- ✅ Performance budgets in `seo-lint` (app.js 115 KB, app.css 80 KB, coins.js 25 KB, consent.js 6 KB raw,
+  60 KB HTML per page) and an allowlist of third-party origins in the CSP. Raise a budget only on purpose, in the
+  same PR, with the reason.
 - 🔜 Field data (CrUX) once the site passes Google's popularity threshold; until then "not found" is expected. [ANA]
 - Lighthouse's simulated LCP can stay high (2.7 s on coin pages) even when real throttled loads paint at ~1.0 s;
   trust field data and real measurements over the simulation.
@@ -104,13 +113,17 @@ Rules in [../SELF-IMPROVING.md](../SELF-IMPROVING.md); evidence in [LOOP] and [E
   day). Judge on impressions and position first; compare against unchanged coins. [EXP]
 - Data delays: Search Console final data lags 2–3 days; title changes show in days to weeks. Measure ≥ 14 days for
   titles/descriptions, ≥ 28 days for content. [EXP][DATA]
-- 👤 Cloudflare Web Analytics on (choose "Enable globally" vs "Exclude EU" deliberately); no GA4 (CSP, consent
-  banner, contradicts the privacy promise, little extra value). [ANA]
+- ✅ Google Tag Manager + GA4 load only through `assets/consent.js` behind a consent banner (owner decision,
+  Nov 2, 2026, PR #7). This supersedes the Oct 30 research advice to skip GA4 [ANA]; keep it consent-gated, keep
+  "Cookie settings" in the footer, and keep the CSP origins in seo-lint's allowlist.
+- 👤 Cloudflare Web Analytics on (choose "Enable globally" vs "Exclude EU" deliberately) for cookieless field
+  data and Core Web Vitals (STRATEGY D1). [ANA]
 - 👤 Bing Webmaster Tools: its AI Performance report now groups the queries a site is cited for in Copilot answers
   into topics (Oct 13, 2026). [NEW]
 
 ## 8. Security and hosting
-- ✅ Strict CSP with no inline scripts or handlers (everything wired through `data-action`); HSTS;
+- ✅ Strict CSP: no inline handlers, no inline scripts except the build-inlined theme script (allowed by its hash),
+  everything wired through `data-action`; HSTS;
   `frame-ancestors *` only so widgets embed. [SEC]
 - ✅ Public repo: nothing private is committed; `docs/`, `scripts/`, `tests/`, `content/` are served but `noindex`.
 - ✅ Agent guardrails: `claude/*` branches only, CI "Site checks" on every PR, `classify-change` auto-merges data

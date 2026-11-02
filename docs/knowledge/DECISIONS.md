@@ -4,6 +4,13 @@ Newest first. Reverse a decision by adding a new row that says so; don't edit ol
 
 | Date | Decision | Why | Source |
 | --- | --- | --- | --- |
+| 2026-11-02 | Removed `relative_to` from the top level of `speculation-rules.json` | Chrome rejected the whole rule ("A document rule cannot have relative_to outside the where clause"), so prerendering never ran; all patterns are absolute paths anyway | Chrome console |
+| 2026-11-02 | Google Tag Manager + GA4 behind a consent banner (`assets/consent.js`, "Cookie settings" in the footer) | Owner's choice; **supersedes** the 2026-10-30 "Cloudflare Web Analytics, not GA4" row. Consent-gated so EU/UK rules and the privacy promise hold | PR #7 |
+| 2026-11-02 | Performance budgets and a third-party-origin allowlist enforced by seo-lint | Keep speed from eroding one PR at a time | PR #6, STRATEGY C3 |
+| 2026-11-02 | `classify-change` treats pure `?v=` hash re-stamps as data | Cache-busting made every data refresh look like a code change, blocking auto-merge | PR #8 |
+| 2026-11-02 | Content-hashed asset URLs + long-lived caching; inlined theme script allowed by CSP hash; speculation-rules prerender | Faster repeat visits and navigations without a build step | PRs #2–#3 |
+| 2026-11-02 | New brand identity (live logo, icon set, /brand/ kit), coin logos, accessibility statement page, explicit crawler rules in robots.txt | Trust (YMYL), recognisable sharing, European Accessibility Act | PRs #1, #2, #6 |
+| 2026-11-02 | Roadmap lives in `docs/STRATEGY.md`; news and monetization are phased and gated on owner decisions (`docs/NEWS-AND-MONETIZATION.md`) | One source for priorities; nothing paid ships without legal checks | PRs #5, #8 |
 | 2026-11-02 | QA suite lives in `tests/` (`bash tests/run.sh`) and the weekly agent may not edit it | Anthropic's top Claude Code practice is giving Claude a check it can run; the agent must not be able to weaken its own gate | [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md) |
 | 2026-11-02 | Root `CLAUDE.md` kept short: check commands, misleading spots, decisions, stop rules | Loaded into every session; Anthropic advises < ~200 lines and only what the code can't tell Claude | research/2026-11-02 |
 | 2026-11-02 | Don't add the shared AI-training opt-out token to robots.txt | We want to be cited in AI answers; Google support isn't live until 2027 anyway | research/2026-11-02 |
