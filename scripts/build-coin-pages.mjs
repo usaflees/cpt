@@ -12,6 +12,7 @@
 // Output is deterministic (dates come from CPT_COINS_UPDATED), so re-running without
 // registry changes produces no diff. Coin pages for removed coins are deleted.
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
 
 const SITE = "https://cryptopriceticker.com";
@@ -108,6 +109,12 @@ function conversionTables(c) {
         </table>
       </div>`;
 }
+
+// Coin badge: the coin's logo (coin-icons/, scripts/build-coin-icons.mjs) or its ticker. The page's
+// own coin loads eagerly; badges in tables load lazily.
+const avatarHtml = (c, eager = false) => c.logo
+  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/${slug(c.sym)}.svg" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
+  : `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>`;
 
 const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];
 const themeButtons = THEMES.map(([t, label]) => `<button type="button" class="theme-btn" data-action="theme" data-theme-val="${t}" title="${label}" aria-label="Theme: ${label}"><span class="swatch sw-${t}"></span></button>`).join("");
@@ -280,7 +287,8 @@ function coinPage(c) {
   <meta name="description" content="${esc(description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="${url(c.sym)}" />
-  <meta name="theme-color" content="#0c0822" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -312,7 +320,7 @@ function coinPage(c) {
 
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
-        <div class="coin-title"><span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span><h1 id="coin-h">${esc(h1)}</h1></div>
+        <div class="coin-title">${avatarHtml(c, true)}<h1 id="coin-h">${esc(h1)}</h1></div>
         <p class="hero-price is-stale" id="cpPrice">${usd(c.price)}</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
@@ -421,7 +429,7 @@ function sectorPage(x) {
     const st = stats[c.sym] || {};
     return `<tr>
             <td class="col-center muted">${i + 1}</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/${slug(c.sym)}/"><span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span><span class="coin-main"><span class="coin-name">${esc(c.name)}</span><span class="coin-sym-row"><span class="coin-sym">${esc(c.sym)}</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/${slug(c.sym)}/">${avatarHtml(c)}<span class="coin-main"><span class="coin-name">${esc(c.name)}</span><span class="coin-sym-row"><span class="coin-sym">${esc(c.sym)}</span></span></span></a></td>
             <td>${st.close ? usd(st.close) : usd(c.price)}</td>
             <td><span class="chg-pill ${pctClass(st.change7d)}">${pctText(st.change7d)}</span></td>
             <td class="hide-mobile"><span class="chg-pill ${pctClass(st.change30d)}">${pctText(st.change30d)}</span></td>
@@ -450,7 +458,8 @@ function sectorPage(x) {
   <meta name="description" content="${esc(description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="${sectorUrl(x)}" />
-  <meta name="theme-color" content="#0c0822" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -554,7 +563,8 @@ function convertPage() {
   <meta name="description" content="${esc(description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="${pageUrl}" />
-  <meta name="theme-color" content="#0c0822" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -647,7 +657,8 @@ function heatmapPage() {
   <meta name="description" content="${esc(description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="${pageUrl}" />
-  <meta name="theme-color" content="#0c0822" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -749,6 +760,26 @@ if (start < 0 || end < 0) throw new Error("coin-index markers not found in index
 const startLineEnd = html.indexOf("\n", start) + 1;
 const links = byCap.map(c => `          <a href="/coin/${slug(c.sym)}/">${esc(c.name)} (${esc(c.sym)})</a>`).join("\n");
 writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice(end));
+
+// ---------- Cache busting: /assets/* URLs carry a content hash (?v=…) ----------
+// _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
+// the service worker must point at the current hash. CI re-runs this script and fails on any diff,
+// so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js"];
+const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js)(\?v=[0-9a-f]+)?/g;
+const htmlFiles = [];
+const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
+  if (d.name.startsWith(".") || d.name === "node_modules") return;
+  const rel = dir + d.name;
+  if (d.isDirectory()) walk(rel + "/"); else if (d.name.endsWith(".html")) htmlFiles.push(rel);
+});
+walk("");
+for (const f of [...htmlFiles, "sw.js"]) {
+  const before = readFileSync(ROOT + f, "utf8");
+  const after = before.replace(assetRe, (_, name) => `/assets/${name}?v=${ver[name]}`);
+  if (after !== before) writeFileSync(ROOT + f, after);
+}
 
 console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter and heatmap, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
 if (!existsSync(ROOT + "og-image.jpg")) console.warn("⚠ og-image.jpg is missing");

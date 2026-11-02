@@ -24,6 +24,8 @@ whatever is in this repository is what gets deployed.
 | `heatmap/index.html` | Live market heatmap: treemap sized by market cap, coloured by 24h change (**generated**) |
 | `convert/index.html` | Crypto converter: any coin ⇄ any coin or 20 fiat currencies (**generated**; fiat rates from Coinbase's public exchange-rates API) |
 | `brand/` | Brand kit page (`/brand/`) and every logo asset: vector mark (`mark.svg`, `mark-glow.svg`), CPT badges, lockup, banners, poster. Masters and the colour rationale are on the page |
+| `coin-icons/<sym>.svg` | Self-hosted coin logos (**generated** by `scripts/build-coin-icons.mjs` from MIT/CC0 icon packs; licences in `coin-icons/LICENSES.md`). Coins without one show their ticker |
+| `speculation-rules.json` | Prerenders same-site links on hover (Chromium), sent via the `Speculation-Rules` header in `_headers` |
 | `og/<sym>.jpg` | Per-coin social share images (`node scripts/build-og-images.cjs`, needs Playwright) |
 | `sw.js` | Service worker: installable app + offline fallback (always network-first) |
 | `llms.txt`, `.well-known/security.txt`, `<key>.txt` | AI-crawler summary, security contact, IndexNow key |
@@ -44,7 +46,9 @@ whatever is in this repository is what gets deployed.
 
 ## Common tasks
 
-**Change text, layout or styles.** Edit `index.html` / `assets/app.css` / `assets/app.js` and commit.
+**Change text, layout or styles.** Edit `index.html` / `assets/app.css` / `assets/app.js`, run
+`node scripts/build-coin-pages.mjs` (it stamps every page's `/assets/…?v=` links with the new content
+hash, since those files are cached for a year), and commit. CI fails if you forget.
 Cloudflare redeploys automatically.
 
 **Add, remove or rename a coin.**
@@ -56,7 +60,10 @@ Cloudflare redeploys automatically.
    node scripts/refresh-coins.mjs      # fills circulating supply, seed price, and which exchanges list it
    node scripts/build-coin-pages.mjs   # regenerates coin pages, sitemap.xml, _redirects, home-page links
    ```
-4. Commit everything.
+4. Optional: give it a logo. Follow the steps at the top of `scripts/build-coin-icons.mjs`, then run
+   `node scripts/build-coin-pages.mjs` again. Check the logo by eye: some tickers are shared by
+   unrelated projects.
+5. Commit everything.
 
 If a coin is renamed (like Toncoin → Gram), change its `sym`/`name` and set `formerly: "OLD"`. Old
 watchlists, portfolios and `/coin/old/` links then move over automatically. If an exchange still

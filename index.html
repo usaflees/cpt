@@ -7,7 +7,8 @@
   <meta name="description" content="Live crypto prices streamed straight from Coinbase, Binance and Kraken. Track 110+ coins, DePIN and AI sectors, a private portfolio and free embeddable widgets." />
   <meta name="robots" content="index, follow, max-image-preview:large" id="metaRobots" />
   <link rel="canonical" href="https://cryptopriceticker.com/" />
-  <meta name="theme-color" content="#0c0822" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
 
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -16,7 +17,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css" as="style" />
+  <link rel="preload" href="/assets/app.css?v=cee0930c3d" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -66,10 +67,10 @@
   }
   </script>
 
-  <script src="/assets/theme-init.js"></script>
-  <link rel="stylesheet" href="/assets/app.css" />
-  <script src="/assets/coins.js" defer></script>
-  <script src="/assets/app.js" defer></script>
+  <script src="/assets/theme-init.js?v=5726900a33"></script>
+  <link rel="stylesheet" href="/assets/app.css?v=cee0930c3d" />
+  <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
+  <script src="/assets/app.js?v=2d8458653f" defer></script>
 </head>
 <body data-page="home">
   <a class="skip-link" href="#prices">Skip to prices</a>

@@ -1625,3 +1625,32 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .footer-mark { display: inline-block; width: 18px; height: 18px; vertical-align: -4px; margin-right: 8px; border-radius: 5px; }
 @media (min-width: 641px) { .hero .brand-name { display: flex; align-items: center; gap: 8px; } }
 .eyebrow-mark { width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0; }
+
+/* Coin logos inside the neon ring. Dark themes add a faint light halo so black logos
+   (Stellar, World, Aptos…) stay visible; it is invisible on colourful ones. */
+.coin-avatar.has-logo { padding: 2px; overflow: hidden; }
+.coin-avatar.has-logo img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 50%; filter: drop-shadow(0 0 1.2px rgba(255, 255, 255, 0.55)); }
+[data-theme="light"] .coin-avatar.has-logo img { filter: none; }
+
+/* Page transitions (Chromium, Safari): same-site navigations crossfade instead of flashing, the
+   header stays put, and a coin's logo glides from the table into the coin page header. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  .topbar { view-transition-name: topbar; }
+  .coin-title .coin-avatar { view-transition-name: coin-logo; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .18s; }
+  ::view-transition-group(coin-logo) { animation-duration: .32s; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+}
+
+/* Rendering work: off-screen sections are skipped until they scroll near (sizes are remembered). */
+.page-section ~ .page-section, .site-footer, .faq { content-visibility: auto; contain-intrinsic-size: auto 480px; }
+.hero-title, .page-section h2, .coin-hero h1 { text-wrap: balance; }
+.prose p, .hero-sub { text-wrap: pretty; }
+.tape-logo { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.hm-logo { display: block; border-radius: 50%; filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .45)); margin-bottom: .1em; }
+
+/* Widget footers: live pulse instead of an emoji, and the brand mark on the credit link */
+.embed-live { display: inline-flex; align-items: center; gap: 6px; }
+.embed-live .pulse-dot { width: 6px; height: 6px; }
+.embed-credit { display: inline-flex; align-items: center; gap: 5px; }
+.embed-credit img { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
