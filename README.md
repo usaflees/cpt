@@ -43,6 +43,7 @@ whatever is in this repository is what gets deployed.
 | `docs/SELF-IMPROVING.md` | How the weekly self-improvement loop works and the rules it must follow |
 | `docs/LAUNCH-KIT.md` | Launch & growth plan: indexing checklist, where to post (and the rules), post drafts |
 | `docs/AUDIT.md` | The October 2026 audit: what was wrong, what changed, and the evidence |
+| `docs/STRATEGY.md` | Strategy 2026–2027: measured baseline, research, prioritized backlog, roadmap, what we decided against, KPIs |
 
 ## Common tasks
 
