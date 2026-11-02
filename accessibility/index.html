@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="neon">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessibility Statement | CryptoPriceTicker.com</title>
+  <meta name="description" content="How CryptoPriceTicker.com meets WCAG 2.1 AA and EN 301 549: what we test, the known limits of a live price site, and how to report a barrier." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://cryptopriceticker.com/accessibility/" />
+  <link rel="preload" href="/assets/app.css?v=cee0930c3d" as="style" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CryptoPriceTicker.com" />
+  <meta property="og:title" content="Accessibility statement — CryptoPriceTicker.com" />
+  <meta property="og:url" content="https://cryptopriceticker.com/accessibility/" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://cryptopriceticker.com/accessibility/",
+        "url": "https://cryptopriceticker.com/accessibility/",
+        "name": "Accessibility statement",
+        "isPartOf": { "@id": "https://cryptopriceticker.com/#website" },
+        "about": { "@id": "https://cryptopriceticker.com/#org" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Live crypto prices", "item": "https://cryptopriceticker.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Accessibility", "item": "https://cryptopriceticker.com/accessibility/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+})();</script>
+  <script src="/assets/coins.js?v=b2c829ebbe" defer></script>
+  <script src="/assets/app.js?v=b60d332ea6" defer></script>
+  <link rel="stylesheet" href="/assets/app.css?v=cee0930c3d" />
+</head>
+<body data-page="accessibility">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><img class="brand-logo" src="/brand/mark.svg" width="34" height="34" alt="" /><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-link" href="/">← All prices</a>
+    <div class="search-box quick-search">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="quickSearch" placeholder="Search coins…" aria-label="Search coins" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="quickResults" />
+      <kbd class="search-kbd" aria-hidden="true">/</kbd>
+      <ul class="quick-results" id="quickResults" role="listbox" aria-label="Matching coins" hidden></ul>
+    </div>
+    <div class="topbar-actions">
+      <details class="pop menu-pop">
+        <summary aria-label="Menu">☰</summary>
+        <div class="pop-panel menu-list">
+          <p class="pop-title">Theme</p>
+          <div class="theme-switcher" role="group" aria-label="Colour theme">
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="neon" title="Neon (brand)" aria-label="Theme: Neon (brand)"><span class="swatch sw-neon"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)" aria-label="Theme: Kali (dark blue)"><span class="swatch sw-kali"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green" aria-label="Theme: Terminal green"><span class="swatch sw-green"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate" aria-label="Theme: Slate"><span class="swatch sw-slate"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled" title="Pure black" aria-label="Theme: Pure black"><span class="swatch sw-oled"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light" aria-label="Theme: Light"><span class="swatch sw-light"></span></button>
+          </div>
+          <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
+          <a class="menu-item" href="/widgets/">🧩 Free website widget</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main class="container" id="main">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">Accessibility</span></nav>
+
+    <section class="hero" aria-labelledby="a11y-h">
+      <h1 id="a11y-h" class="hero-title">Accessibility statement</h1>
+      <p class="hero-sub">CryptoPriceTicker.com aims to be usable by everyone, including people who use a screen reader, a keyboard, zoom or reduced motion. We target <strong>WCAG 2.1 level AA</strong>, the standard behind the European norm EN 301 549. This statement was last reviewed on 2 November 2026.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="status-h">
+      <h2 id="status-h">Conformance status</h2>
+      <p><strong>Partially conformant</strong> with WCAG 2.1 AA: most of the site meets the standard, with the known limits listed below. We use "partially" because a fully automated check cannot prove conformance, and some parts of a live price site are hard by nature.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="test-h">
+      <h2 id="test-h">How we test</h2>
+      <ul class="brand-rules">
+        <li>Every page type is checked with the axe-core engine (WCAG 2.0/2.1 A and AA rules plus best practices) in both light and dark themes, at desktop and phone widths. The most recent run found no violations.</li>
+        <li>Every text colour in the default and light themes has a measured contrast of at least 4.5:1 against the backgrounds it appears on.</li>
+        <li>All controls work with a keyboard, show a visible focus ring and have accessible names. The page layout has a skip link, landmarks and one heading level 1 per page.</li>
+        <li>Animations respect the "reduce motion" setting: the logo, page transitions and hover effects stand still.</li>
+        <li>Pages reflow without horizontal scrolling down to 320 px wide and support browser zoom.</li>
+      </ul>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="limits-h">
+      <h2 id="limits-h">Known limitations</h2>
+      <ul class="brand-rules">
+        <li><strong>Live prices are not announced one by one.</strong> Prices change many times a second, so reading each change aloud would make the page unusable. Screen-reader users can read the current value of any row at any time; price alerts are announced.</li>
+        <li><strong>The scrolling price tape is decorative</strong> and hidden from assistive technology; the price table shows the same data.</li>
+        <li><strong>The heatmap is visual.</strong> Every tile has a text label with the coin, its 24-hour change and price, and the same data is available in the price table and on each coin page.</li>
+        <li><strong>Colour is not the only signal:</strong> rises and falls are also shown with "+" and "−" signs and arrows.</li>
+        <li><strong>Embedded widgets</strong> on other websites follow this statement inside the widget frame; the surrounding page is the responsibility of its owner.</li>
+      </ul>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="report-h">
+      <h2 id="report-h">Report a barrier</h2>
+      <p>If something on the site doesn't work for you, please <a href="https://github.com/usaflees/cpt/issues">open an issue on GitHub</a> and describe the page, what you were trying to do, and the device, browser and assistive technology you use. We aim to reply within 5 working days and to fix confirmed barriers as a priority.</p>
+    </section>
+  </main>
+
+  <footer class="container site-footer" style="padding-top:0">
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a></span>
+  </footer>
+</body>
+</html>
