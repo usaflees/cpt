@@ -8,6 +8,7 @@
 // Exits 1 on any error; warnings are printed but don't fail.
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
 
@@ -22,9 +23,10 @@ const decode = s => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&l
 // ---------- 1. Pages: titles, descriptions, H1, canonical, JSON-LD ----------
 const { coins } = loadRegistry();
 const sectorSlugs = JSON.parse(read("content/sectors.json")).map(x => x.slug);
-const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
+const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", "brand/index.html", "accessibility/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
   ...coins.map(c => `coin/${c.sym.toLowerCase()}/index.html`)];
 const seen = { title: new Map(), description: new Map() };
+const CSP = (read("_headers").match(/Content-Security-Policy: ([^\n]*)/) || [])[1] || "";
 for (const p of pages) {
   if (!existsSync(join(ROOT, p))) { err(`${p}: missing (run node scripts/build-coin-pages.mjs)`); continue; }
   const h = read(p);
@@ -48,7 +50,11 @@ for (const p of pages) {
     try { JSON.parse(m[1]); } catch (e) { err(`${p}: invalid JSON-LD (${e.message})`); }
   }
   if (!/<html lang="en"/.test(h)) err(`${p}: missing <html lang>`);
-  if (/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>/.test(h)) err(`${p}: inline <script> (blocked by the CSP in _headers)`);
+  // Inline scripts run only if the CSP in _headers allows their exact hash (the theme script does).
+  for (const m of h.matchAll(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g)) {
+    const hash = "'sha256-" + createHash("sha256").update(m[1]).digest("base64") + "'";
+    if (!CSP.includes(hash)) err(`${p}: inline <script> not allowed by the CSP in _headers (run node scripts/build-coin-pages.mjs)`);
+  }
   if (/\son[a-z]+="/i.test(h)) err(`${p}: inline event handler attribute (blocked by the CSP)`);
 }
 
@@ -98,6 +104,29 @@ for (const e of experiments) {
   for (const k of REQUIRED) if (!(k in e)) err(`experiments.json: ${e.id || "?"} is missing "${k}"`);
   if (e.start && e.evaluateOn && (Date.parse(e.evaluateOn) - Date.parse(e.start)) / 864e5 < 14) err(`experiments.json: ${e.id} evaluates less than 14 days after it starts`);
   if (!["running", "kept", "reverted", "inconclusive"].includes(e.status)) err(`experiments.json: ${e.id} has unknown status "${e.status}"`);
+}
+
+// ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
+// Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
+// change the number here in the same PR and say why.
+const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000 };
+for (const [f, max] of Object.entries(BUDGET)) {
+  const size = statSync(join(ROOT, f)).size;
+  if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
+  else if (size > max * 0.95) warn(`budget: ${f} is ${size} bytes, within 5% of its ${max} budget`);
+}
+for (const p of pages) {
+  if (!existsSync(join(ROOT, p))) continue;
+  const size = statSync(join(ROOT, p)).size;
+  if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
+}
+// Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
+const ORIGINS = ["https://api.coinbase.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
+  "wss://data-stream.binance.vision", "wss://ws-feed.exchange.coinbase.com", "wss://ws.kraken.com",
+  // Google Tag Manager + GA4, loaded by assets/consent.js after consent defaults are set
+  "https://www.googletagmanager.com", "https://*.google-analytics.com", "https://*.analytics.google.com"];
+for (const o of new Set(CSP.match(/(?:https|wss):\/\/[^ ;]+/g) || [])) {
+  if (!ORIGINS.includes(o)) err(`budget: CSP allows a new third-party origin ${o} (add it to ORIGINS in seo-lint.mjs if intended)`);
 }
 
 // ---------- 6. Agent rules against a git base (used for claude/seo-* branches and the weekly task) ----------

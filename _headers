@@ -4,17 +4,32 @@
 # The CSP lists every host the site talks to. If you add a new data source or script
 # (e.g. a new exchange API), add its host to connect-src / script-src or the browser will block it.
 # frame-ancestors is * on purpose: other sites embed the ticker widget in an iframe.
+# Google Tag Manager / GA4 (assets/consent.js) needs googletagmanager.com and the google-analytics
+# collection hosts. GTM "Custom HTML" tags will not run (no 'unsafe-inline'); use built-in tag types.
+# The 'sha256-…' in script-src allows the inlined theme script (assets/theme-init.js); it is
+# rewritten by scripts/build-coin-pages.mjs, and seo-lint fails if any inline script lacks a hash.
 
 /*
   Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://data-api.binance.vision https://api.coinbase.com wss://data-stream.binance.vision wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com https://cloudflareinsights.com; manifest-src 'self'; frame-ancestors *; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+  Speculation-Rules: "/speculation-rules.json"
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-ua96VxhmP+5IUAJBi711sxQLfxuDx4R+TuVtY1AFy+w=' https://static.cloudflareinsights.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com; font-src 'self'; connect-src 'self' https://data-api.binance.vision https://api.coinbase.com wss://data-stream.binance.vision wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com https://cloudflareinsights.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; manifest-src 'self'; frame-ancestors *; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+# Prerender same-site links on hover (Chromium). The JSON must have this exact media type.
+/speculation-rules.json
+  Content-Type: application/speculationrules+json
+  Cache-Control: public, max-age=3600
 
 # The service worker must always be revalidated so updates reach visitors.
 /sw.js
   Cache-Control: no-cache
+
+# Site code and styles: every page links them with a content hash (?v=…, written by
+# scripts/build-coin-pages.mjs), so a new version is a new URL and the old one can be cached forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
 
 # Icons and the social images rarely change: let browsers cache them for a week.
 /og/*
@@ -27,7 +42,9 @@
   Cache-Control: public, max-age=604800
 /icon-*
   Cache-Control: public, max-age=604800
-/og-image.png
+/og-image.jpg
+  Cache-Control: public, max-age=604800
+/coin-icons/*
   Cache-Control: public, max-age=604800
 
 # Widget frames: indexable only inside the pages that embed them.

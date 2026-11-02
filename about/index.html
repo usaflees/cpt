@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="kali">
+<html lang="en" data-theme="neon">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,9 @@
   <meta name="description" content="Where CryptoPriceTicker.com gets its crypto prices, how market cap, volume and performance figures are calculated, and how to report an error." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://cryptopriceticker.com/about/" />
-  <meta name="theme-color" content="#0a0e17" />
+  <link rel="preload" href="/assets/app.css?v=8be7eb2b19" as="style" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -17,7 +19,7 @@
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="About CryptoPriceTicker.com and its data" />
   <meta property="og:url" content="https://cryptopriceticker.com/about/" />
-  <meta property="og:image" content="https://cryptopriceticker.com/og-image.png" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json">
   {
@@ -41,15 +43,26 @@
     ]
   }
   </script>
-  <script src="/assets/theme-init.js"></script>
-  <script src="/assets/coins.js" defer></script>
-  <script src="/assets/app.js" defer></script>
-  <link rel="stylesheet" href="/assets/app.css" />
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+})();</script>
+  <script src="/assets/coins.js?v=1159cdf5da" defer></script>
+  <script src="/assets/app.js?v=a990b5915c" defer></script>
+  <script src="/assets/consent.js?v=a65a960b96" defer></script>
+  <link rel="stylesheet" href="/assets/app.css?v=8be7eb2b19" />
 </head>
 <body data-page="about">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar">
-    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><img class="brand-logo" src="/brand/mark.svg" width="34" height="34" alt="" /><span class="brand-word">CryptoPriceTicker</span></a>
     <a class="topbar-link" href="/">← All prices</a>
     <div class="search-box quick-search">
       <span class="search-icon" aria-hidden="true">🔍</span>
@@ -63,6 +76,7 @@
         <div class="pop-panel menu-list">
           <p class="pop-title">Theme</p>
           <div class="theme-switcher" role="group" aria-label="Colour theme">
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="neon" title="Neon (brand)" aria-label="Theme: Neon (brand)"><span class="swatch sw-neon"></span></button>
             <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)" aria-label="Theme: Kali (dark blue)"><span class="swatch sw-kali"></span></button>
             <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green" aria-label="Theme: Terminal green"><span class="swatch sw-green"></span></button>
             <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate" aria-label="Theme: Slate"><span class="swatch sw-slate"></span></button>
@@ -82,7 +96,7 @@
 
     <section class="hero" aria-labelledby="about-h">
       <h1 id="about-h" class="hero-title">About CryptoPriceTicker.com</h1>
-      <p class="hero-sub">CryptoPriceTicker.com is a free, ad-free crypto price tracker. It shows live prices for 110+ cryptocurrencies streamed directly from three of the largest exchanges, with no account, no cookies for tracking and no paid placements. Nothing on this site is investment advice.</p>
+      <p class="hero-sub">CryptoPriceTicker.com is a free, ad-free crypto price tracker. It shows live prices for 110+ cryptocurrencies streamed directly from three of the largest exchanges, with no account, no ads and no paid placements; analytics cookies are used only if you agree to them. Nothing on this site is investment advice.</p>
     </section>
 
     <section class="page-section prose" aria-labelledby="data-h">
@@ -106,7 +120,8 @@
 
     <section class="page-section prose" aria-labelledby="privacy-h">
       <h2 id="privacy-h">Privacy</h2>
-      <p>Your watchlist, portfolio quantities and price alerts are stored only in your own browser (localStorage) and are never sent to us. The site may use Cloudflare Web Analytics, which counts page views and measures page speed without cookies or cross-site tracking. Live prices are fetched directly from the exchanges, so those exchanges see your IP address as with any website that loads their public data.</p>
+      <p>Your watchlist, portfolio quantities and price alerts are stored only in your own browser (localStorage) and are never sent to us. The site may also use Cloudflare Web Analytics, which counts page views and measures page speed without cookies or cross-site tracking. Live prices are fetched directly from the exchanges, so those exchanges see your IP address as with any website that loads their public data.</p>
+      <p><strong>Google Analytics (via Google Tag Manager)</strong> helps us see which pages people use. Its cookies are set only after you click <em>Accept</em> in the cookie banner; until then, and if you decline, Google receives only cookieless signals (such as a page view without an identifier) that it uses for aggregate, modelled statistics. Advertising features are always off: this site shows no ads and shares nothing for ad personalization. Your choice is stored in your browser, and you can change it any time with <em>Cookie settings</em> at the bottom of each page. Embedded widgets on other websites never load Google Analytics.</p>
     </section>
 
     <section class="page-section prose" aria-labelledby="contact-h">
@@ -117,7 +132,7 @@
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads.</span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>

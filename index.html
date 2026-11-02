@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="kali">
+<html lang="en" data-theme="neon">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,8 @@
   <meta name="description" content="Live crypto prices streamed straight from Coinbase, Binance and Kraken. Track 110+ coins, DePIN and AI sectors, a private portfolio and free embeddable widgets." />
   <meta name="robots" content="index, follow, max-image-preview:large" id="metaRobots" />
   <link rel="canonical" href="https://cryptopriceticker.com/" />
-  <meta name="theme-color" content="#0a0e17" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
 
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -16,7 +17,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css" as="style" />
+  <link rel="preload" href="/assets/app.css?v=8be7eb2b19" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -27,7 +28,7 @@
   <meta property="og:title" content="Live Crypto Prices — Real-Time Multi-Exchange Ticker" />
   <meta property="og:description" content="110+ coins streaming live from Coinbase, Binance and Kraken. No login, no ads, private portfolio and free website widgets." />
   <meta property="og:url" content="https://cryptopriceticker.com/" />
-  <meta property="og:image" content="https://cryptopriceticker.com/og-image.png" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="CryptoPriceTicker.com live crypto price ticker" />
@@ -49,7 +50,7 @@
         "@id": "https://cryptopriceticker.com/#org",
         "name": "CryptoPriceTicker.com",
         "url": "https://cryptopriceticker.com/",
-        "logo": "https://cryptopriceticker.com/apple-touch-icon.png"
+        "logo": "https://cryptopriceticker.com/brand/mark-1024.png"
       },
       {
         "@type": "WebApplication",
@@ -66,10 +67,21 @@
   }
   </script>
 
-  <script src="/assets/theme-init.js"></script>
-  <link rel="stylesheet" href="/assets/app.css" />
-  <script src="/assets/coins.js" defer></script>
-  <script src="/assets/app.js" defer></script>
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+})();</script>
+  <link rel="stylesheet" href="/assets/app.css?v=8be7eb2b19" />
+  <script src="/assets/coins.js?v=1159cdf5da" defer></script>
+  <script src="/assets/app.js?v=a990b5915c" defer></script>
+  <script src="/assets/consent.js?v=a65a960b96" defer></script>
 </head>
 <body data-page="home">
   <a class="skip-link" href="#prices">Skip to prices</a>
@@ -81,7 +93,7 @@
 
   <div id="appShell">
     <header class="topbar">
-      <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+      <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><img class="brand-logo" src="/brand/mark.svg" width="34" height="34" alt="" /><span class="brand-word">CryptoPriceTicker</span></a>
       <div class="search-box">
         <span class="search-icon" aria-hidden="true">🔍</span>
         <input type="search" id="searchInput" placeholder="Search coins…" aria-label="Search coins by name, ticker or sector" autocomplete="off" />
@@ -109,6 +121,7 @@
           <div class="pop-panel menu-list">
             <p class="pop-title">Theme</p>
             <div class="theme-switcher" role="group" aria-label="Colour theme">
+              <button type="button" class="theme-btn" data-action="theme" data-theme-val="neon" title="Neon (brand)" aria-label="Theme: Neon (brand)"><span class="swatch sw-neon"></span></button>
               <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)" aria-label="Theme: Kali (dark blue)"><span class="swatch sw-kali"></span></button>
               <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green" aria-label="Theme: Terminal green"><span class="swatch sw-green"></span></button>
               <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate" aria-label="Theme: Slate"><span class="swatch sw-slate"></span></button>
@@ -133,7 +146,7 @@
 
     <main class="container" id="main">
       <section class="hero" aria-labelledby="hero-h">
-        <p class="brand-name">CryptoPriceTicker.com</p>
+        <p class="brand-name"><img class="eyebrow-mark" src="/brand/mark-intro.svg" width="22" height="22" alt="" />CryptoPriceTicker.com</p>
         <h1 id="hero-h" class="hero-title">Live crypto prices from Coinbase, Binance &amp; Kraken</h1>
         <p class="hero-sub">Every trade, the moment it happens. No login, no ads, nothing to install.</p>
         <p class="hero-links"><a href="/heatmap/">🟩 Market heatmap</a><a href="/convert/">🔁 Converter</a><a href="/widgets/">🧩 Free widget</a></p>
@@ -259,8 +272,8 @@
           <a href="/coin/eth/">Ethereum (ETH)</a>
           <a href="/coin/usdt/">Tether (USDT)</a>
           <a href="/coin/bnb/">BNB (BNB)</a>
-          <a href="/coin/xrp/">XRP (XRP)</a>
           <a href="/coin/usdc/">USD Coin (USDC)</a>
+          <a href="/coin/xrp/">XRP (XRP)</a>
           <a href="/coin/sol/">Solana (SOL)</a>
           <a href="/coin/trx/">TRON (TRX)</a>
           <a href="/coin/hype/">Hyperliquid (HYPE)</a>
@@ -308,8 +321,8 @@
           <a href="/coin/atom/">Cosmos (ATOM)</a>
           <a href="/coin/cake/">PancakeSwap (CAKE)</a>
           <a href="/coin/stx/">Stacks (STX)</a>
-          <a href="/coin/fil/">Filecoin (FIL)</a>
           <a href="/coin/dash/">Dash (DASH)</a>
+          <a href="/coin/fil/">Filecoin (FIL)</a>
           <a href="/coin/aero/">Aerodrome Finance (AERO)</a>
           <a href="/coin/vet/">VeChain (VET)</a>
           <a href="/coin/apt/">Aptos (APT)</a>
@@ -336,8 +349,8 @@
           <a href="/coin/strk/">Starknet (STRK)</a>
           <a href="/coin/akt/">Akash Network (AKT)</a>
           <a href="/coin/theta/">Theta Network (THETA)</a>
-          <a href="/coin/s/">Sonic (S)</a>
           <a href="/coin/mana/">Decentraland (MANA)</a>
+          <a href="/coin/s/">Sonic (S)</a>
           <a href="/coin/axs/">Axie Infinity (AXS)</a>
           <a href="/coin/sand/">The Sandbox (SAND)</a>
           <a href="/coin/1inch/">1inch Network (1INCH)</a>
@@ -377,7 +390,7 @@
 
     <footer class="container site-footer" style="padding-top:0">
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <span>CryptoPriceTicker.com — live multi-exchange crypto prices. No login, no ads. <a href="/heatmap/">Heatmap</a> · <a href="/convert/">Crypto converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a></span>
+        <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" />CryptoPriceTicker.com — live multi-exchange crypto prices. No login, no ads. <a href="/heatmap/">Heatmap</a> · <a href="/convert/">Crypto converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
         <span class="kbd-hint">Shortcuts: <kbd>/</kbd> search • 📌 pin a price to the tab title • 🧩 embed a widget</span>
       </div>
       <p class="disclaimer">Not financial advice. Prices come from Coinbase, Binance and Kraken public market-data feeds and may be delayed or inaccurate.</p>

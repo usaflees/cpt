@@ -1,22 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="kali">
+<html lang="en" data-theme="neon">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" href="/assets/app.css?v=8be7eb2b19" as="style" />
   <title>Page not found | CryptoPriceTicker.com</title>
   <meta name="robots" content="noindex" />
-  <meta name="theme-color" content="#0a0e17" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <script src="/assets/theme-init.js"></script>
-  <link rel="stylesheet" href="/assets/app.css" />
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+})();</script>
+  <link rel="stylesheet" href="/assets/app.css?v=8be7eb2b19" />
+  <script src="/assets/consent.js?v=a65a960b96" defer></script>
 </head>
 <body data-page="404">
   <header class="topbar">
-    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><img class="brand-logo" src="/brand/mark.svg" width="34" height="34" alt="" /><span class="brand-word">CryptoPriceTicker</span></a>
     <a class="topbar-link" href="/">← All prices</a>
   </header>
   <main class="container notfound">
+    <img class="notfound-mark" src="/brand/mark-intro.svg" width="112" height="112" alt="" />
     <h1>404 — page not found</h1>
     <p>This page doesn't exist (or a coin was renamed). Live prices for 110+ coins are on the home page.</p>
     <p class="hero-actions" style="justify-content:center"><a class="action-btn btn-accent" href="/">⚡ Live crypto prices</a><a class="action-btn" href="/heatmap/">🟩 Market heatmap</a><a class="action-btn" href="/convert/">🔁 Converter</a></p>

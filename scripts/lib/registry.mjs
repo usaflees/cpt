@@ -24,6 +24,7 @@ const HEADER = `// CryptoPriceTicker.com — coin registry (single source of tru
 //   feeds    exchanges with a live USD/USDT market: CB = Coinbase, BN = Binance, KR = Kraken
 //   tickers  (optional) exchange-specific ticker when it differs from sym, e.g. { CB: "TON" }
 //   formerly (optional) previous ticker; old watchlists/portfolios and /coin/<old>/ links are migrated
+//   logo     (generated) true when coin-icons/<sym>.svg exists; set by scripts/build-coin-icons.mjs
 //
 // To add a coin: add a line with sym/name/sectors (supply/price 0, feeds []), then run
 //   node scripts/refresh-coins.mjs      (fills supply, seed price and verified feeds)
@@ -37,7 +38,8 @@ export function writeRegistry(coins, updated) {
     `  { sym: ${JSON.stringify(c.sym)}, name: ${JSON.stringify(c.name)}, supply: ${num(c.supply)}, price: ${num(c.price)}, ` +
     `sectors: ${JSON.stringify(c.sectors)}, feeds: ${JSON.stringify(c.feeds)}` +
     (c.tickers ? `, tickers: ${JSON.stringify(c.tickers).replace(/"(\w+)":/g, "$1: ")}` : "") +
-    (c.formerly ? `, formerly: ${JSON.stringify(c.formerly)}` : "") + " }"
+    (c.formerly ? `, formerly: ${JSON.stringify(c.formerly)}` : "") +
+    (c.logo ? ", logo: true" : "") + " }"
   );
   const out = `${HEADER}var CPT_COINS_UPDATED = ${JSON.stringify(updated)};\nvar CPT_COINS = [\n${lines.join(",\n")}\n];\n`;
   writeFileSync(REGISTRY_PATH, out.replace(/","/g, '", "'));

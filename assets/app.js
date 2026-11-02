@@ -14,7 +14,7 @@
   "use strict";
 
   const SITE = "https://cryptopriceticker.com";
-  const THEMES = ["kali", "green", "slate", "oled", "light"];
+  const THEMES = ["neon", "kali", "green", "slate", "oled", "light"];
   const CURRENCIES = ["USD", "BTC", "ETH", "SOL"];
   const LAYOUTS = ["marquee", "grid", "single"];
   const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed so non-USD currencies work
@@ -59,11 +59,20 @@
   const RENAMED = {}; // old ticker → current ticker (e.g. TON → GRAM)
   REGISTRY.forEach(c => { if (c.formerly) RENAMED[c.formerly] = c.sym; });
   const renamed = sym => RENAMED[sym] || sym;
+  const HAS_LOGO = new Set(REGISTRY.filter(c => c.logo).map(c => c.sym));
+
+  // Coin badge: the coin's own logo when we host one (/coin-icons/, see scripts/build-coin-icons.mjs),
+  // otherwise its ticker. The neon ring and the size come from .coin-avatar in app.css.
+  function avatar(sym, cls = "", style = "") {
+    const logo = HAS_LOGO.has(sym);
+    return `<span class="coin-avatar${cls ? " " + cls : ""}${logo ? " has-logo" : ""}" aria-hidden="true"${style ? ` style="${style}"` : ""}>` +
+      (logo ? `<img src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="20" height="20" loading="lazy" decoding="async" />` : esc(sym.slice(0, 4))) + `</span>`;
+  }
 
   const state = {
     coins: new Map(),
     currency: "USD",
-    theme: "kali",
+    theme: "neon",
     compact: store.get("cpt_compact") === "1",
     sector: "ALL",
     search: "",
@@ -107,6 +116,7 @@
       sectors: c.sectors,
       feeds: c.feeds,
       tickers: c.tickers || {},
+      logo: Boolean(c.logo),
       history: [],
       rank: idx + 1,
       exPrices: { CB: null, BN: null, KR: null },
@@ -126,7 +136,7 @@
    * ------------------------------------------------------------------ */
   state.currency = pick((params.get("curr") || (IS_EMBED ? "" : store.get("cpt_curr", ""))).toUpperCase(), CURRENCIES, "USD");
   // First visit follows the device's light/dark setting; widgets default to dark unless their embed code says otherwise.
-  const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "kali";
+  const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
   state.theme = pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, systemTheme);
 
   if (MODE === "home") {
@@ -230,15 +240,15 @@
 
     if (cfg.layout === "marquee") {
       const items = picked.map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="tape-item">
-          <span class="tape-sym">${esc(c.sym)}</span>
+          ${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}<span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</span>
           <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "padding:1px 5px;font-size:12px")}</span>
         </a>`).join("");
       return `<div class="embed-marquee-bar">
           <div class="ticker-tape-wrap" style="border:none;flex:1;background:transparent">
-            <div class="ticker-tape" style="animation-duration:28s">${items}<span aria-hidden="true" style="display:contents">${items}</span></div>
+            <div class="ticker-tape" style="animation-duration:28s">${items}<span aria-hidden="true" style="display:contents">${items.replace(/<a /g, "<a tabindex=\"-1\" ")}</span></div>
           </div>
-          <a href="${SITE}/" target="_blank" rel="noopener" class="embed-brand-dock">⚡ CryptoPriceTicker.com</a>
+          <a href="${SITE}/" target="_blank" rel="noopener" class="embed-brand-dock"><img src="/brand/mark.svg" width="14" height="14" alt="" style="border-radius:3px" />CryptoPriceTicker.com</a>
         </div>`;
     }
 
@@ -247,7 +257,7 @@
       return `<div class="embed-single-card">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
             <div style="display:flex;align-items:center;gap:10px">
-              <div class="coin-avatar" style="width:34px;height:34px;font-size:12px">${esc(c.sym.slice(0, 4))}</div>
+              ${avatar(c.sym, "", "width:34px;height:34px;font-size:12px")}
               <div>
                 <div style="display:flex;align-items:center;gap:6px">
                   <strong style="font-size:15px;font-family:var(--font-mono)">${esc(c.sym)}</strong>
@@ -268,15 +278,15 @@
             <div class="metric-box"><div class="metric-label">24h Low / High</div><div class="range-track" style="margin-top:5px"><div class="range-fill" style="width:${rangePct(c).toFixed(0)}%"></div></div></div>
           </div>
           <div class="embed-footer-bar" style="border-radius:4px">
-            <span>⚡ Live exchange feed</span>
-            <a href="${link(c)}" target="_blank" rel="noopener">CryptoPriceTicker.com ↗</a>
+            <span class="embed-live"><span class="pulse-dot" aria-hidden="true"></span>Live exchange feed</span>
+            <a href="${link(c)}" target="_blank" rel="noopener" class="embed-credit"><img src="/brand/mark.svg" width="14" height="14" alt="" />CryptoPriceTicker.com ↗</a>
           </div>
         </div>`;
     }
 
     const cards = picked.slice(0, 8).map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="embed-card">
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong style="font-family:var(--font-mono);font-size:12.5px">${esc(c.sym)}</strong>
+            <strong style="font-family:var(--font-mono);font-size:12.5px;display:inline-flex;align-items:center;gap:6px">${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}${esc(c.sym)}</strong>
             <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "font-size:12px;padding:1px 5px")}</span>
           </div>
           <div style="font-family:var(--font-mono);font-size:14px;font-weight:800" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</div>
@@ -288,8 +298,8 @@
     return `<div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-primary)">
         <div class="embed-grid-wrap">${cards}</div>
         <div class="embed-footer-bar">
-          <span>⚡ Live multi-exchange prices</span>
-          <a href="${SITE}/" target="_blank" rel="noopener">CryptoPriceTicker.com ↗</a>
+          <span class="embed-live"><span class="pulse-dot" aria-hidden="true"></span>Live multi-exchange prices</span>
+          <a href="${SITE}/" target="_blank" rel="noopener" class="embed-credit"><img src="/brand/mark.svg" width="14" height="14" alt="" />CryptoPriceTicker.com ↗</a>
         </div>
       </div>`;
   }
@@ -362,7 +372,7 @@
     const isFav = state.watchlist.has(c.sym);
     const hasAlert = Boolean(state.alerts[c.sym]);
     const bagUsd = (state.bag[c.sym] || 0) * c.price;
-    const ident = `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>
+    const ident = `${avatar(c.sym)}
               <span class="coin-main">
                 <span class="coin-name">${esc(c.name)}</span>
                 <span class="coin-sym-row"><span class="coin-sym">${s}</span><span class="ex-badge" id="src-${s}" title="Exchange that sent the latest price">${c.lastSource === "BOOT" ? "…" : c.lastSource}</span></span>
@@ -494,7 +504,7 @@
       .sort((a, b) => (state.moverMode === "gainers" ? b.change24h - a.change24h : a.change24h - b.change24h))
       .slice(0, 6);
     $("moversList").innerHTML = movers.length ? movers.map(m => `<a class="mover-card" href="${coinUrl(m.sym)}">
-          <span class="mc-head"><span class="coin-avatar sm" aria-hidden="true">${esc(m.sym.slice(0, 4))}</span><span><strong>${esc(m.sym)}</strong><span class="mc-name">${esc(m.name)}</span></span></span>
+          <span class="mc-head">${avatar(m.sym, "sm")}<span><strong>${esc(m.sym)}</strong><span class="mc-name">${esc(m.name)}</span></span></span>
           <span class="mc-price">${fmtPrice(m.price)}</span>
           ${chgPill(m)}
         </a>`).join("") : Array.from({ length: 6 }, () => `<div class="mover-card skeleton" aria-hidden="true"></div>`).join("");
@@ -505,7 +515,7 @@
   function renderTape() {
     const top = Array.from(state.coins.values()).filter(c => c.hasPage).sort((a, b) => a.rank - b.rank).slice(0, 16);
     const html = top.map(c => `<a class="tape-item" href="${coinUrl(c.sym)}" tabindex="-1">
-          <span class="tape-sym">${esc(c.sym)}</span>
+          ${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}<span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-tape="${esc(c.sym)}">${fmtPrice(c.price)}</span>
           <span style="color:${c.change24h >= 0 ? "var(--up)" : "var(--down)"}">${c.live ? (c.change24h >= 0 ? "▲ " : "▼ ") + Math.abs(c.change24h).toFixed(2) + "%" : ""}</span>
         </a>`).join("");
@@ -561,6 +571,23 @@
     el.classList.toggle("alt", alt);
   }
 
+  // The header logo breathes with the market: a short gold glow when BTC ticks up, magenta when it
+  // ticks down. At most once every 3 s, same restart-without-layout trick as flash().
+  let logoEl = null, lastPulse = 0;
+  function pulseLogo(dirty) {
+    const now = Date.now();
+    if (now - lastPulse < 3000 || !dirty.includes("BTC")) return;
+    const dir = state.coins.get("BTC") && state.coins.get("BTC").lastDir;
+    if (!dir) return;
+    logoEl = logoEl || document.querySelector(".topbar-brand .brand-logo");
+    if (!logoEl) return;
+    lastPulse = now;
+    const alt = !logoEl.classList.contains("alt");
+    logoEl.classList.remove("pulse-up", "pulse-down");
+    logoEl.classList.add(dir === "up" ? "pulse-up" : "pulse-down");
+    logoEl.classList.toggle("alt", alt);
+  }
+
   // Skip DOM writes that would not change anything (most ticks only move the price).
   const setText = (el, v) => { if (el && el.textContent !== v) el.textContent = v; };
   const setHtml = (el, v) => { if (el && el._html !== v) { el.innerHTML = v; el._html = v; } };
@@ -574,6 +601,7 @@
       dirty.forEach(sym => patchWidget(document, sym, state.currency));
       return;
     }
+    pulseLogo(dirty);
 
     if (MODE === "coin") {
       if (dirty.includes(state.coinPageSym) || dirty.some(s => RATE_COINS.includes(s))) updateCoinPage();
@@ -654,20 +682,69 @@
   }
 
   // Reconnect with capped exponential backoff; reset after a healthy connection.
+  const feeds = []; // one entry per exchange socket, so the page can drop and restore them
+  let feedsPaused = false;
   function keepAlive(ex, connect) {
     let delay = 2000;
+    const feed = { ws: null };
     const open = () => {
+      if (feedsPaused) return;
       let ws;
       try { ws = connect(); } catch (_) { return; }
+      feed.ws = ws;
       ws.addEventListener("open", () => { delay = 2000; setBadge(ex, "LIVE", true); });
       ws.addEventListener("close", () => {
         setBadge(ex, "RETRY", false);
+        if (feedsPaused) return;
         setTimeout(open, delay);
         delay = Math.min(delay * 2, 60000);
       });
     };
+    feed.open = open;
+    feeds.push(feed);
     open();
   }
+
+  // View transition: the clicked coin's logo morphs into the coin page header (see app.css).
+  document.addEventListener("click", e => {
+    const a = e.target.closest && e.target.closest("a.coin-cell, a.mover-card, .quick-results a");
+    const av = a && a.querySelector(".coin-avatar");
+    // On a coin page the header logo already carries the name; two elements with it cancel the transition.
+    if (av && !document.querySelector(".coin-title .coin-avatar")) av.style.viewTransitionName = "coin-logo";
+  }, true);
+  addEventListener("pageshow", () => document.querySelectorAll('.coin-avatar[style*="view-transition-name"]').forEach(el => { el.style.viewTransitionName = ""; }));
+
+  // Phones: the two-row header tucks away while scrolling down and comes back on any scroll up,
+  // near the top, or when focus moves into it (keyboard users). One passive listener, one rAF.
+  if (window.matchMedia && !IS_EMBED) {
+    const phone = matchMedia("(max-width: 640px)");
+    const bar = document.querySelector(".topbar");
+    let lastY = scrollY, ticking = false;
+    const update = () => {
+      ticking = false;
+      const y = scrollY, tuck = phone.matches && y > 160 && y > lastY + 4 && !bar.contains(document.activeElement) && !bar.querySelector("details[open]");
+      if (tuck) bar.classList.add("is-tucked");
+      else if (y < lastY - 4 || y <= 160 || !phone.matches) bar.classList.remove("is-tucked");
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    };
+    if (bar) {
+      addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      bar.addEventListener("focusin", () => bar.classList.remove("is-tucked"));
+    }
+  }
+
+  // Back/forward cache: open WebSockets can keep a page out of it, so every page close drops the
+  // feeds; if the page comes back from the cache, they reconnect with a fresh REST snapshot.
+  addEventListener("pagehide", () => {
+    feedsPaused = true;
+    feeds.forEach(f => { if (f.ws && f.ws.readyState < 2) f.ws.close(); });
+  });
+  addEventListener("pageshow", e => {
+    if (!e.persisted || !feedsPaused) return;
+    feedsPaused = false;
+    feeds.forEach(f => f.open());
+    bootstrapBinance(Array.from(subscribed));
+  });
 
   function binanceTick(t, symbolKey) {
     const sym = exToSym.BN.get(t[symbolKey].slice(0, -4));
@@ -896,7 +973,7 @@
               </select></div>
             <div class="form-group"><label for="wgTheme">2. Theme</label>
               <select id="wgTheme" class="form-select">
-                <option value="kali">Kali cyber blue (dark)</option><option value="green">Terminal green</option>
+                <option value="neon">CryptoPriceTicker Neon (dark)</option><option value="kali">Kali cyber blue (dark)</option><option value="green">Terminal green</option>
                 <option value="slate">Slate</option><option value="oled">Pure black OLED</option><option value="light">Light</option>
               </select></div>
             <div class="form-group"><label for="wgCoins">3. Coins (comma-separated tickers)</label>
@@ -922,7 +999,7 @@
           <div class="widget-preview-stage" id="wgPreviewStage"></div>
           <div class="form-group"><label for="wgEmbedCode">HTML snippet (responsive iframe + credit link)</label><textarea id="wgEmbedCode" class="code-textarea" readonly></textarea></div>
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-            <span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)">⚡ No scripts on your page • lazy-loaded iframe • free</span>
+            <span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)"><img src="/brand/mark.svg" width="14" height="14" alt="" style="vertical-align:-3px;margin-right:4px;border-radius:3px" />No scripts on your page • lazy-loaded iframe • free</span>
             <div style="display:flex;gap:8px">
               <a class="action-btn" id="wgOpenStandalone" href="/embed/" target="_blank" rel="noopener">↗ Open widget</a>
               <button type="button" class="action-btn btn-accent" data-action="copy" data-target="wgEmbedCode" data-msg="📋 Widget snippet copied.">📋 Copy HTML</button>
@@ -1115,7 +1192,7 @@
 <div class="cpt-widget-embed" style="width:100%;max-width:100%;overflow:hidden;border-radius:8px;font-family:sans-serif;">
   <iframe src="${embedUrl}" width="100%" height="${height}" style="border:0;display:block;width:100%;height:${height}px;" loading="lazy" title="${title} — CryptoPriceTicker.com"></iframe>
   <div style="text-align:right;font-size:11px;padding:3px 4px;opacity:0.85;">
-    <a href="${href}" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:none;font-weight:600;">${anchor}</a>
+    <a href="${href}" target="_blank" rel="noopener" style="color:#7c3aed;text-decoration:none;font-weight:600;">${anchor}</a>
   </div>
 </div>
 <!-- End CryptoPriceTicker.com widget -->`;
@@ -1432,6 +1509,7 @@
       const fs = Math.max(8, Math.min(30, side / 3.6, (r.w - 4) / (c.sym.length * 0.72)));
       const show = r.w > 26 && r.h > 16;
       return `<a class="hm-tile" id="hm-${s}" href="${coinUrl(c.sym)}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;font-size:${fs.toFixed(1)}px;background:${heatColor(c)}">` +
+        (r.h > fs * 4.6 + 12 && r.w > 80 && HAS_LOGO.has(c.sym) ? `<img class="hm-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="${Math.round(fs * 1.15)}" height="${Math.round(fs * 1.15)}" decoding="async" />` : "") +
         (show ? `<span class="hm-sym">${s}</span>` : "") +
         (r.h > 38 && r.w > 46 ? `<span class="hm-chg">${fmtChange(c)}</span>` : "") +
         (r.h > 70 && r.w > 80 ? `<span class="hm-price">${fmtPrice(c.price, "USD")}</span>` : "") + `</a>`;
@@ -1511,7 +1589,7 @@
     const close = () => { list.hidden = true; input.setAttribute("aria-expanded", "false"); input.removeAttribute("aria-activedescendant"); };
     const render = () => {
       if (!input.value.trim()) return close();
-      list.innerHTML = items.length ? items.map((c, i) => `<li role="option" id="qs-${i}" aria-selected="${i === active}"><a href="${coinUrl(c.sym)}" tabindex="-1"><span class="coin-avatar sm" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span><strong>${esc(c.sym)}</strong><span class="qs-name">${esc(c.name)}</span></a></li>`).join("")
+      list.innerHTML = items.length ? items.map((c, i) => `<li role="option" id="qs-${i}" aria-selected="${i === active}"><a href="${coinUrl(c.sym)}" tabindex="-1">${avatar(c.sym, "sm")}<strong>${esc(c.sym)}</strong><span class="qs-name">${esc(c.name)}</span></a></li>`).join("")
         : `<li class="qs-empty" role="option" aria-disabled="true">No coin matches “${esc(input.value.trim())}”</li>`;
       list.hidden = false;
       input.setAttribute("aria-expanded", "true");
@@ -1566,6 +1644,18 @@
     if (MODE === "embed") renderEmbed();
   }
 
+  // Interaction responsiveness (INP): a click first paints its own feedback (pressed state, active
+  // chip), then the heavy re-render runs in a later task. scheduler.yield() keeps the work at the
+  // front of the queue where supported (Chromium, Firefox); Safari falls back to setTimeout.
+  // Repeated clicks before the render runs collapse into one render.
+  const yieldToMain = () => (globalThis.scheduler && typeof scheduler.yield === "function") ? scheduler.yield() : new Promise(r => setTimeout(r, 0));
+  const pendingRenders = new Set();
+  function deferRender(fn) {
+    if (pendingRenders.has(fn)) return;
+    pendingRenders.add(fn);
+    yieldToMain().then(() => { pendingRenders.delete(fn); fn(); });
+  }
+
   const actions = {
     "toggle-index"(el) {
       const open = $("coinIndex").classList.toggle("collapsed") === false;
@@ -1574,24 +1664,24 @@
     },
     "show-all"() {
       state.showAll = true;
-      renderTable();
+      deferRender(renderTable);
     },
     "hm-group"(el) {
       hm.group = el.dataset.group === "sector";
       document.querySelectorAll("[data-action=hm-group]").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
       syncHeatmapUrl();
-      renderHeatmap();
+      deferRender(renderHeatmap);
     },
     "hm-size"(el) {
       hm.balanced = el.dataset.size === "balanced";
       document.querySelectorAll("[data-action=hm-size]").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
       syncHeatmapUrl();
-      renderHeatmap();
+      deferRender(renderHeatmap);
     },
     "hm-stables"(el) {
       hm.stables = !hm.stables;
       el.setAttribute("aria-pressed", String(hm.stables));
-      renderHeatmap();
+      deferRender(renderHeatmap);
     },
     "cv-swap"() {
       const out = parseFloat($("cvB").value);
@@ -1607,13 +1697,13 @@
       const sym = el.dataset.sym;
       if (state.watchlist.has(sym)) state.watchlist.delete(sym); else state.watchlist.add(sym);
       store.set("cpt_watch", Array.from(state.watchlist));
-      if (MODE === "home") renderTable(); else syncFavButton();
+      if (MODE === "home") deferRender(renderTable); else syncFavButton();
       refreshQuickActions();
     },
     "toggle-pin"(el) {
       state.pinnedSym = state.pinnedSym === el.dataset.sym ? "" : el.dataset.sym;
       store.set("cpt_pin", state.pinnedSym);
-      renderTable();
+      deferRender(renderTable);
       refreshQuickActions();
       if (state.pinnedSym) showToast(`📌 ${state.pinnedSym} live price pinned to this tab's title.`);
     },
@@ -1622,20 +1712,20 @@
     "save-alert": el => { saveAlert(el.dataset.sym, el.dataset.input); if (state.alerts[el.dataset.sym]) askNotifyPermission(); },
     "clear-alert": el => clearAlert(el.dataset.sym),
     theme: el => applyTheme(el.getAttribute("data-theme-val")),
-    curr(el) { applyCurrency(el.getAttribute("data-curr")); rerender(); },
+    curr(el) { applyCurrency(el.getAttribute("data-curr")); deferRender(rerender); },
     sector(el) {
       state.sector = el.dataset.sector;
       document.querySelectorAll("[data-action=sector]").forEach(p => {
         p.classList.toggle("active", p === el);
         p.setAttribute("aria-pressed", p === el);
       });
-      renderTable();
+      deferRender(renderTable);
     },
     sort(el) {
       const col = el.closest("th").dataset.sort;
       if (state.sortBy === col) state.sortAsc = !state.sortAsc;
       else { state.sortBy = col; state.sortAsc = col === "rank" || col === "name"; }
-      renderTable();
+      deferRender(renderTable);
     },
     movers(el) {
       state.moverMode = el.dataset.mode;
@@ -1648,7 +1738,7 @@
     "reset-bag"() {
       state.bag = {};
       store.set("cpt_bag", {});
-      renderTable();
+      deferRender(renderTable);
       showToast("💼 Bag quantities cleared.");
     },
     density() {
@@ -1773,7 +1863,11 @@
     recomputeRanks(); // about / sector / widgets pages: header menu and widget builder only
   }
 
-  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap") startFeeds();
+  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap") {
+    // A page prerendered by the speculation rules connects only once the visitor actually opens it.
+    if (document.prerendering) document.addEventListener("prerenderingchange", startFeeds, { once: true });
+    else startFeeds();
+  }
   if (MODE !== "embed") initQuickSearch();
 
   /* ------------------------------------------------------------------
