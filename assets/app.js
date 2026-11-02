@@ -238,7 +238,7 @@
           <div class="ticker-tape-wrap" style="border:none;flex:1;background:transparent">
             <div class="ticker-tape" style="animation-duration:28s">${items}<span aria-hidden="true" style="display:contents">${items}</span></div>
           </div>
-          <a href="${SITE}/" target="_blank" rel="noopener" class="embed-brand-dock">⚡ CryptoPriceTicker.com</a>
+          <a href="${SITE}/" target="_blank" rel="noopener" class="embed-brand-dock"><img src="/brand/mark.svg" width="14" height="14" alt="" style="border-radius:3px" />CryptoPriceTicker.com</a>
         </div>`;
     }
 
@@ -561,6 +561,23 @@
     el.classList.toggle("alt", alt);
   }
 
+  // The header logo breathes with the market: a short gold glow when BTC ticks up, magenta when it
+  // ticks down. At most once every 3 s, same restart-without-layout trick as flash().
+  let logoEl = null, lastPulse = 0;
+  function pulseLogo(dirty) {
+    const now = Date.now();
+    if (now - lastPulse < 3000 || !dirty.includes("BTC")) return;
+    const dir = state.coins.get("BTC") && state.coins.get("BTC").lastDir;
+    if (!dir) return;
+    logoEl = logoEl || document.querySelector(".topbar-brand .brand-logo");
+    if (!logoEl) return;
+    lastPulse = now;
+    const alt = !logoEl.classList.contains("alt");
+    logoEl.classList.remove("pulse-up", "pulse-down");
+    logoEl.classList.add(dir === "up" ? "pulse-up" : "pulse-down");
+    logoEl.classList.toggle("alt", alt);
+  }
+
   // Skip DOM writes that would not change anything (most ticks only move the price).
   const setText = (el, v) => { if (el && el.textContent !== v) el.textContent = v; };
   const setHtml = (el, v) => { if (el && el._html !== v) { el.innerHTML = v; el._html = v; } };
@@ -574,6 +591,7 @@
       dirty.forEach(sym => patchWidget(document, sym, state.currency));
       return;
     }
+    pulseLogo(dirty);
 
     if (MODE === "coin") {
       if (dirty.includes(state.coinPageSym) || dirty.some(s => RATE_COINS.includes(s))) updateCoinPage();

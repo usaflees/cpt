@@ -122,7 +122,7 @@ const sectorUrl = x => `${SITE}/sector/${x.slug}/`;
 // Same header as index.html: brand, link home, live-feed status, currency and menu.
 function topbar(withFeeds, withCurrency = withFeeds) {
   return `<header class="topbar">
-    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><span class="brand-logo" aria-hidden="true">⚡</span><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><img class="brand-logo" src="/brand/mark.svg" width="34" height="34" alt="" /><span class="brand-word">CryptoPriceTicker</span></a>
     <a class="topbar-link" href="/">← All prices</a>
     <div class="search-box quick-search">
       <span class="search-icon" aria-hidden="true">🔍</span>
@@ -293,7 +293,7 @@ function coinPage(c) {
   <meta property="og:title" content="${esc(`${c.name} (${c.sym}) live price`)}" />
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${url(c.sym)}" />
-  <meta property="og:image" content="${SITE}${existsSync(`${ROOT}og/${slug(c.sym)}.jpg`) ? `/og/${slug(c.sym)}.jpg` : "/og-image.png"}" />
+  <meta property="og:image" content="${SITE}${existsSync(`${ROOT}og/${slug(c.sym)}.jpg`) ? `/og/${slug(c.sym)}.jpg` : "/og-image.jpg"}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -461,7 +461,7 @@ function sectorPage(x) {
   <meta property="og:title" content="${esc(x.h1)}" />
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${sectorUrl(x)}" />
-  <meta property="og:image" content="${SITE}/og-image.png" />
+  <meta property="og:image" content="${SITE}/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
   <script src="/assets/theme-init.js"></script>
@@ -568,7 +568,7 @@ function convertPage() {
   <meta property="og:title" content="Live crypto converter" />
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${pageUrl}" />
-  <meta property="og:image" content="${SITE}/og-image.png" />
+  <meta property="og:image" content="${SITE}/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
   <script src="/assets/theme-init.js"></script>
@@ -660,7 +660,7 @@ function heatmapPage() {
   <meta property="og:title" content="Live crypto heatmap" />
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${pageUrl}" />
-  <meta property="og:image" content="${SITE}${existsSync(ROOT + "og/heatmap.jpg") ? "/og/heatmap.jpg" : "/og-image.png"}" />
+  <meta property="og:image" content="${SITE}${existsSync(ROOT + "og/heatmap.jpg") ? "/og/heatmap.jpg" : "/og-image.jpg"}" />
   <meta name="twitter:card" content="summary_large_image" />
   <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
   <script src="/assets/theme-init.js"></script>
@@ -721,7 +721,7 @@ mkdirSync(ROOT + "heatmap", { recursive: true });
 writeFileSync(ROOT + "heatmap/index.html", heatmapPage());
 
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${updated}</lastmod></url>`).join("\n")}
@@ -751,4 +751,4 @@ const links = byCap.map(c => `          <a href="/coin/${slug(c.sym)}/">${esc(c.
 writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice(end));
 
 console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter and heatmap, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
-if (!existsSync(ROOT + "og-image.png")) console.warn("⚠ og-image.png is missing");
+if (!existsSync(ROOT + "og-image.jpg")) console.warn("⚠ og-image.jpg is missing");

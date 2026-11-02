@@ -1,3 +1,5 @@
+<p align="center"><img src="brand/lockup-1200x298.jpg" width="600" alt="CryptoPriceTicker"></p>
+
 # CryptoPriceTicker.com
 
 Live crypto prices streamed straight from Coinbase, Binance and Kraken into the browser.
@@ -21,6 +23,7 @@ whatever is in this repository is what gets deployed.
 | `sector/<slug>/index.html` | Sector hub pages (**generated** from `content/sectors.json`) |
 | `heatmap/index.html` | Live market heatmap: treemap sized by market cap, coloured by 24h change (**generated**) |
 | `convert/index.html` | Crypto converter: any coin ⇄ any coin or 20 fiat currencies (**generated**; fiat rates from Coinbase's public exchange-rates API) |
+| `brand/` | Brand kit page (`/brand/`) and every logo asset: vector mark (`mark.svg`, `mark-glow.svg`), CPT badges, lockup, banners, poster. Masters and the colour rationale are on the page |
 | `og/<sym>.jpg` | Per-coin social share images (`node scripts/build-og-images.cjs`, needs Playwright) |
 | `sw.js` | Service worker: installable app + offline fallback (always network-first) |
 | `llms.txt`, `.well-known/security.txt`, `<key>.txt` | AI-crawler summary, security contact, IndexNow key |
@@ -31,7 +34,7 @@ whatever is in this repository is what gets deployed.
 | `_headers` | Security headers (incl. Content-Security-Policy) and cache rules for Cloudflare Pages |
 | `_redirects` | Old tickers → new coin pages (**generated**) |
 | `sitemap.xml` | **Generated** list of all pages for search engines |
-| `robots.txt`, `site.webmanifest`, `favicon.*`, `icon-*.png`, `apple-touch-icon.png`, `og-image.png` | Search/social/app metadata |
+| `robots.txt`, `site.webmanifest`, `favicon.*`, `icon-*.png`, `apple-touch-icon.png`, `og-image.jpg` | Search/social/app metadata |
 | `scripts/` | Maintenance scripts (Node 18+, no dependencies) — see below |
 | `scripts/telemetry/` | Google Apps Script that collects Search Console + Cloudflare data into a private Sheet |
 | `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` |

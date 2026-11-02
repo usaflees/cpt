@@ -27,7 +27,7 @@
   Cache-Control: public, max-age=604800
 /icon-*
   Cache-Control: public, max-age=604800
-/og-image.png
+/og-image.jpg
   Cache-Control: public, max-age=604800
 
 # Widget frames: indexable only inside the pages that embed them.
