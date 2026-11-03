@@ -14,7 +14,8 @@ const B = process.argv[2] || 'http://localhost:8788';
     await p.keyboard.type('sol'); await p.waitForTimeout(150);
     const opts = await p.$$eval('#quickResults li', l => l.map(x => x.textContent.replace(/\s+/g, ' ').trim()).slice(0, 3));
     await p.keyboard.press('ArrowDown'); const act = await p.getAttribute('#quickSearch', 'aria-activedescendant');
-    await p.keyboard.press('ArrowUp'); await p.keyboard.press('Enter'); await p.waitForLoadState(); await p.waitForTimeout(300);
+    // Wait for the navigation itself: on a real network (and with prerendering) it can commit after the key press returns.
+    await p.keyboard.press('ArrowUp'); await Promise.all([p.waitForURL('**/coin/sol/', { timeout: 15000 }).catch(() => issues.push(`${u}: Enter did not open /coin/sol/`)), p.keyboard.press('Enter')]);
     console.log(u, '| "/" focuses', focused, '| results', opts.join(' / '), '| active after ↓', act, '| Enter ->', new URL(p.url()).pathname);
   }
   await p.goto(B + '/coin/eth/'); await p.fill('#quickSearch', 'ton'); await p.waitForTimeout(150);
@@ -23,7 +24,7 @@ const B = process.argv[2] || 'http://localhost:8788';
   await p.fill('#quickSearch', 'bit'); await p.waitForTimeout(150); await p.screenshot({ path: OUT + '/qs-desktop.png', clip: { x: 0, y: 0, width: 1366, height: 460 } });
   await p.keyboard.press('Escape'); console.log('Esc closes:', await p.$eval('#quickResults', e => e.hidden));
   // home Enter
-  await p.goto(B + '/'); await p.waitForTimeout(1500); await p.fill('#searchInput', 'kaspa'); await p.press('#searchInput', 'Enter'); await p.waitForLoadState(); console.log('home Enter "kaspa" ->', new URL(p.url()).pathname);
+  await p.goto(B + '/'); await p.waitForTimeout(1500); await p.fill('#searchInput', 'kaspa'); await Promise.all([p.waitForURL('**/coin/kas/', { timeout: 15000 }).catch(() => issues.push('home: Enter did not open /coin/kas/')), p.press('#searchInput', 'Enter')]); console.log('home Enter "kaspa" ->', new URL(p.url()).pathname);
   // theme: light system, fresh storage
   const lc = await b.newContext({ colorScheme: 'light' }); const lp = await lc.newPage(); await lp.goto(B + '/coin/btc/'); await lp.waitForTimeout(1000);
   console.log('light OS first visit:', await lp.getAttribute('html', 'data-theme'), '| saved:', await lp.evaluate(() => localStorage.getItem('cpt_theme')));
