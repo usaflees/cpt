@@ -14,6 +14,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
+if (process.argv.length > 2) { console.error("Unknown argument(s): " + process.argv.slice(2).join(" ") + "\nUsage: node scripts/build-coin-pages.mjs   (no options; regenerates pages, sitemap, _redirects, hashes)"); process.exit(1); }
 
 const SITE = "https://cryptopriceticker.com";
 const EXCHANGES = { CB: "Coinbase", BN: "Binance", KR: "Kraken" };

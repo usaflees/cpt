@@ -77,7 +77,8 @@ If a coin is renamed (like Toncoin → Gram), change its `sym`/`name` and set `f
 watchlists, portfolios and `/coin/old/` links then move over automatically. If an exchange still
 uses the old ticker, add `tickers: { CB: "OLD" }` (or `BN`/`KR`).
 
-**Refresh data** (the weekly scheduled task does this automatically):
+**Refresh data** (the weekly scheduled task does this automatically). One command runs the whole chain with a short
+summary and classifies the result: `bash scripts/weekly-refresh.sh`. The individual steps:
 ```sh
 node scripts/refresh-coins.mjs      # supplies, seed prices, verified exchange feeds (warns on delistings)
 node scripts/fetch-coin-stats.mjs   # performance figures from daily candles

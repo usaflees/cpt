@@ -4,6 +4,11 @@ Newest first. Reverse a decision by adding a new row that says so; don't edit ol
 
 | Date | Decision | Why | Source |
 | --- | --- | --- | --- |
+| 2026-11-03 | Weekly task runs `scripts/weekly-refresh.sh` and `tests/wait-deploy.sh`; its prompt shrank from 4,893 to 3,324 characters; recommended effort Medium | Fewer turns and less output per run (Pro plan usage) with the same gates | measured Nov 2 run |
+| 2026-11-03 | `content/coin-stats.json` written one coin per line | A weekly refresh changed ~7,300 lines of it; now ~114 | measured |
+| 2026-11-03 | Data scripts reject unknown arguments | `refresh-coins.mjs --help` silently ran a real refresh | incident |
+| 2026-11-03 | `tests/crawl.cjs` checks every page for errors and lists browser warnings; `run.sh` prints one line per check | Whole-site coverage; an invalid speculation-rules file only ever showed as a warning | incident |
+| 2026-11-03 | No `.claude/settings.json` permission allowlist from Claude | Claude Code's auto-mode classifier blocks an agent writing its own permissions; the owner can add one | — |
 | 2026-11-02 | Removed `relative_to` from the top level of `speculation-rules.json` | Chrome rejected the whole rule ("A document rule cannot have relative_to outside the where clause"), so prerendering never ran; all patterns are absolute paths anyway | Chrome console |
 | 2026-11-02 | Google Tag Manager + GA4 behind a consent banner (`assets/consent.js`, "Cookie settings" in the footer) | Owner's choice; **supersedes** the 2026-10-30 "Cloudflare Web Analytics, not GA4" row. Consent-gated so EU/UK rules and the privacy promise hold | PR #7 |
 | 2026-11-02 | Performance budgets and a third-party-origin allowlist enforced by seo-lint | Keep speed from eroding one PR at a time | PR #6, STRATEGY C3 |

@@ -9,6 +9,7 @@
 // task does this), so the stats and the pages' "updated" dates move together.
 import { writeFileSync } from "node:fs";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
+if (process.argv.length > 2) { console.error("Unknown argument(s): " + process.argv.slice(2).join(" ") + "\nUsage: node scripts/fetch-coin-stats.mjs   (no options; rewrites content/coin-stats.json)"); process.exit(1); }
 
 const DAY = 86400e3;
 
@@ -100,7 +101,9 @@ async function main() {
     await new Promise(r => setTimeout(r, 400));
   }
   const updated = Object.values(out).map(s => s.asOf).sort().pop();
-  writeFileSync(ROOT + "content/coin-stats.json", JSON.stringify({ updated, coins: out }, null, 1) + "\n");
+  // One coin per line: a weekly refresh then diffs ~114 lines instead of ~7,000 (smaller PRs, cheaper to review).
+  const body = Object.entries(out).map(([sym, v]) => `  ${JSON.stringify(sym)}: ${JSON.stringify(v)}`).join(",\n");
+  writeFileSync(ROOT + "content/coin-stats.json", `{\n "updated": ${JSON.stringify(updated)},\n "coins": {\n${body}\n }\n}\n`);
   console.log(`Stats for ${Object.keys(out).length}/${coins.length} coins (as of ${updated}).`);
   if (failed.length) console.log(`⚠ No candle data: ${failed.join(", ")}`);
 }

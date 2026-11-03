@@ -9,6 +9,12 @@
 import { loadRegistry, writeRegistry } from "./lib/registry.mjs";
 
 const DRY = process.argv.includes("--dry");
+// Unknown flags are an error, not ignored: a stray "--help" must not trigger a real refresh.
+const unknownArgs = process.argv.slice(2).filter(a => a !== "--dry");
+if (unknownArgs.length) {
+  console.error(`Unknown argument(s): ${unknownArgs.join(" ")}\nUsage: node scripts/refresh-coins.mjs [--dry]   (--dry prints the report without writing assets/coins.js)`);
+  process.exit(1);
+}
 
 async function getJson(url) {
   const res = await fetch(url, { headers: { "user-agent": "cryptopriceticker-refresh/1.0" } });

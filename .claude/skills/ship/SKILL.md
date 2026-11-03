@@ -13,13 +13,13 @@ that step again.
 2. **Commit and push the working branch** (never `main` directly): `git push -u origin <branch>`.
 3. **Wait for the Cloudflare preview** of that commit. The branch alias is the branch name lowercased, with every
    character other than letters and digits replaced by `-`, cut to 28 characters:
-   `https://<alias>.cryptopriceticker.pages.dev`. Poll until it serves the new content (grep for a string you
-   changed), about 1–3 minutes.
+   `bash tests/wait-deploy.sh https://<alias>.cryptopriceticker.pages.dev` (one command, usually 1–3 minutes; for
+   a change that touches neither assets nor the sitemap, check a changed string with curl instead).
 4. **Preview QA:** `bash tests/run.sh https://<alias>.cryptopriceticker.pages.dev` must end with `QA PASSED`.
    The preview applies the real `_headers`, so CSP problems show up here.
 5. **Go live:** `git fetch origin main`, confirm `git merge-base --is-ancestor origin/main HEAD`, then
    `git push origin HEAD:main` (fast-forward only; never force-push).
-6. **Production check:** poll https://cryptopriceticker.com until it serves the change, then
+6. **Production check:** `bash tests/wait-deploy.sh https://cryptopriceticker.com`, then
    `node scripts/check-live.mjs` (all checks must pass) and confirm the "Site checks" GitHub Actions run on `main`
    is green.
 7. **Tell search engines:** `node scripts/indexnow.mjs <the old origin/main sha>` (only changed pages are sent).

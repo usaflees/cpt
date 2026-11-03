@@ -28,15 +28,16 @@ Lighthouse figures were measured on Oct 31–Nov 1, before PRs #1–#8; the QA r
 | Largest paint on coin pages (throttled real load) | ~1.0–1.1 s (Lighthouse's simulation reports 2.7 s) |
 | Main-thread blocking, home | ~300 ms (was 480 ms) |
 | Accessibility (axe-core) | 0 violations, 13 page types × dark and light themes |
-| HTML validity (html-validate recommended rules) | 0 errors on all 130 files (Nov 2, before the merge) |
+| HTML validity (html-validate recommended rules) | 0 errors on all 132 HTML files (Nov 2, after the merge) |
 | Internal links / anchors / duplicate ids | 6,051 links in 132 files, 0 problems |
 | seo-lint (incl. performance budgets) | 130 pages, 0 errors, 0 warnings |
 | Live checks (`scripts/check-live.mjs`) | 19/19 |
 | Browser tests (`tests/*.cjs`) | 0 issues |
+| Whole-site crawl, production (134 URLs incl. widgets and 404) | 0 errors, 0 failed requests, 0 CSP violations, 0 browser warnings (Nov 3) |
 
 ## Owner actions still open
 1. Add `usaflees/cpt` (push) to the weekly scheduled task's repositories; later `usaflees/cpt-telemetry` (read).
-2. Set the scheduled task's effort level in its model selector (see [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md)).
+2. Set the scheduled task's effort level to **Medium** in its model selector (see [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md)).
 3. Search Console Domain property, sitemap, Request Indexing for key pages; Bing Webmaster Tools import.
 4. Cloudflare Web Analytics on.
 5. Apps Script telemetry collector (`scripts/telemetry/README.md`).

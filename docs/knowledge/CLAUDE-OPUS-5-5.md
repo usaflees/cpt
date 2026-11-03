@@ -25,8 +25,8 @@ level it thinks more than Opus 5, especially at `xhigh` and `max`.
   (or `/effort ultracode`), or `claude --effort xhigh`.
 - **Scheduled task:** claude.ai/code → Scheduled tasks → the task → Edit; the **model selector** in the prompt box
   has **Effort**. (Claude can't change this through its tools; the owner sets it.) Recommended for the weekly
-  maintenance task: **High** (it's mostly scripted and gated by CI); **Extra high** is reasonable if you prefer,
-  and worth it on the first run of each month, when it may write SEO proposals.
+  maintenance task: **Medium**. Since Nov 3 the run is one script plus CI and preview QA, so extra thinking buys
+  little. Raise it to **High** once telemetry exists and the monthly SEO-proposal step starts doing real work.
 - Phrases like "think hard" or "be thorough" don't raise effort and can be deleted; change the level instead.
 
 ## How to ask (what Anthropic recommends for Opus 5.5)
@@ -74,6 +74,22 @@ Anthropic's top Claude Code tip: give Claude a check it can run. Here that is:
 - Commits and PRs appear as the owner's GitHub user.
 - Limits: schedules at most hourly; 100 scheduled runs an hour per account; "Run now" 30 an hour per task.
 - Model and effort are chosen in the task's model selector and apply to every run.
+
+## Keeping Pro plan usage low
+Usage grows with the number of turns, with how much text each turn adds to the context (tool output, files read),
+and with effort. What we did about each:
+| Cost driver | Change |
+| --- | --- |
+| Many small tool calls in the weekly run (20 turns on Nov 2 just to reach the push) | `scripts/weekly-refresh.sh` runs refresh → stats → build → lint → links → classify in one call with a one-screen summary and exit codes |
+| Polling a deploy turn by turn | `tests/wait-deploy.sh <url>` waits in one call |
+| Long QA output read every time | `tests/run.sh` prints one line per check; logs only for failures |
+| Huge diffs (a refresh changed ~8,400 lines, 7,278 of them in the stats file) | `content/coin-stats.json` is one coin per line: a refresh now changes ~114 lines in it |
+| Reading big generated files | CLAUDE.md says to grep them instead |
+| Accidental reruns (a stray `--help` once ran a real refresh) | Data scripts reject unknown flags |
+| Effort higher than the job needs | Weekly task on **Medium**; interactive default `medium`, `xhigh` only for audits/redesigns |
+| Unneeded connectors in scheduled tasks | The weekly task has none; keep it that way |
+Other levers: `/clear` between unrelated tasks; one Claude session changing the site at a time (two in parallel
+cost a merge on Nov 2); Batch/API pricing doesn't apply to the subscription, so fewer, fuller turns are what saves.
 
 ## Guardrails we keep regardless of model
 - Never feed raw search queries, analytics or credentials to the agent; it reads the sanitized digest only.

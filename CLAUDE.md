@@ -11,6 +11,14 @@ guide, research).
 - After a deploy: `node scripts/check-live.mjs` and `node scripts/indexnow.mjs <previous-main-sha>`.
 - To ship a human-requested change, follow the `ship` skill (`.claude/skills/ship/SKILL.md`).
 
+## Keep sessions cheap (Pro plan usage)
+- Prefer the summary commands: `bash tests/run.sh` and `bash scripts/weekly-refresh.sh` print one line per check;
+  open a log only for a FAIL. Wait for deploys with `bash tests/wait-deploy.sh <url>`, not repeated polling.
+- Don't read generated or large files whole (`coin/`, `sector/`, `content/coin-stats.json`, `og/`, `brand/`,
+  `docs/knowledge/research/`): grep, or read only the lines you need.
+- Default effort `medium`; use `high`/`xhigh` for audits, redesigns and hard bugs (docs/knowledge/CLAUDE-OPUS-5-5.md).
+- Scripts reject unknown flags; read a script's header comment for its usage instead of trying `--help`.
+
 ## Where the code misleads
 - `coin/`, `sector/`, `convert/`, `heatmap/`, `sitemap.xml`, `_redirects` and the coin list in `index.html` (between the
   `coin-index` markers) are generated. Edit `scripts/build-coin-pages.mjs` or `content/*.json`, then rebuild.
