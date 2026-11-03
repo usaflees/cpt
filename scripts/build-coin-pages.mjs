@@ -191,6 +191,40 @@ function performanceSummary(c, st) {
   return parts.join(" ");
 }
 
+// Key facts (roadmap B2): figures specific to this coin, each shown only when its data is meaningful.
+const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
+function keyFacts(c, st) {
+  const n = esc(shortName(c));
+  const facts = [];
+  const stable = c.sectors.includes("Stable");
+  if (!stable && st.maxDrawdown1y !== undefined && st.maxDrawdown1y <= -1) {
+    facts.push(["Largest fall in the past year", `${Math.abs(st.maxDrawdown1y).toFixed(1)}% between daily closes, from ${longDate(st.maxDrawdownFrom)} to ${longDate(st.maxDrawdownTo)}`]);
+  }
+  const months = st.monthly.filter(m => m.change !== null && m.change !== undefined);
+  if (!stable && months.length >= 6) {
+    const best = months.reduce((a, m) => (m.change > a.change ? m : a)), worst = months.reduce((a, m) => (m.change < a.change ? m : a));
+    facts.push([`Best and worst month (last ${months.length})`, `${monthName(best.month)} ${pctText(best.change)}; ${monthName(worst.month)} ${pctText(worst.change)}`]);
+  }
+  if (!stable && st.corrBtc90d !== undefined) {
+    const r = st.corrBtc90d, a = Math.abs(r);
+    const band = a >= 0.7 ? "strong" : a >= 0.4 ? "moderate" : "weak";
+    facts.push(["Correlation with Bitcoin", `${r.toFixed(2)} over the last ${st.corrDays} days of daily returns: a ${band}${r < 0 ? " negative" : ""} link (1 means ${n} and BTC moved together every day)`]);
+  }
+  const key = c.sectors[0], hub = sectorOf(key);
+  const peers = coins.filter(o => o.sectors[0] === key && stats[o.sym]?.change1y != null && stats[o.sym].historyDays >= 365)
+    .sort((a, b) => stats[b.sym].change1y - stats[a.sym].change1y);
+  const rank = peers.indexOf(c) + 1;
+  if (!stable && hub && rank && peers.length >= 3) {
+    facts.push([`1-year rank in ${esc(hub.name)}`, `${ordinal(rank)} of ${peers.length} <a href="/sector/${hub.slug}/">${esc(hub.name)}</a> coins tracked here with a full year of data`]);
+  }
+  if (!facts.length) return "";
+  return `
+      <h3>${esc(c.sym)} key facts</h3>
+      <dl class="fact-list">
+        ${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("\n        ")}
+      </dl>`;
+}
+
 function statsSection(c, st) {
   if (!st) return "";
   const s = esc(c.sym);
@@ -207,7 +241,7 @@ function statsSection(c, st) {
         ${cell("1 year", st.change1y)}
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">${usd(st.high52w)}</div><div class="metric-label">${longDate(st.high52wDate)}</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">${usd(st.low52w)}</div><div class="metric-label">${longDate(st.low52wDate)}</div></div>
-      </div>
+      </div>${keyFacts(c, st)}
       <h3>${s} monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">

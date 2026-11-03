@@ -1710,3 +1710,9 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 /* Answer-first summary in the coin hero (static text from the build, so no layout shift) */
 .coin-summary { margin-top: 12px; max-width: 62ch; color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
 @media (max-width: 480px) { body:not(.is-embed) .coin-summary { font-size: 13.5px; } }
+
+/* Key facts on coin pages (roadmap B2): label above value, two columns when there's room */
+.fact-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin: 4px 0 18px; }
+.fact-list > div { padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-primary); }
+.fact-list dt { font-size: 12px; color: var(--text-secondary); }
+.fact-list dd { margin: 3px 0 0; font-size: 14px; line-height: 1.5; color: var(--text-primary); }

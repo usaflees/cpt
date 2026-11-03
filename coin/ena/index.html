@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=d0f5f36bc3" as="style" />
+  <link rel="preload" href="/assets/app.css?v=187ab2253d" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -42,7 +42,7 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=d0f5f36bc3" />
+  <link rel="stylesheet" href="/assets/app.css?v=187ab2253d" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
   <script src="/assets/app.js?v=32c712c25c" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
@@ -98,7 +98,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span class="tag-badge">DeFi</span>
           <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="coin-summary">Ethena (ENA) has fallen 52.7% over the past year. Its daily closes ranged from $0.0714 (July 1, 2026) to $0.3745 (November 2, 2025) over the last 52 weeks. On November 1, 2026 it closed at $0.1832, 51.1% below that high, with 30-day annualized volatility of 117.5%. Daily closes (UTC) from Binance.</p>
+        <p class="coin-summary">Ethena (ENA) has fallen 54.4% over the past year. Its daily closes ranged from $0.0714 (July 1, 2026) to $0.3399 (November 10, 2025) over the last 52 weeks. On November 2, 2026 it closed at $0.1707, 49.8% below that high, with 30-day annualized volatility of 118.7%. Daily closes (UTC) from Binance.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="ENA" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="ENA">🧩 Embed ENA widget</button>
@@ -175,13 +175,20 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">ENA price performance</h2>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-11.45%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-21.17%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+96.99%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-52.73%</span></div></div>
-        <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$0.3745</div><div class="metric-label">November 2, 2025</div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-17.62%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-28.64%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+84.74%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-54.42%</span></div></div>
+        <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$0.3399</div><div class="metric-label">November 10, 2025</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$0.0714</div><div class="metric-label">July 1, 2026</div></div>
       </div>
+      <h3>ENA key facts</h3>
+      <dl class="fact-list">
+        <div><dt>Largest fall in the past year</dt><dd>79.0% between daily closes, from November 10, 2025 to July 1, 2026</dd></div>
+        <div><dt>Best and worst month (last 12)</dt><dd>Aug 2026 +86.18%; Nov 2025 -33.92%</dd></div>
+        <div><dt>Correlation with Bitcoin</dt><dd>0.58 over the last 90 days of daily returns: a moderate link (1 means Ethena and BTC moved together every day)</dd></div>
+        <div><dt>1-year rank in DeFi &amp; real-world assets</dt><dd>19th of 23 <a href="/sector/defi/">DeFi &amp; real-world assets</a> coins tracked here with a full year of data</dd></div>
+      </dl>
       <h3>ENA monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -203,7 +210,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 1, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 2, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">

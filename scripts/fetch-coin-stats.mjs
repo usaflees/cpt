@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Builds content/coin-stats.json: per-coin performance figures computed from daily candles,
-// used by scripts/build-coin-pages.mjs for the "Performance" and "Price history" sections.
+// used by scripts/build-coin-pages.mjs for the hero summary, "Performance", "Key facts" and "Price history".
 //
 //   node scripts/fetch-coin-stats.mjs
 //
@@ -63,7 +63,15 @@ function summarize(candles) {
   }
   const thisMonth = new Date(last.t + DAY).toISOString().slice(0, 7);
   const completed = monthly.filter(m => m.month < thisMonth).slice(-13);
+  // Largest peak-to-trough fall of the daily close within the year (B2 data module).
+  let peak = year[0], dd = { pct: 0, from: year[0], to: year[0] };
+  for (const d of year) {
+    if (d.close > peak.close) peak = d;
+    const fall = (d.close - peak.close) / peak.close;
+    if (fall < dd.pct) dd = { pct: fall, from: peak, to: d };
+  }
   return {
+    _days: days, // daily closes for the BTC correlation in main(); not written to the file
     asOf: new Date(last.t).toISOString().slice(0, 10),
     close: last.close,
     change7d: pct(7), change30d: pct(30), change90d: pct(90), change1y: pct(365),
@@ -71,6 +79,9 @@ function summarize(candles) {
     low52w: lo.close, low52wDate: new Date(lo.t).toISOString().slice(0, 10),
     historyDays: year.length,
     volatility30d: +(sd * Math.sqrt(365) * 100).toFixed(1), // annualized, from daily log returns
+    maxDrawdown1y: +(dd.pct * 100).toFixed(1),
+    maxDrawdownFrom: new Date(dd.from.t).toISOString().slice(0, 10),
+    maxDrawdownTo: new Date(dd.to.t).toISOString().slice(0, 10),
     monthly: completed.map((m, i) => ({
       month: m.month,
       close: m.close,
@@ -99,6 +110,25 @@ async function main() {
       if (best) out[c.sym] = best; else failed.push(c.sym);
     }));
     await new Promise(r => setTimeout(r, 400));
+  }
+  // Correlation of daily log returns with BTC over the last 90 days, matched by date (B2 data module).
+  const logRets = days => {
+    const m = new Map();
+    days.slice(-91).forEach((d, i, arr) => { if (i) m.set(d.t, Math.log(d.close / arr[i - 1].close)); });
+    return m;
+  };
+  const btc = out.BTC ? logRets(out.BTC._days) : null;
+  for (const [sym, s] of Object.entries(out)) {
+    if (btc && sym !== "BTC") {
+      const pairs = [...logRets(s._days)].filter(([t]) => btc.has(t)).map(([t, r]) => [r, btc.get(t)]);
+      if (pairs.length >= 60) {
+        const mx = pairs.reduce((a, p) => a + p[0], 0) / pairs.length, my = pairs.reduce((a, p) => a + p[1], 0) / pairs.length;
+        const cov = pairs.reduce((a, p) => a + (p[0] - mx) * (p[1] - my), 0);
+        const vx = pairs.reduce((a, p) => a + (p[0] - mx) ** 2, 0), vy = pairs.reduce((a, p) => a + (p[1] - my) ** 2, 0);
+        if (vx > 0 && vy > 0) { s.corrBtc90d = +(cov / Math.sqrt(vx * vy)).toFixed(2); s.corrDays = pairs.length; }
+      }
+    }
+    delete s._days;
   }
   const updated = Object.values(out).map(s => s.asOf).sort().pop();
   // One coin per line: a weekly refresh then diffs ~114 lines instead of ~7,000 (smaller PRs, cheaper to review).

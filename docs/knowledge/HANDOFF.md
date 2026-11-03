@@ -19,7 +19,7 @@ only in that chat.
   prompt in `docs/WEEKLY-TASK.md` (already saved to the task on Nov 3).
 
 ## Latest work
-- B1 answer-first coin summaries built on branch `ccr-764a878f-teac16` (draft PR), local QA PASSED. Not live until
+- B1 answer-first coin summaries, B2 key facts (first slice) and B4 Organization logo built on branch `ccr-764a878f-teac16` (draft PR), local QA PASSED. Not live until
   the owner asks; ship with the `ship` skill.
 
 ## Blocked on the owner (the most important open items)

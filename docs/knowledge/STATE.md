@@ -12,7 +12,8 @@
   alerts with optional system notifications, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
 - **Coin pages:** answer-first summary in the hero (1-year change, 52-week range, distance from the high, 30-day
-  volatility, date and source; static HTML from `content/coin-stats.json`), live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
+  volatility, date and source; static HTML from `content/coin-stats.json`), key facts (largest fall, best/worst
+  month, BTC correlation, 1-year sector rank), live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
   depth, converter with live tables, performance stats and monthly closes, sector breadcrumb, related coins.
 - **Brand and trust:** live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
