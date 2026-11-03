@@ -1,4 +1,4 @@
-// Google Tag Manager with Google Consent Mode v2, behind a consent banner.
+// Google Tag Manager and Google Analytics 4 with Google Consent Mode v2, behind a consent banner.
 //
 // - Analytics cookies stay off until the visitor clicks Accept. Before that, Consent Mode sends
 //   cookieless pings that Google uses for modelled numbers. Ad signals are always denied: the
@@ -11,6 +11,9 @@
 // The site's CSP allows this file ('self') and Google's tag domains; see _headers.
 (function () {
   var GTM_ID = "GTM-PD9TXJX";
+  // GA4 property, loaded directly with gtag.js (same consent rules). Don't also add a GA4 / Google
+  // tag for this ID inside the GTM container, or every page view is counted twice.
+  var GA_ID = "G-DF18LSQFVW";
   var q = new URLSearchParams(location.search);
   if (/^\/embed\//.test(location.pathname) || q.get("embed") === "1") return;
 
@@ -41,6 +44,12 @@
     s.async = true;
     s.src = "https://www.googletagmanager.com/gtm.js?id=" + GTM_ID;
     document.head.appendChild(s);
+    gtag("js", new Date());
+    gtag("config", GA_ID, { allow_google_signals: false, allow_ad_personalization_signals: false });
+    var g = document.createElement("script");
+    g.async = true;
+    g.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+    document.head.appendChild(g);
   }
   function whenIdle(fn) {
     var run = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 1); })(fn, { timeout: 3000 }); };
