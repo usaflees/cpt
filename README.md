@@ -18,7 +18,7 @@ whatever is in this repository is what gets deployed.
 | `assets/app.js` | All site logic: feeds, table, coin pages, widgets, alerts, portfolio |
 | `assets/app.css` | All styles: the 6 colour themes (Neon, the brand theme, is the default) and the brand layer |
 | `assets/theme-init.js` | Tiny script that applies the saved theme before first paint. `build-coin-pages.mjs` inlines it into every page and puts its hash in the CSP in `_headers`, so edit it here and rebuild |
-| `assets/consent.js` | Google Tag Manager (`GTM-PD9TXJX`) with Consent Mode v2 and the cookie banner. Loads GTM after page load; never in widgets; analytics cookies only after "Accept" |
+| `assets/consent.js` | Google Tag Manager (`GTM-PD9TXJX`) and Google Analytics 4 (`G-DF18LSQFVW`, via gtag.js) with Consent Mode v2 and the cookie banner. Loads after page load; never in widgets; analytics cookies only after "Accept" |
 | `about/index.html` | About & data methodology page |
 | `accessibility/index.html` | Accessibility statement (WCAG 2.1 AA / EN 301 549 status, known limits, how to report a barrier) |
 | `widgets/index.html` | Free widget landing page: live examples and how to embed |
@@ -98,7 +98,7 @@ in `_headers`, or browsers will block it.
 
 These settings live in the Cloudflare dashboard, not in this repository:
 
-- [ ] **Google Tag Manager:** in GTM, add a *Google tag* (GA4 measurement ID) firing on *Initialization - All Pages*, keep its built-in consent checks on, and **Publish**. Custom HTML tags won't run (the CSP has no 'unsafe-inline').
+- [ ] **Google Tag Manager:** GA4 (`G-DF18LSQFVW`) is already loaded by `assets/consent.js`, so do **not** add a Google tag for that ID in GTM (it would double-count). Use GTM for other tags; Custom HTML tags won't run (the CSP has no 'unsafe-inline').
 - [ ] **Web Analytics:** Workers & Pages → your project → Metrics → *Enable* (free, cookie-less). The CSP already allows it.
 - [ ] **www → apex redirect:** Rules → Redirect Rules → "Redirect from WWW to root" template (301), so `www.cryptopriceticker.com` doesn't serve a duplicate site.
 - [ ] **Always Use HTTPS:** SSL/TLS → Edge Certificates → on.
