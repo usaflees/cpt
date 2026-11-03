@@ -1,4 +1,4 @@
-# State of the site (2026-11-02)
+# State of the site (2026-11-03)
 
 ## Pages
 - 130 URLs in the sitemap: home, /heatmap/, /convert/, /about/, /widgets/, /brand/, /accessibility/, 9 sector hubs,

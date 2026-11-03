@@ -6,6 +6,7 @@ the evidence behind a rule.
 
 | File | What it holds | Update when |
 | --- | --- | --- |
+| [HANDOFF.md](HANDOFF.md) | **Start here in a new session**: where things stand, what's blocked on the owner, tooling notes | End of every long session |
 | [../STRATEGY.md](../STRATEGY.md) | **The roadmap**: measured baseline, pillars A–F, prioritized backlog, what we decided against, KPIs | Roadmap items ship or priorities change |
 | [../NEWS-AND-MONETIZATION.md](../NEWS-AND-MONETIZATION.md) | News block and phased, compliance-gated monetization plan; decisions only the owner can make | Owner decisions, phase changes |
 | [PLAYBOOK.md](PLAYBOOK.md) | The working rules: SEO, content, performance, accessibility, growth, measurement, security, each marked done / owner action / next / don't | A rule changes or a "next" item ships |

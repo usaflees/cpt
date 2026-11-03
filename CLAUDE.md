@@ -1,7 +1,7 @@
 # CryptoPriceTicker.com: notes for Claude
 
 Static site on Cloudflare Pages, deployed from `main` (repo root, no build step). The repo is **public**.
-Roadmap: `docs/STRATEGY.md`. Knowledge base: `docs/knowledge/README.md` (playbook, decisions, current state, Opus 5.5
+New session? Start with `docs/knowledge/HANDOFF.md`. Roadmap: `docs/STRATEGY.md`. Knowledge base: `docs/knowledge/README.md` (playbook, decisions, current state, Opus 5.5
 guide, research).
 
 ## Check your work
