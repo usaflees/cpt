@@ -142,7 +142,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 
 ### B. Citable fact sheets (search and AI answers)
 
-**B1. Answer-first summary on every coin page, M. Highest-value SEO item.**
+**B1. Answer-first summary on every coin page, M. Highest-value SEO item.** *Built Nov 3, 2026 (`performanceSummary` in the coin hero); awaiting owner go-live.*
 - A server-rendered paragraph in the first screen, built from `content/coin-stats.json`. Example: "Bitcoin (BTC) is up 34% over the past year and trades within a 52-week range of $X–$Y; its 30-day volatility is Z%. Data as of 2 Nov 2026 from Coinbase daily closes."
 - Crawlers that don't run JavaScript, which includes most AI fetchers, then see real, dated facts instead of an empty live widget.
 - **No price predictions and no advice language.**

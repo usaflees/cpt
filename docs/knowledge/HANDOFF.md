@@ -18,6 +18,10 @@ only in that chat.
 - Weekly scheduled task "CryptoPriceTicker weekly self-improvement" (Mondays 18:41 UTC, Opus 5.5) runs the
   prompt in `docs/WEEKLY-TASK.md` (already saved to the task on Nov 3).
 
+## Latest work
+- B1 answer-first coin summaries built on branch `ccr-764a878f-teac16` (draft PR), local QA PASSED. Not live until
+  the owner asks; ship with the `ship` skill.
+
 ## Blocked on the owner (the most important open items)
 1. The weekly task has **no repository attached**, so every run's push fails with 403. Fix: claude.ai/code →
    Scheduled tasks → the task → Edit → Advanced settings → Repository → add `usaflees/cpt`.

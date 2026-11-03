@@ -172,18 +172,22 @@ const pctText = v => (v === null || v === undefined ? "—" : `${v >= 0 ? "+" : 
 const pctClass = v => (v === null || v === undefined ? "" : v >= 0 ? "chg-up" : "chg-down");
 const monthName = ym => new Date(ym + "-01T00:00:00Z").toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
 
-// Plain, data-derived sentences (no generated prose): what the numbers say, with dates.
+// Answer-first summary (roadmap B1): plain, data-derived sentences with dates and the source, rendered in the
+// coin hero so crawlers that don't run JavaScript see real facts. No predictions, no advice, no generated prose.
 function performanceSummary(c, st) {
-  const n = shortName(c);
+  const n = `${esc(shortName(c))} (${esc(c.sym)})`;
   const parts = [];
   if (c.sectors.includes("Stable")) {
-    parts.push(`Over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}, ${esc(n)} closed between ${usd(st.low52w)} and ${usd(st.high52w)} per day, a range of ${(((st.high52w - st.low52w) / st.low52w) * 100).toFixed(2)}% around its US-dollar peg.`);
+    parts.push(`Over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}, ${n} closed between ${usd(st.low52w)} and ${usd(st.high52w)} per day, a range of ${(((st.high52w - st.low52w) / st.low52w) * 100).toFixed(2)}% around its US-dollar peg.`);
   } else {
-    if (st.change1y !== null) parts.push(`Over the past year, ${esc(n)} has ${st.change1y >= 0 ? "risen" : "fallen"} ${Math.abs(st.change1y).toFixed(1)}%.`);
-    parts.push(`Its daily closes ranged from ${usd(st.low52w)} (${longDate(st.low52wDate)}) to ${usd(st.high52w)} (${longDate(st.high52wDate)})${st.historyDays < 365 ? ` over the ${st.historyDays} days of data available on ${st.source}` : " over the last 52 weeks"}.`);
+    const [v, span] = st.change1y !== null && st.change1y !== undefined ? [st.change1y, "over the past year"]
+      : st.change90d !== null && st.change90d !== undefined ? [st.change90d, "over the past 90 days"] : [null, ""];
+    if (v !== null) parts.push(`${n} has ${v >= 0 ? "risen" : "fallen"} ${Math.abs(v).toFixed(1)}% ${span}.`);
+    parts.push(`${v !== null ? "Its" : `${n}'s`} daily closes ranged from ${usd(st.low52w)} (${longDate(st.low52wDate)}) to ${usd(st.high52w)} (${longDate(st.high52wDate)})${st.historyDays < 365 ? ` over the ${st.historyDays} days of data available` : " over the last 52 weeks"}.`);
     const fromHigh = ((st.close - st.high52w) / st.high52w) * 100;
     parts.push(`On ${longDate(st.asOf)} it closed at ${usd(st.close)}, ${Math.abs(fromHigh) < 0.5 ? "at its 52-week high" : `${Math.abs(fromHigh).toFixed(1)}% below that high`}, with 30-day annualized volatility of ${st.volatility30d}%.`);
   }
+  parts.push(`Daily closes (UTC) from ${st.source}.`);
   return parts.join(" ");
 }
 
@@ -196,7 +200,6 @@ function statsSection(c, st) {
   return `
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">${s} price performance</h2>
-      <p class="prose">${performanceSummary(c, st)}</p>
       <div class="stat-grid">
         ${cell("7 days", st.change7d)}
         ${cell("30 days", st.change30d)}
@@ -333,6 +336,7 @@ function coinPage(c) {
           ${c.sectors.map(x => `<span class="tag-badge">${esc(x)}</span>`).join(" ")}
           <span id="cpSource">Snapshot from ${longDate(updated)} — connecting to live feeds…</span>
         </div>
+        ${st ? `<p class="coin-summary">${performanceSummary(c, st)}</p>` : ""}
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="${s}" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>

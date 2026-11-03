@@ -1706,3 +1706,7 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .consent-actions .action-btn { min-height: 40px; padding: 8px 16px; }
 .link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
 .asset-card figcaption { display: grid; gap: 8px; }
+
+/* Answer-first summary in the coin hero (static text from the build, so no layout shift) */
+.coin-summary { margin-top: 12px; max-width: 62ch; color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+@media (max-width: 480px) { body:not(.is-embed) .coin-summary { font-size: 13.5px; } }
