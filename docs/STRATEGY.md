@@ -272,7 +272,7 @@ Whether to allow training crawlers (`GPTBot`, `Google-Extended`, `CCBot`) is a s
 | When | Items | Exit criteria |
 | --- | --- | --- |
 | **Now (next 2 weeks)** | C3 budgets ✅, C2 yield ✅, B3 freshness ✅, B5 robots ✅, E1 accessibility page ✅ (all shipped 2 Nov 2026), D1 (owner, open) | CI enforces budgets; RUM collecting; robots explicit |
-| **Next (weeks 3–8)** | **B1 answer-first summaries**, **C1 worker feeds**, A4 logo pickers, D2 CrUX, D3 citations baseline | Every coin page has dated facts above the fold; steady-state main thread < 60 ms/s |
+| **Next (weeks 3–8)** | **B1 answer-first summaries** ✅ (4 Nov), A1 pop-out ticker ✅ (4 Nov, pulled forward), **C1 worker feeds**, A4 logo pickers, D2 CrUX, D3 citations baseline | Every coin page has dated facts above the fold; steady-state main thread < 60 ms/s |
 | **Then (months 2–4)** | B2 unique data modules, A1 pop-out ticker, A2 SharedWorker, A5 widget growth, C4 Lighthouse CI | No coin page shares > 60% of its text with another; embed domains growing month over month |
 | **Gated** | B6 comparisons, B7 languages, E3 monetization, F1–F4 | Only when the stated trigger or data condition is met, and with owner approval |
 

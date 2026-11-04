@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=541e01d263" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3947ae7188" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -42,9 +42,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=541e01d263" />
+  <link rel="stylesheet" href="/assets/app.css?v=3947ae7188" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=498255555a" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="ZEC">
@@ -98,9 +98,11 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span class="tag-badge">Privacy</span>
           <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
         </div>
+        <p class="hero-facts">As of <time datetime="2026-11-01">November 1, 2026</time> (Binance daily close): Zcash closed at $1,234.56, up 199.6% over one year, 25.3% below its 52-week high of $1,653.12, ranked #10 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="ZEC" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="ZEC">🧩 Embed ZEC widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="ZEC" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -173,7 +175,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">ZEC price performance</h2>
-      <p class="prose">Over the past year, Zcash has risen 199.6%. Its daily closes ranged from $197.250 (March 7, 2026) to $1,653.12 (September 26, 2026) over the last 52 weeks. On November 1, 2026 it closed at $1,234.56, 25.3% below that high, with 30-day annualized volatility of 91.7%.</p>
+      <p class="prose">Over the past year, Zcash has risen 199.6%. Its daily closes ranged from $197.250 (March 7, 2026) to $1,653.12 (September 26, 2026) over the last 52 weeks. On November 1, 2026 it closed at $1,234.56, 25.3% below that high, with 30-day annualized volatility of 91.7%. Its best full month was Aug 2026 (+85.30%) and its worst was Jan 2026 (-40.84%).</p>
       <div class="stat-grid">
         <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-up">+1.71%</span></div></div>
         <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-5.14%</span></div></div>

@@ -59,6 +59,7 @@
   const RENAMED = {}; // old ticker → current ticker (e.g. TON → GRAM)
   REGISTRY.forEach(c => { if (c.formerly) RENAMED[c.formerly] = c.sym; });
   const renamed = sym => RENAMED[sym] || sym;
+  const pip = { win: null, rows: new Map() }; // pop-out ticker window (see openPip); read by flush()
   const HAS_LOGO = new Set(REGISTRY.filter(c => c.logo).map(c => c.sym));
 
   // Coin badge: the coin's own logo when we host one (/coin-icons/, see scripts/build-coin-icons.mjs),
@@ -593,9 +594,11 @@
   const setHtml = (el, v) => { if (el && el._html !== v) { el.innerHTML = v; el._html = v; } };
 
   function flush() {
-    if (!state.dirty.size || document.hidden) return;
+    if (!state.dirty.size || (document.hidden && !pip.win)) return;
     const dirty = Array.from(state.dirty);
     state.dirty.clear();
+    if (pip.win) updatePip(dirty);
+    if (document.hidden) return; // only the pop-out window is visible
 
     if (MODE === "embed") {
       dirty.forEach(sym => patchWidget(document, sym, state.currency));
@@ -1660,7 +1663,55 @@
     yieldToMain().then(() => { pendingRenders.delete(fn); fn(); });
   }
 
+  // Pop-out ticker (Document Picture-in-Picture; Chrome/Edge desktop): an always-on-top window with
+  // live prices that keeps updating while the visitor works in other apps. The button stays hidden
+  // where the API doesn't exist, so other browsers never see a control that can't work.
+  const PIP_OK = "documentPictureInPicture" in window && !IS_EMBED;
+  if (PIP_OK) document.querySelectorAll("[data-action=pip]").forEach(b => { b.hidden = false; });
+  function pipCoins(sym) {
+    if (sym && state.coins.has(sym)) return [sym];
+    const watch = Array.from(state.watchlist).filter(s => state.coins.has(s));
+    const list = watch.length ? watch : Array.from(state.coins.values()).filter(c => !c.estimated).sort((a, b) => a.rank - b.rank).map(c => c.sym);
+    return list.slice(0, 8);
+  }
+  function updatePip(syms) {
+    syms.forEach(sym => {
+      const row = pip.rows.get(sym), c = state.coins.get(sym);
+      if (!row || !c) return;
+      row.price.textContent = fmtPrice(c.price);
+      row.chg.className = `chg-pill ${chgClass(c)}`;
+      row.chg.textContent = fmtChange(c);
+      row.price.classList.toggle("is-stale", !c.live);
+    });
+  }
+  async function openPip(sym) {
+    if (pip.win) { pip.win.close(); }
+    const syms = pipCoins(sym);
+    const w = await documentPictureInPicture.requestWindow({ width: 300, height: Math.min(64 + syms.length * 46, 460) });
+    const d = w.document;
+    d.documentElement.setAttribute("data-theme", state.theme);
+    d.title = "CryptoPriceTicker — live";
+    const css = document.querySelector('link[rel="stylesheet"][href*="/assets/app.css"]');
+    if (css) { const l = d.createElement("link"); l.rel = "stylesheet"; l.href = css.href; d.head.appendChild(l); }
+    d.body.className = "pip-body";
+    d.body.innerHTML = `<ul class="pip-list">${syms.map(s => {
+      const c = state.coins.get(s);
+      return `<li class="pip-row">${avatar(s, "sm")}<a class="pip-sym" href="${coinUrl(s)}" target="_blank" rel="noopener">${esc(s)}</a>` +
+        `<span class="pip-price" data-pip-price="${esc(s)}">${fmtPrice(c.price)}</span><span class="chg-pill ${chgClass(c)}" data-pip-chg="${esc(s)}">${fmtChange(c)}</span></li>`;
+    }).join("")}</ul><p class="pip-foot"><img src="/brand/mark.svg" width="14" height="14" alt="" /> CryptoPriceTicker.com · live</p>`;
+    // Images in the PiP document resolve against about:blank; point them at this site.
+    d.querySelectorAll("img").forEach(img => { img.src = new URL(img.getAttribute("src"), location.href).href; img.loading = "eager"; });
+    pip.rows.clear();
+    syms.forEach(s => pip.rows.set(s, { price: d.querySelector(`[data-pip-price="${s}"]`), chg: d.querySelector(`[data-pip-chg="${s}"]`) }));
+    pip.win = w;
+    w.addEventListener("pagehide", () => { pip.win = null; pip.rows.clear(); });
+    if (MODE === "coin" || MODE === "convert") watchCoins(syms);
+    updatePip(syms);
+    (window.dataLayer = window.dataLayer || []).push({ event: "cpt_pip_open", coins: syms.length });
+  }
+
   const actions = {
+    pip(el) { if (PIP_OK) openPip(el.dataset.sym).catch(() => showToast("The pop-out ticker couldn't open in this browser window.")); },
     "toggle-index"(el) {
       const open = $("coinIndex").classList.toggle("collapsed") === false;
       el.textContent = open ? "Show fewer" : `Show all ${state.coins.size} coin pages`;

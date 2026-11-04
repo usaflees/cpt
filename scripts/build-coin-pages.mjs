@@ -183,8 +183,36 @@ function performanceSummary(c, st) {
     parts.push(`Its daily closes ranged from ${usd(st.low52w)} (${longDate(st.low52wDate)}) to ${usd(st.high52w)} (${longDate(st.high52wDate)})${st.historyDays < 365 ? ` over the ${st.historyDays} days of data available on ${st.source}` : " over the last 52 weeks"}.`);
     const fromHigh = ((st.close - st.high52w) / st.high52w) * 100;
     parts.push(`On ${longDate(st.asOf)} it closed at ${usd(st.close)}, ${Math.abs(fromHigh) < 0.5 ? "at its 52-week high" : `${Math.abs(fromHigh).toFixed(1)}% below that high`}, with 30-day annualized volatility of ${st.volatility30d}%.`);
+    const ext = monthExtremes(st);
+    if (ext) parts.push(`Its best full month was ${monthName(ext.best.month)} (${pctText(ext.best.change)}) and its worst was ${monthName(ext.worst.month)} (${pctText(ext.worst.change)}).`);
   }
   return parts.join(" ");
+}
+
+// Best and worst complete calendar month (the month of the latest close is still running).
+function monthExtremes(st) {
+  const full = (st.monthly || []).filter(m => m.change !== null && m.change !== undefined && m.month < st.asOf.slice(0, 7));
+  if (full.length < 3) return null;
+  const sorted = full.slice().sort((a, b) => b.change - a.change);
+  return { best: sorted[0], worst: sorted[sorted.length - 1] };
+}
+
+// Answer-first line under the live price: the page's key, dated facts in plain text, so readers,
+// search engines and AI fetchers (which mostly don't run JavaScript) see real numbers first.
+function keyFacts(c, st, rank, total) {
+  if (!st) return "";
+  const when = `<time datetime="${st.asOf}">${longDate(st.asOf)}</time>`;
+  const rankText = `ranked #${rank} by market cap of the ${total} coins tracked here`;
+  if (c.sectors.includes("Stable")) {
+    return `<p class="hero-facts">As of ${when} (${esc(st.source)} daily close): ${esc(shortName(c))} held between ${usd(st.low52w)} and ${usd(st.high52w)} over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}; ${rankText}.</p>`;
+  }
+  const facts = [];
+  if (st.change1y !== null) facts.push(`${st.change1y >= 0 ? "up" : "down"} ${Math.abs(st.change1y).toFixed(1)}% over one year`);
+  const fromHigh = ((st.close - st.high52w) / st.high52w) * 100;
+  const span = st.historyDays >= 365 ? "52-week" : `${st.historyDays}-day`;
+  facts.push(Math.abs(fromHigh) < 0.5 ? `at its ${span} high` : `${Math.abs(fromHigh).toFixed(1)}% below its ${span} high of ${usd(st.high52w)}`);
+  facts.push(rankText);
+  return `<p class="hero-facts">As of ${when} (${esc(st.source)} daily close): ${esc(shortName(c))} closed at ${usd(st.close)}, ${facts.join(", ")}.</p>`;
 }
 
 function statsSection(c, st) {
@@ -333,9 +361,11 @@ function coinPage(c) {
           ${c.sectors.map(x => `<span class="tag-badge">${esc(x)}</span>`).join(" ")}
           <span id="cpSource">Snapshot from ${longDate(updated)} — connecting to live feeds…</span>
         </div>
+        ${keyFacts(c, st, rankOf.get(c.sym), coins.length)}
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="${s}" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="${s}" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>

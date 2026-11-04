@@ -1706,3 +1706,20 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .consent-actions .action-btn { min-height: 40px; padding: 8px 16px; }
 .link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
 .asset-card figcaption { display: grid; gap: 8px; }
+
+/* Coin pages: the dated key facts under the live price (scripts/build-coin-pages.mjs keyFacts) */
+.hero-facts { margin: 10px 0 2px; max-width: 62ch; font-size: 13.5px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+.hero-facts time { color: var(--text-primary); font-weight: 600; }
+
+/* Pop-out ticker: the button reuses the hero link chips; the window is a compact live list */
+.hero-links button { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); background: var(--bg-secondary); border: 1px solid var(--border); cursor: pointer; }
+.hero-links button:hover { color: var(--accent); border-color: var(--accent); }
+.pip-body { margin: 0; padding: 10px 12px; background: var(--page-bg); background-color: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); }
+.pip-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pip-row { display: grid; grid-template-columns: 22px 1fr auto auto; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 10px; background: var(--bg-secondary); border: 1px solid var(--border); }
+.pip-row .coin-avatar { width: 22px; height: 22px; font-size: 8px; }
+.pip-sym { font-weight: 800; font-size: 13px; color: var(--text-primary); text-decoration: none; }
+.pip-price { font-family: var(--font-mono); font-weight: 700; font-size: 13px; text-align: right; }
+.pip-price.is-stale { color: var(--text-muted); }
+.pip-foot { margin: 8px 0 0; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); }
