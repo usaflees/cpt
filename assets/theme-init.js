@@ -4,6 +4,8 @@
   var themes = ["neon", "kali", "green", "slate", "oled", "light"];
   var q = new URLSearchParams(location.search);
   var t = q.get("theme");
+  // ?theme=auto (widgets): follow the visitor's light/dark setting.
+  if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
   if (themes.indexOf(t) < 0) {
     try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
   }

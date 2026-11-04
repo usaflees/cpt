@@ -75,8 +75,21 @@ function summarize(candles) {
       month: m.month,
       close: m.close,
       change: i ? +(((m.close - completed[i - 1].close) / completed[i - 1].close) * 100).toFixed(2) : null
-    })).slice(-12)
+    })).slice(-12),
+    // Daily log returns for the last 90 days, keyed by date; used for the BTC correlation, then dropped.
+    _rets: days.slice(-91).map((d, i, arr) => (i ? [new Date(d.t).toISOString().slice(0, 10), Math.log(d.close / arr[i - 1].close)] : null)).slice(1)
   };
+}
+
+// Pearson correlation of two coins' daily log returns on the dates both have (needs ≥ 60).
+function correlation(a, b) {
+  const mb = new Map(b);
+  const pairs = a.filter(([d]) => mb.has(d)).map(([d, r]) => [r, mb.get(d)]);
+  if (pairs.length < 60) return null;
+  const mx = pairs.reduce((s, p) => s + p[0], 0) / pairs.length, my = pairs.reduce((s, p) => s + p[1], 0) / pairs.length;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (const [x, y] of pairs) { sxy += (x - mx) * (y - my); sxx += (x - mx) ** 2; syy += (y - my) ** 2; }
+  return sxx && syy ? +(sxy / Math.sqrt(sxx * syy)).toFixed(2) : null;
 }
 
 async function main() {
@@ -99,6 +112,11 @@ async function main() {
       if (best) out[c.sym] = best; else failed.push(c.sym);
     }));
     await new Promise(r => setTimeout(r, 400));
+  }
+  const btc = out.BTC && out.BTC._rets;
+  for (const [sym, s] of Object.entries(out)) {
+    if (btc && sym !== "BTC") s.corrBtc90d = correlation(s._rets, btc);
+    delete s._rets;
   }
   const updated = Object.values(out).map(s => s.asOf).sort().pop();
   // One coin per line: a weekly refresh then diffs ~114 lines instead of ~7,000 (smaller PRs, cheaper to review).

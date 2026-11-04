@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=3947ae7188" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/dai/","url":"https://cryptopriceticker.com/coin/dai/","name":"Dai (DAI) Price: Live Chart & Market Cap","description":"Dai (DAI) price today in USD, live from Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Dai","alternateName":"DAI"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Stablecoins","item":"https://cryptopriceticker.com/sector/stablecoins/"},{"@type":"ListItem","position":3,"name":"Dai (DAI)","item":"https://cryptopriceticker.com/coin/dai/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/dai/","url":"https://cryptopriceticker.com/coin/dai/","name":"Dai (DAI) Price: Live Chart & Market Cap","description":"Dai (DAI) price today in USD, live from Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Dai","alternateName":"DAI"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Stablecoins","item":"https://cryptopriceticker.com/sector/stablecoins/"},{"@type":"ListItem","position":3,"name":"Dai (DAI)","item":"https://cryptopriceticker.com/coin/dai/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3947ae7188" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=498255555a" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="DAI">
@@ -96,9 +97,9 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#16</span>
           <span class="tag-badge">Stable</span> <span class="tag-badge">DeFi</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="hero-facts">As of <time datetime="2026-11-01">November 1, 2026</time> (Kraken daily close): Dai held between $0.9947 and $1.006 over the past year; ranked #16 by market cap of the 114 coins tracked here.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Kraken daily close): Dai held between $0.9947 and $1.006 over the past year; ranked #16 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="DAI" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="DAI">🧩 Embed DAI widget</button>
@@ -177,12 +178,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="perf-h">DAI price performance</h2>
       <p class="prose">Over the past year, Dai closed between $0.9947 and $1.006 per day, a range of 1.15% around its US-dollar peg.</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-0.02%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-up">+0.03%</span></div></div>
         <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-0.01%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-down">-0.01%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-up">+0.04%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+0.07%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-up">+0.02%</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$1.006</div><div class="metric-label">June 26, 2026</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$0.9947</div><div class="metric-label">June 1, 2026</div></div>
+        
       </div>
       <h3>DAI monthly closing prices</h3>
       <div class="table-wrap">
@@ -205,7 +207,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 1, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -217,7 +219,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About Dai</h2>
       <p>Dai is a decentralized, crypto-collateralized stablecoin soft-pegged to the US dollar, originally issued by MakerDAO and now part of the Sky ecosystem alongside USDS.</p>
       <h3>Where this DAI price comes from</h3>
-      <p>The price above updates live in your browser from Kraken (DAI/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 5.37B DAI (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Kraken (DAI/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 5.37B DAI (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=3947ae7188" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/metis/","url":"https://cryptopriceticker.com/coin/metis/","name":"Metis (METIS) Price: Live Chart & Market Cap","description":"Metis (METIS) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Metis","alternateName":"METIS"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Layer 2","item":"https://cryptopriceticker.com/sector/layer-2/"},{"@type":"ListItem","position":3,"name":"Metis (METIS)","item":"https://cryptopriceticker.com/coin/metis/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/metis/","url":"https://cryptopriceticker.com/coin/metis/","name":"Metis (METIS) Price: Live Chart & Market Cap","description":"Metis (METIS) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Metis","alternateName":"METIS"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Layer 2","item":"https://cryptopriceticker.com/sector/layer-2/"},{"@type":"ListItem","position":3,"name":"Metis (METIS)","item":"https://cryptopriceticker.com/coin/metis/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3947ae7188" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=498255555a" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="METIS">
@@ -96,9 +97,9 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#112</span>
           <span class="tag-badge">L2</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="hero-facts">As of <time datetime="2026-11-01">November 1, 2026</time> (Binance daily close): Metis closed at $2.840, down 70.0% over one year, 72.8% below its 52-week high of $10.460, ranked #112 by market cap of the 114 coins tracked here.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Binance daily close): Metis closed at $2.760, down 67.2% over one year, 73.6% below its 52-week high of $10.460, ranked #112 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="METIS" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="METIS">🧩 Embed METIS widget</button>
@@ -175,14 +176,15 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">METIS price performance</h2>
-      <p class="prose">Over the past year, Metis has fallen 70.0%. Its daily closes ranged from $2.270 (August 18, 2026) to $10.460 (November 9, 2025) over the last 52 weeks. On November 1, 2026 it closed at $2.840, 72.8% below that high, with 30-day annualized volatility of 83.8%. Its best full month was Sep 2026 (+25.19%) and its worst was Dec 2025 (-31.56%).</p>
+      <p class="prose">Over the past year, Metis has fallen 67.2%. Its daily closes ranged from $2.270 (August 18, 2026) to $10.460 (November 9, 2025) over the last 52 weeks. On November 3, 2026 it closed at $2.760, 73.6% below that high, with 30-day annualized volatility of 85.1%. Its best full month was Sep 2026 (+25.19%) and its worst was Dec 2025 (-31.56%). Over the last 90 days its daily moves had a correlation of 0.61 with Bitcoin's (closely tied; 1 would mean moving in lockstep).</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-17.68%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-14.20%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+15.45%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-69.95%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-18.10%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-18.10%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+12.20%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-67.22%</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$10.460</div><div class="metric-label">November 9, 2025</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$2.270</div><div class="metric-label">August 18, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.61</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
       <h3>METIS monthly closing prices</h3>
       <div class="table-wrap">
@@ -205,7 +207,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 1, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -217,7 +219,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About Metis</h2>
       <p>Metis is an Ethereum layer-2 network with a decentralized sequencer. METIS pays gas and is used for sequencer staking.</p>
       <h3>Where this METIS price comes from</h3>
-      <p>The price above updates live in your browser from Coinbase (METIS-USD), Binance (METIS/USDT) and Kraken (METIS/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 6,555,830 METIS (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Coinbase (METIS-USD), Binance (METIS/USDT) and Kraken (METIS/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 6,555,830 METIS (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

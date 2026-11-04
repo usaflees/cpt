@@ -185,9 +185,12 @@ function performanceSummary(c, st) {
     parts.push(`On ${longDate(st.asOf)} it closed at ${usd(st.close)}, ${Math.abs(fromHigh) < 0.5 ? "at its 52-week high" : `${Math.abs(fromHigh).toFixed(1)}% below that high`}, with 30-day annualized volatility of ${st.volatility30d}%.`);
     const ext = monthExtremes(st);
     if (ext) parts.push(`Its best full month was ${monthName(ext.best.month)} (${pctText(ext.best.change)}) and its worst was ${monthName(ext.worst.month)} (${pctText(ext.worst.change)}).`);
+    if (typeof st.corrBtc90d === "number") parts.push(`Over the last 90 days its daily moves had a correlation of ${st.corrBtc90d.toFixed(2)} with Bitcoin's (${corrWord(st.corrBtc90d)}; 1 would mean moving in lockstep).`);
   }
   return parts.join(" ");
 }
+
+const corrWord = r => (r >= 0.8 ? "very closely tied" : r >= 0.6 ? "closely tied" : r >= 0.3 ? "loosely tied" : r > -0.3 ? "largely independent" : "tending to move the other way");
 
 // Best and worst complete calendar month (the month of the latest close is still running).
 function monthExtremes(st) {
@@ -232,6 +235,7 @@ function statsSection(c, st) {
         ${cell("1 year", st.change1y)}
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">${usd(st.high52w)}</div><div class="metric-label">${longDate(st.high52wDate)}</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">${usd(st.low52w)}</div><div class="metric-label">${longDate(st.low52wDate)}</div></div>
+        ${typeof st.corrBtc90d === "number" && !c.sectors.includes("Stable") ? `<div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">${st.corrBtc90d.toFixed(2)}</div><div class="metric-label">90 days, daily moves</div></div>` : ""}
       </div>
       <h3>${s} monthly closing prices</h3>
       <div class="table-wrap">

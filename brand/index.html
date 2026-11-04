@@ -7,7 +7,7 @@
   <meta name="description" content="Download the CryptoPriceTicker logo, app icon, badges, banners and colour palette, with simple usage rules for press, partners and widget embeds." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://cryptopriceticker.com/brand/" />
-  <link rel="preload" href="/assets/app.css?v=3947ae7188" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -47,6 +47,7 @@
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -56,9 +57,9 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=498255555a" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
-  <link rel="stylesheet" href="/assets/app.css?v=3947ae7188" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
 </head>
 <body data-page="brand">
   <a class="skip-link" href="#main">Skip to content</a>

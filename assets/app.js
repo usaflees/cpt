@@ -138,7 +138,15 @@
   state.currency = pick((params.get("curr") || (IS_EMBED ? "" : store.get("cpt_curr", ""))).toUpperCase(), CURRENCIES, "USD");
   // First visit follows the device's light/dark setting; widgets default to dark unless their embed code says otherwise.
   const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
-  state.theme = pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, systemTheme);
+  // ?theme=auto (widgets): light or Neon to match the visitor's device, and switch live when it changes.
+  const prefersLight = () => Boolean(window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches);
+  const autoTheme = (params.get("theme") || "").toLowerCase() === "auto";
+  state.theme = autoTheme ? (prefersLight() ? "light" : "neon")
+    : pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, systemTheme);
+  if (autoTheme && window.matchMedia) matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+    state.theme = prefersLight() ? "light" : "neon";
+    document.documentElement.setAttribute("data-theme", state.theme);
+  });
 
   if (MODE === "home") {
     // Deep links (/?coin=BTC, and /?w=BTC from older widgets) go to the coin page and never touch the
@@ -980,7 +988,7 @@
               </select></div>
             <div class="form-group"><label for="wgTheme">2. Theme</label>
               <select id="wgTheme" class="form-select">
-                <option value="neon">CryptoPriceTicker Neon (dark)</option><option value="kali">Kali cyber blue (dark)</option><option value="green">Terminal green</option>
+                <option value="auto">Auto: light or dark, matching each visitor</option><option value="neon">CryptoPriceTicker Neon (dark)</option><option value="kali">Kali cyber blue (dark)</option><option value="green">Terminal green</option>
                 <option value="slate">Slate</option><option value="oled">Pure black OLED</option><option value="light">Light</option>
               </select></div>
             <div class="form-group"><label for="wgCoins">3. Coins (comma-separated tickers)</label>
@@ -1187,7 +1195,7 @@
     if (!coins.length) coins = ["BTC", "ETH", "SOL", "TAO"];
 
     const stage = $("wgPreviewStage");
-    stage.setAttribute("data-theme", theme);
+    stage.setAttribute("data-theme", theme === "auto" ? (prefersLight() ? "light" : "neon") : theme);
     stage.innerHTML = buildWidgetMarkup({ layout, coins, curr });
 
     const height = { marquee: 54, grid: 225, single: 180 }[layout];

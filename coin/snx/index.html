@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=3947ae7188" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/snx/","url":"https://cryptopriceticker.com/coin/snx/","name":"Synthetix (SNX) Price: Live Chart & Market Cap","description":"Synthetix (SNX) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Synthetix","alternateName":"SNX"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"DeFi & real-world assets","item":"https://cryptopriceticker.com/sector/defi/"},{"@type":"ListItem","position":3,"name":"Synthetix (SNX)","item":"https://cryptopriceticker.com/coin/snx/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/snx/","url":"https://cryptopriceticker.com/coin/snx/","name":"Synthetix (SNX) Price: Live Chart & Market Cap","description":"Synthetix (SNX) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Synthetix","alternateName":"SNX"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"DeFi & real-world assets","item":"https://cryptopriceticker.com/sector/defi/"},{"@type":"ListItem","position":3,"name":"Synthetix (SNX)","item":"https://cryptopriceticker.com/coin/snx/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3947ae7188" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=498255555a" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="SNX">
@@ -96,9 +97,9 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#97</span>
           <span class="tag-badge">DeFi</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="hero-facts">As of <time datetime="2026-11-01">November 1, 2026</time> (Binance daily close): Synthetix closed at $0.1809, down 82.0% over one year, 82.9% below its 52-week high of $1.057, ranked #97 by market cap of the 114 coins tracked here.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Binance daily close): Synthetix closed at $0.1774, down 80.3% over one year, 79.9% below its 52-week high of $0.8840, ranked #97 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="SNX" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="SNX">🧩 Embed SNX widget</button>
@@ -175,14 +176,15 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">SNX price performance</h2>
-      <p class="prose">Over the past year, Synthetix has fallen 82.0%. Its daily closes ranged from $0.1809 (November 1, 2026) to $1.057 (November 2, 2025) over the last 52 weeks. On November 1, 2026 it closed at $0.1809, 82.9% below that high, with 30-day annualized volatility of 61.5%. Its best full month was Sep 2026 (+22.31%) and its worst was Nov 2025 (-45.90%).</p>
+      <p class="prose">Over the past year, Synthetix has fallen 80.3%. Its daily closes ranged from $0.1761 (November 2, 2026) to $0.8840 (November 7, 2025) over the last 52 weeks. On November 3, 2026 it closed at $0.1774, 79.9% below that high, with 30-day annualized volatility of 60.9%. Its best full month was Sep 2026 (+22.31%) and its worst was Nov 2025 (-45.90%). Over the last 90 days its daily moves had a correlation of 0.71 with Bitcoin's (closely tied; 1 would mean moving in lockstep).</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-7.85%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-27.61%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-down">-15.86%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-82.00%</span></div></div>
-        <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$1.057</div><div class="metric-label">November 2, 2025</div></div>
-        <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$0.1809</div><div class="metric-label">November 1, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-11.96%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-30.43%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-down">-17.10%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-80.31%</span></div></div>
+        <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$0.8840</div><div class="metric-label">November 7, 2025</div></div>
+        <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$0.1761</div><div class="metric-label">November 2, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.71</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
       <h3>SNX monthly closing prices</h3>
       <div class="table-wrap">
@@ -205,7 +207,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 1, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -217,7 +219,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About Synthetix</h2>
       <p>Synthetix is a DeFi protocol for on-chain derivatives liquidity. SNX is staked as collateral and used for governance.</p>
       <h3>Where this SNX price comes from</h3>
-      <p>The price above updates live in your browser from Coinbase (SNX-USD), Binance (SNX/USDT) and Kraken (SNX/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 343,466,000 SNX (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Coinbase (SNX-USD), Binance (SNX/USDT) and Kraken (SNX/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 343,466,000 SNX (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>
