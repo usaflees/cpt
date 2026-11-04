@@ -12,11 +12,11 @@
   alerts with optional system notifications, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
 - **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, rank), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
-  depth, converter with live tables, performance stats and monthly closes, sector breadcrumb, related coins.
+  depth, converter with live tables, performance stats (incl. best/worst month and 90-day correlation with BTC) and monthly closes, sector breadcrumb, related coins.
 - **Brand and trust:** live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
-  embeddable widget in three layouts, quick coin search on every sub-page.
+  embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
 ## Quality (latest measurements)
 Lighthouse figures were measured on Oct 31–Nov 1, before PRs #1–#8; the QA rows are from the merged site (Nov 2).
