@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/hype/","url":"https://cryptopriceticker.com/coin/hype/","name":"Hyperliquid (HYPE) Price: Live Chart & Market Cap","description":"Hyperliquid (HYPE) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Hyperliquid","alternateName":"HYPE"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Layer 1","item":"https://cryptopriceticker.com/sector/layer-1/"},{"@type":"ListItem","position":3,"name":"Hyperliquid (HYPE)","item":"https://cryptopriceticker.com/coin/hype/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/hype/","url":"https://cryptopriceticker.com/coin/hype/","name":"Hyperliquid (HYPE) Price: Live Chart & Market Cap","description":"Hyperliquid (HYPE) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Hyperliquid","alternateName":"HYPE"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Layer 1","item":"https://cryptopriceticker.com/sector/layer-1/"},{"@type":"ListItem","position":3,"name":"Hyperliquid (HYPE)","item":"https://cryptopriceticker.com/coin/hype/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="HYPE">
@@ -96,12 +97,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#9</span>
           <span class="tag-badge">L1</span> <span class="tag-badge">DeFi</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="coin-summary">Hyperliquid (HYPE) has risen 52.6% over the past 90 days. Its daily closes ranged from $26.250 (February 23, 2026) to $97.230 (September 22, 2026) over the 279 days of data available. On November 2, 2026 it closed at $83.950, 13.7% below that high, with 30-day annualized volatility of 60%. Daily closes (UTC) from Kraken.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Kraken daily close): Hyperliquid closed at $85.020, 12.6% below its 280-day high of $97.230, ranked #9 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="HYPE" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="HYPE">🧩 Embed HYPE widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="HYPE" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -174,20 +176,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">HYPE price performance</h2>
+      <p class="prose">Its daily closes ranged from $26.250 (February 23, 2026) to $97.230 (September 22, 2026) over the 280 days of data available on Kraken. On November 3, 2026 it closed at $85.020, 12.6% below that high, with 30-day annualized volatility of 60%. Its best full month was May 2026 (+81.36%) and its worst was Jul 2026 (-19.23%). Over the last 90 days its daily moves had a correlation of 0.54 with Bitcoin's (loosely tied; 1 would mean moving in lockstep). Its largest fall between daily closes within the year was 30.0%, from June 3, 2026 to August 1, 2026.</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-up">+7.33%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-5.98%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+52.58%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-up">+4.72%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-6.08%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+49.37%</span></div></div>
         <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill ">—</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$97.230</div><div class="metric-label">September 22, 2026</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$26.250</div><div class="metric-label">February 23, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.54</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
-      <h3>HYPE key facts</h3>
-      <dl class="fact-list">
-        <div><dt>Largest fall in the past year</dt><dd>30.0% between daily closes, from June 3, 2026 to August 1, 2026</dd></div>
-        <div><dt>Best and worst month (last 9)</dt><dd>May 2026 +81.36%; Jul 2026 -19.23%</dd></div>
-        <div><dt>Correlation with Bitcoin</dt><dd>0.54 over the last 90 days of daily returns: a moderate link (1 means Hyperliquid and BTC moved together every day)</dd></div>
-      </dl>
       <h3>HYPE monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -207,7 +205,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 2, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -219,7 +217,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About Hyperliquid</h2>
       <p>Hyperliquid is a layer-1 blockchain built around a fully on-chain perpetual-futures and spot order book. HYPE is used for staking, gas and fee buybacks.</p>
       <h3>Where this HYPE price comes from</h3>
-      <p>The price above updates live in your browser from Coinbase (HYPE-USD), Binance (HYPE/USDT) and Kraken (HYPE/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 333,928,000 HYPE (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Coinbase (HYPE-USD), Binance (HYPE/USDT) and Kraken (HYPE/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 333,928,000 HYPE (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

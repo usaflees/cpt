@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/arkm/","url":"https://cryptopriceticker.com/coin/arkm/","name":"Arkham (ARKM) Price: Live Chart & Market Cap","description":"Arkham (ARKM) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Arkham","alternateName":"ARKM"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"AI","item":"https://cryptopriceticker.com/sector/ai/"},{"@type":"ListItem","position":3,"name":"Arkham (ARKM)","item":"https://cryptopriceticker.com/coin/arkm/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/arkm/","url":"https://cryptopriceticker.com/coin/arkm/","name":"Arkham (ARKM) Price: Live Chart & Market Cap","description":"Arkham (ARKM) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Arkham","alternateName":"ARKM"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"AI","item":"https://cryptopriceticker.com/sector/ai/"},{"@type":"ListItem","position":3,"name":"Arkham (ARKM)","item":"https://cryptopriceticker.com/coin/arkm/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="ARKM">
@@ -96,12 +97,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#98</span>
           <span class="tag-badge">AI</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="coin-summary">Arkham (ARKM) has fallen 68.4% over the past year. Its daily closes ranged from $0.0861 (August 18, 2026) to $0.3520 (November 10, 2025) over the last 52 weeks. On November 2, 2026 it closed at $0.1131, 67.9% below that high, with 30-day annualized volatility of 82.5%. Daily closes (UTC) from Binance.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Binance daily close): Arkham closed at $0.1133, down 61.7% over one year, 67.8% below its 52-week high of $0.3520, ranked #98 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="ARKM" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="ARKM">🧩 Embed ARKM widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="ARKM" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -174,21 +176,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">ARKM price performance</h2>
+      <p class="prose">Over the past year, Arkham has fallen 61.7%. Its daily closes ranged from $0.0861 (August 18, 2026) to $0.3520 (November 10, 2025) over the last 52 weeks. On November 3, 2026 it closed at $0.1133, 67.8% below that high, with 30-day annualized volatility of 82.6%. Its best full month was May 2026 (+29.83%) and its worst was Nov 2025 (-28.22%). Over the last 90 days its daily moves had a correlation of 0.65 with Bitcoin's (closely tied; 1 would mean moving in lockstep). Its largest fall between daily closes within the year was 75.5%, from November 10, 2025 to August 18, 2026. Over one year it ranked 7th of the 8 <a href="/sector/ai/">AI</a> coins tracked here with a full year of data.</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-4.72%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-15.22%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+18.55%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-68.41%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-5.35%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-14.62%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+18.39%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-61.72%</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$0.3520</div><div class="metric-label">November 10, 2025</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$0.0861</div><div class="metric-label">August 18, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.65</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
-      <h3>ARKM key facts</h3>
-      <dl class="fact-list">
-        <div><dt>Largest fall in the past year</dt><dd>75.5% between daily closes, from November 10, 2025 to August 18, 2026</dd></div>
-        <div><dt>Best and worst month (last 12)</dt><dd>May 2026 +29.83%; Nov 2025 -28.22%</dd></div>
-        <div><dt>Correlation with Bitcoin</dt><dd>0.65 over the last 90 days of daily returns: a moderate link (1 means Arkham and BTC moved together every day)</dd></div>
-        <div><dt>1-year rank in AI</dt><dd>7th of 8 <a href="/sector/ai/">AI</a> coins tracked here with a full year of data</dd></div>
-      </dl>
       <h3>ARKM monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -210,7 +207,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 2, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -222,7 +219,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About Arkham</h2>
       <p>Arkham is an on-chain intelligence platform that labels blockchain addresses and entities, and also runs a crypto exchange. ARKM is its utility token.</p>
       <h3>Where this ARKM price comes from</h3>
-      <p>The price above updates live in your browser from Coinbase (ARKM-USD), Binance (ARKM/USDT) and Kraken (ARKM/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 496,228,000 ARKM (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Coinbase (ARKM-USD), Binance (ARKM/USDT) and Kraken (ARKM/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 496,228,000 ARKM (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

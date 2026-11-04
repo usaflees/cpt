@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Builds content/coin-stats.json: per-coin performance figures computed from daily candles,
-// used by scripts/build-coin-pages.mjs for the hero summary, "Performance", "Key facts" and "Price history".
+// used by scripts/build-coin-pages.mjs for the "Performance" and "Price history" sections.
 //
 //   node scripts/fetch-coin-stats.mjs
 //
@@ -63,7 +63,7 @@ function summarize(candles) {
   }
   const thisMonth = new Date(last.t + DAY).toISOString().slice(0, 7);
   const completed = monthly.filter(m => m.month < thisMonth).slice(-13);
-  // Largest peak-to-trough fall of the daily close within the year (B2 data module).
+  // Largest peak-to-trough fall of the daily close within the year (STRATEGY B2).
   let peak = year[0], dd = { pct: 0, from: year[0], to: year[0] };
   for (const d of year) {
     if (d.close > peak.close) peak = d;
@@ -71,7 +71,6 @@ function summarize(candles) {
     if (fall < dd.pct) dd = { pct: fall, from: peak, to: d };
   }
   return {
-    _days: days, // daily closes for the BTC correlation in main(); not written to the file
     asOf: new Date(last.t).toISOString().slice(0, 10),
     close: last.close,
     change7d: pct(7), change30d: pct(30), change90d: pct(90), change1y: pct(365),
@@ -86,8 +85,21 @@ function summarize(candles) {
       month: m.month,
       close: m.close,
       change: i ? +(((m.close - completed[i - 1].close) / completed[i - 1].close) * 100).toFixed(2) : null
-    })).slice(-12)
+    })).slice(-12),
+    // Daily log returns for the last 90 days, keyed by date; used for the BTC correlation, then dropped.
+    _rets: days.slice(-91).map((d, i, arr) => (i ? [new Date(d.t).toISOString().slice(0, 10), Math.log(d.close / arr[i - 1].close)] : null)).slice(1)
   };
+}
+
+// Pearson correlation of two coins' daily log returns on the dates both have (needs ≥ 60).
+function correlation(a, b) {
+  const mb = new Map(b);
+  const pairs = a.filter(([d]) => mb.has(d)).map(([d, r]) => [r, mb.get(d)]);
+  if (pairs.length < 60) return null;
+  const mx = pairs.reduce((s, p) => s + p[0], 0) / pairs.length, my = pairs.reduce((s, p) => s + p[1], 0) / pairs.length;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (const [x, y] of pairs) { sxy += (x - mx) * (y - my); sxx += (x - mx) ** 2; syy += (y - my) ** 2; }
+  return sxx && syy ? +(sxy / Math.sqrt(sxx * syy)).toFixed(2) : null;
 }
 
 async function main() {
@@ -111,24 +123,10 @@ async function main() {
     }));
     await new Promise(r => setTimeout(r, 400));
   }
-  // Correlation of daily log returns with BTC over the last 90 days, matched by date (B2 data module).
-  const logRets = days => {
-    const m = new Map();
-    days.slice(-91).forEach((d, i, arr) => { if (i) m.set(d.t, Math.log(d.close / arr[i - 1].close)); });
-    return m;
-  };
-  const btc = out.BTC ? logRets(out.BTC._days) : null;
+  const btc = out.BTC && out.BTC._rets;
   for (const [sym, s] of Object.entries(out)) {
-    if (btc && sym !== "BTC") {
-      const pairs = [...logRets(s._days)].filter(([t]) => btc.has(t)).map(([t, r]) => [r, btc.get(t)]);
-      if (pairs.length >= 60) {
-        const mx = pairs.reduce((a, p) => a + p[0], 0) / pairs.length, my = pairs.reduce((a, p) => a + p[1], 0) / pairs.length;
-        const cov = pairs.reduce((a, p) => a + (p[0] - mx) * (p[1] - my), 0);
-        const vx = pairs.reduce((a, p) => a + (p[0] - mx) ** 2, 0), vy = pairs.reduce((a, p) => a + (p[1] - my) ** 2, 0);
-        if (vx > 0 && vy > 0) { s.corrBtc90d = +(cov / Math.sqrt(vx * vy)).toFixed(2); s.corrDays = pairs.length; }
-      }
-    }
-    delete s._days;
+    if (btc && sym !== "BTC") s.corrBtc90d = correlation(s._rets, btc);
+    delete s._rets;
   }
   const updated = Object.values(out).map(s => s.asOf).sort().pop();
   // One coin per line: a weekly refresh then diffs ~114 lines instead of ~7,000 (smaller PRs, cheaper to review).

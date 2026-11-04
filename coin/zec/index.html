@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/zec/","url":"https://cryptopriceticker.com/coin/zec/","name":"Zcash (ZEC) Price: Live Chart & Market Cap","description":"Zcash (ZEC) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Zcash","alternateName":"ZEC"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Privacy","item":"https://cryptopriceticker.com/sector/privacy/"},{"@type":"ListItem","position":3,"name":"Zcash (ZEC)","item":"https://cryptopriceticker.com/coin/zec/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/zec/","url":"https://cryptopriceticker.com/coin/zec/","name":"Zcash (ZEC) Price: Live Chart & Market Cap","description":"Zcash (ZEC) price today in USD, live from Coinbase, Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Zcash","alternateName":"ZEC"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Privacy","item":"https://cryptopriceticker.com/sector/privacy/"},{"@type":"ListItem","position":3,"name":"Zcash (ZEC)","item":"https://cryptopriceticker.com/coin/zec/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="ZEC">
@@ -96,12 +97,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#10</span>
           <span class="tag-badge">Privacy</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="coin-summary">Zcash (ZEC) has risen 171.1% over the past year. Its daily closes ranged from $197.250 (March 7, 2026) to $1,653.12 (September 26, 2026) over the last 52 weeks. On November 2, 2026 it closed at $1,134.55, 31.4% below that high, with 30-day annualized volatility of 96.1%. Daily closes (UTC) from Binance.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Binance daily close): Zcash closed at $1,219.04, up 181.0% over one year, 26.3% below its 52-week high of $1,653.12, ranked #10 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="ZEC" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="ZEC">🧩 Embed ZEC widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="ZEC" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -174,21 +176,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">ZEC price performance</h2>
+      <p class="prose">Over the past year, Zcash has risen 181.0%. Its daily closes ranged from $197.250 (March 7, 2026) to $1,653.12 (September 26, 2026) over the last 52 weeks. On November 3, 2026 it closed at $1,219.04, 26.3% below that high, with 30-day annualized volatility of 98.8%. Its best full month was Aug 2026 (+85.30%) and its worst was Jan 2026 (-40.84%). Over the last 90 days its daily moves had a correlation of 0.55 with Bitcoin's (loosely tied; 1 would mean moving in lockstep). Its largest fall between daily closes within the year was 71.8%, from November 16, 2025 to March 7, 2026. Over one year it ranked 1st of the 5 <a href="/sector/privacy/">Privacy</a> coins tracked here with a full year of data.</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-8.00%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-13.07%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+123.97%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-up">+171.09%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-6.92%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-9.86%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+137.98%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-up">+180.96%</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$1,653.12</div><div class="metric-label">September 26, 2026</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$197.250</div><div class="metric-label">March 7, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.55</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
-      <h3>ZEC key facts</h3>
-      <dl class="fact-list">
-        <div><dt>Largest fall in the past year</dt><dd>71.8% between daily closes, from November 16, 2025 to March 7, 2026</dd></div>
-        <div><dt>Best and worst month (last 12)</dt><dd>Aug 2026 +85.30%; Jan 2026 -40.84%</dd></div>
-        <div><dt>Correlation with Bitcoin</dt><dd>0.55 over the last 90 days of daily returns: a moderate link (1 means Zcash and BTC moved together every day)</dd></div>
-        <div><dt>1-year rank in Privacy</dt><dd>1st of 5 <a href="/sector/privacy/">Privacy</a> coins tracked here with a full year of data</dd></div>
-      </dl>
       <h3>ZEC monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -210,7 +207,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 2, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -222,7 +219,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About Zcash</h2>
       <p>Zcash is a privacy-focused cryptocurrency that uses zero-knowledge proofs (zk-SNARKs) to allow fully shielded transactions. Like Bitcoin, it has a maximum supply of 21 million coins.</p>
       <h3>Where this ZEC price comes from</h3>
-      <p>The price above updates live in your browser from Coinbase (ZEC-USD), Binance (ZEC/USDT) and Kraken (ZEC/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 16,226,300 ZEC (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Coinbase (ZEC-USD), Binance (ZEC/USDT) and Kraken (ZEC/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 16,226,300 ZEC (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

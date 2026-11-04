@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/beam/","url":"https://cryptopriceticker.com/coin/beam/","name":"Beam (BEAM) Price: Live Chart & Market Cap","description":"Beam (BEAM) price today in USD, live from Coinbase and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Beam","alternateName":"BEAM"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Gaming","item":"https://cryptopriceticker.com/sector/gaming/"},{"@type":"ListItem","position":3,"name":"Beam (BEAM)","item":"https://cryptopriceticker.com/coin/beam/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/beam/","url":"https://cryptopriceticker.com/coin/beam/","name":"Beam (BEAM) Price: Live Chart & Market Cap","description":"Beam (BEAM) price today in USD, live from Coinbase and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Beam","alternateName":"BEAM"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Gaming","item":"https://cryptopriceticker.com/sector/gaming/"},{"@type":"ListItem","position":3,"name":"Beam (BEAM)","item":"https://cryptopriceticker.com/coin/beam/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="BEAM">
@@ -96,12 +97,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#69</span>
           <span class="tag-badge">Gaming</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="coin-summary">Beam (BEAM) has fallen 8.9% over the past year. Its daily closes ranged from $0.001285 (August 18, 2026) to $0.005527 (November 1, 2026) over the last 52 weeks. On November 2, 2026 it closed at $0.004498, 18.6% below that high, with 30-day annualized volatility of 176.6%. Daily closes (UTC) from Kraken.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Kraken daily close): Beam closed at $0.004175, down 2.2% over one year, 24.5% below its 52-week high of $0.005527, ranked #69 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="BEAM" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="BEAM">🧩 Embed BEAM widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="BEAM" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -174,21 +176,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">BEAM price performance</h2>
+      <p class="prose">Over the past year, Beam has fallen 2.2%. Its daily closes ranged from $0.001285 (August 18, 2026) to $0.005527 (November 1, 2026) over the last 52 weeks. On November 3, 2026 it closed at $0.004175, 24.5% below that high, with 30-day annualized volatility of 171.5%. Its best full month was Oct 2026 (+157.93%) and its worst was Nov 2025 (-31.65%). Over the last 90 days its daily moves had a correlation of 0.37 with Bitcoin's (loosely tied; 1 would mean moving in lockstep). Its largest fall between daily closes within the year was 72.1%, from November 7, 2025 to August 18, 2026. Over one year it ranked 1st of the 6 <a href="/sector/gaming/">Gaming</a> coins tracked here with a full year of data.</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-up">+33.95%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-up">+111.07%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+217.88%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-8.95%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-up">+24.93%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-up">+64.69%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+192.78%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-2.22%</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$0.005527</div><div class="metric-label">November 1, 2026</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$0.001285</div><div class="metric-label">August 18, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.37</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
-      <h3>BEAM key facts</h3>
-      <dl class="fact-list">
-        <div><dt>Largest fall in the past year</dt><dd>72.1% between daily closes, from November 7, 2025 to August 18, 2026</dd></div>
-        <div><dt>Best and worst month (last 12)</dt><dd>Oct 2026 +157.93%; Nov 2025 -31.65%</dd></div>
-        <div><dt>Correlation with Bitcoin</dt><dd>0.38 over the last 90 days of daily returns: a weak link (1 means Beam and BTC moved together every day)</dd></div>
-        <div><dt>1-year rank in Gaming</dt><dd>1st of 6 <a href="/sector/gaming/">Gaming</a> coins tracked here with a full year of data</dd></div>
-      </dl>
       <h3>BEAM monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -210,7 +207,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 2, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -222,7 +219,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About Beam</h2>
       <p>Beam is a gaming-focused blockchain ecosystem governed by the Beam Foundation. BEAM is used for fees and governance across its games and infrastructure.</p>
       <h3>Where this BEAM price comes from</h3>
-      <p>The price above updates live in your browser from Coinbase (BEAM-USD) and Kraken (BEAM/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 49.47B BEAM (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Coinbase (BEAM-USD) and Kraken (BEAM/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 49.47B BEAM (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

@@ -1707,15 +1707,22 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
 .asset-card figcaption { display: grid; gap: 8px; }
 
-/* Answer-first summary in the coin hero (static text from the build, so no layout shift) */
-.coin-summary { margin-top: 12px; max-width: 62ch; color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
-@media (max-width: 480px) { body:not(.is-embed) .coin-summary { font-size: 13.5px; } }
+/* Coin pages: the dated key facts under the live price (scripts/build-coin-pages.mjs keyFacts) */
+.hero-facts { margin: 10px 0 2px; max-width: 62ch; font-size: 13.5px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+.hero-facts time { color: var(--text-primary); font-weight: 600; }
 
-/* Key facts on coin pages (roadmap B2): label above value, two columns when there's room */
-.fact-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin: 4px 0 18px; }
-.fact-list > div { padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-primary); }
-.fact-list dt { font-size: 12px; color: var(--text-secondary); }
-.fact-list dd { margin: 3px 0 0; font-size: 14px; line-height: 1.5; color: var(--text-primary); }
+/* Pop-out ticker: the button reuses the hero link chips; the window is a compact live list */
+.hero-links button { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); background: var(--bg-secondary); border: 1px solid var(--border); cursor: pointer; }
+.hero-links button:hover { color: var(--accent); border-color: var(--accent); }
+.pip-body { margin: 0; padding: 10px 12px; background: var(--page-bg); background-color: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); }
+.pip-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pip-row { display: grid; grid-template-columns: 22px 1fr auto auto; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 10px; background: var(--bg-secondary); border: 1px solid var(--border); }
+.pip-row .coin-avatar { width: 22px; height: 22px; font-size: 8px; }
+.pip-sym { font-weight: 800; font-size: 13px; color: var(--text-primary); text-decoration: none; }
+.pip-price { font-family: var(--font-mono); font-weight: 700; font-size: 13px; text-align: right; }
+.pip-price.is-stale { color: var(--text-muted); }
+.pip-foot { margin: 8px 0 0; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); }
 
-/* Heatmap: full-opacity price text. At 85% opacity it fell to ~4.2:1 on the strongest green (coins up 8%+). */
-.hm-price { opacity: 1; }
+/* Heatmap tile price: full-opacity white (85% opacity dropped below 4.5:1 on the brightest green tiles) */
+.hm-price { opacity: 1; font-weight: 600; }

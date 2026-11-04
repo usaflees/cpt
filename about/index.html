@@ -7,7 +7,7 @@
   <meta name="description" content="Where CryptoPriceTicker.com gets its crypto prices, how market cap, volume and performance figures are calculated, and how to report an error." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://cryptopriceticker.com/about/" />
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -47,6 +47,7 @@
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -56,9 +57,9 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
 </head>
 <body data-page="about">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -109,8 +110,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
     <section class="page-section prose" aria-labelledby="calc-h">
       <h2 id="calc-h">How the numbers are calculated</h2>
-      <p><strong>Market cap</strong> = live price × circulating supply. <strong>24h volume</strong> is the sum of the coin's USD/USDT markets on the three exchanges above, so it is lower than "global" volume figures that include hundreds of venues. <strong>Estimated liquidity ±2%</strong> in the main table is a rough rule of thumb (6.5% of that volume); the order-book depth shown on coin pages is measured from Binance's live order book within 2% of the mid price. <strong>Volatility</strong> is the annualized standard deviation of the last 30 daily log returns.</p>
-      <p>Each coin page opens with a short summary built from completed daily closes (UTC): the 1-year change, the 52-week range and how far the last close sits below its high. The <strong>key facts</strong> under the performance table are computed from the same closes: the <strong>largest fall</strong> is the biggest drop from a daily-close peak to a later daily close within the last 365 days; <strong>best and worst month</strong> compare month-end closes; <strong>correlation with Bitcoin</strong> is the Pearson correlation of the two coins' daily log returns over the last 90 days, matched by date (shown only with at least 60 shared days); the <strong>1-year rank</strong> orders the coins of the same sector on this site that have a full year of data. Stablecoins show only their range around the peg. The figures describe the past; they are not forecasts.</p>
+      <p><strong>Market cap</strong> = live price × circulating supply. <strong>24h volume</strong> is the sum of the coin's USD/USDT markets on the three exchanges above, so it is lower than "global" volume figures that include hundreds of venues. <strong>Estimated liquidity ±2%</strong> in the main table is a rough rule of thumb (6.5% of that volume); the order-book depth shown on coin pages is measured from Binance's live order book within 2% of the mid price. <strong>Volatility</strong> is the annualized standard deviation of the last 30 daily log returns. <strong>Correlation with BTC</strong> is the Pearson correlation of a coin's daily log returns with Bitcoin's over the last 90 days (on dates both have, at least 60); it is not shown for stablecoins. <strong>Best and worst month</strong> compare month-end daily closes over the last 12 complete months. The <strong>largest fall</strong> is the biggest drop from a daily-close peak to a later daily close within the last 365 days. The <strong>1-year rank</strong> orders the coins of the same sector on this site that have a full year of data; sector pages show the median largest fall and BTC correlation of their coins. These figures describe the past; they are not forecasts.</p>
       <p>Until the first live trade arrives, prices are shown dimmed and 24h changes as "—". The site never displays invented or simulated numbers.</p>
     </section>
 

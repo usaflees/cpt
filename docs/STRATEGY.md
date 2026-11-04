@@ -142,13 +142,13 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 
 ### B. Citable fact sheets (search and AI answers)
 
-**B1. Answer-first summary on every coin page, M. Highest-value SEO item.** *Built Nov 3, 2026 (`performanceSummary` in the coin hero); awaiting owner go-live.*
+**B1. Answer-first summary on every coin page, M. Highest-value SEO item.**
 - A server-rendered paragraph in the first screen, built from `content/coin-stats.json`. Example: "Bitcoin (BTC) is up 34% over the past year and trades within a 52-week range of $X–$Y; its 30-day volatility is Z%. Data as of 2 Nov 2026 from Coinbase daily closes."
 - Crawlers that don't run JavaScript, which includes most AI fetchers, then see real, dated facts instead of an empty live widget.
 - **No price predictions and no advice language.**
 - **Success:** more impressions on coin pages, plus citations in the prompt checks (D3).
 
-**B2. Unique data modules, to fix uniformity, M–L.** *First slice built Nov 3, 2026: "key facts" (largest fall, best/worst month, 90-day BTC correlation, 1-year sector rank); sector hubs show the median largest fall and BTC correlation (Nov 4). Exchange coverage/spread still open.*
+**B2. Unique data modules, to fix uniformity, M–L.** *Done so far: best/worst month and 90-day BTC correlation (live Nov 4); largest fall, 1-year sector rank and sector-hub medians (PR #10). Exchange coverage and spread still open.*
 - Computed from the daily candles we already fetch:
   - drawdown from the 52-week high;
   - best and worst month;
@@ -161,7 +161,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 **B3. Freshness signals, S.**
 - The visible "Data as of" date matches `dateModified` in the structured data and `lastmod` in the sitemap. All three change only when the data actually changes, since fake freshness is a known spam signal.
 
-**B4. Structured data tidy-up, S.** *Organization logo is an `ImageObject` since Nov 3, 2026.*
+**B4. Structured data tidy-up, S.** *Organization logo is an `ImageObject` (PR #10).*
 - Keep WebPage + BreadcrumbList.
 - Add `Dataset`-style markup only if it's accurate and useful. No FAQPage for rich results (deprecated); keeping FAQ text for readers is fine.
 - Add `ImageObject` logos to the Organization.
@@ -272,7 +272,7 @@ Whether to allow training crawlers (`GPTBot`, `Google-Extended`, `CCBot`) is a s
 | When | Items | Exit criteria |
 | --- | --- | --- |
 | **Now (next 2 weeks)** | C3 budgets ✅, C2 yield ✅, B3 freshness ✅, B5 robots ✅, E1 accessibility page ✅ (all shipped 2 Nov 2026), D1 (owner, open) | CI enforces budgets; RUM collecting; robots explicit |
-| **Next (weeks 3–8)** | **B1 answer-first summaries**, **C1 worker feeds**, A4 logo pickers, D2 CrUX, D3 citations baseline | Every coin page has dated facts above the fold; steady-state main thread < 60 ms/s |
+| **Next (weeks 3–8)** | **B1 answer-first summaries** ✅ (4 Nov), A1 pop-out ticker ✅ (4 Nov, pulled forward), B2 BTC correlation ✅ and A5 auto-theme widgets ✅ (4 Nov), ~~C1 worker feeds~~ (measured: not worth it, see DECISIONS), A4 logo pickers (deferred), D2 CrUX, D3 citations baseline | Every coin page has dated facts above the fold; steady-state main thread < 60 ms/s |
 | **Then (months 2–4)** | B2 unique data modules, A1 pop-out ticker, A2 SharedWorker, A5 widget growth, C4 Lighthouse CI | No coin page shares > 60% of its text with another; embed domains growing month over month |
 | **Gated** | B6 comparisons, B7 languages, E3 monetization, F1–F4 | Only when the stated trigger or data condition is met, and with owner approval |
 

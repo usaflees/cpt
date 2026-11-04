@@ -1,4 +1,4 @@
-# State of the site (2026-11-03)
+# State of the site (2026-11-04)
 
 ## Pages
 - 130 URLs in the sitemap: home, /heatmap/, /convert/, /about/, /widgets/, /brand/, /accessibility/, 9 sector hubs,
@@ -8,17 +8,16 @@
   `content/coin-about.json`, `content/sectors.json`, `content/seo-overrides.json`.
 
 ## Features
-- **Home:** live table (top 50, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
+- **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 50, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
   alerts with optional system notifications, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
-- **Coin pages:** answer-first summary in the hero (1-year change, 52-week range, distance from the high, 30-day
-  volatility, date and source; static HTML from `content/coin-stats.json`), key facts (largest fall, best/worst
-  month, BTC correlation, 1-year sector rank), live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
-  depth, converter with live tables, performance stats and monthly closes, sector breadcrumb, related coins.
+- **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, rank); the
+  performance text adds largest fall and 1-year sector rank (PR #10), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
+  depth, converter with live tables, performance stats (incl. best/worst month and 90-day correlation with BTC) and monthly closes, sector breadcrumb, related coins.
 - **Brand and trust:** live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
-  embeddable widget in three layouts, quick coin search on every sub-page.
+  embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
 ## Quality (latest measurements)
 Lighthouse figures were measured on Oct 31–Nov 1, before PRs #1–#8; the QA rows are from the merged site (Nov 2).

@@ -17,7 +17,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -71,6 +71,7 @@
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -79,9 +80,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="home">
@@ -150,7 +151,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <p class="brand-name"><img class="eyebrow-mark" src="/brand/mark-intro.svg" width="22" height="22" alt="" />CryptoPriceTicker.com</p>
         <h1 id="hero-h" class="hero-title">Live crypto prices from Coinbase, Binance &amp; Kraken</h1>
         <p class="hero-sub">Every trade, the moment it happens. No login, no ads, nothing to install.</p>
-        <p class="hero-links"><a href="/heatmap/">🟩 Market heatmap</a><a href="/convert/">🔁 Converter</a><a href="/widgets/">🧩 Free widget</a></p>
+        <p class="hero-links"><a href="/heatmap/">🟩 Market heatmap</a><a href="/convert/">🔁 Converter</a><a href="/widgets/">🧩 Free widget</a><button type="button" data-action="pip" hidden>⧉ Pop-out ticker</button></p>
         <div class="hero-stats">
           <div class="stat"><span class="stat-label">Market cap</span><span class="stat-val" id="globalMcap">—</span></div>
           <div class="stat"><span class="stat-label">24h volume</span><span class="stat-val" id="globalVol">—</span></div>

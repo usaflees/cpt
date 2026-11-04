@@ -172,57 +172,64 @@ const pctText = v => (v === null || v === undefined ? "—" : `${v >= 0 ? "+" : 
 const pctClass = v => (v === null || v === undefined ? "" : v >= 0 ? "chg-up" : "chg-down");
 const monthName = ym => new Date(ym + "-01T00:00:00Z").toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
 
-// Answer-first summary (roadmap B1): plain, data-derived sentences with dates and the source, rendered in the
-// coin hero so crawlers that don't run JavaScript see real facts. No predictions, no advice, no generated prose.
+// Plain, data-derived sentences (no generated prose): what the numbers say, with dates.
 function performanceSummary(c, st) {
-  const n = `${esc(shortName(c))} (${esc(c.sym)})`;
+  const n = shortName(c);
   const parts = [];
   if (c.sectors.includes("Stable")) {
-    parts.push(`Over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}, ${n} closed between ${usd(st.low52w)} and ${usd(st.high52w)} per day, a range of ${(((st.high52w - st.low52w) / st.low52w) * 100).toFixed(2)}% around its US-dollar peg.`);
+    parts.push(`Over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}, ${esc(n)} closed between ${usd(st.low52w)} and ${usd(st.high52w)} per day, a range of ${(((st.high52w - st.low52w) / st.low52w) * 100).toFixed(2)}% around its US-dollar peg.`);
   } else {
-    const [v, span] = st.change1y !== null && st.change1y !== undefined ? [st.change1y, "over the past year"]
-      : st.change90d !== null && st.change90d !== undefined ? [st.change90d, "over the past 90 days"] : [null, ""];
-    if (v !== null) parts.push(`${n} has ${v >= 0 ? "risen" : "fallen"} ${Math.abs(v).toFixed(1)}% ${span}.`);
-    parts.push(`${v !== null ? "Its" : `${n}'s`} daily closes ranged from ${usd(st.low52w)} (${longDate(st.low52wDate)}) to ${usd(st.high52w)} (${longDate(st.high52wDate)})${st.historyDays < 365 ? ` over the ${st.historyDays} days of data available` : " over the last 52 weeks"}.`);
+    if (st.change1y !== null) parts.push(`Over the past year, ${esc(n)} has ${st.change1y >= 0 ? "risen" : "fallen"} ${Math.abs(st.change1y).toFixed(1)}%.`);
+    parts.push(`Its daily closes ranged from ${usd(st.low52w)} (${longDate(st.low52wDate)}) to ${usd(st.high52w)} (${longDate(st.high52wDate)})${st.historyDays < 365 ? ` over the ${st.historyDays} days of data available on ${st.source}` : " over the last 52 weeks"}.`);
     const fromHigh = ((st.close - st.high52w) / st.high52w) * 100;
     parts.push(`On ${longDate(st.asOf)} it closed at ${usd(st.close)}, ${Math.abs(fromHigh) < 0.5 ? "at its 52-week high" : `${Math.abs(fromHigh).toFixed(1)}% below that high`}, with 30-day annualized volatility of ${st.volatility30d}%.`);
+    const ext = monthExtremes(st);
+    if (ext) parts.push(`Its best full month was ${monthName(ext.best.month)} (${pctText(ext.best.change)}) and its worst was ${monthName(ext.worst.month)} (${pctText(ext.worst.change)}).`);
+    if (typeof st.corrBtc90d === "number") parts.push(`Over the last 90 days its daily moves had a correlation of ${st.corrBtc90d.toFixed(2)} with Bitcoin's (${corrWord(st.corrBtc90d)}; 1 would mean moving in lockstep).`);
+    if (typeof st.maxDrawdown1y === "number" && st.maxDrawdown1y <= -1) parts.push(`Its largest fall between daily closes within the year was ${Math.abs(st.maxDrawdown1y).toFixed(1)}%, from ${longDate(st.maxDrawdownFrom)} to ${longDate(st.maxDrawdownTo)}.`);
+    const sr = sectorRank(c);
+    if (sr) parts.push(`Over one year it ranked ${ordinal(sr.rank)} of the ${sr.total} <a href="/sector/${sr.hub.slug}/">${esc(sr.hub.name)}</a> coins tracked here with a full year of data.`);
   }
-  parts.push(`Daily closes (UTC) from ${st.source}.`);
   return parts.join(" ");
 }
 
-// Key facts (roadmap B2): figures specific to this coin, each shown only when its data is meaningful.
+// 1-year rank among coins whose primary sector is the same (needs 3+ coins with a full year of data).
 const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
-function keyFacts(c, st) {
-  const n = esc(shortName(c));
-  const facts = [];
-  const stable = c.sectors.includes("Stable");
-  if (!stable && st.maxDrawdown1y !== undefined && st.maxDrawdown1y <= -1) {
-    facts.push(["Largest fall in the past year", `${Math.abs(st.maxDrawdown1y).toFixed(1)}% between daily closes, from ${longDate(st.maxDrawdownFrom)} to ${longDate(st.maxDrawdownTo)}`]);
-  }
-  const months = st.monthly.filter(m => m.change !== null && m.change !== undefined);
-  if (!stable && months.length >= 6) {
-    const best = months.reduce((a, m) => (m.change > a.change ? m : a)), worst = months.reduce((a, m) => (m.change < a.change ? m : a));
-    facts.push([`Best and worst month (last ${months.length})`, `${monthName(best.month)} ${pctText(best.change)}; ${monthName(worst.month)} ${pctText(worst.change)}`]);
-  }
-  if (!stable && st.corrBtc90d !== undefined) {
-    const r = st.corrBtc90d, a = Math.abs(r);
-    const band = a >= 0.7 ? "strong" : a >= 0.4 ? "moderate" : "weak";
-    facts.push(["Correlation with Bitcoin", `${r.toFixed(2)} over the last ${st.corrDays} days of daily returns: a ${band}${r < 0 ? " negative" : ""} link (1 means ${n} and BTC moved together every day)`]);
-  }
+function sectorRank(c) {
   const key = c.sectors[0], hub = sectorOf(key);
+  if (!hub || c.sectors.includes("Stable")) return null;
   const peers = coins.filter(o => o.sectors[0] === key && stats[o.sym]?.change1y != null && stats[o.sym].historyDays >= 365)
     .sort((a, b) => stats[b.sym].change1y - stats[a.sym].change1y);
   const rank = peers.indexOf(c) + 1;
-  if (!stable && hub && rank && peers.length >= 3) {
-    facts.push([`1-year rank in ${esc(hub.name)}`, `${ordinal(rank)} of ${peers.length} <a href="/sector/${hub.slug}/">${esc(hub.name)}</a> coins tracked here with a full year of data`]);
+  return rank && peers.length >= 3 ? { hub, rank, total: peers.length } : null;
+}
+
+const corrWord = r => (r >= 0.8 ? "very closely tied" : r >= 0.6 ? "closely tied" : r >= 0.3 ? "loosely tied" : r > -0.3 ? "largely independent" : "tending to move the other way");
+
+// Best and worst complete calendar month (the month of the latest close is still running).
+function monthExtremes(st) {
+  const full = (st.monthly || []).filter(m => m.change !== null && m.change !== undefined && m.month < st.asOf.slice(0, 7));
+  if (full.length < 3) return null;
+  const sorted = full.slice().sort((a, b) => b.change - a.change);
+  return { best: sorted[0], worst: sorted[sorted.length - 1] };
+}
+
+// Answer-first line under the live price: the page's key, dated facts in plain text, so readers,
+// search engines and AI fetchers (which mostly don't run JavaScript) see real numbers first.
+function keyFacts(c, st, rank, total) {
+  if (!st) return "";
+  const when = `<time datetime="${st.asOf}">${longDate(st.asOf)}</time>`;
+  const rankText = `ranked #${rank} by market cap of the ${total} coins tracked here`;
+  if (c.sectors.includes("Stable")) {
+    return `<p class="hero-facts">As of ${when} (${esc(st.source)} daily close): ${esc(shortName(c))} held between ${usd(st.low52w)} and ${usd(st.high52w)} over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}; ${rankText}.</p>`;
   }
-  if (!facts.length) return "";
-  return `
-      <h3>${esc(c.sym)} key facts</h3>
-      <dl class="fact-list">
-        ${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("\n        ")}
-      </dl>`;
+  const facts = [];
+  if (st.change1y !== null) facts.push(`${st.change1y >= 0 ? "up" : "down"} ${Math.abs(st.change1y).toFixed(1)}% over one year`);
+  const fromHigh = ((st.close - st.high52w) / st.high52w) * 100;
+  const span = st.historyDays >= 365 ? "52-week" : `${st.historyDays}-day`;
+  facts.push(Math.abs(fromHigh) < 0.5 ? `at its ${span} high` : `${Math.abs(fromHigh).toFixed(1)}% below its ${span} high of ${usd(st.high52w)}`);
+  facts.push(rankText);
+  return `<p class="hero-facts">As of ${when} (${esc(st.source)} daily close): ${esc(shortName(c))} closed at ${usd(st.close)}, ${facts.join(", ")}.</p>`;
 }
 
 function statsSection(c, st) {
@@ -234,6 +241,7 @@ function statsSection(c, st) {
   return `
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">${s} price performance</h2>
+      <p class="prose">${performanceSummary(c, st)}</p>
       <div class="stat-grid">
         ${cell("7 days", st.change7d)}
         ${cell("30 days", st.change30d)}
@@ -241,7 +249,8 @@ function statsSection(c, st) {
         ${cell("1 year", st.change1y)}
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">${usd(st.high52w)}</div><div class="metric-label">${longDate(st.high52wDate)}</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">${usd(st.low52w)}</div><div class="metric-label">${longDate(st.low52wDate)}</div></div>
-      </div>${keyFacts(c, st)}
+        ${typeof st.corrBtc90d === "number" && !c.sectors.includes("Stable") ? `<div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">${st.corrBtc90d.toFixed(2)}</div><div class="metric-label">90 days, daily moves</div></div>` : ""}
+      </div>
       <h3>${s} monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -370,10 +379,11 @@ function coinPage(c) {
           ${c.sectors.map(x => `<span class="tag-badge">${esc(x)}</span>`).join(" ")}
           <span id="cpSource">Snapshot from ${longDate(updated)} — connecting to live feeds…</span>
         </div>
-        ${st ? `<p class="coin-summary">${performanceSummary(c, st)}</p>` : ""}
+        ${keyFacts(c, st, rankOf.get(c.sym), coins.length)}
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="${s}" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="${s}" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>

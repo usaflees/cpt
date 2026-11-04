@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/okb/","url":"https://cryptopriceticker.com/coin/okb/","name":"OKB (OKB) Price: Live Chart & Market Cap","description":"OKB (OKB) price today in USD, live from Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"OKB","alternateName":"OKB"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Layer 1","item":"https://cryptopriceticker.com/sector/layer-1/"},{"@type":"ListItem","position":3,"name":"OKB (OKB)","item":"https://cryptopriceticker.com/coin/okb/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/okb/","url":"https://cryptopriceticker.com/coin/okb/","name":"OKB (OKB) Price: Live Chart & Market Cap","description":"OKB (OKB) price today in USD, live from Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"OKB","alternateName":"OKB"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Layer 1","item":"https://cryptopriceticker.com/sector/layer-1/"},{"@type":"ListItem","position":3,"name":"OKB (OKB)","item":"https://cryptopriceticker.com/coin/okb/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="OKB">
@@ -96,12 +97,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#27</span>
           <span class="tag-badge">L1</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="coin-summary">OKB (OKB) has risen 25.1% over the past 90 days. Its daily closes ranged from $69.200 (June 6, 2026) to $136.410 (October 6, 2026) over the 214 days of data available. On November 2, 2026 it closed at $108.860, 20.2% below that high, with 30-day annualized volatility of 54.1%. Daily closes (UTC) from Kraken.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Kraken daily close): OKB closed at $108.160, 20.7% below its 215-day high of $136.410, ranked #27 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="OKB" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="OKB">🧩 Embed OKB widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="OKB" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -174,20 +176,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">OKB price performance</h2>
+      <p class="prose">Its daily closes ranged from $69.200 (June 6, 2026) to $136.410 (October 6, 2026) over the 215 days of data available on Kraken. On November 3, 2026 it closed at $108.160, 20.7% below that high, with 30-day annualized volatility of 54%. Its best full month was Aug 2026 (+30.62%) and its worst was Jun 2026 (-15.68%). Over the last 90 days its daily moves had a correlation of 0.45 with Bitcoin's (loosely tied; 1 would mean moving in lockstep). Its largest fall between daily closes within the year was 25.3%, from May 31, 2026 to June 6, 2026.</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-0.45%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-9.92%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+25.10%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-1.43%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-10.96%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+25.56%</span></div></div>
         <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill ">—</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$136.410</div><div class="metric-label">October 6, 2026</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$69.200</div><div class="metric-label">June 6, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.45</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
-      <h3>OKB key facts</h3>
-      <dl class="fact-list">
-        <div><dt>Largest fall in the past year</dt><dd>25.3% between daily closes, from May 31, 2026 to June 6, 2026</dd></div>
-        <div><dt>Best and worst month (last 6)</dt><dd>Aug 2026 +30.62%; Jun 2026 -15.68%</dd></div>
-        <div><dt>Correlation with Bitcoin</dt><dd>0.45 over the last 90 days of daily returns: a moderate link (1 means OKB and BTC moved together every day)</dd></div>
-      </dl>
       <h3>OKB monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -204,7 +202,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 2, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -216,7 +214,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About OKB</h2>
       <p>OKB is the utility token of the OKX exchange, used for trading-fee discounts and as the gas token of OKX's X Layer network.</p>
       <h3>Where this OKB price comes from</h3>
-      <p>The price above updates live in your browser from Kraken (OKB/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 21,000,000 OKB (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Kraken (OKB/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 21,000,000 OKB (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

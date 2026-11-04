@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=6ec4323142" as="style" />
+  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,11 +29,12 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/rune/","url":"https://cryptopriceticker.com/coin/rune/","name":"THORChain (RUNE) Price: Live Chart & Market Cap","description":"THORChain (RUNE) price today in USD, live from Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-02","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"THORChain","alternateName":"RUNE"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"DeFi & real-world assets","item":"https://cryptopriceticker.com/sector/defi/"},{"@type":"ListItem","position":3,"name":"THORChain (RUNE)","item":"https://cryptopriceticker.com/coin/rune/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/rune/","url":"https://cryptopriceticker.com/coin/rune/","name":"THORChain (RUNE) Price: Live Chart & Market Cap","description":"THORChain (RUNE) price today in USD, live from Binance and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-03","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"THORChain","alternateName":"RUNE"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"DeFi & real-world assets","item":"https://cryptopriceticker.com/sector/defi/"},{"@type":"ListItem","position":3,"name":"THORChain (RUNE)","item":"https://cryptopriceticker.com/coin/rune/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
 var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
 if (themes.indexOf(t) < 0) {
 try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 }
@@ -42,9 +43,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=6ec4323142" />
+  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=32c712c25c" defer></script>
+  <script src="/assets/app.js?v=793b174b01" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="RUNE">
@@ -96,12 +97,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#75</span>
           <span class="tag-badge">DeFi</span> <span class="tag-badge">L1</span>
-          <span id="cpSource">Snapshot from November 2, 2026 — connecting to live feeds…</span>
+          <span id="cpSource">Snapshot from November 3, 2026 — connecting to live feeds…</span>
         </div>
-        <p class="coin-summary">THORChain (RUNE) has fallen 35.3% over the past year. Its daily closes ranged from $0.3210 (June 5, 2026) to $0.8270 (November 10, 2025) over the last 52 weeks. On November 2, 2026 it closed at $0.5580, 32.5% below that high, with 30-day annualized volatility of 76.6%. Daily closes (UTC) from Binance.</p>
+        <p class="hero-facts">As of <time datetime="2026-11-03">November 3, 2026</time> (Binance daily close): THORChain closed at $0.6320, down 19.2% over one year, 23.6% below its 52-week high of $0.8270, ranked #75 by market cap of the 114 coins tracked here.</p>
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="RUNE" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="RUNE">🧩 Embed RUNE widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="RUNE" hidden>⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -174,21 +176,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">RUNE price performance</h2>
+      <p class="prose">Over the past year, THORChain has fallen 19.2%. Its daily closes ranged from $0.3210 (June 5, 2026) to $0.8270 (November 10, 2025) over the last 52 weeks. On November 3, 2026 it closed at $0.6320, 23.6% below that high, with 30-day annualized volatility of 86%. Its best full month was Sep 2026 (+66.67%) and its worst was Nov 2025 (-25.15%). Over the last 90 days its daily moves had a correlation of 0.56 with Bitcoin's (loosely tied; 1 would mean moving in lockstep). Its largest fall between daily closes within the year was 61.2%, from November 10, 2025 to June 5, 2026. Over one year it ranked 7th of the 23 <a href="/sector/defi/">DeFi &amp; real-world assets</a> coins tracked here with a full year of data.</p>
       <div class="stat-grid">
-        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-down">-11.00%</span></div></div>
-        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-25.10%</span></div></div>
-        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+25.96%</span></div></div>
-        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-35.34%</span></div></div>
+        <div class="metric-box"><div class="metric-label">7 days</div><div class="metric-val"><span class="chg-pill chg-up">+0.48%</span></div></div>
+        <div class="metric-box"><div class="metric-label">30 days</div><div class="metric-val"><span class="chg-pill chg-down">-20.60%</span></div></div>
+        <div class="metric-box"><div class="metric-label">90 days</div><div class="metric-val"><span class="chg-pill chg-up">+42.02%</span></div></div>
+        <div class="metric-box"><div class="metric-label">1 year</div><div class="metric-val"><span class="chg-pill chg-down">-19.18%</span></div></div>
         <div class="metric-box"><div class="metric-label">52-week high</div><div class="metric-val">$0.8270</div><div class="metric-label">November 10, 2025</div></div>
         <div class="metric-box"><div class="metric-label">52-week low</div><div class="metric-val">$0.3210</div><div class="metric-label">June 5, 2026</div></div>
+        <div class="metric-box"><div class="metric-label">Correlation with BTC</div><div class="metric-val">0.56</div><div class="metric-label">90 days, daily moves</div></div>
       </div>
-      <h3>RUNE key facts</h3>
-      <dl class="fact-list">
-        <div><dt>Largest fall in the past year</dt><dd>61.2% between daily closes, from November 10, 2025 to June 5, 2026</dd></div>
-        <div><dt>Best and worst month (last 12)</dt><dd>Sep 2026 +66.67%; Nov 2025 -25.15%</dd></div>
-        <div><dt>Correlation with Bitcoin</dt><dd>0.57 over the last 90 days of daily returns: a moderate link (1 means THORChain and BTC moved together every day)</dd></div>
-        <div><dt>1-year rank in DeFi &amp; real-world assets</dt><dd>7th of 23 <a href="/sector/defi/">DeFi &amp; real-world assets</a> coins tracked here with a full year of data</dd></div>
-      </dl>
       <h3>RUNE monthly closing prices</h3>
       <div class="table-wrap">
         <table class="history-table">
@@ -210,7 +207,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
-      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 2, 2026. Updated weekly.</p>
+      <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 3, 2026. Updated weekly.</p>
     </section>
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -222,7 +219,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="about-h">About THORChain</h2>
       <p>THORChain is a cross-chain liquidity network that lets users swap native assets such as BTC and ETH without wrapping them. RUNE is paired in every pool and bonded by node operators.</p>
       <h3>Where this RUNE price comes from</h3>
-      <p>The price above updates live in your browser from Binance (RUNE/USDT) and Kraken (RUNE/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 351,295,000 RUNE (supply last updated November 2, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
+      <p>The price above updates live in your browser from Binance (RUNE/USDT) and Kraken (RUNE/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 351,295,000 RUNE (supply last updated November 3, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
     </section>

@@ -19,8 +19,9 @@ only in that chat.
   prompt in `docs/WEEKLY-TASK.md` (already saved to the task on Nov 3).
 
 ## Latest work
-- B1 answer-first coin summaries, B2 key facts (first slice) and B4 Organization logo built on branch `ccr-764a878f-teac16` (draft PR), local QA PASSED. Not live until
-  the owner asks; ship with the `ship` skill.
+- PR #10 (branch `ccr-764a878f-teac16`): largest fall, 1-year sector rank, sector-hub medians, Organization
+  `ImageObject`, Google preferred-sources link, research `research/2026-11-04-search-updates.md`. Merged with `main` on
+  Nov 4 after another session shipped overlapping B1/B2 work; `main`'s versions were kept where both did the same thing.
 
 ## Blocked on the owner (the most important open items)
 1. The weekly task has **no repository attached**, so every run's push fails with 403. Fix: claude.ai/code →
