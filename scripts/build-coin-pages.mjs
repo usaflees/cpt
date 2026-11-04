@@ -458,6 +458,9 @@ function sectorPage(x) {
   const median = arr => { const v = arr.filter(n => n !== null && n !== undefined).sort((a, b) => a - b); return v.length ? v[Math.floor(v.length / 2)] : null; };
   const m30 = median(withStats.map(c => stats[c.sym].change30d));
   const m1y = median(withStats.map(c => stats[c.sym].change1y));
+  const risky = withStats.filter(c => !c.sectors.includes("Stable"));
+  const mCorr = median(risky.map(c => stats[c.sym].corrBtc90d));
+  const mFall = median(risky.map(c => stats[c.sym].maxDrawdown1y));
   const by30 = withStats.filter(c => stats[c.sym].change30d !== null).sort((a, b) => stats[b.sym].change30d - stats[a.sym].change30d);
   const totalCap = members.reduce((t, c) => t + c.price * c.supply * 1e6, 0);
   const asOf = withStats.map(c => stats[c.sym].asOf).sort().pop();
@@ -466,7 +469,8 @@ function sectorPage(x) {
   const summary = [
     `This page tracks ${members.length} ${esc(x.noun)} with a combined market cap of about ${compact(totalCap)}.`,
     m30 !== null ? `Over the last 30 days the median coin here ${m30 >= 0 ? "gained" : "lost"} ${Math.abs(m30).toFixed(1)}%${m1y !== null ? `, and over one year ${m1y >= 0 ? "gained" : "lost"} ${Math.abs(m1y).toFixed(1)}%` : ""}.` : "",
-    by30.length > 1 ? `The best 30-day performer was ${esc(shortName(by30[0]))} (${pctText(stats[by30[0].sym].change30d)}) and the weakest was ${esc(shortName(by30[by30.length - 1]))} (${pctText(stats[by30[by30.length - 1].sym].change30d)}).` : ""
+    by30.length > 1 ? `The best 30-day performer was ${esc(shortName(by30[0]))} (${pctText(stats[by30[0].sym].change30d)}) and the weakest was ${esc(shortName(by30[by30.length - 1]))} (${pctText(stats[by30[by30.length - 1].sym].change30d)}).` : "",
+    risky.length >= 3 && mFall !== null ? `Across these coins, the median largest fall within the year was ${Math.abs(mFall).toFixed(1)}%${mCorr !== null ? ` and the median 90-day correlation with Bitcoin's daily returns was ${mCorr.toFixed(2)}` : ""}.` : ""
   ].filter(Boolean).join(" ");
   const rows = members.map((c, i) => {
     const st = stats[c.sym] || {};

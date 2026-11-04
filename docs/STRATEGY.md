@@ -148,7 +148,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 - **No price predictions and no advice language.**
 - **Success:** more impressions on coin pages, plus citations in the prompt checks (D3).
 
-**B2. Unique data modules, to fix uniformity, M–L.** *First slice built Nov 3, 2026: "key facts" (largest fall, best/worst month, 90-day BTC correlation, 1-year sector rank). Exchange coverage/spread still open.*
+**B2. Unique data modules, to fix uniformity, M–L.** *First slice built Nov 3, 2026: "key facts" (largest fall, best/worst month, 90-day BTC correlation, 1-year sector rank); sector hubs show the median largest fall and BTC correlation (Nov 4). Exchange coverage/spread still open.*
 - Computed from the daily candles we already fetch:
   - drawdown from the 52-week high;
   - best and worst month;
