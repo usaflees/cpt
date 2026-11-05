@@ -4,6 +4,8 @@ Newest first. Reverse a decision by adding a new row that says so; don't edit ol
 
 | Date | Decision | Why | Source |
 | --- | --- | --- | --- |
+| 2026-11-05 | Coin pages add largest fall (peak-to-trough of daily closes, 365 days) and 1-year rank within the primary sector (needs 3+ coins with a full year); sector hubs show the medians of largest fall and BTC correlation; Google preferred-sources deeplink (plain link, no script) in the home footer and /about/ | More unique, verifiable facts per page (B2); preferred sources now feed AI Overviews/AI Mode; a script would need CSP changes | PR #10, research 2026-11-04 |
+| 2026-11-05 | When two sessions build the same feature, the version already live on `main` wins and the other branch keeps only what's new | Avoids two summaries on one page and churn in live text; merge, never force-push | PR #10 merge |
 | 2026-11-03 | Weekly task runs `scripts/weekly-refresh.sh` and `tests/wait-deploy.sh`; its prompt shrank from 4,893 to 3,324 characters; recommended effort Medium | Fewer turns and less output per run (Pro plan usage) with the same gates | measured Nov 2 run |
 | 2026-11-03 | `content/coin-stats.json` written one coin per line | A weekly refresh changed ~7,300 lines of it; now ~114 | measured |
 | 2026-11-03 | Data scripts reject unknown arguments | `refresh-coins.mjs --help` silently ran a real refresh | incident |

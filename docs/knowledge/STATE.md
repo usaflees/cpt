@@ -12,7 +12,7 @@
   alerts with optional system notifications, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
 - **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, rank); the
-  performance text adds largest fall and 1-year sector rank (PR #10), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
+  performance text adds largest fall and 1-year sector rank (live Nov 5), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
   depth, converter with live tables, performance stats (incl. best/worst month and 90-day correlation with BTC) and monthly closes, sector breadcrumb, related coins.
 - **Brand and trust:** live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
