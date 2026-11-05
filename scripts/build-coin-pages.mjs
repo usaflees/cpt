@@ -186,8 +186,22 @@ function performanceSummary(c, st) {
     const ext = monthExtremes(st);
     if (ext) parts.push(`Its best full month was ${monthName(ext.best.month)} (${pctText(ext.best.change)}) and its worst was ${monthName(ext.worst.month)} (${pctText(ext.worst.change)}).`);
     if (typeof st.corrBtc90d === "number") parts.push(`Over the last 90 days its daily moves had a correlation of ${st.corrBtc90d.toFixed(2)} with Bitcoin's (${corrWord(st.corrBtc90d)}; 1 would mean moving in lockstep).`);
+    if (typeof st.maxDrawdown1y === "number" && st.maxDrawdown1y <= -1) parts.push(`Its largest fall between daily closes within the year was ${Math.abs(st.maxDrawdown1y).toFixed(1)}%, from ${longDate(st.maxDrawdownFrom)} to ${longDate(st.maxDrawdownTo)}.`);
+    const sr = sectorRank(c);
+    if (sr) parts.push(`Over one year it ranked ${ordinal(sr.rank)} of the ${sr.total} <a href="/sector/${sr.hub.slug}/">${esc(sr.hub.name)}</a> coins tracked here with a full year of data.`);
   }
   return parts.join(" ");
+}
+
+// 1-year rank among coins whose primary sector is the same (needs 3+ coins with a full year of data).
+const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
+function sectorRank(c) {
+  const key = c.sectors[0], hub = sectorOf(key);
+  if (!hub || c.sectors.includes("Stable")) return null;
+  const peers = coins.filter(o => o.sectors[0] === key && stats[o.sym]?.change1y != null && stats[o.sym].historyDays >= 365)
+    .sort((a, b) => stats[b.sym].change1y - stats[a.sym].change1y);
+  const rank = peers.indexOf(c) + 1;
+  return rank && peers.length >= 3 ? { hub, rank, total: peers.length } : null;
 }
 
 const corrWord = r => (r >= 0.8 ? "very closely tied" : r >= 0.6 ? "closely tied" : r >= 0.3 ? "loosely tied" : r > -0.3 ? "largely independent" : "tending to move the other way");
@@ -200,22 +214,12 @@ function monthExtremes(st) {
   return { best: sorted[0], worst: sorted[sorted.length - 1] };
 }
 
-// Rank by market cap inside the coin's primary sector hub (only for hubs with at least 3 coins).
-function sectorRank(c) {
-  const hub = sectorOf(c.sectors[0]);
-  if (!hub) return null;
-  const members = byCap.filter(x => x.sectors.some(k => hub.keys.includes(k)));
-  if (members.length < 3) return null;
-  return { hub, rank: members.findIndex(x => x.sym === c.sym) + 1, of: members.length };
-}
-
 // Answer-first line under the live price: the page's key, dated facts in plain text, so readers,
 // search engines and AI fetchers (which mostly don't run JavaScript) see real numbers first.
 function keyFacts(c, st, rank, total) {
   if (!st) return "";
   const when = `<time datetime="${st.asOf}">${longDate(st.asOf)}</time>`;
-  const sr = sectorRank(c);
-  const rankText = `ranked #${rank} by market cap of the ${total} coins tracked here${sr ? ` and #${sr.rank} of ${sr.of} <a href="/sector/${sr.hub.slug}/">${esc(sr.hub.noun)}</a>` : ""}`;
+  const rankText = `ranked #${rank} by market cap of the ${total} coins tracked here`;
   if (c.sectors.includes("Stable")) {
     return `<p class="hero-facts">As of ${when} (${esc(st.source)} daily close): ${esc(shortName(c))} held between ${usd(st.low52w)} and ${usd(st.high52w)} over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}; ${rankText}.</p>`;
   }
@@ -464,6 +468,9 @@ function sectorPage(x) {
   const median = arr => { const v = arr.filter(n => n !== null && n !== undefined).sort((a, b) => a - b); return v.length ? v[Math.floor(v.length / 2)] : null; };
   const m30 = median(withStats.map(c => stats[c.sym].change30d));
   const m1y = median(withStats.map(c => stats[c.sym].change1y));
+  const risky = withStats.filter(c => !c.sectors.includes("Stable"));
+  const mCorr = median(risky.map(c => stats[c.sym].corrBtc90d));
+  const mFall = median(risky.map(c => stats[c.sym].maxDrawdown1y));
   const by30 = withStats.filter(c => stats[c.sym].change30d !== null).sort((a, b) => stats[b.sym].change30d - stats[a.sym].change30d);
   const totalCap = members.reduce((t, c) => t + c.price * c.supply * 1e6, 0);
   const asOf = withStats.map(c => stats[c.sym].asOf).sort().pop();
@@ -472,7 +479,8 @@ function sectorPage(x) {
   const summary = [
     `This page tracks ${members.length} ${esc(x.noun)} with a combined market cap of about ${compact(totalCap)}.`,
     m30 !== null ? `Over the last 30 days the median coin here ${m30 >= 0 ? "gained" : "lost"} ${Math.abs(m30).toFixed(1)}%${m1y !== null ? `, and over one year ${m1y >= 0 ? "gained" : "lost"} ${Math.abs(m1y).toFixed(1)}%` : ""}.` : "",
-    by30.length > 1 ? `The best 30-day performer was ${esc(shortName(by30[0]))} (${pctText(stats[by30[0].sym].change30d)}) and the weakest was ${esc(shortName(by30[by30.length - 1]))} (${pctText(stats[by30[by30.length - 1].sym].change30d)}).` : ""
+    by30.length > 1 ? `The best 30-day performer was ${esc(shortName(by30[0]))} (${pctText(stats[by30[0].sym].change30d)}) and the weakest was ${esc(shortName(by30[by30.length - 1]))} (${pctText(stats[by30[by30.length - 1].sym].change30d)}).` : "",
+    risky.length >= 3 && mFall !== null ? `Across these coins, the median largest fall within the year was ${Math.abs(mFall).toFixed(1)}%${mCorr !== null ? ` and the median 90-day correlation with Bitcoin's daily returns was ${mCorr.toFixed(2)}` : ""}.` : ""
   ].filter(Boolean).join(" ");
   const rows = members.map((c, i) => {
     const st = stats[c.sym] || {};

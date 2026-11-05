@@ -11,7 +11,8 @@
 - **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 50, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
   alerts with optional system notifications and an app-icon badge for alerts missed while away, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
-- **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, overall and sector rank), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
+- **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, rank); the
+  performance text adds largest fall and 1-year sector rank (live Nov 5), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
   depth, converter with live tables, performance stats (incl. best/worst month and 90-day correlation with BTC) and monthly closes, sector breadcrumb, related coins.
 - **Brand and trust:** live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
@@ -19,11 +20,12 @@
   embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
 ## Quality (latest measurements)
-Lighthouse figures were measured on Oct 31–Nov 1, before PRs #1–#8; the QA rows are from the merged site (Nov 2).
+Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy run to run: 95–98). QA rows: Nov 4 release.
 
 | Check | Result |
 | --- | --- |
-| Lighthouse mobile, live site (perf / a11y / best practices / SEO) | Home 93/100/100/100 · Bitcoin page 94/100/100/100 · AI sector 100/100/100/100 · Widget 100/100/100 |
+| Lighthouse mobile, live site (performance / SEO) | Home 95–98/100 · Bitcoin 100/100 · Converter, heatmap, widgets, about 100/100 · AI sector 99/100 · OKB 96/100 · Brand kit 95/100 |
+| Home main thread, steady state (CDP) | ~110–130 ms per second, mostly price-flash paint; JS ~4 ms/s |
 | Layout shift (CLS) | 0.003 home, 0.003 coin pages, 0 sector and heatmap |
 | Largest paint on coin pages (throttled real load) | ~1.0–1.1 s (Lighthouse's simulation reports 2.7 s) |
 | Main-thread blocking, home | ~300 ms (was 480 ms) |
@@ -38,11 +40,13 @@ Lighthouse figures were measured on Oct 31–Nov 1, before PRs #1–#8; the QA r
 ## Owner actions still open
 1. Add `usaflees/cpt` (push) to the weekly scheduled task's repositories; later `usaflees/cpt-telemetry` (read).
 2. Set the scheduled task's effort level to **Medium** in its model selector (see [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md)).
-3. Search Console Domain property, sitemap, Request Indexing for key pages; Bing Webmaster Tools import.
+3. **Search Console** Domain property, sitemap, Request Indexing for key pages; Bing Webmaster Tools import (biggest growth lever: not indexed yet).
 4. Cloudflare Web Analytics on.
 5. Apps Script telemetry collector (`scripts/telemetry/README.md`).
 6. Launch posts in your own words (`docs/LAUNCH-KIT.md`).
 7. GitHub repository description, website and topics.
+8. News/monetization decisions (`docs/NEWS-AND-MONETIZATION.md` §9).
+9. GA4 `G-DF18LSQFVW` is loaded by `assets/consent.js`: don't also add it inside GTM `GTM-PD9TXJX`.
 
 ## Known trade-offs
 - Heatmap accessibility 95: the smallest boxes are below the 24 px target size.

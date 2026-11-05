@@ -63,6 +63,13 @@ function summarize(candles) {
   }
   const thisMonth = new Date(last.t + DAY).toISOString().slice(0, 7);
   const completed = monthly.filter(m => m.month < thisMonth).slice(-13);
+  // Largest peak-to-trough fall of the daily close within the year (STRATEGY B2).
+  let peak = year[0], dd = { pct: 0, from: year[0], to: year[0] };
+  for (const d of year) {
+    if (d.close > peak.close) peak = d;
+    const fall = (d.close - peak.close) / peak.close;
+    if (fall < dd.pct) dd = { pct: fall, from: peak, to: d };
+  }
   return {
     asOf: new Date(last.t).toISOString().slice(0, 10),
     close: last.close,
@@ -71,6 +78,9 @@ function summarize(candles) {
     low52w: lo.close, low52wDate: new Date(lo.t).toISOString().slice(0, 10),
     historyDays: year.length,
     volatility30d: +(sd * Math.sqrt(365) * 100).toFixed(1), // annualized, from daily log returns
+    maxDrawdown1y: +(dd.pct * 100).toFixed(1),
+    maxDrawdownFrom: new Date(dd.from.t).toISOString().slice(0, 10),
+    maxDrawdownTo: new Date(dd.to.t).toISOString().slice(0, 10),
     monthly: completed.map((m, i) => ({
       month: m.month,
       close: m.close,

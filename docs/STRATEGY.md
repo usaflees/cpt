@@ -148,7 +148,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 - **No price predictions and no advice language.**
 - **Success:** more impressions on coin pages, plus citations in the prompt checks (D3).
 
-**B2. Unique data modules, to fix uniformity, M–L.**
+**B2. Unique data modules, to fix uniformity, M–L.** *Done so far: best/worst month and 90-day BTC correlation (live Nov 4); largest fall, 1-year sector rank and sector-hub medians (PR #10). Exchange coverage and spread still open.*
 - Computed from the daily candles we already fetch:
   - drawdown from the 52-week high;
   - best and worst month;
@@ -161,7 +161,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 **B3. Freshness signals, S.**
 - The visible "Data as of" date matches `dateModified` in the structured data and `lastmod` in the sitemap. All three change only when the data actually changes, since fake freshness is a known spam signal.
 
-**B4. Structured data tidy-up, S.**
+**B4. Structured data tidy-up, S.** *Organization logo is an `ImageObject` (PR #10).*
 - Keep WebPage + BreadcrumbList.
 - Add `Dataset`-style markup only if it's accurate and useful. No FAQPage for rich results (deprecated); keeping FAQ text for readers is fine.
 - Add `ImageObject` logos to the Organization.
