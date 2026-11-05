@@ -1,4 +1,4 @@
-# State of the site (2026-11-04)
+# State of the site (2026-11-05)
 
 ## Pages
 - 130 URLs in the sitemap: home, /heatmap/, /convert/, /about/, /widgets/, /brand/, /accessibility/, 9 sector hubs,
@@ -9,7 +9,7 @@
 
 ## Features
 - **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 50, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
-  alerts with optional system notifications, quick view sheet, CSV export, sync link, ticker tape, search with
+  alerts with optional system notifications and an app-icon badge for alerts missed while away, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
 - **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, rank); the
   performance text adds largest fall and 1-year sector rank (live Nov 5), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
