@@ -1,4 +1,4 @@
-# State of the site (2026-11-04)
+# State of the site (2026-11-05)
 
 ## Pages
 - 130 URLs in the sitemap: home, /heatmap/, /convert/, /about/, /widgets/, /brand/, /accessibility/, 9 sector hubs,
@@ -9,9 +9,9 @@
 
 ## Features
 - **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 50, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
-  alerts with optional system notifications, quick view sheet, CSV export, sync link, ticker tape, search with
+  alerts with optional system notifications and an app-icon badge for alerts missed while away, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
-- **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, rank), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
+- **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, overall and sector rank), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
   depth, converter with live tables, performance stats (incl. best/worst month and 90-day correlation with BTC) and monthly closes, sector breadcrumb, related coins.
 - **Brand and trust:** live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.

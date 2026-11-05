@@ -4,6 +4,9 @@ Newest first. Reverse a decision by adding a new row that says so; don't edit ol
 
 | Date | Decision | Why | Source |
 | --- | --- | --- | --- |
+| 2026-11-05 | Coin key-facts line adds the coin's market-cap rank inside its primary sector hub (hubs with ≥ 3 coins), linked to the hub | Another fact no other page shares, plus a crawlable link to the hub in the first screen | STRATEGY B2 |
+| 2026-11-05 | Alerts that fire while the page is hidden add a count to the installed app's icon (Badging API), cleared on return | Alerts are useful in the background; no prompt, no server | STRATEGY A3 |
+| 2026-11-05 | robots.txt states `Content-Signal: search=yes, ai-input=yes, ai-train=yes`; `_headers` sends the Binance preconnect as a `Link` header | Spells out consent to AI answers (Cloudflare's `search` excludes AI summaries); Pages doesn't turn `<link crossorigin>` into an Early Hint | research 2026-11-03 |
 | 2026-11-03 | Weekly task runs `scripts/weekly-refresh.sh` and `tests/wait-deploy.sh`; its prompt shrank from 4,893 to 3,324 characters; recommended effort Medium | Fewer turns and less output per run (Pro plan usage) with the same gates | measured Nov 2 run |
 | 2026-11-03 | `content/coin-stats.json` written one coin per line | A weekly refresh changed ~7,300 lines of it; now ~114 | measured |
 | 2026-11-03 | Data scripts reject unknown arguments | `refresh-coins.mjs --help` silently ran a real refresh | incident |

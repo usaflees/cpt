@@ -200,12 +200,22 @@ function monthExtremes(st) {
   return { best: sorted[0], worst: sorted[sorted.length - 1] };
 }
 
+// Rank by market cap inside the coin's primary sector hub (only for hubs with at least 3 coins).
+function sectorRank(c) {
+  const hub = sectorOf(c.sectors[0]);
+  if (!hub) return null;
+  const members = byCap.filter(x => x.sectors.some(k => hub.keys.includes(k)));
+  if (members.length < 3) return null;
+  return { hub, rank: members.findIndex(x => x.sym === c.sym) + 1, of: members.length };
+}
+
 // Answer-first line under the live price: the page's key, dated facts in plain text, so readers,
 // search engines and AI fetchers (which mostly don't run JavaScript) see real numbers first.
 function keyFacts(c, st, rank, total) {
   if (!st) return "";
   const when = `<time datetime="${st.asOf}">${longDate(st.asOf)}</time>`;
-  const rankText = `ranked #${rank} by market cap of the ${total} coins tracked here`;
+  const sr = sectorRank(c);
+  const rankText = `ranked #${rank} by market cap of the ${total} coins tracked here${sr ? ` and #${sr.rank} of ${sr.of} <a href="/sector/${sr.hub.slug}/">${esc(sr.hub.noun)}</a>` : ""}`;
   if (c.sectors.includes("Stable")) {
     return `<p class="hero-facts">As of ${when} (${esc(st.source)} daily close): ${esc(shortName(c))} held between ${usd(st.low52w)} and ${usd(st.high52w)} over the past ${st.historyDays >= 365 ? "year" : st.historyDays + " days"}; ${rankText}.</p>`;
   }
