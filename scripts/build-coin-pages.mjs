@@ -444,7 +444,7 @@ function coinPage(c) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -573,7 +573,7 @@ function sectorPage(x) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
     <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
   </footer>
 </body>
@@ -685,7 +685,7 @@ function convertPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -789,7 +789,7 @@ function heatmapPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -802,7 +802,7 @@ writeFileSync(ROOT + "heatmap/index.html", heatmapPage());
 // (inflated freshness is a spam signal). content/page-dates.json stores a hash of each page's
 // content; the date moves to today only when that hash changes. Asset hashes and the inlined
 // theme script are ignored, so a CSS or JS release doesn't count as a content change.
-const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html" };
+const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html", "/trust/": "trust/index.html" };
 const pageDatesPath = ROOT + "content/page-dates.json";
 const pageDates = existsSync(pageDatesPath) ? JSON.parse(readFileSync(pageDatesPath, "utf8")) : {};
 const today = new Date().toISOString().slice(0, 10);
@@ -816,7 +816,7 @@ writeFileSync(pageDatesPath, JSON.stringify(pageDates, null, 2) + "\n");
 const pageDate = path => (pageDates[path] || {}).date || updated;
 
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}

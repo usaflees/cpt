@@ -1,4 +1,5 @@
 Contact: https://github.com/usaflees/cpt/issues
 Expires: 2027-10-30T00:00:00Z
 Preferred-Languages: en
+Policy: https://cryptopriceticker.com/trust/
 Canonical: https://cryptopriceticker.com/.well-known/security.txt
