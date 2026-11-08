@@ -37,13 +37,15 @@ whatever is in this repository is what gets deployed.
 | `content/seo-overrides.json` | Optional per-coin `title` / `description` / `h1` overrides (the self-improving loop's only content lever) |
 | `content/experiments.json` | Log of every SEO change: hypothesis, pages, start and evaluation dates, result |
 | `content/page-dates.json` | **Generated.** Content hash and last-changed date of each hand-written page, so its sitemap `lastmod` moves only when its content does |
-| `_headers` | Security headers (incl. Content-Security-Policy) and cache rules for Cloudflare Pages |
+| `_headers` | Security headers (incl. Content-Security-Policy), cache rules and `noindex` for the `pages.dev` copy |
 | `_redirects` | Old tickers → new coin pages (**generated**) |
 | `sitemap.xml` | **Generated** list of all pages for search engines |
-| `robots.txt`, `site.webmanifest`, `favicon.*`, `icon-*.png`, `apple-touch-icon.png`, `og-image.jpg` | Search/social/app metadata |
+| `robots.txt` (with a Content-Signal line), `site.webmanifest`, `favicon.*`, `icon-*.png`, `apple-touch-icon.png`, `og-image.jpg` | Search/social/app metadata |
 | `scripts/` | Maintenance scripts (Node 18+, no dependencies) — see below |
 | `scripts/telemetry/` | Google Apps Script that collects Search Console + Cloudflare data into a private Sheet |
-| `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` |
+| `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` (actions pinned to commit SHAs) |
+| `.github/dependabot.yml` | One grouped monthly PR to update those pinned actions |
+| `SECURITY.md`, `.well-known/security.txt` | How to report a security problem |
 | `docs/SELF-IMPROVING.md` | How the weekly self-improvement loop works and the rules it must follow |
 | `docs/LAUNCH-KIT.md` | Launch & growth plan: indexing checklist, where to post (and the rules), post drafts |
 | `docs/AUDIT.md` | The October 2026 audit: what was wrong, what changed, and the evidence |

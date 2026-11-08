@@ -43,6 +43,14 @@ await check("/embed/", { headers: { "x-robots-tag": /noindex/ } });
 await check("/this-page-does-not-exist", { status: 404 });
 await check("/coin/ton/", { status: 301, headers: { location: /\/coin\/gram\/$/ } });
 await check("/robots.txt", { body: /Sitemap:/ });
+// The pages.dev copy of production must stay out of search results (rule in _headers).
+if (IS_PROD) {
+  try {
+    const r = await fetch("https://cryptopriceticker.pages.dev/", { redirect: "manual", headers: { "user-agent": "cryptopriceticker-check/1.0" } });
+    if (!/noindex/.test(r.headers.get("x-robots-tag") || "")) problems.push("cryptopriceticker.pages.dev: no X-Robots-Tag noindex (duplicate of the site can be indexed)");
+    else ok.push("pages.dev noindex");
+  } catch (e) { problems.push(`cryptopriceticker.pages.dev: request failed (${e.message})`); }
+}
 await check("/assets/app.js");
 const sitemap = await check("/sitemap.xml", { body: /<urlset/ });
 if (sitemap) {

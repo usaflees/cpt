@@ -1,5 +1,7 @@
 # Deterministic checks for every pull request and every push to main.
 # Read-only token, no secrets, no AI: safe to run on any branch.
+# Actions are pinned to full commit SHAs (GitHub's supply-chain guidance); Dependabot
+# (.github/dependabot.yml) proposes updates, keeping the version in the trailing comment.
 name: Site checks
 
 on:
@@ -7,18 +9,24 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: read
+permissions: {}
+
+# A newer push to the same branch or PR cancels the older run.
+concurrency:
+  group: site-checks-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   checks:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
       - name: Generated pages are up to date

@@ -47,6 +47,12 @@
 /coin-icons/*
   Cache-Control: public, max-age=604800
 
+# The project's pages.dev address serves the same site as cryptopriceticker.com: keep it out of
+# search results so only the real domain is indexed (branch previews already get noindex from
+# Cloudflare). This rule matches that hostname only, never the custom domain.
+https://cryptopriceticker.pages.dev/*
+  X-Robots-Tag: noindex
+
 # Widget frames: indexable only inside the pages that embed them.
 /embed/*
   X-Robots-Tag: noindex, indexifembedded
@@ -65,5 +71,7 @@
 /README.md
   X-Robots-Tag: noindex
 /CLAUDE.md
+  X-Robots-Tag: noindex
+/SECURITY.md
   X-Robots-Tag: noindex
 

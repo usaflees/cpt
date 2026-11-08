@@ -1,6 +1,8 @@
 # CryptoPriceTicker.com welcomes search engines, AI search and citation crawlers, and AI
 # training crawlers alike: the site is free, factual and meant to be found and quoted.
 # One group for everyone (a named group would otherwise replace the * rules, RFC 9309).
+# Content-Signal states the same choice in machine-readable form (contentsignals.org): search,
+# AI answers (ai-input) and AI training are all welcome. Crawlers that don't know the line ignore it.
 User-agent: *
 User-agent: Googlebot
 User-agent: Bingbot
@@ -22,6 +24,7 @@ User-agent: DuckAssistBot
 User-agent: Meta-ExternalAgent
 User-agent: MistralAI-User
 User-agent: CCBot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /scripts/
 Disallow: /content/
