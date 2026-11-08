@@ -1121,6 +1121,7 @@
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
       notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
       bumpAppBadge();
+      if (window.CPT && window.CPT.logAlert) window.CPT.logAlert(`${c.sym} crossed $${target}`, c.sym);
       refreshAlertUi(c.sym);
     }
   }
@@ -1948,6 +1949,9 @@
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
+  // Read-only hooks for assets/flash.js (Newsflash and move alerts), loaded after this file.
+  if (MODE === "home" || MODE === "coin") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge };
+
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
   }

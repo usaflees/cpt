@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3aaaec0e52" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -43,9 +43,10 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
+  <link rel="stylesheet" href="/assets/app.css?v=3aaaec0e52" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=6258d13904" defer></script>
+  <script src="/assets/app.js?v=2dde29b9cf" defer></script>
+  <script src="/assets/flash.js?v=cf20b29f8c" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="coin" data-sym="PHA">
@@ -123,6 +124,13 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <div class="range-track" style="margin-top:5px"><div class="range-fill" id="cpRange" style="width:50%"></div></div>
       </div>
     </div>
+
+    <section class="flash-box" aria-labelledby="flash-h">
+      <h2 id="flash-h">PHA newsflash <span class="muted">· live, from exchange prices</span></h2>
+      <p class="flash-market" id="flashMarket"></p>
+      <ol class="flash-list" id="flashList" aria-live="polite"><li class="flash-empty">Watching PHA for sharp moves and new 24-hour highs or lows while this page is open.</li></ol>
+      <p class="disclaimer">Computed automatically from live exchange prices: measured moves, not news reports or advice.</p>
+    </section>
 
     <section class="page-section" id="convert" aria-labelledby="conv-h">
       <h2 id="conv-h">Convert PHA to USD</h2>

@@ -360,6 +360,7 @@ function coinPage(c) {
   <link rel="stylesheet" href="/assets/app.css" />
   <script src="/assets/coins.js" defer></script>
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/flash.js" defer></script>
   <script src="/assets/consent.js" defer></script>
 </head>
 <body data-page="coin" data-sym="${s}">
@@ -403,6 +404,13 @@ function coinPage(c) {
         <div class="range-track" style="margin-top:5px"><div class="range-fill" id="cpRange" style="width:50%"></div></div>
       </div>
     </div>
+
+    <section class="flash-box" aria-labelledby="flash-h">
+      <h2 id="flash-h">${s} newsflash <span class="muted">· live, from exchange prices</span></h2>
+      <p class="flash-market" id="flashMarket"></p>
+      <ol class="flash-list" id="flashList" aria-live="polite"><li class="flash-empty">Watching ${s} for sharp moves and new 24-hour highs or lows while this page is open.</li></ol>
+      <p class="disclaimer">Computed automatically from live exchange prices: measured moves, not news reports or advice.</p>
+    </section>
 
     <section class="page-section" id="convert" aria-labelledby="conv-h">
       <h2 id="conv-h">Convert ${s} to USD</h2>
@@ -849,9 +857,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;

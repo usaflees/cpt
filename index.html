@@ -17,7 +17,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=195c0d2fe9" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3aaaec0e52" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -82,9 +82,10 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=195c0d2fe9" />
+  <link rel="stylesheet" href="/assets/app.css?v=3aaaec0e52" />
   <script src="/assets/coins.js?v=1159cdf5da" defer></script>
-  <script src="/assets/app.js?v=6258d13904" defer></script>
+  <script src="/assets/app.js?v=2dde29b9cf" defer></script>
+  <script src="/assets/flash.js?v=cf20b29f8c" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="home">
@@ -171,6 +172,28 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </div>
         </div>
         <div class="mover-cards" id="moversList"><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div></div>
+      </section>
+
+      <section class="flash-box" aria-labelledby="flash-h">
+        <div class="section-head">
+          <h2 id="flash-h">Newsflash <span class="muted">· live, from exchange prices</span></h2>
+        </div>
+        <ol class="flash-list" id="flashList" aria-live="polite"><li class="flash-empty">Watching every coin for sharp moves against the market and new 24-hour highs or lows.</li></ol>
+        <details class="flash-tools">
+          <summary>Move alerts &amp; alert history</summary>
+          <form id="moveAlertForm" class="move-alert-form">
+            <label>Alert me when a coin moves
+              <select name="maPct" class="form-select"><option value="0">off</option><option value="2">2%</option><option value="3">3%</option><option value="5">5%</option><option value="10">10%</option></select></label>
+            <label>within
+              <select name="maMins" class="form-select"><option value="5">5 minutes</option><option value="15">15 minutes</option><option value="60">1 hour</option></select></label>
+            <label>for
+              <select name="maScope" class="form-select"><option value="watch">my watchlist</option><option value="all">every coin</option></select></label>
+          </form>
+          <p class="muted" id="moveAlertStatus">Off.</p>
+          <h3>Alert history <span class="muted">· this browser only</span></h3>
+          <ol class="alert-log" id="alertLog"></ol>
+        </details>
+        <p class="disclaimer">Newsflash lines are computed automatically from live Coinbase, Binance and Kraken prices while this page is open: measured moves, not news reports or advice.</p>
       </section>
 
       <div class="chips" role="group" aria-label="Filter coins">

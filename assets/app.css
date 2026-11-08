@@ -1726,3 +1726,22 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 
 /* Heatmap tile price: full-opacity white (85% opacity dropped below 4.5:1 on the brightest green tiles) */
 .hm-price { opacity: 1; font-weight: 600; }
+
+/* ---------- Newsflash and move alerts (assets/flash.js) ---------- */
+.flash-box { margin: 18px 0 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-secondary); }
+.flash-box h2 { font-size: 17px; margin: 0 0 8px; }
+.flash-list { list-style: none; margin: 0; padding: 0; min-height: 4.6em; display: flex; flex-direction: column; gap: 6px; }
+.flash-item { display: flex; gap: 8px; align-items: baseline; font-size: 14px; line-height: 1.45; }
+.flash-item time { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); flex: none; }
+.flash-tag { flex: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; padding: 1px 6px; border-radius: 4px; background: var(--bg-tertiary); color: var(--text-secondary); }
+.flash-high .flash-tag, .flash-move .flash-tag { color: var(--accent); }
+.flash-empty { font-size: 14px; color: var(--text-muted); }
+.flash-market { font-size: 14px; margin: 0 0 8px; min-height: 1.45em; }
+.flash-tools { margin-top: 10px; font-size: 14px; }
+.flash-tools summary { cursor: pointer; color: var(--accent); min-height: 24px; }
+.move-alert-form { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin: 10px 0 4px; }
+.move-alert-form label { display: flex; gap: 6px; align-items: center; }
+.flash-tools h3 { font-size: 14px; margin: 12px 0 6px; }
+.alert-log { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.alert-log time { font-family: var(--font-mono); font-size: 12px; }
+.alert-log li.muted { list-style: none; margin-left: -18px; }
