@@ -1,18 +1,22 @@
 {
   "/about/": {
-    "hash": "0bc45070290c25db",
-    "date": "2026-11-04"
+    "hash": "508b956468a78675",
+    "date": "2026-11-06"
   },
   "/widgets/": {
-    "hash": "9801250d11df9cfd",
-    "date": "2026-11-02"
+    "hash": "31c2ecf304029ec9",
+    "date": "2026-11-06"
   },
   "/brand/": {
-    "hash": "581474e557c134fd",
-    "date": "2026-11-02"
+    "hash": "e1a360585eeb8a92",
+    "date": "2026-11-06"
   },
   "/accessibility/": {
-    "hash": "bd3c6e375136957b",
-    "date": "2026-11-02"
+    "hash": "063d2af884ca9fdd",
+    "date": "2026-11-06"
+  },
+  "/trust/": {
+    "hash": "35c92bd091b22dca",
+    "date": "2026-11-06"
   }
 }

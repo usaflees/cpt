@@ -44,6 +44,9 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Live Nov 6 (`b5bd446`):** `/trust/` page and "Open source, hosted on Cloudflare Pages" + Trust & safety link in every
+  footer; Organization `sameAs` GitHub; security.txt Policy. Why: ScamAdviser scores the domain 0/100 from its earlier
+  registration (re-registered 22 Oct 2026). Local + preview QA PASSED, 19/19 live, Site checks green, IndexNow 200.
 - **Live Nov 5 (`495543c`, PR #10):** largest fall, 1-year sector rank, sector-hub medians, Organization
   `ImageObject`, Google preferred-sources link, research `research/2026-11-04-search-updates.md`. Merged with `main`
   after another session shipped overlapping B1/B2 work; `main`'s versions were kept where both did the same thing.
@@ -52,6 +55,8 @@ of where things stand and what the owner wants. Details are in the files it link
   check STRATEGY.md / this file for work already shipped.
 
 ## Blocked on the owner (the most important open items)
+0. **Reputation fixes outside the repo** (STATE.md "Owner actions" item 0): ScamAdviser rescan + Gmail draft,
+   Gridinsoft claim, duplicate DMARC record, `www` custom domain.
 1. **Search Console**: Domain property, submit `sitemap.xml`, request indexing for key pages. Google hasn't
    indexed the site yet; this is the biggest lever. Then Bing Webmaster Tools (import from Search Console).
 2. **Weekly scheduled task** "CryptoPriceTicker weekly self-improvement" has **no repository attached**, so its
