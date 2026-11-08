@@ -122,7 +122,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 - Fall back to a dedicated Worker (see C1), or to the current in-page sockets, where SharedWorker is missing.
 - **Success:** with 3 tabs open, 3 sockets instead of 9, and the same tick latency.
 
-**A3. In-page price alerts upgrade, S–M.**
+**A3. In-page price alerts upgrade, S–M.** App-icon badge shipped 5 Nov 2026.
 - The Badging API (`navigator.setAppBadge`) puts an alert count on the installed app's icon.
 - An optional sound cue, plus a clear "alerts work while this tab is open" note.
 - Real push notifications need a server (see F3), so they stay out.

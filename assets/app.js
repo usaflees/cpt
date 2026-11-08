@@ -1120,6 +1120,7 @@
       beep();
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
       notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
+      bumpAppBadge();
       refreshAlertUi(c.sym);
     }
   }
@@ -1133,6 +1134,17 @@
       navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts)).catch(fallback);
     } else fallback();
   }
+  // Installed app: show how many alerts fired while the page was hidden on its icon (Badging API,
+  // Chromium and Safari web apps); cleared as soon as the visitor comes back.
+  let missedAlerts = 0;
+  function bumpAppBadge() {
+    if (!document.hidden || !navigator.setAppBadge) return;
+    missedAlerts++;
+    navigator.setAppBadge(missedAlerts).catch(() => {});
+  }
+  if (navigator.clearAppBadge) document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && missedAlerts) { missedAlerts = 0; navigator.clearAppBadge().catch(() => {}); }
+  });
   function askNotifyPermission() {
     if ("Notification" in window && Notification.permission === "default") Notification.requestPermission().catch(() => {});
   }

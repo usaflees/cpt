@@ -26,5 +26,7 @@ Allow: /
 Disallow: /scripts/
 Disallow: /content/
 Disallow: /docs/
+# Content signals (contentsignals.org): yes to search, to use in AI answers, and to AI training.
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 Sitemap: https://cryptopriceticker.com/sitemap.xml
