@@ -1745,3 +1745,93 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 .alert-log { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
 .alert-log time { font-family: var(--font-mono); font-size: 12px; }
 .alert-log li.muted { list-style: none; margin-left: -18px; }
+
+/* ---------- Motion (Nov 9): newest CSS only, each part degrades to "no animation" ---------- */
+:root {
+  /* Spring easing (overshoot, settle) as a linear() curve: no JavaScript physics. */
+  --spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1.004 83.8%, 1);
+}
+
+/* Rolling digits (coin hero price, pop-out): only the digits that changed roll, up or down with the
+   tick. Each character is its own clipped cell; the old digit rides along in ::after. The text
+   content stays exactly the formatted price, so copy, screen readers and tests see the same string. */
+.dg { display: inline-block; overflow: hidden; height: 1.2em; line-height: 1.2em; vertical-align: bottom; }
+.dg > i { display: block; position: relative; font-style: normal; }
+.dg > i::after { content: attr(data-prev); position: absolute; left: 0; top: -100%; }
+.dg > i.roll-down::after { top: 100%; }
+.dg > i.roll-up { animation: dg-up .5s var(--spring); }
+.dg > i.roll-up.alt { animation-name: dg-up2; }
+.dg > i.roll-down { animation: dg-down .5s var(--spring); }
+.dg > i.roll-down.alt { animation-name: dg-down2; }
+@keyframes dg-up { from { transform: translateY(100%); color: var(--up); } 60% { color: var(--up); } }
+@keyframes dg-up2 { from { transform: translateY(100%); color: var(--up); } 60% { color: var(--up); } }
+@keyframes dg-down { from { transform: translateY(-100%); color: var(--down); } 60% { color: var(--down); } }
+@keyframes dg-down2 { from { transform: translateY(-100%); color: var(--down); } 60% { color: var(--down); } }
+
+/* Rows that glide on sort, filter and favourite (same-document view transition; app.js glide()).
+   Rows are named only while .vt-glide is on <html>; the page itself doesn't crossfade. */
+.vt-glide #cryptoTable tr.vt-on { view-transition-name: var(--vtn); }
+.vt-glide::view-transition-old(root), .vt-glide::view-transition-new(root) { animation: none; }
+.vt-glide::view-transition-group(*) { animation-duration: .42s; animation-timing-function: var(--spring); }
+.vt-glide::view-transition-group(topbar) { animation: none; }
+/* A moving row shows only its live new snapshot (no ghosted text); rows that join or leave fade. */
+.vt-glide::view-transition-old(*), .vt-glide::view-transition-new(*) { animation: none; }
+.vt-glide::view-transition-old(*) { opacity: 0; }
+.vt-glide::view-transition-old(*):only-child { opacity: 1; animation: vt-out .18s ease-in both; }
+.vt-glide::view-transition-new(*):only-child { animation: vt-in .3s ease-out .08s both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; } }
+.vt-glide::view-transition { pointer-events: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Spring quick view: the dialog springs in from its own entry state (@starting-style), so it
+     animates from display: none without JavaScript timing; the backdrop fades. */
+  .modal-backdrop.open { transition: opacity .2s ease-out; }
+  .modal-backdrop.open .modal-card { transition: transform .45s var(--spring), opacity .18s ease-out; }
+  @starting-style {
+    .modal-backdrop.open { opacity: 0; }
+    .modal-backdrop.open .modal-card { transform: translateY(18px) scale(.96); opacity: 0; }
+  }
+  @media (max-width: 640px) {
+    .modal-backdrop.open .modal-card { animation: none; }
+    @starting-style { .modal-backdrop.open .modal-card { transform: translateY(70px); opacity: .6; } }
+  }
+  .pop[open] > .pop-panel { transition: transform .4s var(--spring), opacity .15s ease-out; transform-origin: top right; }
+  @starting-style { .pop[open] > .pop-panel { transform: translateY(-6px) scale(.95); opacity: 0; } }
+
+  /* Scroll-driven reveals: sections below the first rise into place as they enter the viewport,
+     on the compositor (no JavaScript, no IntersectionObserver). Never the first section (LCP), and
+     motion only: a fade would leave below-the-fold text at low contrast for crawlers and axe. */
+  @supports (animation-timeline: view()) {
+    body:not(.is-embed) .page-section ~ .page-section {
+      animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 180px;
+    }
+    @keyframes rise { from { transform: translateY(28px) scale(.985); } }
+  }
+
+  /* Live ring (Neon, Light): one neon ring per coin page spins around the logo in the header. A
+     ring-masked conic gradient that rotates with transform, so the compositor runs it: animating
+     the gradient angle through @property cost ~30 ms/s of main thread (measured). */
+  html:not([data-theme="kali"], [data-theme="green"], [data-theme="slate"], [data-theme="oled"]) .coin-title .coin-avatar {
+    position: relative; overflow: visible; border-color: transparent; background: var(--bg-tertiary) padding-box;
+  }
+  html:not([data-theme="kali"], [data-theme="green"], [data-theme="slate"], [data-theme="oled"]) .coin-title .coin-avatar::before {
+    content: ""; position: absolute; inset: -1px; border-radius: 50%; pointer-events: none;
+    background: conic-gradient(#ff3fd8, #9b5cff, #22e8ff, #ff3fd8);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    animation: ring-spin 6s linear infinite;
+  }
+  @keyframes ring-spin { to { transform: rotate(1turn); } }
+}
+
+/* Market mood (home): the hero's glow leans green when most coins are up over 24 h, red when most
+   are down (app.js sets --mood, 0–1, at most every 30 s). A typed property so it eases. */
+@property --mood { syntax: "<number>"; inherits: true; initial-value: 0.5; }
+body:not(.is-embed) .hero { position: relative; isolation: isolate; }
+body:not(.is-embed) .hero::before {
+  content: ""; position: absolute; z-index: -1; inset: -10px -40px 0; pointer-events: none;
+  background: radial-gradient(60% 70% at 18% 30%, color-mix(in oklab, color-mix(in oklab, var(--up) calc(var(--mood) * 100%), var(--down)) 24%, transparent), transparent 70%);
+  transition: --mood 3s ease;
+}
+[data-theme="light"] body:not(.is-embed) .hero::before { opacity: .6; }
