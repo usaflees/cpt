@@ -1,0 +1,87 @@
+# Weekly market-data refresh without an AI session: refresh supplies and daily-candle stats, rebuild,
+# run the full QA suite (lint, links, browser tests, axe, whole-site crawl) and, only if the change is
+# data-only (scripts/classify-change.mjs) and not degraded (scripts/check-refresh.mjs), push to main,
+# which Cloudflare Pages deploys. Then it checks production and pings IndexNow.
+# Same gates as the weekly Claude task's auto-merge (DECISIONS 2026-10-30), with no secrets and no AI.
+# Run by hand: Actions → Weekly data refresh → Run workflow (untick "publish" for a dry run).
+name: Weekly data refresh
+
+on:
+  schedule:
+    - cron: "23 5 * * 1" # Mondays 05:23 UTC
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Push to main when every check passes"
+        type: boolean
+        default: true
+
+permissions: {}
+
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 40
+    env:
+      QA: ${{ github.workspace }}/../qa
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Refresh market data and rebuild
+        id: refresh
+        run: |
+          set +e
+          bash scripts/weekly-refresh.sh origin/main
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          # 0 data-only, 3 no changes: fine. 2 needs review, 1 a step failed: stop.
+          [ "$code" = 0 ] || [ "$code" = 3 ]
+
+      - name: Guard against a degraded refresh
+        if: steps.refresh.outputs.code == '0'
+        run: node scripts/check-refresh.mjs origin/main
+
+      - name: Install browser test tools (outside the repo)
+        if: steps.refresh.outputs.code == '0'
+        run: |
+          npm i --no-save --no-audit --no-fund --prefix "$QA" playwright@1.63.0 axe-core@4.10.2
+          "$QA/node_modules/.bin/playwright" install --with-deps chromium
+
+      - name: Full QA
+        if: steps.refresh.outputs.code == '0'
+        run: |
+          NODE_PATH="$QA/node_modules" AXE="$QA/node_modules/axe-core/axe.min.js" bash tests/run.sh | tee "$RUNNER_TEMP/qa.log"
+          grep -q "^QA PASSED" "$RUNNER_TEMP/qa.log"
+
+      - name: Publish to main
+        id: publish
+        if: steps.refresh.outputs.code == '0' && (github.event_name == 'schedule' || inputs.publish)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "old=$(git rev-parse origin/main)" >> "$GITHUB_OUTPUT"
+          git add -A
+          git commit -q -m "Data refresh $(date -u +%F): supplies and daily-candle stats (automated)"
+          git push origin HEAD:main
+
+      - name: Production check
+        if: steps.publish.outcome == 'success'
+        run: |
+          bash tests/wait-deploy.sh https://cryptopriceticker.com 900
+          node scripts/check-live.mjs
+
+      - name: Tell IndexNow search engines
+        if: steps.publish.outcome == 'success'
+        run: node scripts/indexnow.mjs ${{ steps.publish.outputs.old }}
