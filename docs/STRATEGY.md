@@ -134,9 +134,9 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 **A5. Widget growth, M.**
 - **Effect:** widgets are our backlink and brand engine, since every embed credits us with a brand-only link (link-spam rules respected).
 - **Additions:**
-  - a "Copy for WordPress / Notion / Ghost" snippet set;
-  - a dark/light auto theme;
-  - a 1-click "single coin card" snippet for every coin page ("Embed BTC widget" exists; make it prominent).
+  - a "Copy for WordPress / Notion / Ghost" snippet set; ✅ 9 Nov 2026: per-platform steps on /widgets/, plus a "Copy link" for Notion and Google Sites, which take a URL rather than HTML;
+  - a dark/light auto theme; ✅ 4 Nov 2026;
+  - a 1-click "single coin card" snippet for every coin page; ✅ the accent "Embed <coin> widget" button in each coin hero.
 - **Measure:** referrers to `/embed/` in Cloudflare Analytics.
 - **Success:** distinct embedding domains per month.
 
