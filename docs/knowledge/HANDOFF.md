@@ -44,6 +44,10 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Live Nov 9 (`8b2325f`, PR #12):** audit fixes: GitHub Actions pinned to commit SHAs + Dependabot (monthly), job-level
+  permissions, `pages.dev` host `noindex` (checked by `check-live`), `.gitignore`, `SECURITY.md`. Audit notes and the open
+  owner decisions (empty GTM container ~280 KiB/page, no LICENSE behind "open source", `www` has no DNS) are in
+  `research/2026-11-08-repo-audit.md`. `app.css` is at 79.7 KB of its 80 KB budget.
 - **Live Nov 9 (`48da614`):** motion pass (DECISIONS 2026-11-09): rolling-digit prices on coin pages and the
   pop-out, gliding table rows, spring quick view and popover, scroll-driven section rise, spinning logo ring, market
   mood glow on the home hero. Mockups: claude.ai artifact "CPT Motion Lab". Local + preview QA PASSED.

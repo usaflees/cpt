@@ -35,7 +35,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 | HTML validity (html-validate recommended rules) | 0 errors on all 132 HTML files (Nov 2, after the merge) |
 | Internal links / anchors / duplicate ids | 6,051 links in 132 files, 0 problems |
 | seo-lint (incl. performance budgets) | 130 pages, 0 errors, 0 warnings |
-| Live checks (`scripts/check-live.mjs`) | 19/19 |
+| Live checks (`scripts/check-live.mjs`) | 20/20 (incl. pages.dev noindex) |
 | Browser tests (`tests/*.cjs`) | 0 issues |
 | Whole-site crawl, production (134 URLs incl. widgets and 404) | 0 errors, 0 failed requests, 0 CSP violations, 0 browser warnings (Nov 3) |
 
