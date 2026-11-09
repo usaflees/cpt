@@ -1013,11 +1013,13 @@
           <div class="form-group" style="margin-bottom:6px"><span class="metric-label">Live preview</span></div>
           <div class="widget-preview-stage" id="wgPreviewStage"></div>
           <div class="form-group"><label for="wgEmbedCode">HTML snippet (responsive iframe + credit link)</label><textarea id="wgEmbedCode" class="code-textarea" readonly></textarea></div>
+          <div class="form-group"><label for="wgEmbedUrl">Widget link only (Notion <code>/embed</code>, Google Sites, other "embed a URL" blocks)</label><input type="text" id="wgEmbedUrl" class="form-input" readonly /></div>
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
             <span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)"><img src="/brand/mark.svg" width="14" height="14" alt="" style="vertical-align:-3px;margin-right:4px;border-radius:3px" />No scripts on your page • lazy-loaded iframe • free</span>
-            <div style="display:flex;gap:8px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
               <a class="action-btn" id="wgOpenStandalone" href="/embed/" target="_blank" rel="noopener">↗ Open widget</a>
               <button type="button" class="action-btn btn-accent" data-action="copy" data-target="wgEmbedCode" data-msg="📋 Widget snippet copied.">📋 Copy HTML</button>
+              <button type="button" class="action-btn" data-action="copy" data-target="wgEmbedUrl" data-msg="🔗 Widget link copied.">🔗 Copy link</button>
             </div>
           </div>
         </div>
@@ -1225,6 +1227,7 @@
 </div>
 <!-- End CryptoPriceTicker.com widget -->`;
     $("wgOpenStandalone").href = embedUrl;
+    $("wgEmbedUrl").value = embedUrl;
   }
 
   /* ------------------------------------------------------------------
