@@ -10,7 +10,7 @@
 - [Free website widget](https://cryptopriceticker.com/widgets/): embeddable live crypto ticker (iframe), three layouts, six themes
 - [Brand kit](https://cryptopriceticker.com/brand/): logos, colours and banners for press and partners
 - [Accessibility statement](https://cryptopriceticker.com/accessibility/): WCAG 2.1 AA / EN 301 549 status and how to report a barrier
-- [Trust and verification](https://cryptopriceticker.com/trust/): open source on GitHub (usaflees/cpt), hosted on Cloudflare Pages, no accounts, payments or wallet connections; domain registered 22 October 2026
+- [Trust and verification](https://cryptopriceticker.com/trust/): public source code on GitHub (usaflees/cpt), hosted on Cloudflare Pages, no accounts, payments or wallet connections; domain registered 22 October 2026
 
 ## Sectors
 - [Layer 1](https://cryptopriceticker.com/sector/layer-1/)

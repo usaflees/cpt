@@ -44,6 +44,10 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Nov 9 (this session):** `.github/workflows/data-refresh.yml` refreshes data weekly without a Claude session
+  (gates: data-only, `check-refresh.mjs`, full QA; pushes to `main`, checks production, IndexNow). Run it by hand
+  from Actions → "Weekly data refresh" (untick publish for a dry run). "Open source" → "public source code"
+  until the owner adds a LICENSE. Research: `research/2026-11-09-ai-search-updates.md`.
 - **Live Nov 9 (`8b2325f`, PR #12):** audit fixes: GitHub Actions pinned to commit SHAs + Dependabot (monthly), job-level
   permissions, `pages.dev` host `noindex` (checked by `check-live`), `.gitignore`, `SECURITY.md`. Audit notes and the open
   owner decisions (empty GTM container ~280 KiB/page, no LICENSE behind "open source", `www` has no DNS) are in
