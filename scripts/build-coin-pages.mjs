@@ -783,7 +783,7 @@ function heatmapPage() {
 
     <section class="page-section prose" aria-labelledby="read-h">
       <h2 id="read-h">How to read the heatmap</h2>
-      <p>Bigger boxes mean a larger market cap (live price × circulating supply). By default the map is “balanced”: box area follows the square root of market cap, so smaller coins stay readable while the order is unchanged. Choose “True market cap” to make every area exactly proportional, which shows how much of the market Bitcoin really is. The colour shows the price change over the last 24 hours, from deep red at −8% or worse through grey to deep green at +8% or better. Stablecoins are hidden by default because they barely move; switch them on to see their share of the market.</p>
+      <p>Bigger boxes mean a larger market cap (live price × circulating supply). By default the map is “balanced”: box area follows the square root of market cap, with a minimum size so the smallest coins stay readable and easy to tap; the order is unchanged. Choose “True market cap” to make every area exactly proportional, which shows how much of the market Bitcoin really is. The colour shows the price change over the last 24 hours, from deep red at −8% or worse through grey to deep green at +8% or better. Stablecoins are hidden by default because they barely move; switch them on to see their share of the market.</p>
       <p>“By sector” groups coins by their main category, which makes it easy to spot when a whole sector, such as AI tokens or memecoins, moves together. Tap any box for that coin's live price page.</p>
       <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
     </section>

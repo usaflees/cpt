@@ -27,6 +27,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 | Check | Result |
 | --- | --- |
 | Lighthouse mobile, live site (performance / SEO) | Home 95–98/100 · Bitcoin 100/100 · Converter, heatmap, widgets, about 100/100 · AI sector 99/100 · OKB 96/100 · Brand kit 95/100 |
+| Lighthouse mobile, production, Nov 9 after the motion pass (perf / a11y / best practices / SEO) | Home 89–95 / 100 / 100 / 92 · Bitcoin 98–99 / 100 / 100 / 92 · Heatmap 98–100 / 96 → fixed / 100 / 92. SEO 92 = robots.txt `Content-Signal` line (DECISIONS) |
 | Home main thread, steady state (CDP) | ~110–130 ms per second, mostly price-flash paint; JS ~4 ms/s |
 | Layout shift (CLS) | 0.003 home, 0.003 coin pages, 0 sector and heatmap |
 | Largest paint on coin pages (throttled real load) | ~1.0–1.1 s (Lighthouse's simulation reports 2.7 s) |

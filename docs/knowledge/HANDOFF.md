@@ -89,8 +89,9 @@ of where things stand and what the owner wants. Details are in the files it link
 ## Decided against (measured; don't redo without new evidence)
 - Worker-thread feeds (C1): JS is ~4 ms/s of the home page's ~110–130 ms/s main thread.
 - Opacity-overlay price flash: measured worse (layer churn). Flashes (~30 ms/s) are the feature; leave them.
+- Rolling digits in the home table: measured ~115 → ~320 ms/s main thread.
 - Fading scroll reveals (axe contrast failures) and `@property`-animated gradients for anything that runs
-  forever (~30 ms/s main thread); rolling digits in the 50-row home table (not measured yet; layer-churn risk).
+  forever (~30 ms/s main thread).
 - Logos inside converter `<select>`s: ~20 KB extra HTML per coin page for a Chromium-only effect.
 - Minify/bundle step, JS framework, FAQ/Dataset markup, price-prediction pages, per-currency pages.
 - Mobile 7-day sparkline under 480 px: truncated 22 coin names at 412 px (1 without it).
