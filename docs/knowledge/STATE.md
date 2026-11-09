@@ -17,6 +17,7 @@
 - **Newsflash and move alerts:** live, data-only flashes on the home page (sharp moves vs the market, new 24h highs/lows, 24h snapshot, Coinbase listings and delistings since the last visit) and on coin pages (plus a 24h "vs the market" line); move alerts "X% within N minutes" for the watchlist or every coin; alert history in the browser (`assets/flash.js`).
 - **Brand and trust:** /trust/ (what the site never does, open source on GitHub, hosted on Cloudflare Pages, self-check links, why old domain scores differ), "Open source, hosted on Cloudflare Pages" + Trust & safety link in every footer, live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
+- **Motion (Nov 9):** rolling-digit prices (coin hero, pop-out), rows that glide on sort/filter, spring quick view, scroll-driven section rise, spinning logo ring on coin pages, market-mood glow on the home hero; all off with reduced motion.
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
   embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
