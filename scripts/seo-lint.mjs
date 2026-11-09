@@ -78,8 +78,16 @@ const sitemap = [...read("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)].map(m 
 const pageUrls = new Set(pages.map(p => `${SITE}/${p.replace(/index\.html$/, "")}`));
 for (const u of pageUrls) if (!sitemap.includes(u)) err(`sitemap.xml: missing ${u}`);
 for (const u of sitemap) if (!pageUrls.has(u)) err(`sitemap.xml: lists ${u}, which isn't a known page`);
+// sitemap-coins/-sectors/-pages.xml split the same URLs by section (Search Console filters by sitemap).
+const sections = ["coins", "sectors", "pages"].flatMap(x => [...read(`sitemap-${x}.xml`).matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]));
+if (sections.length !== sitemap.length || sections.some(u => !sitemap.includes(u))) err("sitemap-*.xml: the section sitemaps don't list exactly the URLs in sitemap.xml");
 if (!/Sitemap: https:\/\/cryptopriceticker\.com\/sitemap\.xml/.test(read("robots.txt"))) err("robots.txt: no Sitemap line");
 if (/^Disallow:\s*\/\s*$/m.test(read("robots.txt"))) err("robots.txt: blocks the whole site");
+// Only RFC 9309 directives plus Sitemap: Lighthouse and other validators flag anything else (e.g. Content-Signal).
+for (const line of read("robots.txt").split("\n")) {
+  const t = line.trim();
+  if (t && !t.startsWith("#") && !/^(user-agent|allow|disallow|sitemap):/i.test(t)) err(`robots.txt: unknown directive "${t}"`);
+}
 
 // ---------- 4. SEO overrides file (the agent's only content lever) ----------
 const overrides = existsSync(join(ROOT, "content/seo-overrides.json")) ? json("content/seo-overrides.json") : {};

@@ -28,3 +28,35 @@ jobs:
       - name: Rules for automated SEO branches
         if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'claude/seo-')
         run: node scripts/seo-lint.mjs --base origin/${{ github.base_ref }}
+
+  # After a push to main: wait until production serves this build, then tell IndexNow engines (Bing, Yandex,
+  # Seznam, Naver, Yep, Internet Archive, Amazon) which pages changed. Google doesn't use IndexNow; it reads the
+  # sitemap. No secrets: the key is the public file in the repo root. Never blocks a deploy.
+  indexnow:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Wait for production to serve this build
+        # A newer push can supersede this one; the pages are live either way, so carry on after the timeout.
+        run: bash tests/wait-deploy.sh https://cryptopriceticker.com 600 || echo "Build not confirmed; sending anyway."
+      - name: Submit changed pages
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          set -o pipefail  # the default shell is bash -e without pipefail: tee would hide a failed submission
+          if ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            echo "Previous commit unknown (new branch or force-push): nothing sent. Never falls back to --all." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          node scripts/indexnow.mjs "$BEFORE" | tee -a "$GITHUB_STEP_SUMMARY" && exit 0
+          echo "Retrying once in 60 s" && sleep 60
+          node scripts/indexnow.mjs "$BEFORE" | tee -a "$GITHUB_STEP_SUMMARY"

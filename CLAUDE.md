@@ -8,7 +8,7 @@ guide, research).
 - Full QA: `bash tests/run.sh` (local Pages emulator) or `bash tests/run.sh <preview-url>`. Must end with `QA PASSED`.
   Accessibility needs axe-core; see the header of `tests/axe.cjs`.
 - Quick: `node scripts/build-coin-pages.mjs && node scripts/seo-lint.mjs` (0 errors) and `node tests/links.mjs`.
-- After a deploy: `node scripts/check-live.mjs` and `node scripts/indexnow.mjs <previous-main-sha>`.
+- After a deploy: `node scripts/check-live.mjs`. IndexNow is sent by the `indexnow` CI job (don't run it by hand).
 - To ship a human-requested change, follow the `ship` skill (`.claude/skills/ship/SKILL.md`).
 
 ## Keep sessions cheap (Pro plan usage)

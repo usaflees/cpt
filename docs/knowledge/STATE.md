@@ -51,6 +51,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 9. GA4 `G-DF18LSQFVW` is loaded by `assets/consent.js`: don't also add it inside GTM `GTM-PD9TXJX`.
 10. Exchange market-data terms (Coinbase "Derived Works", OKX, Binance) restrict public display of their data, live prices included: accept and document, license, or ask in writing (research/2026-11-08). Decide before any sponsor.
 11. Headline feed + Worker + AI-summary decision (same research): needed before news headlines or AI "why it moved" text.
+13. Search Console → Sitemaps: submit `sitemap.xml` and the three section sitemaps (`sitemap-coins.xml`, `sitemap-sectors.xml`, `sitemap-pages.xml`), then URL Inspection → Request indexing for the home page and a few top coin pages. Bing Webmaster Tools → import from Search Console. Optional: add a Google Cloud service account as a Search Console user so a weekly job can report index status (research/2026-11-09).
 12. Cloudflare: Caching → Browser Cache TTL → "Respect Existing Headers" (robots.txt is served with a 4 h max-age by the zone default).
 
 ## Known trade-offs

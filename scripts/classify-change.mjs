@@ -13,7 +13,7 @@ const changed = execSync(`git diff --name-only ${fork}`, { cwd: ROOT, encoding: 
 const untracked = execSync("git ls-files --others --exclude-standard", { cwd: ROOT, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const reasons = [];
 
-const DATA_FILES = [/^assets\/coins\.js$/, /^content\/coin-stats\.json$/, /^coin\/[a-z0-9]+\/index\.html$/, /^sector\/[a-z0-9-]+\/index\.html$/, /^convert\/index\.html$/, /^heatmap\/index\.html$/, /^sitemap\.xml$/, /^index\.html$/];
+const DATA_FILES = [/^assets\/coins\.js$/, /^content\/coin-stats\.json$/, /^coin\/[a-z0-9]+\/index\.html$/, /^sector\/[a-z0-9-]+\/index\.html$/, /^convert\/index\.html$/, /^heatmap\/index\.html$/, /^sitemap(-coins|-sectors|-pages)?\.xml$/, /^index\.html$/];
 // A refresh changes assets/coins.js, and build-coin-pages.mjs then re-stamps its content hash
 // (/assets/coins.js?v=…) in every page and in sw.js. A file whose only difference is those hashes
 // is part of the data refresh, not a code change.

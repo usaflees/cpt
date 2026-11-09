@@ -22,6 +22,7 @@ that step again.
 6. **Production check:** `bash tests/wait-deploy.sh https://cryptopriceticker.com`, then
    `node scripts/check-live.mjs` (all checks must pass) and confirm the "Site checks" GitHub Actions run on `main`
    is green.
-7. **Tell search engines:** `node scripts/indexnow.mjs <the old origin/main sha>` (only changed pages are sent).
+7. **Tell search engines:** automatic. The `indexnow` job in `.github/workflows/site-checks.yml` waits for production
+   and sends the pages whose content changed. Check its run summary; don't also run `scripts/indexnow.mjs` by hand.
 8. **Record it:** update `docs/knowledge/STATE.md` (scores, page count, open items) and log any non-obvious
    choice in `docs/knowledge/DECISIONS.md`.

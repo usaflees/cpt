@@ -21,12 +21,14 @@ User-agent: Amazonbot
 User-agent: DuckAssistBot
 User-agent: Meta-ExternalAgent
 User-agent: MistralAI-User
+User-agent: MistralAI-Index
+User-agent: Meta-WebIndexer
+User-agent: Amzn-SearchBot
+User-agent: YouBot
 User-agent: CCBot
 Allow: /
 Disallow: /scripts/
 Disallow: /content/
 Disallow: /docs/
-# Content signals (contentsignals.org): yes to search, to use in AI answers, and to AI training.
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 Sitemap: https://cryptopriceticker.com/sitemap.xml
