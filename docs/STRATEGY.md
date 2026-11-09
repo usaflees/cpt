@@ -122,7 +122,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 - Fall back to a dedicated Worker (see C1), or to the current in-page sockets, where SharedWorker is missing.
 - **Success:** with 3 tabs open, 3 sockets instead of 9, and the same tick latency.
 
-**A3. In-page price alerts upgrade, S–M.**
+**A3. In-page price alerts upgrade, S–M.** ✅ Done: app-icon badge (live 8 Nov 2026); the beep and the "page must stay open" note were already in the alert form and FAQ.
 - The Badging API (`navigator.setAppBadge`) puts an alert count on the installed app's icon.
 - An optional sound cue, plus a clear "alerts work while this tab is open" note.
 - Real push notifications need a server (see F3), so they stay out.
@@ -148,7 +148,7 @@ Effort: **S** < 1 day · **M** 1–3 days · **L** > 3 days. "Owner" means you; 
 - **No price predictions and no advice language.**
 - **Success:** more impressions on coin pages, plus citations in the prompt checks (D3).
 
-**B2. Unique data modules, to fix uniformity, M–L.** *Done so far: best/worst month and 90-day BTC correlation (live Nov 4); largest fall, 1-year sector rank and sector-hub medians (PR #10). Exchange coverage and spread still open.*
+**B2. Unique data modules, to fix uniformity, M–L.** *Done so far: best/worst month and 90-day BTC correlation (live Nov 4); largest fall, 1-year sector rank and sector-hub medians (PR #10). Exchange coverage is stated on every coin page ("updates live from …"). Typical spread deferred: stats use one exchange's candles, and a USD-vs-USDT close difference would mostly measure the stablecoin basis, not the venues.*
 - Computed from the daily candles we already fetch:
   - drawdown from the 52-week high;
   - best and worst month;

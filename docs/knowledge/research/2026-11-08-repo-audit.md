@@ -16,7 +16,7 @@ migration guide, `_headers`, Markdown for Agents, AI Crawl Control, Content Sign
 | `www.cryptopriceticker.com` | No DNS record: the name doesn't resolve | **Owner**: add `www` as a Pages custom domain and a redirect to the apex |
 | `cryptopriceticker.pages.dev` | Served the full site without `noindex` (branch previews have it) | **Done**: `_headers` rule for that hostname; `check-live` verifies it |
 | GitHub Actions | `actions/checkout@v4`, `setup-node@v4` (3 majors old, Node 20 runtime), tag-pinned, workflow-level permissions | **Done**: SHA-pinned v7.0.1 / v7.1.0, job-level `contents: read`, `concurrency`, Dependabot (monthly, grouped) |
-| Content Signals | robots.txt allowed everything but didn't state AI-use preferences (4% of sites do) | **Done**: `Content-Signal: search=yes, ai-input=yes, ai-train=yes` (the owner's existing choice) |
+| Content Signals | robots.txt allowed everything but didn't state AI-use preferences (4% of sites do) | **Done** (shipped by another session on Nov 8): `Content-Signal: search=yes, ai-input=yes, ai-train=yes`, the owner's existing choice |
 | Repo hygiene | No `.gitignore`, no `SECURITY.md` | **Done**; private vulnerability reporting is a repo setting (**owner**) |
 | Markdown for Agents | Cloudflare can serve `text/markdown` to agents that ask for it (zone setting, AI Crawl Control) | **Owner** (dashboard toggle); no code needed |
 | Pages vs Workers | Cloudflare recommends Workers static assets for *new* projects; Pages keeps working and has Early Hints and branch aliases that the QA flow uses | Stay on Pages; revisit only if a needed feature is Workers-only |

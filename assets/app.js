@@ -1120,6 +1120,8 @@
       beep();
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
       notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
+      bumpAppBadge();
+      if (window.CPT && window.CPT.logAlert) window.CPT.logAlert(`${c.sym} crossed $${target}`, c.sym);
       refreshAlertUi(c.sym);
     }
   }
@@ -1133,6 +1135,17 @@
       navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts)).catch(fallback);
     } else fallback();
   }
+  // Installed app: show how many alerts fired while the page was hidden on its icon (Badging API,
+  // Chromium and Safari web apps); cleared as soon as the visitor comes back.
+  let missedAlerts = 0;
+  function bumpAppBadge() {
+    if (!document.hidden || !navigator.setAppBadge) return;
+    missedAlerts++;
+    navigator.setAppBadge(missedAlerts).catch(() => {});
+  }
+  if (navigator.clearAppBadge) document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && missedAlerts) { missedAlerts = 0; navigator.clearAppBadge().catch(() => {}); }
+  });
   function askNotifyPermission() {
     if ("Notification" in window && Notification.permission === "default") Notification.requestPermission().catch(() => {});
   }
@@ -1936,6 +1949,9 @@
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
+  // Read-only hooks for assets/flash.js (Newsflash and move alerts), loaded after this file.
+  if (MODE === "home" || MODE === "coin") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge };
+
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
   }

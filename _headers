@@ -8,9 +8,12 @@
 # collection hosts. GTM "Custom HTML" tags will not run (no 'unsafe-inline'); use built-in tag types.
 # The 'sha256-…' in script-src allows the inlined theme script (assets/theme-init.js); it is
 # rewritten by scripts/build-coin-pages.mjs, and seo-lint fails if any inline script lacks a hash.
+# The Link header sends the Binance preconnect as a 103 Early Hint: Pages skips <link> tags that
+# carry extra attributes such as crossorigin, so the one in the HTML is never hinted.
 
 /*
   Strict-Transport-Security: max-age=31536000
+  Link: <https://data-api.binance.vision>; rel=preconnect; crossorigin
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
