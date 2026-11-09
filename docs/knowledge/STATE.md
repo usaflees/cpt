@@ -15,7 +15,7 @@
   performance text adds largest fall and 1-year sector rank (live Nov 5), pop-out ticker, live price from Coinbase/Binance/Kraken, 24h chart, exchange prices and spread, ±2% order-book
   depth, converter with live tables, performance stats (incl. best/worst month and 90-day correlation with BTC) and monthly closes, sector breadcrumb, related coins.
 - **Newsflash and move alerts:** live, data-only flashes on the home page (sharp moves vs the market, new 24h highs/lows, 24h snapshot, Coinbase listings and delistings since the last visit) and on coin pages (plus a 24h "vs the market" line); move alerts "X% within N minutes" for the watchlist or every coin; alert history in the browser (`assets/flash.js`).
-- **Brand and trust:** /trust/ (what the site never does, open source on GitHub, hosted on Cloudflare Pages, self-check links, why old domain scores differ), "Open source, hosted on Cloudflare Pages" + Trust & safety link in every footer, live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
+- **Brand and trust:** /trust/ (what the site never does, public source code on GitHub, hosted on Cloudflare Pages, self-check links, why old domain scores differ), "Open source, hosted on Cloudflare Pages" + Trust & safety link in every footer, live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
 - **Motion (Nov 9):** rolling-digit prices (coin hero, pop-out), rows that glide on sort/filter, spring quick view, scroll-driven section rise, spinning logo ring on coin pages, market-mood glow on the home hero; all off with reduced motion.
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
@@ -27,6 +27,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 | Check | Result |
 | --- | --- |
 | Lighthouse mobile, live site (performance / SEO) | Home 95–98/100 · Bitcoin 100/100 · Converter, heatmap, widgets, about 100/100 · AI sector 99/100 · OKB 96/100 · Brand kit 95/100 |
+| Lighthouse mobile, production, Nov 9 after the motion pass (perf / a11y / best practices / SEO) | Home 89–95 / 100 / 100 / 92 · Bitcoin 98–99 / 100 / 100 / 92 · Heatmap 98–100 / 96 → fixed / 100 / 92. SEO 92 = robots.txt `Content-Signal` line (DECISIONS) |
 | Home main thread, steady state (CDP) | ~110–130 ms per second, mostly price-flash paint; JS ~4 ms/s |
 | Layout shift (CLS) | 0.003 home, 0.003 coin pages, 0 sector and heatmap |
 | Largest paint on coin pages (throttled real load) | ~1.0–1.1 s (Lighthouse's simulation reports 2.7 s) |
@@ -52,6 +53,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 9. GA4 `G-DF18LSQFVW` is loaded by `assets/consent.js`: don't also add it inside GTM `GTM-PD9TXJX`.
 10. Exchange market-data terms (Coinbase "Derived Works", OKX, Binance) restrict public display of their data, live prices included: accept and document, license, or ask in writing (research/2026-11-08). Decide before any sponsor.
 11. Headline feed + Worker + AI-summary decision (same research): needed before news headlines or AI "why it moved" text.
+13. Search Console → Sitemaps: submit `sitemap.xml` and the three section sitemaps (`sitemap-coins.xml`, `sitemap-sectors.xml`, `sitemap-pages.xml`), then URL Inspection → Request indexing for the home page and a few top coin pages. Bing Webmaster Tools → import from Search Console. Optional: add a Google Cloud service account as a Search Console user so a weekly job can report index status (research/2026-11-09).
 12. Cloudflare: Caching → Browser Cache TTL → "Respect Existing Headers" (robots.txt is served with a 4 h max-age by the zone default).
 
 ## Known trade-offs

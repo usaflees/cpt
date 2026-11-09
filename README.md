@@ -21,7 +21,7 @@ whatever is in this repository is what gets deployed.
 | `assets/consent.js` | Google Tag Manager (`GTM-PD9TXJX`) and Google Analytics 4 (`G-DF18LSQFVW`, via gtag.js) with Consent Mode v2 and the cookie banner. Loads after page load; never in widgets; analytics cookies only after "Accept" |
 | `about/index.html` | About & data methodology page |
 | `accessibility/index.html` | Accessibility statement (WCAG 2.1 AA / EN 301 549 status, known limits, how to report a barrier) |
-| `trust/index.html` | Trust and verification: open source, hosted on Cloudflare Pages, what the site never does, how to check it, why old domain scores differ |
+| `trust/index.html` | Trust and verification: public source code, hosted on Cloudflare Pages, what the site never does, how to check it, why old domain scores differ |
 | `widgets/index.html` | Free widget landing page: live examples and how to embed |
 | `sector/<slug>/index.html` | Sector hub pages (**generated** from `content/sectors.json`) |
 | `heatmap/index.html` | Live market heatmap: treemap sized by market cap, coloured by 24h change (**generated**) |

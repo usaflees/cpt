@@ -452,7 +452,7 @@ function coinPage(c) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -581,7 +581,7 @@ function sectorPage(x) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
     <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
   </footer>
 </body>
@@ -693,7 +693,7 @@ function convertPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -783,7 +783,7 @@ function heatmapPage() {
 
     <section class="page-section prose" aria-labelledby="read-h">
       <h2 id="read-h">How to read the heatmap</h2>
-      <p>Bigger boxes mean a larger market cap (live price × circulating supply). By default the map is “balanced”: box area follows the square root of market cap, so smaller coins stay readable while the order is unchanged. Choose “True market cap” to make every area exactly proportional, which shows how much of the market Bitcoin really is. The colour shows the price change over the last 24 hours, from deep red at −8% or worse through grey to deep green at +8% or better. Stablecoins are hidden by default because they barely move; switch them on to see their share of the market.</p>
+      <p>Bigger boxes mean a larger market cap (live price × circulating supply). By default the map is “balanced”: box area follows the square root of market cap, with a minimum size so the smallest coins stay readable and easy to tap; the order is unchanged. Choose “True market cap” to make every area exactly proportional, which shows how much of the market Bitcoin really is. The colour shows the price change over the last 24 hours, from deep red at −8% or worse through grey to deep green at +8% or better. Stablecoins are hidden by default because they barely move; switch them on to see their share of the market.</p>
       <p>“By sector” groups coins by their main category, which makes it easy to spot when a whole sector, such as AI tokens or memecoins, moves together. Tap any box for that coin's live price page.</p>
       <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
     </section>
@@ -797,7 +797,7 @@ function heatmapPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -830,12 +830,33 @@ writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}
 </urlset>
 `);
+// Per-section copies for Search Console's Page indexing report (filter by sitemap): submit these three there
+// to see how many coin, sector and other pages are indexed. sitemap.xml stays the complete list.
+const sitemapOf = list => `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${list.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}
+</urlset>
+`;
+writeFileSync(ROOT + "sitemap-coins.xml", sitemapOf(urls.filter(u => u.includes("/coin/"))));
+writeFileSync(ROOT + "sitemap-sectors.xml", sitemapOf(urls.filter(u => u.includes("/sector/"))));
+writeFileSync(ROOT + "sitemap-pages.xml", sitemapOf(urls.filter(u => !u.includes("/coin/") && !u.includes("/sector/"))));
 
 // 3. Redirects for renamed tickers (Cloudflare Pages _redirects syntax)
 const redirects = coins.filter(c => c.formerly).flatMap(c => [
   `/coin/${slug(c.formerly)} /coin/${slug(c.sym)}/ 301`,
   `/coin/${slug(c.formerly)}/ /coin/${slug(c.sym)}/ 301`
 ]);
+// Guessed addresses (people, AI answers, other sites): the coin's name (/coin/bitcoin/) and the upper-case
+// ticker (/coin/BTC/). Pages matches redirect paths case-sensitively; a name that equals any ticker or
+// existing path is skipped so no rule can point at itself.
+const taken = new Set([...coins.map(c => slug(c.sym)), ...coins.filter(c => c.formerly).map(c => slug(c.formerly))]);
+const nameSlug = c => shortName(c).toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+for (const c of coins) {
+  const to = `/coin/${slug(c.sym)}/`;
+  const ns = nameSlug(c);
+  if (ns && !taken.has(ns)) { taken.add(ns); redirects.push(`/coin/${ns} ${to} 301`, `/coin/${ns}/ ${to} 301`); }
+  if (c.sym !== slug(c.sym)) redirects.push(`/coin/${c.sym} ${to} 301`, `/coin/${c.sym}/ ${to} 301`);
+}
 writeFileSync(ROOT + "_redirects", `# Generated by scripts/build-coin-pages.mjs — renamed tickers keep their old links working.
 # Docs: https://developers.cloudflare.com/pages/configuration/redirects/
 /coin / 301

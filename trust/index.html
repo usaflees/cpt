@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Is CryptoPriceTicker.com Safe? Trust and Verification</title>
-  <meta name="description" content="How to verify CryptoPriceTicker.com yourself: open-source code on GitHub, hosted on Cloudflare Pages, no accounts, payments or wallets, and a new domain owner." />
+  <meta name="description" content="How to verify CryptoPriceTicker.com yourself: public source code on GitHub, hosted on Cloudflare Pages, no accounts, payments or wallets, and a new domain owner." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://cryptopriceticker.com/trust/" />
   <link rel="preload" href="/assets/app.css?v=da5bd91cc4" as="style" />
@@ -57,7 +57,7 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <script src="/assets/coins.js?v=88eae95f59" defer></script>
-  <script src="/assets/app.js?v=f9e71b86da" defer></script>
+  <script src="/assets/app.js?v=6cbd62d79a" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
   <link rel="stylesheet" href="/assets/app.css?v=da5bd91cc4" />
 </head>
@@ -98,7 +98,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
     <section class="hero" aria-labelledby="trust-h">
       <h1 id="trust-h" class="hero-title">Is CryptoPriceTicker.com safe?</h1>
-      <p class="hero-sub">CryptoPriceTicker.com is a free, read-only price website. It never asks for a login, a payment, a wallet connection, a seed phrase or a download, and it cannot hold or move anyone's money. It is open source and hosted on Cloudflare Pages, so everything on this page can be checked without trusting us. Last reviewed 6 November 2026.</p>
+      <p class="hero-sub">CryptoPriceTicker.com is a free, read-only price website. It never asks for a login, a payment, a wallet connection, a seed phrase or a download, and it cannot hold or move anyone's money. Its source code is public and it is hosted on Cloudflare Pages, so everything on this page can be checked without trusting us. Last reviewed 6 November 2026.</p>
     </section>
 
     <section class="page-section prose" aria-labelledby="never-h">
@@ -115,7 +115,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="page-section prose" aria-labelledby="host-h">
       <h2 id="host-h">How it is built and hosted</h2>
       <ul class="brand-rules">
-        <li><strong>Open source.</strong> The complete site, including every data script, is public in the GitHub repository <a href="https://github.com/usaflees/cpt">usaflees/cpt</a>. Every change is a public commit.</li>
+        <li><strong>Public source code.</strong> The complete site, including every data script, is public in the GitHub repository <a href="https://github.com/usaflees/cpt">usaflees/cpt</a>. Every change is a public commit.</li>
         <li><strong>Hosted on Cloudflare Pages.</strong> Cloudflare builds the site straight from the repository's <code>main</code> branch and serves it over HTTPS. The project's Cloudflare address is <a href="https://cryptopriceticker.pages.dev/">cryptopriceticker.pages.dev</a>, which serves the same files.</li>
         <li><strong>Static files only.</strong> Pages are plain files; the only code that runs on the server is a small rule that refuses requests for the site's internal working files. There is no database, no login system and nothing that handles visitor data. Live prices come straight from the public market-data feeds of Coinbase, Binance and Kraken (see <a href="/about/">About &amp; methodology</a>).</li>
         <li><strong>Locked-down browser security.</strong> Every page sends a strict Content-Security-Policy that lists each outside address the page may contact: the three exchanges, Cloudflare and Google Analytics (only after you accept cookies). HTTPS is enforced with HSTS.</li>
@@ -146,7 +146,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Open source</a>, hosted on Cloudflare Pages. <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
