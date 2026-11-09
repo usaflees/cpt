@@ -1,0 +1,8 @@
+# Local tooling only; the site itself has no build step or dependencies.
+node_modules/
+.wrangler/
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db

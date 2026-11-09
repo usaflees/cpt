@@ -5,6 +5,8 @@ Each file is a dated, sourced snapshot of web research done for this site. Facts
 
 | File | Topic | Key takeaways |
 | --- | --- | --- |
+| [2026-11-09-ai-search-updates.md](2026-11-09-ai-search-updates.md) | AI search changes since 4 Nov | Search Console Generative AI report + "Search generative AI" setting; Bing AI Performance topics; Cloudflare Crawler Hints feed IndexNow (owner toggle) |
+| [2026-11-08-repo-audit.md](2026-11-08-repo-audit.md) | Repo, CI, headers, crawlers and Lighthouse audit | Empty GTM container costs ~280 KiB/page; no LICENSE behind the "open source" claim; www has no DNS; pages.dev now noindex; actions SHA-pinned |
 | [2026-11-04-search-updates.md](2026-11-04-search-updates.md) | Google/OpenAI/Bing changes Oct–Nov 2026 vs this site | Preferred-sources deeplink added; favicon, crawlers, structured data already compliant; AI-training token due 2027 |
 | [2026-11-02-opus-5-5-and-search-news.md](2026-11-02-opus-5-5-and-search-news.md) | Claude Opus 5.5, Claude Code, scheduled tasks; search news Oct–Nov 2026 | Effort is the main control (default `medium`); verification beats prompting; scheduled tasks take a model *and* effort; AI-training opt-out token announced; no core update since June |
 | [2026-10-30-self-improving-loop-report.md](2026-10-30-self-improving-loop-report.md) | The self-improving loop design (synthesis) | Collect privately (Apps Script), ship slowly (monthly), measure honestly (expect "inconclusive"); agent never touches credentials |

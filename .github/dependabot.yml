@@ -1,0 +1,13 @@
+# Keeps the SHA-pinned GitHub Actions in .github/workflows/ up to date (one grouped PR a month).
+# The site itself has no npm dependencies, so only the github-actions ecosystem is watched.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "ci"

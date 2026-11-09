@@ -21,7 +21,7 @@ whatever is in this repository is what gets deployed.
 | `assets/consent.js` | Google Tag Manager (`GTM-PD9TXJX`) and Google Analytics 4 (`G-DF18LSQFVW`, via gtag.js) with Consent Mode v2 and the cookie banner. Loads after page load; never in widgets; analytics cookies only after "Accept" |
 | `about/index.html` | About & data methodology page |
 | `accessibility/index.html` | Accessibility statement (WCAG 2.1 AA / EN 301 549 status, known limits, how to report a barrier) |
-| `trust/index.html` | Trust and verification: open source, hosted on Cloudflare Pages, what the site never does, how to check it, why old domain scores differ |
+| `trust/index.html` | Trust and verification: public source code, hosted on Cloudflare Pages, what the site never does, how to check it, why old domain scores differ |
 | `widgets/index.html` | Free widget landing page: live examples and how to embed |
 | `sector/<slug>/index.html` | Sector hub pages (**generated** from `content/sectors.json`) |
 | `heatmap/index.html` | Live market heatmap: treemap sized by market cap, coloured by 24h change (**generated**) |
@@ -37,13 +37,15 @@ whatever is in this repository is what gets deployed.
 | `content/seo-overrides.json` | Optional per-coin `title` / `description` / `h1` overrides (the self-improving loop's only content lever) |
 | `content/experiments.json` | Log of every SEO change: hypothesis, pages, start and evaluation dates, result |
 | `content/page-dates.json` | **Generated.** Content hash and last-changed date of each hand-written page, so its sitemap `lastmod` moves only when its content does |
-| `_headers` | Security headers (incl. Content-Security-Policy) and cache rules for Cloudflare Pages |
+| `_headers` | Security headers (incl. Content-Security-Policy), cache rules and `noindex` for the `pages.dev` copy |
 | `_redirects` | Old tickers → new coin pages (**generated**) |
 | `sitemap.xml` | **Generated** list of all pages for search engines |
-| `robots.txt`, `site.webmanifest`, `favicon.*`, `icon-*.png`, `apple-touch-icon.png`, `og-image.jpg` | Search/social/app metadata |
+| `robots.txt` (with a Content-Signal line), `site.webmanifest`, `favicon.*`, `icon-*.png`, `apple-touch-icon.png`, `og-image.jpg` | Search/social/app metadata |
 | `scripts/` | Maintenance scripts (Node 18+, no dependencies) — see below |
 | `scripts/telemetry/` | Google Apps Script that collects Search Console + Cloudflare data into a private Sheet |
-| `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` |
+| `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` (actions pinned to commit SHAs) |
+| `.github/dependabot.yml` | One grouped monthly PR to update those pinned actions |
+| `SECURITY.md`, `.well-known/security.txt` | How to report a security problem |
 | `docs/SELF-IMPROVING.md` | How the weekly self-improvement loop works and the rules it must follow |
 | `docs/LAUNCH-KIT.md` | Launch & growth plan: indexing checklist, where to post (and the rules), post drafts |
 | `docs/AUDIT.md` | The October 2026 audit: what was wrong, what changed, and the evidence |

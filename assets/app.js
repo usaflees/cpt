@@ -389,7 +389,7 @@
     const coinCell = c.hasPage
       ? `<a class="coin-cell" href="${coinUrl(c.sym)}">${ident}</a>`
       : `<button type="button" class="coin-cell" data-action="open-coin" data-sym="${s}">${ident}</button>`;
-    return `<tr id="row-${s}" data-sym="${s}">
+    return `<tr id="row-${s}" data-sym="${s}" style="--vtn:r-${s}">
           <td class="col-center col-star"><button type="button" class="star-btn${isFav ? " on" : ""}" data-action="toggle-fav" data-sym="${s}" aria-pressed="${isFav}" aria-label="${isFav ? "Remove" : "Add"} ${s} ${isFav ? "from" : "to"} watchlist">${isFav ? "★" : "☆"}</button></td>
           <td class="col-center col-rank">${c.rank}</td>
           <td class="col-left col-coin">${coinCell}</td>
@@ -476,7 +476,7 @@
     renderTape();
   }
 
-  let lastMovers = 0;
+  let lastMovers = 0, lastMood = 0, shownMood = 0.5;
   function updateSummary(force) {
     let mcap = 0, vol = 0, bagTotal = 0, bagPnl = 0;
     state.coins.forEach(c => {
@@ -504,6 +504,17 @@
     pnlEl.textContent = `${sign}${fmtPrice(Math.abs(bagPnl))} (${sign}${Math.abs(pct).toFixed(2)}%)`;
     pnlEl.style.color = bagPnl >= 0 ? "var(--up)" : "var(--down)";
     $("watchlistCountVal").textContent = `${state.watchlist.size} / ${Object.keys(state.alerts).length}`;
+
+    // Market mood: the hero glow leans green or red with the share of live coins up over 24h
+    // (stablecoins excluded). At most every 30 s and only on a real change: it repaints the glow.
+    if (Date.now() - lastMood > 30000) {
+      const live = Array.from(state.coins.values()).filter(c => c.live && !c.estimated && !c.sectors.includes("Stable"));
+      if (live.length >= 20) {
+        const mood = live.filter(c => c.change24h >= 0).length / live.length;
+        if (Math.abs(mood - shownMood) >= 0.03) { document.documentElement.style.setProperty("--mood", mood.toFixed(2)); shownMood = mood; }
+        lastMood = Date.now();
+      }
+    }
 
     // Movers cards re-render at most every 3s so they don't jump around under the cursor.
     if (!force && Date.now() - lastMovers < 3000) return;
@@ -572,6 +583,30 @@
 
   // Restart the flash by switching to the other copy of the animation (see .alt in app.css):
   // no forced layout, so a burst of ticks stays cheap.
+  // Rolling digits: only the digits that changed slide to their new value (odometer style). The
+  // element's text stays exactly the formatted price (tests, screen readers, copy-paste); the old
+  // digit exists only as a short-lived ::after while it slides out. Same restart trick as flash().
+  const ROLL = !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function rollTo(el, str, dir) {
+    const cells = el.querySelectorAll(".dg > i");
+    if (!ROLL || !dir || cells.length !== [...str].length || el.textContent.length !== str.length) {
+      el.innerHTML = [...str].map(ch => `<span class="dg${/\d/.test(ch) ? "" : " sep"}"><i>${esc(ch)}</i></span>`).join("");
+      return;
+    }
+    const old = el.textContent;
+    [...str].forEach((ch, k) => {
+      if (ch === old[k]) return;
+      const i = cells[k];
+      if (!i) return;
+      i.dataset.prev = old[k];
+      i.textContent = ch;
+      const alt = !i.classList.contains("alt");
+      i.classList.remove("roll-up", "roll-down");
+      i.classList.add(dir === "up" ? "roll-up" : "roll-down");
+      i.classList.toggle("alt", alt);
+    });
+  }
+
   function flash(el, dir) {
     if (!dir) return;
     const alt = !el.classList.contains("alt");
@@ -1278,8 +1313,8 @@
     const c = state.coins.get(state.coinPageSym);
     if (!c) return;
     const price = $("cpPrice");
-    if (c.live && price.textContent !== fmtPrice(c.price)) flash(price, c.lastDir);
-    price.textContent = fmtPrice(c.price);
+    const pStr = fmtPrice(c.price);
+    if (price.textContent !== pStr) rollTo(price, pStr, c.live ? c.lastDir : null);
     price.classList.toggle("is-stale", !c.live);
     $("cpChange").innerHTML = chgPill(c);
     $("cpSource").textContent = c.live ? `Last tick: ${{ CB: "Coinbase", BN: "Binance", KR: "Kraken" }[c.lastSource]} · ${new Date().toLocaleTimeString()}` : "Connecting to exchanges…";
@@ -1681,6 +1716,26 @@
   // Repeated clicks before the render runs collapse into one render.
   const yieldToMain = () => (globalThis.scheduler && typeof scheduler.yield === "function") ? scheduler.yield() : new Promise(r => setTimeout(r, 0));
   const pendingRenders = new Set();
+  // Rows that glide (same-document view transition): rows carry a name only while the transition
+  // runs (.vt-glide on <html>), so page-to-page transitions aren't slowed by named rows.
+  const GLIDE = ROLL && typeof document.startViewTransition === "function";
+  let gliding = false;
+  function glide(fn) {
+    const table = $("cryptoTable");
+    if (!GLIDE || gliding || !table || document.hidden) return fn();
+    gliding = true;
+    // Only rows on screen get a name (before and after): off-screen rows needn't be captured.
+    const mark = () => { const h = innerHeight; table.querySelectorAll("tr[data-sym]").forEach(r => { const b = r.getBoundingClientRect(); r.classList.toggle("vt-on", b.bottom > 0 && b.top < h); }); };
+    const root = document.documentElement, done = () => { root.classList.remove("vt-glide"); table.querySelectorAll("tr.vt-on").forEach(r => r.classList.remove("vt-on")); gliding = false; };
+    mark();
+    root.classList.add("vt-glide");
+    let t;
+    try { t = document.startViewTransition(() => { fn(); mark(); }); } catch (_) { done(); return fn(); }
+    t.finished.catch(() => {}).finally(done);
+    t.ready.catch(() => {});
+  }
+  const glideTable = () => glide(renderTable);
+
   function deferRender(fn) {
     if (pendingRenders.has(fn)) return;
     pendingRenders.add(fn);
@@ -1702,7 +1757,7 @@
     syms.forEach(sym => {
       const row = pip.rows.get(sym), c = state.coins.get(sym);
       if (!row || !c) return;
-      row.price.textContent = fmtPrice(c.price);
+      rollTo(row.price, fmtPrice(c.price), c.live ? c.lastDir : null);
       row.chg.className = `chg-pill ${chgClass(c)}`;
       row.chg.textContent = fmtChange(c);
       row.price.classList.toggle("is-stale", !c.live);
@@ -1743,7 +1798,7 @@
     },
     "show-all"() {
       state.showAll = true;
-      deferRender(renderTable);
+      deferRender(glideTable);
     },
     "hm-group"(el) {
       hm.group = el.dataset.group === "sector";
@@ -1776,7 +1831,7 @@
       const sym = el.dataset.sym;
       if (state.watchlist.has(sym)) state.watchlist.delete(sym); else state.watchlist.add(sym);
       store.set("cpt_watch", Array.from(state.watchlist));
-      if (MODE === "home") deferRender(renderTable); else syncFavButton();
+      if (MODE === "home") deferRender(glideTable); else syncFavButton();
       refreshQuickActions();
     },
     "toggle-pin"(el) {
@@ -1798,13 +1853,13 @@
         p.classList.toggle("active", p === el);
         p.setAttribute("aria-pressed", p === el);
       });
-      deferRender(renderTable);
+      deferRender(glideTable);
     },
     sort(el) {
       const col = el.closest("th").dataset.sort;
       if (state.sortBy === col) state.sortAsc = !state.sortAsc;
       else { state.sortBy = col; state.sortAsc = col === "rank" || col === "name"; }
-      deferRender(renderTable);
+      deferRender(glideTable);
     },
     movers(el) {
       state.moverMode = el.dataset.mode;
