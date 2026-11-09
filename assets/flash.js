@@ -4,7 +4,9 @@
  * streams (assets/app.js exposes them as window.CPT). No headlines, no AI text, no server: every flash
  * is a measured fact with its time, so nothing here can be wrong in a way the numbers don't show.
  *
- *   home  Newsflash list (#flashList), move-alert settings (#moveAlertForm) and alert history (#alertLog)
+ *   home  Newsflash list (#flashList), move-alert settings (#moveAlertForm) and alert history (#alertLog);
+ *         Coinbase listings: at most every 6 h this browser fetches Coinbase Exchange's public product list
+ *         (~25 KB) and compares its USD markets with the copy saved last time (new, delisted, launching)
  *   coin  Flashes for the page's coin plus a "versus the market" line (#flashMarket) from Binance's
  *         24h tickers for the largest coins (one request, refreshed every 5 minutes)
  *
@@ -52,7 +54,7 @@
     return true;
   }
 
-  const TAGS = { move: "Move", market: "Market", high: "24h high", low: "24h low", snapshot: "Snapshot" };
+  const TAGS = { move: "Move", market: "Market", high: "24h high", low: "24h low", snapshot: "Snapshot", listing: "Listing" };
   function render() {
     const shown = PAGE_SYM ? items.filter(i => i.sym === PAGE_SYM || i.kind === "market") : items;
     if (!shown.length) {
@@ -220,9 +222,37 @@
     }
   }
 
+  /* ---------------- Coinbase listings: compare the public product list with this browser's last copy ---------------- */
+  async function coinbaseListings() {
+    const saved = store.json("cpt_cbprod", null);
+    if (saved && Date.now() - saved.t < 6 * 3600e3) return;
+    let products;
+    try {
+      const res = await fetch("https://api.exchange.coinbase.com/products");
+      if (!res.ok) return;
+      products = await res.json();
+    } catch (_) { return; }
+    if (!Array.isArray(products) || products.length < 100) return;
+    const usd = products.filter(p => p.quote_currency === "USD");
+    const online = usd.filter(p => p.status === "online" && !p.trading_disabled && !p.auction_mode).map(p => p.base_currency);
+    const auction = usd.filter(p => p.status === "online" && p.auction_mode).map(p => p.base_currency);
+    const name = b => { const c = state.coins.get(b); return c ? link(c) : esc(b); };
+    const since = saved ? ` <span class="muted">(since this browser last checked, ${new Date(saved.t).toLocaleDateString([], { month: "short", day: "numeric" })})</span>` : "";
+    auction.filter(b => !(saved && saved.auction.includes(b))).forEach(b =>
+      add("listing", b, `Coinbase is launching ${name(b)}-USD: the market is open for orders in auction mode before full trading.${since}`, `cb-auc-${b}`));
+    if (saved) {
+      const before = new Set(saved.online);
+      const now = new Set(online);
+      online.filter(b => !before.has(b)).slice(0, 5).forEach(b => add("listing", b, `Coinbase listed ${name(b)}: ${esc(b)}-USD is now trading.${since}`, `cb-new-${b}`));
+      saved.online.filter(b => !now.has(b) && !auction.includes(b)).slice(0, 5).forEach(b => add("listing", b, `Coinbase stopped trading ${name(b)}-USD (delisted or suspended).${since}`, `cb-off-${b}`));
+    }
+    store.set("cpt_cbprod", { t: Date.now(), online, auction });
+  }
+
   render();
   renderLog();
   setInterval(sample, SAMPLE_MS);
   setTimeout(sample, 5e3);
   if (MODE === "coin") { setTimeout(marketLine, 2e3); setInterval(marketLine, 5 * 60e3); }
+  if (MODE === "home") setTimeout(coinbaseListings, 8e3);
 })();

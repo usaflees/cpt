@@ -17,7 +17,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=3aaaec0e52" as="style" />
+  <link rel="preload" href="/assets/app.css?v=da5bd91cc4" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -82,10 +82,10 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3aaaec0e52" />
+  <link rel="stylesheet" href="/assets/app.css?v=da5bd91cc4" />
   <script src="/assets/coins.js?v=88eae95f59" defer></script>
-  <script src="/assets/app.js?v=2dde29b9cf" defer></script>
-  <script src="/assets/flash.js?v=cf20b29f8c" defer></script>
+  <script src="/assets/app.js?v=f9e71b86da" defer></script>
+  <script src="/assets/flash.js?v=49897fc2e9" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="home">
@@ -193,7 +193,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <h3>Alert history <span class="muted">· this browser only</span></h3>
           <ol class="alert-log" id="alertLog"></ol>
         </details>
-        <p class="disclaimer">Newsflash lines are computed automatically from live Coinbase, Binance and Kraken prices while this page is open: measured moves, not news reports or advice.</p>
+        <p class="disclaimer">Newsflash lines are computed automatically from live Coinbase, Binance and Kraken prices while this page is open, and from Coinbase's public market list (checked at most every 6 hours): measured facts, not news reports or advice.</p>
       </section>
 
       <div class="chips" role="group" aria-label="Filter coins">

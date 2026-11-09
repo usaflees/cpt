@@ -1,4 +1,4 @@
-# Handoff: start here in a new session (updated 2026-11-08)
+# Handoff: start here in a new session (updated 2026-11-09)
 
 Everything earlier sessions produced is in this repo; nothing lives only in a chat. This note is the short version
 of where things stand and what the owner wants. Details are in the files it links.
@@ -44,6 +44,13 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Live Nov 9 (`48da614`):** motion pass (DECISIONS 2026-11-09): rolling-digit prices on coin pages and the
+  pop-out, gliding table rows, spring quick view and popover, scroll-driven section rise, spinning logo ring, market
+  mood glow on the home hero. Mockups: claude.ai artifact "CPT Motion Lab". Local + preview QA PASSED.
+- **Live Nov 9 (`62320c3`):** widget builder "Copy link" for Notion / Google Sites (A5 snippets done). Another
+  session shipped the Newsflash and move alerts on Nov 8 (`5cf8510`, `assets/flash.js`). A5 left: measure embed
+  domains. Next buildable: A2 SharedWorker (low value at today's traffic), D3 citation baseline (needs
+  `usaflees/cpt-telemetry`).
 - **Nov 8:** shipped the leftover PR #11 (app-icon alert badge, `Content-Signal` in robots.txt, Binance preconnect
   as an Early Hint) and the overdue data refresh (stats as of 7 Nov; the weekly task still can't push, see below).
   ScamAdviser rescanned ~2 Nov: still 0 ("Very Likely Unsafe"), now mainly for domain age; the rescan email draft
@@ -82,6 +89,8 @@ of where things stand and what the owner wants. Details are in the files it link
 ## Decided against (measured; don't redo without new evidence)
 - Worker-thread feeds (C1): JS is ~4 ms/s of the home page's ~110–130 ms/s main thread.
 - Opacity-overlay price flash: measured worse (layer churn). Flashes (~30 ms/s) are the feature; leave them.
+- Fading scroll reveals (axe contrast failures) and `@property`-animated gradients for anything that runs
+  forever (~30 ms/s main thread); rolling digits in the 50-row home table (not measured yet; layer-churn risk).
 - Logos inside converter `<select>`s: ~20 KB extra HTML per coin page for a Chromium-only effect.
 - Minify/bundle step, JS framework, FAQ/Dataset markup, price-prediction pages, per-currency pages.
 - Mobile 7-day sparkline under 480 px: truncated 22 coin names at 412 px (1 without it).
