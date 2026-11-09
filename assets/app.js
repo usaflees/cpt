@@ -1491,6 +1491,7 @@
   const hm = { group: params.get("group") === "sector", balanced: params.get("size") !== "cap", stables: false, tiles: new Map(), laidOut: 0 };
   // "Balanced" sizes boxes by √market cap: still ordered by size, but Bitcoin no longer hides the small coins.
   const hmWeight = c => (hm.balanced ? Math.sqrt(c.mcap) : c.mcap);
+  const HM_MIN_FLAT = 1400, HM_MIN_GROUP = 2200;
   function syncHeatmapUrl() {
     const q = new URLSearchParams();
     if (hm.group) q.set("group", "sector");
@@ -1553,20 +1554,27 @@
     if (!box) return;
     const W = box.clientWidth, H = box.clientHeight;
     const coins = heatmapCoins();
+    // Balanced sizing gives every tile at least HM_MIN_* px² so it stays a usable tap target (WCAG 2.5.8);
+    // "true market cap" sizing stays literal.
+    const wt = new Map(coins.map(c => [c, hmWeight(c)]));
+    if (hm.balanced) for (let k = 0; k < 4; k++) {
+      const floor = (hm.group ? HM_MIN_GROUP : HM_MIN_FLAT) * [...wt.values()].reduce((t, v) => t + v, 0) / (W * H);
+      wt.forEach((v, c) => { if (v < floor) wt.set(c, floor); });
+    }
     let rects = [];
     const groupsHtml = [];
     if (hm.group) {
       const groups = new Map();
       coins.forEach(c => { const k = c.sectors[0] || "Other"; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(c); });
-      const gItems = Array.from(groups, ([k, list]) => ({ k, list, v: list.reduce((t, c) => t + hmWeight(c), 0) })).sort((a, b) => b.v - a.v);
+      const gItems = Array.from(groups, ([k, list]) => ({ k, list, v: list.reduce((t, c) => t + wt.get(c), 0) })).sort((a, b) => b.v - a.v);
       squarify(scaleTo(gItems, W * H), 0, 0, W, H).forEach(g => {
         const head = g.h > 44 && g.w > 48 ? 18 : 0;
         groupsHtml.push(`<div class="hm-group" style="left:${g.x}px;top:${g.y}px;width:${g.w}px;height:${g.h}px">${head ? `<span class="hm-group-label">${esc(SECTOR_LABELS[g.k] || g.k)}</span>` : ""}</div>`);
-        const inner = g.list.map(c => ({ c, v: hmWeight(c) }));
+        const inner = g.list.map(c => ({ c, v: wt.get(c) }));
         rects = rects.concat(squarify(scaleTo(inner, (g.w - 2) * (g.h - head - 2)), g.x + 1, g.y + head + 1, g.w - 2, g.h - head - 2));
       });
     } else {
-      rects = squarify(scaleTo(coins.map(c => ({ c, v: hmWeight(c) })), W * H), 0, 0, W, H);
+      rects = squarify(scaleTo(coins.map(c => ({ c, v: wt.get(c) })), W * H), 0, 0, W, H);
     }
     hm.tiles.clear();
     box.innerHTML = groupsHtml.join("") + rects.map(r => {
