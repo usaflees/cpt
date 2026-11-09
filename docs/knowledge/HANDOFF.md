@@ -1,4 +1,4 @@
-# Handoff: start here in a new session (updated 2026-11-08)
+# Handoff: start here in a new session (updated 2026-11-09)
 
 Everything earlier sessions produced is in this repo; nothing lives only in a chat. This note is the short version
 of where things stand and what the owner wants. Details are in the files it links.
@@ -44,6 +44,10 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Live Nov 9 (`62320c3`):** widget builder "Copy link" for Notion / Google Sites (A5 snippets done). Another
+  session shipped the Newsflash and move alerts on Nov 8 (`5cf8510`, `assets/flash.js`). A5 left: measure embed
+  domains. Next buildable: A2 SharedWorker (low value at today's traffic), D3 citation baseline (needs
+  `usaflees/cpt-telemetry`).
 - **Nov 8:** shipped the leftover PR #11 (app-icon alert badge, `Content-Signal` in robots.txt, Binance preconnect
   as an Early Hint) and the overdue data refresh (stats as of 7 Nov; the weekly task still can't push, see below).
   ScamAdviser rescanned ~2 Nov: still 0 ("Very Likely Unsafe"), now mainly for domain age; the rescan email draft
