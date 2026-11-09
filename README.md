@@ -44,6 +44,7 @@ whatever is in this repository is what gets deployed.
 | `scripts/` | Maintenance scripts (Node 18+, no dependencies) — see below |
 | `scripts/telemetry/` | Google Apps Script that collects Search Console + Cloudflare data into a private Sheet |
 | `.github/workflows/site-checks.yml` | Runs the generator and `seo-lint` on every pull request and push to `main` (actions pinned to commit SHAs) |
+| `functions/_middleware.js`, `_routes.json` | Cloudflare Pages function that returns 404 for the repo's working files (`/scripts`, `/docs`, `/content`, `/tests`, `/.claude`, `/.github`, `CLAUDE.md`, `README.md`, `SECURITY.md`, `.gitignore`); `_routes.json` limits it to those paths so page requests never run it. `seo-lint` checks both lists match |
 | `.github/dependabot.yml` | One grouped monthly PR to update those pinned actions |
 | `SECURITY.md`, `.well-known/security.txt` | How to report a security problem |
 | `docs/SELF-IMPROVING.md` | How the weekly self-improvement loop works and the rules it must follow |

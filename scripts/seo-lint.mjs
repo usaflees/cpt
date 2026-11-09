@@ -81,6 +81,19 @@ for (const u of sitemap) if (!pageUrls.has(u)) err(`sitemap.xml: lists ${u}, whi
 if (!/Sitemap: https:\/\/cryptopriceticker\.com\/sitemap\.xml/.test(read("robots.txt"))) err("robots.txt: no Sitemap line");
 if (/^Disallow:\s*\/\s*$/m.test(read("robots.txt"))) err("robots.txt: blocks the whole site");
 
+// ---------- 3b. Private repository files stay off the public site ----------
+// functions/_middleware.js returns 404 for the repo's working files; _routes.json limits it to those paths.
+{
+  const mw = read("functions/_middleware.js");
+  const list = name => [...((mw.match(new RegExp(`const ${name} = \\[([^\\]]*)\\]`)) || [])[1] || "").matchAll(/"([^"]+)"/g)].map(m => m[1].toLowerCase());
+  const code = new Set([...list("FOLDERS"), ...list("FILES")]);
+  const routes = JSON.parse(read("_routes.json")).include.map(r => r.replace(/\/\*$/, "").toLowerCase());
+  const inRoutes = new Set(routes);
+  for (const c of code) if (!inRoutes.has(c)) err(`_routes.json: missing ${c}, which functions/_middleware.js blocks`);
+  for (const r of inRoutes) if (!code.has(r)) err(`functions/_middleware.js: does not block ${r}, which _routes.json routes to it`);
+  for (const must of ["/scripts", "/docs", "/content", "/tests", "/.claude", "/claude.md"]) if (!code.has(must)) err(`functions/_middleware.js: ${must} must stay blocked`);
+}
+
 // ---------- 4. SEO overrides file (the agent's only content lever) ----------
 const overrides = existsSync(join(ROOT, "content/seo-overrides.json")) ? json("content/seo-overrides.json") : {};
 const LIMITS = { title: [20, 60], description: [70, 160], h1: [5, 80] };

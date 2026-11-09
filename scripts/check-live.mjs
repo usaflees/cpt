@@ -43,6 +43,12 @@ await check("/embed/", { headers: { "x-robots-tag": /noindex/ } });
 await check("/this-page-does-not-exist", { status: 404 });
 await check("/coin/ton/", { status: 301, headers: { location: /\/coin\/gram\/$/ } });
 await check("/robots.txt", { body: /Sitemap:/ });
+// The repository's working files are not served (functions/_middleware.js + _routes.json); the site still is.
+for (const path of ["/scripts/build-coin-pages.mjs", "/docs/STRATEGY.md", "/content/coin-stats.json", "/tests/run.sh", "/.claude/skills/ship/SKILL.md", "/.github/workflows/site-checks.yml", "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore"]) {
+  await check(path, { status: 404 });
+}
+await check("/llms.txt");
+await check("/.well-known/security.txt");
 // The pages.dev copy of production must stay out of search results (rule in _headers).
 if (IS_PROD) {
   try {

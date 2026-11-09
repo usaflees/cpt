@@ -117,7 +117,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <ul class="brand-rules">
         <li><strong>Open source.</strong> The complete site, including every data script, is public in the GitHub repository <a href="https://github.com/usaflees/cpt">usaflees/cpt</a>. Every change is a public commit.</li>
         <li><strong>Hosted on Cloudflare Pages.</strong> Cloudflare builds the site straight from the repository's <code>main</code> branch and serves it over HTTPS. The project's Cloudflare address is <a href="https://cryptopriceticker.pages.dev/">cryptopriceticker.pages.dev</a>, which serves the same files.</li>
-        <li><strong>Static files only.</strong> There is no server code, no database and no login system. Live prices come straight from the public market-data feeds of Coinbase, Binance and Kraken (see <a href="/about/">About &amp; methodology</a>).</li>
+        <li><strong>Static files only.</strong> Pages are plain files; the only code that runs on the server is a small rule that refuses requests for the site's internal working files. There is no database, no login system and nothing that handles visitor data. Live prices come straight from the public market-data feeds of Coinbase, Binance and Kraken (see <a href="/about/">About &amp; methodology</a>).</li>
         <li><strong>Locked-down browser security.</strong> Every page sends a strict Content-Security-Policy that lists each outside address the page may contact: the three exchanges, Cloudflare and Google Analytics (only after you accept cookies). HTTPS is enforced with HSTS.</li>
       </ul>
     </section>

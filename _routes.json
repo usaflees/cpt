@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "include": [
+    "/scripts", "/scripts/*",
+    "/docs", "/docs/*",
+    "/content", "/content/*",
+    "/tests", "/tests/*",
+    "/.claude", "/.claude/*",
+    "/.github", "/.github/*",
+    "/functions", "/functions/*",
+    "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore"
+  ],
+  "exclude": []
+}
