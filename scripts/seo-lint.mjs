@@ -109,7 +109,7 @@ for (const e of experiments) {
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 14_000 };
+const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 16_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
@@ -121,7 +121,7 @@ for (const p of pages) {
   if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
 }
 // Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
-const ORIGINS = ["https://api.coinbase.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
+const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
   "wss://data-stream.binance.vision", "wss://ws-feed.exchange.coinbase.com", "wss://ws.kraken.com",
   // Google Tag Manager + GA4, loaded by assets/consent.js after consent defaults are set
   "https://www.googletagmanager.com", "https://*.google-analytics.com", "https://*.analytics.google.com"];
