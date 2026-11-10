@@ -1148,12 +1148,15 @@
     if (MODE === "home") renderTable();
   }
 
+  // "Keep price alerts" (Newsflash tools): a fired alert stays and re-arms once the price is 0.5% away from it.
+  const alertPaused = new Set();
   function checkAlert(c, oldPrice, newPrice) {
     const target = state.alerts[c.sym];
     if (!target) return;
+    if (alertPaused.has(c.sym)) { if (Math.abs(newPrice - target) / target >= 0.005) alertPaused.delete(c.sym); return; }
     if ((oldPrice < target && newPrice >= target) || (oldPrice > target && newPrice <= target)) {
-      delete state.alerts[c.sym];
-      store.set("cpt_alerts", state.alerts);
+      if (store.get("cpt_alert_repeat") === "1") alertPaused.add(c.sym);
+      else { delete state.alerts[c.sym]; store.set("cpt_alerts", state.alerts); }
       beep();
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
       notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
