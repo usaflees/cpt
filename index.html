@@ -17,7 +17,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=58a01e2072" as="style" />
+  <link rel="preload" href="/assets/app.css?v=a59a4d7f3e" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -82,10 +82,10 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=58a01e2072" />
+  <link rel="stylesheet" href="/assets/app.css?v=a59a4d7f3e" />
   <script src="/assets/coins.js?v=88eae95f59" defer></script>
-  <script src="/assets/app.js?v=c7ab6fc09a" defer></script>
-  <script src="/assets/flash.js?v=49897fc2e9" defer></script>
+  <script src="/assets/app.js?v=65c1acf5d2" defer></script>
+  <script src="/assets/flash.js?v=19bde32626" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
 <body data-page="home">
@@ -190,6 +190,12 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
               <select name="maScope" class="form-select"><option value="watch">my watchlist</option><option value="all">every coin</option></select></label>
           </form>
           <p class="muted" id="moveAlertStatus">Off.</p>
+          <form id="bagAlertForm" class="move-alert-form">
+            <label>Alert me when my holdings total rises above $<input name="above" type="number" min="0" step="any" inputmode="decimal" class="form-input" placeholder="amount" /></label>
+            <label>or falls below $<input name="below" type="number" min="0" step="any" inputmode="decimal" class="form-input" placeholder="amount" /></label>
+          </form>
+          <p class="muted" id="bagAlertStatus">Off. Enter what you hold in the table's Holdings column first.</p>
+          <label class="keep-alerts"><input type="checkbox" id="keepAlerts" /> Keep price alerts after they fire (each re-arms once the price is 0.5% away from it)</label>
           <h3>Alert history <span class="muted">· this browser only</span></h3>
           <ol class="alert-log" id="alertLog"></ol>
         </details>

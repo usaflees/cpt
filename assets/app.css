@@ -1835,3 +1835,5 @@ body:not(.is-embed) .hero::before {
   transition: --mood 3s ease;
 }
 [data-theme="light"] body:not(.is-embed) .hero::before { opacity: .6; }
+.keep-alerts { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; }
+.move-alert-form .form-input { width: 7.5em; }
