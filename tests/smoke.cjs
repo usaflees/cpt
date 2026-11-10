@@ -14,7 +14,7 @@ const B = process.argv[2] || 'http://localhost:8788';
   };
   const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } });
   const p = await ctx.newPage(); watch(p, 'home');
-  await p.goto(B + '/'); await p.waitForFunction(() => document.querySelectorAll('#tableBody tr').length >= 50); await p.click('#showAllBtn'); await p.waitForFunction(() => document.querySelectorAll('#tableBody tr').length > 100); await p.waitForTimeout(12000);
+  await p.goto(B + '/'); await p.waitForFunction(() => document.querySelectorAll('#tableBody tr').length >= 25); await p.click('#showAllBtn'); await p.waitForFunction(() => document.querySelectorAll('#tableBody tr').length > 100); await p.waitForTimeout(12000);
   console.log('HOME', JSON.stringify(await p.evaluate(() => ({
     rows: document.querySelectorAll('#tableBody tr').length,
     badges: ['CB', 'BN', 'KR'].map(x => document.getElementById('badge' + x).textContent),

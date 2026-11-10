@@ -8,7 +8,7 @@
   `content/coin-about.json`, `content/sectors.json`, `content/seo-overrides.json`.
 
 ## Features
-- **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 50, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
+- **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 25 plus starred coins, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
   alerts with optional system notifications and an app-icon badge for alerts missed while away, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
 - **Coin pages:** dated key-facts line under the price (close, 1-year change, distance from high, rank); the

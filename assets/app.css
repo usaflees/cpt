@@ -1486,8 +1486,8 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
   .search-kbd { display: none; }
 }
 /* Hold the table's space until its rows render, so the sections below don't jump */
-.table-wrap:has(#tableBody:empty) { min-height: 1400px; }
-@media (max-width: 640px) { .table-wrap:has(#tableBody:empty) { min-height: 2600px; } }
+.table-wrap:has(#tableBody:empty) { min-height: 1420px; }
+@media (max-width: 640px) { .table-wrap:has(#tableBody:empty) { min-height: 1600px; } }
 .chart-box { height: 150px; box-sizing: border-box; overflow: hidden; }
 .chart-box svg { display: block; width: 100%; height: 100%; }
 @media (max-width: 640px) { .hm-summary { min-height: 2.9em; } }
