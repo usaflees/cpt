@@ -44,6 +44,8 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Nov 11:** GTM container now loads only after "Accept" (empty container cost 451 KiB / ~200 ms TBT per first
+  visit); GA4 unchanged. Production QA before the change: PASSED, 32/32 live checks, Lighthouse mobile home 87 / BTC 98.
 - **Live Nov 10 (`29fb398`, PR #13):** the repo's working files (`/scripts`, `/docs`, `/content`, `/tests`, `/.claude`,
   `/.github`, `CLAUDE.md`, `README.md`, `SECURITY.md`, `.gitignore`) are no longer served: `functions/_middleware.js` returns
   404, limited by `_routes.json`; `seo-lint` checks both lists match, `check-live` requests each path. Owner wants the
