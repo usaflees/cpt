@@ -18,6 +18,7 @@
 - **Brand and trust:** /trust/ (what the site never does, public source code on GitHub, hosted on Cloudflare Pages, self-check links, why old domain scores differ), "Open source, hosted on Cloudflare Pages" + Trust & safety link in every footer, live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
 - **Motion (Nov 9):** rolling-digit prices (coin hero, pop-out), rows that glide on sort/filter, spring quick view, scroll-driven section rise, spinning logo ring on coin pages, market-mood glow on the home hero; all off with reduced motion.
+- **Coin Race (/race/, Nov 11):** 2–6 coins race live from 24 h ago, 1 h ago or "Start now"; shareable race links.
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
   embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
