@@ -453,12 +453,14 @@
     }
   }
 
-  // The default view lists the top 50 so the page stays short; filters, search and "Show all" list everything.
-  const DEFAULT_ROWS = 50;
+  // The default view lists the top 25 so the page stays short; filters, search and "Show all" list
+  // everything. Starred coins outside the top 25 still show (after it, in the same order), so the
+  // shorter list never hides what this visitor follows.
+  const DEFAULT_ROWS = 25;
   function renderTable() {
     const all = filteredSorted();
     const capped = !state.showAll && state.sector === "ALL" && !state.search.trim() && all.length > DEFAULT_ROWS + 10;
-    const list = capped ? all.slice(0, DEFAULT_ROWS) : all;
+    const list = capped ? all.filter((c, i) => i < DEFAULT_ROWS || state.watchlist.has(c.sym)) : all;
     $("showingCount").textContent = capped ? `${list.length} of ${all.length}` : list.length;
     $("showAllBtn").hidden = !capped;
     if (capped) $("showAllBtn").textContent = `Show all ${all.length} coins`;
@@ -1148,12 +1150,15 @@
     if (MODE === "home") renderTable();
   }
 
+  // "Keep price alerts" (Newsflash tools): a fired alert stays and re-arms once the price is 0.5% away from it.
+  const alertPaused = new Set();
   function checkAlert(c, oldPrice, newPrice) {
     const target = state.alerts[c.sym];
     if (!target) return;
+    if (alertPaused.has(c.sym)) { if (Math.abs(newPrice - target) / target >= 0.005) alertPaused.delete(c.sym); return; }
     if ((oldPrice < target && newPrice >= target) || (oldPrice > target && newPrice <= target)) {
-      delete state.alerts[c.sym];
-      store.set("cpt_alerts", state.alerts);
+      if (store.get("cpt_alert_repeat") === "1") alertPaused.add(c.sym);
+      else { delete state.alerts[c.sym]; store.set("cpt_alerts", state.alerts); }
       beep();
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
       notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
