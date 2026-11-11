@@ -61,13 +61,17 @@
   const renamed = sym => RENAMED[sym] || sym;
   const pip = { win: null, rows: new Map() }; // pop-out ticker window (see openPip); read by flush()
   const HAS_LOGO = new Set(REGISTRY.filter(c => c.logo).map(c => c.sym));
+  // Single-tone logos (a white or a black mark) carry a class so app.css can flip them on a
+  // background of the same tone: white XRP on the Light theme, black Stellar on the dark ones.
+  const MONO = new Map(REGISTRY.filter(c => c.logo && c.mono).map(c => [c.sym, c.mono]));
+  const logoImg = (sym, size, attrs = "") => `<img class="${attrs}${MONO.has(sym) ? ` mono-${MONO.get(sym)}` : ""}" src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="${size}" height="${size}" decoding="async" />`;
 
   // Coin badge: the coin's own logo when we host one (/coin-icons/, see scripts/build-coin-icons.mjs),
   // otherwise its ticker. The neon ring and the size come from .coin-avatar in app.css.
   function avatar(sym, cls = "", style = "") {
     const logo = HAS_LOGO.has(sym);
     return `<span class="coin-avatar${cls ? " " + cls : ""}${logo ? " has-logo" : ""}" aria-hidden="true"${style ? ` style="${style}"` : ""}>` +
-      (logo ? `<img src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="20" height="20" loading="lazy" decoding="async" />` : esc(sym.slice(0, 4))) + `</span>`;
+      (logo ? `<img${MONO.has(sym) ? ` class="mono-${MONO.get(sym)}"` : ""} src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="20" height="20" loading="lazy" decoding="async" />` : esc(sym.slice(0, 4))) + `</span>`;
   }
 
   const state = {
@@ -113,7 +117,6 @@
       mcap: c.price * c.supply * 1e6,
       vol24h: 0,
       exVol: { CB: 0, BN: 0, KR: 0 },
-      liq: 0,
       sectors: c.sectors,
       feeds: c.feeds,
       tickers: c.tickers || {},
@@ -249,7 +252,7 @@
 
     if (cfg.layout === "marquee") {
       const items = picked.map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="tape-item">
-          ${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}<span class="tape-sym">${esc(c.sym)}</span>
+          ${HAS_LOGO.has(c.sym) ? logoImg(c.sym, 14, "tape-logo") : ""}<span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</span>
           <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "padding:1px 5px;font-size:12px")}</span>
         </a>`).join("");
@@ -295,7 +298,7 @@
 
     const cards = picked.slice(0, 8).map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="embed-card">
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong style="font-family:var(--font-mono);font-size:12.5px;display:inline-flex;align-items:center;gap:6px">${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}${esc(c.sym)}</strong>
+            <strong style="font-family:var(--font-mono);font-size:12.5px;display:inline-flex;align-items:center;gap:6px">${HAS_LOGO.has(c.sym) ? logoImg(c.sym, 14, "tape-logo") : ""}${esc(c.sym)}</strong>
             <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "font-size:12px;padding:1px 5px")}</span>
           </div>
           <div style="font-family:var(--font-mono);font-size:14px;font-weight:800" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</div>
@@ -535,7 +538,7 @@
   function renderTape() {
     const top = Array.from(state.coins.values()).filter(c => c.hasPage).sort((a, b) => a.rank - b.rank).slice(0, 16);
     const html = top.map(c => `<a class="tape-item" href="${coinUrl(c.sym)}" tabindex="-1">
-          ${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}<span class="tape-sym">${esc(c.sym)}</span>
+          ${HAS_LOGO.has(c.sym) ? logoImg(c.sym, 14, "tape-logo") : ""}<span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-tape="${esc(c.sym)}">${fmtPrice(c.price)}</span>
           <span style="color:${c.change24h >= 0 ? "var(--up)" : "var(--down)"}">${c.live ? (c.change24h >= 0 ? "▲ " : "▼ ") + Math.abs(c.change24h).toFixed(2) + "%" : ""}</span>
         </a>`).join("");
@@ -565,7 +568,6 @@
       // Volume = sum of the tracked exchanges' USD/USDT markets (Coinbase + Binance + Kraken).
       c.exVol[source] = o.quoteVol;
       c.vol24h = c.exVol.CB + c.exVol.BN + c.exVol.KR;
-      c.liq = c.vol24h * 0.065; // rough estimate, labelled as such in the UI
     }
     c.mcap = c.price * c.supply;
     const wasLive = c.live;
@@ -703,7 +705,7 @@
   function updateTabTitle() {
     if (MODE !== "home") return;
     const pinned = state.pinnedSym && state.coins.get(state.pinnedSym);
-    const title = pinned ? `${pinned.sym} ${fmtPrice(pinned.price)} ${pinned.change24h >= 0 ? "▲" : "▼"} | CryptoPriceTicker.com` : CANONICAL_TITLE;
+    const title = pinned && pinned.live ? `${pinned.sym} ${fmtPrice(pinned.price)} ${pinned.change24h >= 0 ? "▲" : "▼"} | CryptoPriceTicker.com` : CANONICAL_TITLE;
     if (title !== lastTitle) { document.title = title; lastTitle = title; }
   }
 
@@ -998,7 +1000,7 @@
     wrap.innerHTML = `
       <div class="modal-backdrop" id="syncModal" role="dialog" aria-modal="true" aria-labelledby="syncTitle">
         <div class="modal-card">
-          <div class="modal-head"><h2 id="syncTitle" style="font-size:15px">💾 Sync watchlist &amp; bag (no account)</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
+          <div class="modal-head"><h2 id="syncTitle">💾 Sync watchlist &amp; bag (no account)</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
           <p style="color:var(--text-secondary);font-size:12.5px">Open this link on another device to copy your watchlist and bag quantities there. Anyone with the link can see them, so keep it private.</p>
           <input type="text" class="sync-input" id="syncUrlInput" readonly aria-label="Sync link" />
           <div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="action-btn btn-accent" data-action="copy" data-target="syncUrlInput" data-msg="📋 Sync link copied.">📋 Copy sync link</button></div>
@@ -1006,13 +1008,13 @@
       </div>
       <div class="modal-backdrop" id="coinModal" role="dialog" aria-modal="true" aria-labelledby="modalCoinTitle">
         <div class="modal-card">
-          <div class="modal-head"><h2 id="modalCoinTitle" style="font-size:15px"></h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
+          <div class="modal-head"><h2 id="modalCoinTitle"></h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
           <div id="modalCoinBody" style="display:flex;flex-direction:column;gap:12px"></div>
         </div>
       </div>
       <div class="modal-backdrop" id="widgetModal" role="dialog" aria-modal="true" aria-labelledby="widgetTitle">
         <div class="modal-card modal-wide">
-          <div class="modal-head"><h2 id="widgetTitle" style="font-size:15px">🧩 Free live crypto ticker widget</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
+          <div class="modal-head"><h2 id="widgetTitle">🧩 Free live crypto ticker widget</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
           <p style="color:var(--text-secondary);font-size:12.5px;margin-bottom:12px">Add a live, ad-free price ticker to your blog, docs or portal. Pick a layout, coins and theme, then paste the snippet into your HTML.</p>
           <div class="form-grid">
             <div class="form-group"><label for="wgLayout">1. Layout</label>
@@ -1287,7 +1289,7 @@
         state.coins.set(sym, {
           sym, name: `${sym} (Binance pair)`, supply: (vol * 14.5) / price, price,
           change24h: +t.priceChangePercent, low24h: +t.lowPrice || price, high24h: +t.highPrice || price,
-          mcap: vol * 14.5, vol24h: vol, exVol: { CB: 0, BN: vol, KR: 0 }, liq: vol * 0.065,
+          mcap: vol * 14.5, vol24h: vol, exVol: { CB: 0, BN: vol, KR: 0 },
           sectors: [], feeds: ["BN"], tickers: {}, history: [price], rank: state.coins.size + 1,
           exPrices: { CB: null, BN: price, KR: null }, lastSource: "BN", live: true, hasPage: false, estimated: true
         });
@@ -1583,7 +1585,7 @@
       const fs = Math.max(8, Math.min(30, side / 3.6, (r.w - 4) / (c.sym.length * 0.72)));
       const show = r.w > 26 && r.h > 16;
       return `<a class="hm-tile" id="hm-${s}" href="${coinUrl(c.sym)}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;font-size:${fs.toFixed(1)}px;background:${heatColor(c)}">` +
-        (r.h > fs * 4.6 + 12 && r.w > 80 && HAS_LOGO.has(c.sym) ? `<img class="hm-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="${Math.round(fs * 1.15)}" height="${Math.round(fs * 1.15)}" decoding="async" />` : "") +
+        (r.h > fs * 4.6 + 12 && r.w > 80 && HAS_LOGO.has(c.sym) ? logoImg(c.sym, Math.round(fs * 1.15), "hm-logo") : "") +
         (show ? `<span class="hm-sym">${s}</span>` : "") +
         (r.h > 38 && r.w > 46 ? `<span class="hm-chg">${fmtChange(c)}</span>` : "") +
         (r.h > 70 && r.w > 80 ? `<span class="hm-price">${fmtPrice(c.price, "USD")}</span>` : "") + `</a>`;
@@ -1891,8 +1893,8 @@
     },
     csv() {
       const q = v => `"${String(v).replace(/"/g, '""')}"`;
-      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Est_Liquidity_2Pct_USD", "Bag_Qty"]];
-      filteredSorted().forEach(c => rows.push([c.rank, q(c.sym), q(c.name), c.price, c.live ? c.change24h.toFixed(2) : "", Math.round(c.mcap), Math.round(c.vol24h), Math.round(c.liq), state.bag[c.sym] || 0]));
+      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Bag_Qty"]];
+      filteredSorted().forEach(c => rows.push([c.rank, q(c.sym), q(c.name), c.price, c.live ? c.change24h.toFixed(2) : "", Math.round(c.mcap), Math.round(c.vol24h), state.bag[c.sym] || 0]));
       const a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" }));
       a.download = `cryptopriceticker-${new Date().toISOString().slice(0, 10)}.csv`;

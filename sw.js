@@ -2,7 +2,7 @@
 // Strategy is network-first for everything, so visitors always get the latest deploy;
 // the cache is only a fallback when the network is unavailable. Exchange APIs are never cached.
 const CACHE = "cpt-v3";
-const CORE = ["/", "/assets/app.css?v=da5bd91cc4", "/assets/app.js?v=6cbd62d79a", "/assets/coins.js?v=88eae95f59", "/favicon.svg", "/brand/mark.svg", "/site.webmanifest"];
+const CORE = ["/", "/assets/app.css?v=ba9e7f8467", "/assets/app.js?v=b892403d65", "/assets/coins.js?v=9e9cb3737b", "/favicon.svg", "/brand/mark.svg", "/site.webmanifest"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
@@ -16,6 +16,13 @@ self.addEventListener("activate", event => {
   );
 });
 
+// Site assets carry a content hash (?v=…), so every release caches new copies. Once a new version
+// of a file is stored, drop its older copies: the cache stays one release deep instead of growing.
+const isAsset = url => url.pathname.startsWith("/assets/") && url.search;
+const pruneOld = (cache, url) => cache.keys().then(keys => Promise.all(
+  keys.filter(k => { const u = new URL(k.url); return u.pathname === url.pathname && u.search !== url.search; }).map(k => cache.delete(k))
+));
+
 self.addEventListener("fetch", event => {
   const req = event.request;
   const url = new URL(req.url);
@@ -25,10 +32,14 @@ self.addEventListener("fetch", event => {
       .then(res => {
         if (res.ok && res.type === "basic") {
           const copy = res.clone();
-          caches.open(CACHE).then(cache => cache.put(req, copy));
+          event.waitUntil(caches.open(CACHE).then(cache => cache.put(req, copy).then(() => (isAsset(url) ? pruneOld(cache, url) : null))).catch(() => {}));
         }
         return res;
       })
-      .catch(() => caches.match(req).then(hit => hit || (req.mode === "navigate" ? caches.match("/") : Response.error())))
+      // Offline: the cached copy; for assets any cached version (an older cached page may ask for
+      // a pruned one); for pages the cached home page.
+      .catch(() => caches.match(req)
+        .then(hit => hit || (isAsset(url) ? caches.match(req, { ignoreSearch: true }) : undefined))
+        .then(hit => hit || (req.mode === "navigate" ? caches.match("/") : Response.error())))
   );
 });

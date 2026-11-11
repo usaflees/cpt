@@ -114,7 +114,7 @@ function conversionTables(c) {
 // Coin badge: the coin's logo (coin-icons/, scripts/build-coin-icons.mjs) or its ticker. The page's
 // own coin loads eagerly; badges in tables load lazily.
 const avatarHtml = (c, eager = false) => c.logo
-  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/${slug(c.sym)}.svg" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
+  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img${c.mono ? ` class="mono-${c.mono}"` : ""} src="/coin-icons/${slug(c.sym)}.svg" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
   : `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>`;
 
 const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];

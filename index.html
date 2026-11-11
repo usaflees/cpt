@@ -17,7 +17,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=da5bd91cc4" as="style" />
+  <link rel="preload" href="/assets/app.css?v=ba9e7f8467" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -82,9 +82,9 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=da5bd91cc4" />
-  <script src="/assets/coins.js?v=88eae95f59" defer></script>
-  <script src="/assets/app.js?v=6cbd62d79a" defer></script>
+  <link rel="stylesheet" href="/assets/app.css?v=ba9e7f8467" />
+  <script src="/assets/coins.js?v=9e9cb3737b" defer></script>
+  <script src="/assets/app.js?v=b892403d65" defer></script>
   <script src="/assets/flash.js?v=49897fc2e9" defer></script>
   <script src="/assets/consent.js?v=613637afb1" defer></script>
 </head>
@@ -251,7 +251,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
       <section class="page-section prose" aria-labelledby="how-h">
         <h2 id="how-h">How CryptoPriceTicker.com works</h2>
-        <div class="methodology-grid" style="background:none;border:0;padding:0">
+        <div class="methodology-grid">
           <div>
             <h3>⚡ Straight from the exchanges</h3>
             <p>Your browser opens WebSocket connections to <strong>Coinbase</strong>, <strong>Binance</strong> and <strong>Kraken</strong> and shows each trade as it happens. The small CB/BN/KR badge on every row shows which exchange sent the latest price.</p>
@@ -271,19 +271,19 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <h2 id="faq-h">Frequently asked questions</h2>
         <details>
           <summary>Are these prices real-time?</summary>
-          <p>Yes. Prices update tick-by-tick from the exchanges' public WebSocket feeds, typically within a second of a trade. If a feed disconnects, its badge at the top switches to RETRY and reconnects automatically.</p>
+          <p>Yes. Prices update tick-by-tick from the exchanges' public WebSocket feeds, typically within a second of a trade. If a feed disconnects, its badge under <strong>Live</strong> at the top switches to RETRY and it reconnects automatically.</p>
         </details>
         <details>
           <summary>Why is a coin's price slightly different on each exchange?</summary>
-          <p>Every exchange has its own order book, so prices differ a little; Binance also quotes in USDT rather than US dollars. Open the 🔔 inspector or a coin's page to see each exchange's price and the cross-exchange spread.</p>
+          <p>Every exchange has its own order book, so prices differ a little; Binance also quotes in USDT rather than US dollars. Tap <span aria-hidden="true">⋯</span> next to a coin, or open its page, to see each exchange's price and the cross-exchange spread.</p>
         </details>
         <details>
           <summary>How do price alerts work?</summary>
-          <p>Set a USD target in the 🔔 inspector. When the live price crosses it, you hear a beep and see a notification. Alerts are stored in your browser and only fire while this page is open.</p>
+          <p>Tap <span aria-hidden="true">⋯</span> next to a coin (or open its page) and set a USD target. When the live price crosses it, you hear a beep and see a notification. Alerts are stored in your browser and only fire while this page is open.</p>
         </details>
         <details>
           <summary>Can I add a live crypto ticker to my own website?</summary>
-          <p>Yes, for free. Use <strong>Get Widget</strong> to choose a scrolling bar, a card grid or a single-coin card, then paste the HTML snippet into your page. The widget runs in a lazy-loaded iframe, so it adds no scripts to your site.</p>
+          <p>Yes, for free. Open the menu (☰) and choose <strong>Get a free website widget</strong>, or go to the <a href="/widgets/">widgets page</a>, to pick a scrolling bar, a card grid or a single-coin card, then paste the HTML snippet into your page. The widget runs in a lazy-loaded iframe, so it adds no scripts to your site.</p>
         </details>
         <details>
           <summary>Is this investment advice?</summary>
