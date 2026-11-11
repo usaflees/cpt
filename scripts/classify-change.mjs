@@ -28,7 +28,14 @@ const onlyAssetHashes = f => {
 for (const f of [...changed, ...untracked]) if (!DATA_FILES.some(r => r.test(f)) && !onlyAssetHashes(f)) reasons.push(`${f} is not a data file`);
 
 // Registry: only supply/price numbers may change — not the coin list, names, sectors, feeds or tickers.
-if (changed.includes("assets/coins.js")) {
+// First as plain text, without running the new file: it ships to every visitor and the build evaluates it, so
+// anything beyond changed numbers and the update date (an added line, a string where a number was) is refused
+// here. data-refresh.yml's publish job relies on this to re-check a patch made by a job it does not trust.
+const NUM = "-?\\d+(?:\\.\\d+)?(?:e[+-]?\\d+)?";
+const numbersOut = t => t.replace(new RegExp(`supply: ${NUM}, price: ${NUM},`, "g"), "supply: N, price: N,").replace(/^var CPT_COINS_UPDATED = "\d{4}-\d{2}-\d{2}";$/m, "var CPT_COINS_UPDATED = D;");
+if (changed.includes("assets/coins.js") && numbersOut(execSync(`git show ${fork}:assets/coins.js`, { cwd: ROOT, encoding: "utf8" })) !== numbersOut(execSync("cat assets/coins.js", { cwd: ROOT, encoding: "utf8" }))) {
+  reasons.push("assets/coins.js changed beyond supply and price numbers and the update date");
+} else if (changed.includes("assets/coins.js")) {
   const sandbox = {};
   vm.runInNewContext(execSync(`git show ${fork}:assets/coins.js`, { cwd: ROOT, encoding: "utf8" }), sandbox);
   const shape = list => JSON.stringify(list.map(({ supply, price, ...rest }) => rest));

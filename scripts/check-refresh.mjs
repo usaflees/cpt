@@ -29,5 +29,16 @@ if (shorter.length > 10) problems.push(`${shorter.length} coins have over 30 few
 const stale = Object.keys(after).filter(s => after[s].asOf && before[s]?.asOf && after[s].asOf < before[s].asOf);
 if (stale.length) problems.push(`${stale.length} coins have older data than before: ${stale.slice(0, 15).join(", ")}`);
 
+// The stats file is written from outside API responses and its values are printed into every coin page:
+// allow only numbers, dates and plain exchange names, so nothing in it can ever be markup or script.
+const odd = [];
+(function walk(v, path) {
+  if (typeof v === "string") { if (!/^[A-Za-z0-9 .:+-]{1,32}$/.test(v)) odd.push(path); }
+  else if (typeof v === "number") { if (!Number.isFinite(v)) odd.push(path); }
+  else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) { if (!/^[A-Za-z0-9]+$/.test(k)) odd.push(`${path}.<key>`); else walk(x, `${path}.${k}`); }
+  else if (v !== null && typeof v !== "boolean") odd.push(path);
+})(JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")), "stats");
+if (odd.length) problems.push(`${odd.length} values are not a number, a date or a plain name: ${odd.slice(0, 5).join(", ")}`);
+
 if (problems.length) { console.log("check-refresh: FAILED\n- " + problems.join("\n- ")); process.exit(1); }
 console.log(`check-refresh: ok (${Object.keys(after).length} coins; ${moved.length} changed source, ${lost.length} lost)`);

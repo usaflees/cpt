@@ -102,6 +102,51 @@ for (const line of read("robots.txt").split("\n")) {
   for (const must of ["/scripts", "/docs", "/content", "/tests", "/.claude", "/claude.md"]) if (!code.has(must)) err(`functions/_middleware.js: ${must} must stay blocked`);
 }
 
+// ---------- 3c. GitHub Actions workflows stay locked down (docs/knowledge/ACCESS.md) ----------
+// A workflow is code that runs with this repository's token, and a push to main is a deploy. These rules keep
+// every workflow read-only except the one job that publishes the weekly data refresh.
+{
+  const dir = ".github/workflows";
+  const WRITERS = { "data-refresh.yml": ["publish"] };   // file → jobs that may hold a write token
+  for (const f of existsSync(join(ROOT, dir)) ? readdirSync(join(ROOT, dir)).filter(n => /\.ya?ml$/.test(n)) : []) {
+    const p = `${dir}/${f}`, lines = read(p).split("\n");
+    const text = lines.filter(l => !/^\s*#/.test(l)).map(l => l.replace(/\s+#.*$/, "")).join("\n");
+    if (!/^permissions: \{\}$/m.test(text)) err(`${p}: needs a top-level "permissions: {}" (each job then asks for what it needs)`);
+    if (/pull_request_target|workflow_run|issue_comment|\bissues:|repository_dispatch/.test(text)) err(`${p}: trigger not allowed (it would run with a privileged token on outside input)`);
+    if (/\bsecrets\.|\bvars\./.test(text)) err(`${p}: uses a repository secret or variable; workflows here run without any (decide in DECISIONS.md first)`);
+    for (const m of text.matchAll(/^\s*(?:-\s*)?uses:\s*(\S+)/gm)) {
+      if (!/^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/.test(m[1])) err(`${p}: "${m[1]}" must be pinned to a full commit SHA`);
+      else if (!/^actions\//.test(m[1])) err(`${p}: "${m[1]}" is not a GitHub-maintained action (actions/*); add it to seo-lint.mjs if intended`);
+    }
+    const checkouts = (text.match(/uses:\s*actions\/checkout@/g) || []).length;
+    if ((text.match(/persist-credentials: false/g) || []).length !== checkouts) err(`${p}: every actions/checkout needs "persist-credentials: false" (keeps the token out of .git/config)`);
+    // Expressions belong in "key: ${{ … }}" lines (if, env, with), never inside a shell script.
+    let job = "", inRun = false, runIndent = 0;
+    // (A comment line inside a run script counts too: Actions fills in expressions there as well.)
+    for (const raw of lines) {
+      const indent = raw.search(/\S/);
+      if (indent < 0) continue;
+      if (inRun && indent <= runIndent) inRun = false;
+      if (!inRun && /^\s*#/.test(raw)) continue;
+      const l = inRun ? raw : raw.replace(/\s+#.*$/, "");
+      const j = l.match(/^  ([\w-]+):\s*$/);
+      if (j) job = j[1];
+      const run = l.match(/^(\s*)(?:-\s*)?run:\s*(.*)$/);
+      if (run) {
+        runIndent = l.search(/r/);
+        inRun = /^[|>][+-]?$/.test(run[2]);
+        if (!inRun && run[2].includes("${{")) err(`${p}: expression inside a run command; pass it through env instead: ${l.trim()}`);
+        continue;
+      }
+      if (inRun && l.includes("${{")) err(`${p}: expression inside a run script; pass it through env instead: ${l.trim()}`);
+      if (/:\s*write\b/.test(l) && !(WRITERS[f] || []).includes(job)) err(`${p}: job "${job || "(workflow)"}" asks for a write permission; only ${JSON.stringify(WRITERS)} may`);
+      if (/\bgithub\.token\b|GITHUB_TOKEN/.test(l) && !(WRITERS[f] || []).includes(job)) err(`${p}: job "${job}" reads the token; only the publishing job may`);
+    }
+    if (/permissions:\s*write-all/.test(text)) err(`${p}: "write-all" is never allowed`);
+  }
+  if (!/^\*\s+@usaflees\s*$/m.test(existsSync(join(ROOT, ".github/CODEOWNERS")) ? read(".github/CODEOWNERS") : "")) err(".github/CODEOWNERS: must give every file to @usaflees");
+}
+
 // ---------- 4. SEO overrides file (the agent's only content lever) ----------
 const overrides = existsSync(join(ROOT, "content/seo-overrides.json")) ? json("content/seo-overrides.json") : {};
 const LIMITS = { title: [20, 60], description: [70, 160], h1: [5, 80] };

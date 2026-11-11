@@ -1,0 +1,3 @@
+# Every file is owned by the site owner. With "Require review from Code Owners" in the ruleset for
+# main (docs/knowledge/ACCESS.md), a pull request from anyone else cannot merge without the owner.
+* @usaflees

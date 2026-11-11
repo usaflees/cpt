@@ -1,5 +1,8 @@
 # Deterministic checks for every pull request and every push to main.
-# Read-only token, no secrets, no AI: safe to run on any branch.
+# Read-only token, no secrets, no AI: safe to run on any branch, including pull requests from forks.
+# The token is not left in .git/config (persist-credentials: false), and values that come from a pull
+# request reach shell commands only through env, never as an expression inside a script. seo-lint enforces
+# these rules for every workflow (docs/knowledge/ACCESS.md).
 # Actions are pinned to full commit SHAs (GitHub's supply-chain guidance); Dependabot
 # (.github/dependabot.yml) proposes updates, keeping the version in the trailing comment.
 name: Site checks
@@ -27,6 +30,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
@@ -36,7 +40,9 @@ jobs:
         run: node scripts/seo-lint.mjs
       - name: Rules for automated SEO branches
         if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'claude/seo-')
-        run: node scripts/seo-lint.mjs --base origin/${{ github.base_ref }}
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: node scripts/seo-lint.mjs --base "origin/$BASE_REF"
 
   # After a push to main: wait until production serves this build, then tell IndexNow engines (Bing, Yandex,
   # Seznam, Naver, Yep, Internet Archive, Amazon) which pages changed. Google doesn't use IndexNow; it reads the
@@ -53,6 +59,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
