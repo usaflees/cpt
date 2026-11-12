@@ -10,24 +10,29 @@ themselves stay out of this public repo; this file records what they mean and wh
 - **Google is barely crawling.** After the first three days it dropped to a handful of requests a day. Almost all
   of them re-rendered the home page: about two thirds were images and other page resources, only a few percent
   were HTML pages, and under 1% was discovery of new URLs.
-- **About a fifth of requests failed, all inherited from the domain's previous owner:** 404s for old addresses and
-  DNS errors for two old hosts (`mail.` and `secure.`). Our own server is fast and Search Console reports no host
-  problems.
+- **About a fifth of requests failed, all left over from the earlier site on this domain:** 404s for old addresses
+  and DNS errors for two old hosts (`mail.` and `secure.`). The owner confirmed (12 Nov) that the earlier site was
+  their own crypto price site, a CodeCanyon PHP script run around 2021–2022, so Google's memory of the domain is
+  on-topic and its old addresses can be redirected to today's pages where they match. Our own server is fast and
+  Search Console reports no host problems.
 - **Conclusion:** nothing technical is blocking Google. It has little demand for a re-registered domain with an old
   footprint and no links. The levers, in order: check the domain's history, ask for the key pages, earn the first
   links, keep the site cheap to crawl, and give it weeks.
 
 ## A. Owner, once (about 20 minutes)
 1. Search Console → **Security & Manual actions**: both reports must say "No issues detected". If a manual action
-   from the old site is listed, press *Request review* and say the domain changed hands on 22 Oct 2026 and now
-   serves a new site. Nothing else in this plan works while a manual action is open.
+   from the old site is listed, press *Request review* and say the 2022 script was retired, the domain was
+   re-registered on 22 Oct 2026 and it now serves a new static site. Nothing else in this plan works while a manual
+   action is open.
 2. Search Console → **Removals**: nothing should be listed for this domain. Cancel any old request.
 3. **Sitemaps:** submit `sitemap.xml`, `sitemap-coins.xml`, `sitemap-sectors.xml` and `sitemap-pages.xml`. The three
    section files let the Page indexing report show coins, sectors and other pages separately.
 4. **Bing Webmaster Tools:** *Import from Google Search Console*. Bing usually indexes a new site sooner, and it
    feeds DuckDuckGo, Copilot and part of ChatGPT search. IndexNow already reports every change to Bing.
-5. Crawl stats → *By response* → **Not found (404)** → export the examples and drop the file in a chat. Old
-   addresses that match a current page get a redirect; the rest are left to expire.
+5. Crawl stats → *By response* → **Not found (404)** → export the examples, and **Links → Top linked pages
+   (externally)** → export; drop both files in a chat. Old addresses from the 2022 script that match a current
+   page get a 301 redirect (those with external links first); the rest are left to expire. `/coin/<name>/` and
+   `/coin/<TICKER>/` already redirect, so old addresses of that shape are covered.
 6. **DNS (Cloudflare):** add `www` (AAAA `100::`, Proxied) plus the www → root redirect rule, and delete the
    duplicate `_dmarc` record that contains `p=none`.
 7. **GitHub repo → About:** Website `https://cryptopriceticker.com`, a one-line description and topics. It is a
