@@ -25,6 +25,14 @@ const B = process.argv[2] || 'http://localhost:8788';
     h1: document.querySelector('h1').textContent,
     unlabeled: [...document.querySelectorAll('button')].filter(x => !x.textContent.trim() && !x.getAttribute('aria-label') && !x.title).length,
   }))));
+  // Dialogs keep keyboard focus inside: the page behind is inert. (<body> is the browser's own stop
+  // between the last and the first control, as with a native <dialog>; it is not a page element.)
+  await p.click('#row-BTC .more-btn'); await p.waitForTimeout(200);
+  let escaped = 0; for (let i = 0; i < 30; i++) { await p.keyboard.press('Tab'); if (await p.evaluate(() => document.activeElement !== document.body && !document.activeElement.closest('.modal-backdrop.open'))) escaped++; }
+  console.log('dialog focus trap: tab stops in the page behind:', escaped);
+  if (escaped) issues.push(`home: focus left the open dialog ${escaped} times in 30 Tab presses`);
+  await p.keyboard.press('Escape');
+  if (await p.evaluate(() => document.querySelector('#appShell').inert)) issues.push('home: page still inert after the dialog closed');
   await p.click('#row-BTC .more-btn'); await p.fill('#md-alert', '123456'); await p.waitForTimeout(2000);
   console.log('alert input kept:', await p.inputValue('#md-alert'), '| depth', await p.textContent('#md-depth'));
   await p.fill('#md-hold', '0.5'); await p.press('#md-hold', 'Tab'); await p.waitForTimeout(300);

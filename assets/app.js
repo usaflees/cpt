@@ -1066,23 +1066,32 @@
     ["wgLayout", "wgTheme", "wgCurr", "wgAnchor", "wgCoins"].forEach(id => $(id).addEventListener("input", updateWidgetBuilder));
   }
 
+  // While a dialog is open the rest of the page is inert, so Tab and screen readers stay inside it
+  // (aria-modal alone doesn't keep Tab in). Toasts stay live: they announce what the dialog did.
+  const setPageInert = on => Array.from(document.body.children).forEach(el => {
+    if (!el.matches(".modal-backdrop, .toast-container")) el.inert = on;
+  });
   let modalOpener = null;
   function openModal(id) {
     ensureModals();
-    modalOpener = document.activeElement;
+    modalOpener = modalOpener || document.activeElement; // a dialog opened from another keeps the first opener
     const m = $(id);
     m.classList.add("open");
+    setPageInert(true);
     (m.querySelector("input:not([readonly]), select, textarea, button:not([data-close])") || m.querySelector("button")).focus();
   }
   function closeModals() {
     document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
     state.activeModalSym = null;
     state.widgetModalOpen = false;
+    setPageInert(false);
     // The table may have re-rendered while the sheet was open: refocus the same row's button if needed.
     let target = modalOpener;
     if (target && !document.contains(target) && target.dataset?.sym) {
       target = document.querySelector(`#row-${CSS.escape(target.dataset.sym)} [data-action="${target.dataset.action}"]`);
     }
+    // Opened from the header menu, which has closed since: go back to the menu button.
+    if (target && !target.getClientRects().length) target = target.closest("details")?.querySelector("summary");
     if (target) target.focus();
     modalOpener = null;
   }

@@ -549,6 +549,8 @@ td {
   overflow-y: auto;
 }
 .modal-backdrop.open { display: flex; }
+/* The page behind an open dialog doesn't scroll; the gutter keeps the layout from shifting. */
+html:has(.modal-backdrop.open) { overflow: hidden; scrollbar-gutter: stable; }
 .modal-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-accent);
