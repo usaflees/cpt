@@ -43,6 +43,25 @@ await check("/embed/", { headers: { "x-robots-tag": /noindex/ } });
 await check("/this-page-does-not-exist", { status: 404 });
 await check("/coin/ton/", { status: 301, headers: { location: /\/coin\/gram\/$/ } });
 await check("/robots.txt", { body: /Sitemap:/ });
+// Search and AI crawlers must get the page, not a block or a Cloudflare challenge (Bot Fight Mode, AI bot
+// policies or a WAF rule could quietly stop indexing). The user agent is spoofed from this machine, so a pass
+// doesn't prove Cloudflare's IP-verified crawlers get through, but a block or challenge here is always real.
+const CRAWLERS = {
+  Googlebot: "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+  Bingbot: "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)",
+  "OAI-SearchBot": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.3; +https://openai.com/searchbot",
+  "Claude-SearchBot": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Claude-SearchBot/1.0; +https://www.anthropic.com)",
+  PerplexityBot: "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)",
+  Slackbot: "Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)"
+};
+for (const [bot, ua] of Object.entries(CRAWLERS)) {
+  try {
+    const res = await fetch(BASE + "/coin/btc/", { redirect: "manual", headers: { "user-agent": ua } });
+    const mitigated = res.headers.get("cf-mitigated");
+    if (res.status !== 200 || mitigated) problems.push(`/coin/btc/ as ${bot}: HTTP ${res.status}${mitigated ? `, cf-mitigated: ${mitigated}` : ""} (crawler blocked or challenged)`);
+    else ok.push(`/coin/btc/ as ${bot}`);
+  } catch (e) { problems.push(`/coin/btc/ as ${bot}: request failed (${e.message})`); }
+}
 // The repository's working files are not served (functions/_middleware.js + _routes.json); the site still is.
 for (const path of ["/scripts/build-coin-pages.mjs", "/docs/STRATEGY.md", "/content/coin-stats.json", "/tests/run.sh", "/.claude/skills/ship/SKILL.md", "/.github/workflows/site-checks.yml", "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore"]) {
   await check(path, { status: 404 });
