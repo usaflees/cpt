@@ -23,8 +23,13 @@ const toRe = p => new RegExp("^" + p.replace(/[.+?^${}()|[\]\\]/g, "\\$&").repla
 const headerRules = parseRules(join(ROOT, "_headers")).map(r => ({ ...r, re: toRe(r.pattern) }));
 const redirects = existsSync(join(ROOT, "_redirects")) ? readFileSync(join(ROOT, "_redirects"), "utf8").split("\n").filter(l => l.trim() && !l.startsWith("#")).map(l => l.trim().split(/\s+/)) : [];
 
+// Mirrors functions/_middleware.js: the paths in _routes.json (the repo's working files) are not served.
+const routesFile = join(ROOT, "_routes.json");
+const privateRes = existsSync(routesFile) ? JSON.parse(readFileSync(routesFile, "utf8")).include.map(p => new RegExp("^" + p.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$", "i")) : [];
+
 http.createServer((req, res) => {
   const path = decodeURIComponent(new URL(req.url, "http://x").pathname);
+  if (privateRes.some(re => re.test(path))) { res.writeHead(404, { "Content-Type": "text/html; charset=utf-8", "X-Robots-Tag": "noindex", "Cache-Control": "no-store" }); return res.end(readFileSync(join(ROOT, "404.html"))); }
   const r = redirects.find(([from]) => from === path);
   if (r) { res.writeHead(+r[2] || 302, { Location: r[1] }); return res.end(); }
   let file = join(ROOT, path);

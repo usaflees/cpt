@@ -94,6 +94,7 @@
     if (MODE === "home" && !snapshotDone) snapshot(coins);
     detect(coins, now);
     checkMoveAlerts(coins, now);
+    checkBagAlert();
   }
 
   // One opening line from the 24h figures the exchanges report, once enough coins are live.
@@ -162,6 +163,59 @@
     });
     form.dispatchEvent(new Event("change"));
   }
+  /* ---------------- Portfolio alert: holdings total above / below an amount (fires once per crossing) ---------------- */
+  const bagForm = $("bagAlertForm");
+  let bagRule = Object.assign({ above: 0, below: 0 }, store.json("cpt_bagalert", {}));
+  let bagSide = null; // "above" / "below" / "inside": where the total was at the last check
+  if (bagForm) {
+    if (bagRule.above) bagForm.elements.above.value = bagRule.above;
+    if (bagRule.below) bagForm.elements.below.value = bagRule.below;
+    bagForm.addEventListener("change", () => {
+      bagRule = { above: Math.max(0, +bagForm.elements.above.value || 0), below: Math.max(0, +bagForm.elements.below.value || 0) };
+      store.set("cpt_bagalert", bagRule);
+      bagSide = null;
+      bagStatus();
+    });
+    const keep = $("keepAlerts");
+    if (keep) {
+      keep.checked = store.get("cpt_alert_repeat") === "1";
+      keep.addEventListener("change", () => store.set("cpt_alert_repeat", keep.checked ? "1" : "0"));
+    }
+  }
+  function bagTotal() {
+    let total = 0;
+    for (const [sym, qty] of Object.entries(state.bag || {})) {
+      const c = state.coins.get(sym);
+      if (!(qty > 0) || !c) continue;
+      if (!c.live) return null; // wait until every held coin has a live price
+      total += qty * c.price;
+    }
+    return total > 0 ? total : null;
+  }
+  function bagStatus() {
+    const el = $("bagAlertStatus");
+    if (!el) return;
+    const t = bagTotal();
+    const when = [bagRule.above && `above ${usd(bagRule.above)}`, bagRule.below && `below ${usd(bagRule.below)}`].filter(Boolean).join(" or ");
+    el.textContent = !when ? "Off." : `On: ${when}. ${t !== null ? `Now ${usd(t)}.` : Object.values(state.bag || {}).some(q => q > 0) ? "Waiting for your holdings' live prices." : "Enter what you hold in the table's Holdings column."}`;
+  }
+  function checkBagAlert() {
+    if (MODE !== "home" || (!bagRule.above && !bagRule.below)) return;
+    const t = bagTotal();
+    if (t === null) return;
+    const side = bagRule.above && t >= bagRule.above ? "above" : bagRule.below && t <= bagRule.below ? "below" : "inside";
+    if (bagSide !== null && side !== bagSide && side !== "inside") {
+      const msg = `Your holdings are ${side} ${usd(bagRule[side])}: now ${usd(t)}`;
+      api.beep();
+      api.showToast(`🚨 ${msg}`);
+      api.notify(msg, "Portfolio alert from CryptoPriceTicker.com", "bag");
+      api.bumpAppBadge();
+      logAlert(msg, null);
+    }
+    bagSide = side;
+    bagStatus();
+  }
+
   function checkMoveAlerts(coins, now) {
     if (!rule.pct || MODE !== "home") return;
     coins.forEach(c => {

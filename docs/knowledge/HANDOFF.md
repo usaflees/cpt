@@ -44,6 +44,13 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Live Nov 10 (`29fb398`, PR #13):** the repo's working files (`/scripts`, `/docs`, `/content`, `/tests`, `/.claude`,
+  `/.github`, `CLAUDE.md`, `README.md`, `SECURITY.md`, `.gitignore`) are no longer served: `functions/_middleware.js` returns
+  404, limited by `_routes.json`; `seo-lint` checks both lists match, `check-live` requests each path. Owner wants the
+  source private: **still open** are making the GitHub repo private (owner, GitHub settings), rewording the remaining
+  "public on GitHub" claims and the GitHub Issues links (trust, about, footers, README, llms.txt, JSON-LD `sameAs`,
+  security.txt) at the same moment, and the owner's choice to obfuscate the shipped JS/CSS (not started; adds a build step).
+  Gotcha: plain `/assets/app.js` is cached for a year at the edge and can be stale; only the `?v=` URL is current.
 - **Nov 9 (this session):** `.github/workflows/data-refresh.yml` refreshes data weekly without a Claude session
   (gates: data-only, `check-refresh.mjs`, full QA; pushes to `main`, checks production, IndexNow). Run it by hand
   from Actions → "Weekly data refresh" (untick publish for a dry run). "Open source" → "public source code"

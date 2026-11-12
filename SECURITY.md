@@ -1,6 +1,6 @@
 # Security policy
 
-CryptoPriceTicker.com is a static site: no accounts, logins, payments or wallets, and no server code.
+CryptoPriceTicker.com is a static site: no accounts, logins, payments or wallets, and no server code that handles visitor data (a small edge rule only hides the repository's working files from the public site).
 Prices load in your browser straight from public exchange feeds; watchlists and alerts stay in your
 browser's local storage. See the [trust page](https://cryptopriceticker.com/trust/) for details.
 
