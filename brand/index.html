@@ -57,8 +57,8 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <script src="/assets/coins.js?v=88eae95f59" defer></script>
-  <script src="/assets/app.js?v=65c1acf5d2" defer></script>
-  <script src="/assets/consent.js?v=613637afb1" defer></script>
+  <script src="/assets/app.js?v=8d686c0073" defer></script>
+  <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
   <link rel="stylesheet" href="/assets/app.css?v=9012fe5a5c" />
 </head>
 <body data-page="brand">
@@ -86,6 +86,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
             <button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light" aria-label="Theme: Light"><span class="swatch sw-light"></span></button>
           </div>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/widgets/">🧩 Free website widget</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>

@@ -44,6 +44,17 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Nov 12:** first Search Console exports analysed: only the home page is indexed, the rest is "Discovered –
+  currently not indexed" → `docs/INDEXING-PLAN.md` (owner's daily Request-indexing list, first links, hold on new URL
+  families). AdSense site verification is live (`ads.txt` + home-page meta tag, publisher `ca-pub-3149203932367096`);
+  **no ad code runs until Google approves the site** (next steps in `docs/QUEUE.md` → Waiting on the owner). Usage:
+  work now flows through `docs/QUEUE.md` and two daily scheduled tasks (`docs/DAILY-TASKS.md`); one chat at a time.
+  Open PRs from other chats: #14 and #15 are queued for the daily build, #16 waits on owner decisions.
+- **Nov 11:** GTM container now loads only after "Accept" (empty container cost 451 KiB / ~200 ms TBT per first
+  visit); GA4 unchanged. Live Nov 12: Lighthouse mobile home 87 → 91–94, TBT 510 → 300–380 ms, Google tags
+  451 → 168 KiB. Gotcha: repeated full QA runs from one IP get Kraken WebSocket 429s (console errors only); wait ~10 min.
+- **Nov 10–11:** home table top 25 (+ starred coins); `/race/` Coin Race live. Next Feature Lab picks (artifact "CPT
+  Feature Lab"): Exchange Gap Radar (/spreads/), Time Machine, Market TV.
 - **Live Nov 10 (`29fb398`, PR #13):** the repo's working files (`/scripts`, `/docs`, `/content`, `/tests`, `/.claude`,
   `/.github`, `CLAUDE.md`, `README.md`, `SECURITY.md`, `.gitignore`) are no longer served: `functions/_middleware.js` returns
   404, limited by `_routes.json`; `seo-lint` checks both lists match, `check-live` requests each path. Owner wants the

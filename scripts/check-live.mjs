@@ -43,6 +43,9 @@ await check("/embed/", { headers: { "x-robots-tag": /noindex/ } });
 await check("/this-page-does-not-exist", { status: 404 });
 await check("/coin/ton/", { status: 301, headers: { location: /\/coin\/gram\/$/ } });
 await check("/robots.txt", { body: /Sitemap:/ });
+// AdSense site verification and seller declaration (no ad code is loaded until the site is approved).
+await check("/ads.txt", { body: /^google\.com, pub-3149203932367096, DIRECT, f08c47fec0942fa0\s*$/ });
+await check("/", { body: /<meta name="google-adsense-account" content="ca-pub-3149203932367096"/ });
 // Search and AI crawlers must get the page, not a block or a Cloudflare challenge (Bot Fight Mode, AI bot
 // policies or a WAF rule could quietly stop indexing). The user agent is spoofed from this machine, so a pass
 // doesn't prove Cloudflare's IP-verified crawlers get through, but a block or challenge here is always real.
