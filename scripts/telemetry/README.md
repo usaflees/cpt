@@ -22,6 +22,7 @@ so there is no service account, no key and nothing sensitive in this public repo
    | --- | --- |
    | `GSC_SITE` | `sc-domain:cryptopriceticker.com` |
    | `CF_API_TOKEN`, `CF_ACCOUNT_ID`, `CF_ZONE_ID`, `CF_SITE_TAG` | from step 1.2 (optional) |
+   | `GA4_PROPERTY` | optional: the GA4 **property ID** (digits only; GA4 → Admin → Property details), not the `G-…` measurement ID |
    | `GITHUB_TOKEN` | the fine-grained token from step 1.3 |
    | `GITHUB_REPO` | `usaflees/cpt-telemetry` |
    | `ALERT_EMAIL` | optional; defaults to your Google account |
@@ -29,11 +30,18 @@ so there is no service account, no key and nothing sensitive in this public repo
 5. Run **`testSetup`** and approve the permissions. Check the log: each source should say OK.
    - If Search Console says the API "has not been used in project …", open Project Settings → *Change
      project*, link a normal Google Cloud project, and enable the **Google Search Console API** there.
+   - If GA4 fails the same way, enable the **Google Analytics Data API** in that project too. The Google
+     account running the script needs at least Viewer access to the GA4 property.
 6. Run **`cfIntrospect`** once if Cloudflare reports unknown fields, and adjust the field names in
    `collectCloudflare_` to match.
 7. Run **`installTriggers`**: nightly collection (~03:00 UTC) and a weekly digest (Sunday ~05:00 UTC).
 
 ## What it does
+- **GA4 (if `GA4_PROPERTY` is set):** nightly page views, sessions and engaged sessions per page and per
+  traffic source, for the day two days back (GA4 needs about a day to finish processing). Paths that aren't
+  plain site paths and sources outside a fixed list (search engines, AI assistants, a few social sites)
+  become `other`, so no visitor-controlled text reaches the digest. GA4 undercounts: before cookie consent
+  it only receives cookieless pings.
 - **Nightly:** one finalized day of Search Console data (page, query×page, page×device, all rows via
   pagination), ~40 URL Inspection checks (every page every ~3 days), Cloudflare page views, Core Web
   Vitals and 4xx/5xx paths. Emails you if a page's index status changes or errors spike.

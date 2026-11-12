@@ -47,7 +47,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 2. Set the scheduled task's effort level to **Medium** in its model selector (see [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md)).
 3. **Search Console** Domain property, sitemap, Request Indexing for key pages; Bing Webmaster Tools import (biggest growth lever: not indexed yet).
 4. Cloudflare Web Analytics on.
-5. Apps Script telemetry collector (`scripts/telemetry/README.md`).
+5. Apps Script telemetry collector (`scripts/telemetry/README.md`); now also collects GA4 if you set `GA4_PROPERTY` (your property's numeric ID).
 6. Launch posts in your own words (`docs/LAUNCH-KIT.md`).
 7. GitHub repository description, website and topics.
 8. News/monetization decisions (`docs/NEWS-AND-MONETIZATION.md` §9).
