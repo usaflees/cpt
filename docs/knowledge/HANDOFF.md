@@ -13,6 +13,12 @@ of where things stand and what the owner wants. Details are in the files it link
    `PLAYBOOK.md` for how changes are made and checked.
 5. `docs/knowledge/CLAUDE-OPUS-5-5.md`: effort levels and keeping Pro plan usage low.
 
+## Quant engine (Nov 12, on branch, not live)
+`scripts/build-seo-engine.mjs` builds `dist/` (top-50 quant sections, `/compare/`, `/category/`, open data, widget, ledger
+sitemap); `scripts/verify-seo-engine.mjs` checks it; `.github/workflows/seo-data-pipeline.yml` deploys it with Wrangler once
+the owner adds the Cloudflare secrets (STATE, owner action 14). DECISIONS has the Nov 12 rows, including what was done
+differently from the brief and why.
+
 ## What the owner wants (standing instructions from the Nov 1–4 sessions)
 - **Approval to publish:** the owner has approved committing and publishing finished, QA-passed work ("I approve
   all commits and live publishes"). Ship with the `ship` skill: local QA → push branch → preview QA →

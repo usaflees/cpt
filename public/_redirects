@@ -1,0 +1,10 @@
+# Added to the root _redirects by scripts/build-seo-engine.mjs when it builds dist/.
+/compare / 302
+/compare/ / 302
+/category / 302
+/category/ / 302
+/category/defi /category/decentralized-finance/ 301
+/category/defi/ /category/decentralized-finance/ 301
+/category/ai /category/ai-compute/ 301
+/category/ai/ /category/ai-compute/ 301
+/api/v1/quant-snapshot /api/v1/quant-snapshot.json 301

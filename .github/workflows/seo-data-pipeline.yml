@@ -1,0 +1,90 @@
+# Quant data pipeline: every 2 hours (and on each push to main) take a market snapshot, build dist/ with
+# scripts/build-seo-engine.mjs, verify it, deploy it to Cloudflare Pages with Wrangler and tell IndexNow
+# about the URLs whose sitemap lastmod moved in this run.
+#
+# State (data/lastmod-ledger.json, data/market-snapshot-cache.json) lives in the Actions cache, not in git:
+# nothing is committed, so a run can never trigger another run. The copies in the repo are only the
+# starting point and the last-resort data when both market APIs fail.
+#
+# Needs two repository secrets: CLOUDFLARE_API_TOKEN (Pages: Edit) and CLOUDFLARE_ACCOUNT_ID. Until they
+# exist the run builds and verifies but does not deploy, ping or save state. Once they exist, turn off
+# the Pages project's automatic Git deployments for production, otherwise a push to main is deployed
+# twice (the repo root by Cloudflare, dist/ by this workflow) and the last one to finish wins.
+name: SEO data pipeline
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ping_all:
+        description: "Send every engine URL to IndexNow (once, after new pages first go live)"
+        type: boolean
+        default: false
+
+permissions: {}
+
+# One run at a time, so two runs never write the ledger from the same starting state.
+concurrency:
+  group: seo-data-pipeline
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    env:
+      HAS_CLOUDFLARE: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      # Newest saved state wins over the committed files (restore-keys picks the most recent seo-state-* entry).
+      - name: Restore lastmod ledger and snapshot cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            data/lastmod-ledger.json
+            data/market-snapshot-cache.json
+          key: seo-state-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: seo-state-
+
+      - name: Build dist/
+        env:
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }} # optional demo key; without it the public endpoint is used
+        run: npm run build | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify dist/
+        run: npm run verify
+
+      - name: Deploy to Cloudflare Pages
+        if: env.HAS_CLOUDFLARE == 'true' && github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@9681c2997648301493e78cacbfb790a9f19c833f # v3.9.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=cryptopriceticker --branch=main
+
+      # Only after a deploy: the ledger must describe what is live, or a failed deploy would hide a change.
+      - name: Save lastmod ledger and snapshot cache
+        if: env.HAS_CLOUDFLARE == 'true' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            data/lastmod-ledger.json
+            data/market-snapshot-cache.json
+          key: seo-state-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Tell IndexNow which URLs changed
+        if: env.HAS_CLOUDFLARE == 'true' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          PING_ALL: ${{ inputs.ping_all }}
+        run: |
+          if [ "$PING_ALL" = "true" ]; then node scripts/ping-indexnow.mjs --all; else node scripts/ping-indexnow.mjs; fi | tee -a "$GITHUB_STEP_SUMMARY"

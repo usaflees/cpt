@@ -1,0 +1,33 @@
+/* Quant telemetry sections (scripts/build-seo-engine.mjs). Uses the theme variables of app.css, so every
+   theme and light mode apply. Nothing here is filled by JavaScript, so nothing can shift. */
+.q-telemetry { margin: 10px 0 12px; padding: 10px 12px; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; background: var(--bg-secondary); font-size: 13.5px; line-height: 1.55; color: var(--text-secondary); max-width: 78ch; }
+.q-telemetry strong { color: var(--text-primary); }
+.q-telemetry ul { margin: 6px 0; padding-left: 18px; }
+.q-block h2 { margin-top: 28px; }
+.q-block h2:first-of-type { margin-top: 14px; }
+.q-block h3 { margin: 20px 0 6px; font-size: 15px; }
+.q-regime { font-size: 13.5px; color: var(--text-secondary); margin: 0 0 6px; }
+.q-table { margin: 12px 0; overflow-x: auto; }
+.q-table table { width: 100%; }
+.q-table caption { caption-side: top; text-align: left; font-size: 12.5px; color: var(--text-muted); padding: 8px 12px; }
+.q-table td, .q-table th { padding: 7px 12px; font-size: 13px; text-align: right; white-space: nowrap; }
+.q-table th.col-left { text-align: left; white-space: normal; font-weight: 600; }
+.q-fig { margin: 10px 0; }
+.q-fig svg { display: block; max-width: 100%; height: auto; }
+.q-fig figcaption, .q-note { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
+.q-spark.q-up, .q-range { color: var(--up); }
+.q-spark.q-down { color: var(--down); }
+.q-range { color: var(--accent); }
+.q-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.q-input { width: 9em; padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-primary); color: var(--text-primary); font: inherit; }
+.q-slider, .q-calc { margin: 10px 12px; font-size: 13px; color: var(--text-secondary); }
+.q-calc { margin: 12px 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary); }
+.q-slider input[type=range], .q-calc input[type=range] { display: block; width: 100%; max-width: 520px; margin-top: 8px; accent-color: var(--accent); }
+.q-result { margin: 8px 0 0; }
+.q-result strong { color: var(--text-primary); font-family: var(--font-mono); }
+.q-formulas { padding-left: 20px; }
+.q-formulas li { margin: 4px 0; }
+.q-related a, .q-open a { white-space: nowrap; }
+.q-open { display: block; margin-top: 8px; }
+.q-code { overflow-x: auto; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary); font-size: 12.5px; }
+.cpt-quant { margin: 12px 0; }

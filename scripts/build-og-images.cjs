@@ -52,7 +52,8 @@ const card = c => `<!DOCTYPE html><html><body style="margin:0">
   const outDir = path.join(ROOT, "og");
   fs.mkdirSync(outDir, { recursive: true });
   const keep = new Set([...coins.map(c => c.sym.toLowerCase() + ".jpg"), "heatmap.jpg"]); // heatmap.jpg is made separately
-  for (const f of fs.readdirSync(outDir)) if (!keep.has(f)) fs.unlinkSync(path.join(outDir, f));
+  // compare-*.jpg and category-*.jpg belong to scripts/build-quant-og.cjs.
+  for (const f of fs.readdirSync(outDir)) if (!keep.has(f) && !/^(compare|category)-/.test(f)) fs.unlinkSync(path.join(outDir, f));
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
   for (const c of coins) {

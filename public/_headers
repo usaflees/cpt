@@ -1,0 +1,34 @@
+# Added to the root _headers by scripts/build-seo-engine.mjs when it builds dist/ (the root file stays the
+# single source for the CSP and the other site-wide security headers: nosniff, Referrer-Policy, HSTS).
+# {{APP_CSS}} and {{QUANT_CSS}} become the current content-hashed stylesheet URLs, so the preload below
+# matches the <link> in the page and Cloudflare can send it as a 103 Early Hint.
+
+# Snapshot pages: cache for 5 minutes, serve stale for up to an hour while revalidating.
+/
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600
+  Link: <{{APP_CSS}}>; rel=preload; as=style
+/coin/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600
+  Link: <{{APP_CSS}}>; rel=preload; as=style
+/compare/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600
+  Link: <{{APP_CSS}}>; rel=preload; as=style
+  Link: <{{QUANT_CSS}}>; rel=preload; as=style
+/category/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600
+  Link: <{{APP_CSS}}>; rel=preload; as=style
+  Link: <{{QUANT_CSS}}>; rel=preload; as=style
+
+# Open data and the script widget: readable from any origin.
+/api/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600
+  X-Robots-Tag: noindex
+/data/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600
+  X-Robots-Tag: noindex
+/widget.js
+  Access-Control-Allow-Origin: *
+  Cross-Origin-Resource-Policy: cross-origin
+  Cache-Control: public, max-age=3600

@@ -8,6 +8,8 @@ guide, research).
 - Full QA: `bash tests/run.sh` (local Pages emulator) or `bash tests/run.sh <preview-url>`. Must end with `QA PASSED`.
   Accessibility needs axe-core; see the header of `tests/axe.cjs`.
 - Quick: `node scripts/build-coin-pages.mjs && node scripts/seo-lint.mjs` (0 errors) and `node tests/links.mjs`.
+- Quant engine (builds `dist/`, the repo root is not touched): `npm run build:offline && npm run verify` must end with
+  `VERIFY PASSED`; `npm run build` fetches a fresh snapshot and rewrites `data/` (commit that only on purpose).
 - After a deploy: `node scripts/check-live.mjs`. IndexNow is sent by the `indexnow` CI job (don't run it by hand).
 - To ship a human-requested change, follow the `ship` skill (`.claude/skills/ship/SKILL.md`).
 
@@ -22,6 +24,9 @@ guide, research).
 ## Where the code misleads
 - `coin/`, `sector/`, `convert/`, `heatmap/`, `sitemap.xml`, `_redirects` and the coin list in `index.html` (between the
   `coin-index` markers) are generated. Edit `scripts/build-coin-pages.mjs` or `content/*.json`, then rebuild.
+- `dist/` is built by `scripts/build-seo-engine.mjs` from the repo root plus `public/` (extra `_headers`/`_redirects`,
+  `quant.css`, `quant.js`, `widget.js`) and `content/quant-config.json`. Its page text must stay observational: no advice
+  words (the verifier fails on them). In its `String.replace` calls use a function, never `"$1…"`: prices contain `$1`.
 - `assets/app.css` is layered: later sections override earlier ones. Add changes in the matching late section and check
   both dark and light themes and a 375 px viewport.
 - Strict CSP: no `on*` attributes and no inline scripts except the theme script the build inlines (allowed by its hash).
