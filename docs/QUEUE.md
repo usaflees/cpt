@@ -7,6 +7,13 @@ chat "queue: …") instead of opening a new long chat: that is the cheapest way 
 Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item small enough for one run).
 
 ## Ready
+- [ ] **QA crawl: stay under Kraken's connection limit.** What: `tests/crawl.cjs` loads every page, and each page
+  opens a Kraken WebSocket. Two crawls within about 10 minutes (local QA, then preview QA) can exceed Kraken's
+  per-IP connection limit; Kraken then answers HTTP 429 and QA fails for a reason unrelated to the site (seen
+  12 Nov, twice). In `tests/crawl.cjs` (this item names that file) abort `wss://ws.kraken.com` requests on all but
+  about 12 sampled pages (home, 6 coin pages, a sector hub, heatmap, converter, two widget layouts), so exchange
+  errors on the sampled pages still fail the crawl. Done when: local QA immediately followed by preview QA ends
+  with QA PASSED twice in a row, and a deliberately broken Kraken URL still fails the crawl on a sampled page.
 - [ ] **Finish PR #15 (logos invisible on some themes).** What: bring branch `ccr-f189e90d-csug64` up to date with
   `main` (keep main's `assets/app.css`, which already dropped the unused rules; re-apply the single-tone logo fix
   from `scripts/build-coin-icons.mjs --tones` and its theme tokens), plus its three small fixes (CSV export drops
