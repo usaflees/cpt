@@ -1,0 +1,422 @@
+{
+ "_readme": "Settings for scripts/build-seo-engine.mjs. coingeckoIds maps registry tickers (assets/coins.js) to CoinGecko ids; an asset without an id here gets no quant section. sectors: registry sector keys and/or explicit tickers. comparisons: curated pairs in priority order (the first 25 with data are built). references: one protocol fact per asset with its named primary source; assets without one cite only the market-data and methodology sources.",
+ "topN": 50,
+ "maxComparisons": 25,
+ "coingeckoIds": {
+  "BTC": "bitcoin",
+  "ETH": "ethereum",
+  "USDT": "tether",
+  "XRP": "ripple",
+  "SOL": "solana",
+  "BNB": "binancecoin",
+  "USDC": "usd-coin",
+  "DOGE": "dogecoin",
+  "ADA": "cardano",
+  "TRX": "tron",
+  "AVAX": "avalanche-2",
+  "GRAM": "the-open-network",
+  "LINK": "chainlink",
+  "SHIB": "shiba-inu",
+  "SUI": "sui",
+  "DOT": "polkadot",
+  "BCH": "bitcoin-cash",
+  "NEAR": "near",
+  "LTC": "litecoin",
+  "UNI": "uniswap",
+  "PEPE": "pepe",
+  "APT": "aptos",
+  "ICP": "internet-computer",
+  "DAI": "dai",
+  "TAO": "bittensor",
+  "ETC": "ethereum-classic",
+  "XMR": "monero",
+  "RENDER": "render-token",
+  "POL": "polygon-ecosystem-token",
+  "KAS": "kaspa",
+  "FET": "fetch-ai",
+  "XLM": "stellar",
+  "HBAR": "hedera-hashgraph",
+  "OKB": "okb",
+  "STX": "blockstack",
+  "FIL": "filecoin",
+  "ARB": "arbitrum",
+  "AAVE": "aave",
+  "OP": "optimism",
+  "INJ": "injective-protocol",
+  "WIF": "dogwifcoin",
+  "ATOM": "cosmos",
+  "MNT": "mantle",
+  "VET": "vechain",
+  "BONK": "bonk",
+  "GRT": "the-graph",
+  "RUNE": "thorchain",
+  "SEI": "sei-network",
+  "THETA": "theta-token",
+  "AR": "arweave",
+  "ONDO": "ondo-finance",
+  "ALGO": "algorand",
+  "SKY": "sky",
+  "FLOKI": "floki",
+  "TIA": "celestia",
+  "JUP": "jupiter-exchange-solana",
+  "PYTH": "pyth-network",
+  "LDO": "lido-dao",
+  "FDUSD": "first-digital-usd",
+  "VIRTUAL": "virtual-protocol",
+  "ENA": "ethena",
+  "JASMY": "jasmycoin",
+  "PENDLE": "pendle",
+  "STRK": "starknet",
+  "RAY": "raydium",
+  "AERO": "aero",
+  "WLD": "worldcoin-wld",
+  "QNT": "quant-network",
+  "AKT": "akash-network",
+  "BEAM": "beam-2",
+  "SAND": "the-sandbox",
+  "AXS": "axie-infinity",
+  "MANA": "decentraland",
+  "ZEC": "zcash",
+  "CRV": "curve-dao-token",
+  "AIOZ": "aioz-network",
+  "DASH": "dash",
+  "COMP": "compound-governance-token",
+  "HYPE": "hyperliquid",
+  "S": "sonic-3",
+  "ASTER": "aster-2",
+  "WLFI": "world-liberty-financial",
+  "MORPHO": "morpho",
+  "CAKE": "pancakeswap-token",
+  "PAXG": "pax-gold"
+ },
+ "sectors": [
+  {
+   "slug": "layer-1",
+   "name": "Layer 1",
+   "keys": [
+    "L1"
+   ],
+   "legacy": "layer-1",
+   "about": "native assets of base-layer blockchains that settle their own transactions"
+  },
+  {
+   "slug": "decentralized-finance",
+   "name": "Decentralized Finance",
+   "keys": [
+    "DeFi"
+   ],
+   "legacy": "defi",
+   "about": "tokens of on-chain exchanges, lending markets, staking and derivatives protocols"
+  },
+  {
+   "slug": "ai-compute",
+   "name": "AI & Compute",
+   "keys": [
+    "AI"
+   ],
+   "legacy": "ai",
+   "about": "tokens of networks that coordinate machine-learning work, GPU compute, agents or data"
+  },
+  {
+   "slug": "layer-2",
+   "name": "Layer 2",
+   "keys": [
+    "L2"
+   ],
+   "legacy": "layer-2",
+   "about": "tokens of rollups and other networks that execute transactions off a base chain and settle to it"
+  },
+  {
+   "slug": "payments",
+   "name": "Payments",
+   "symbols": [
+    "XRP",
+    "XLM",
+    "LTC",
+    "BCH",
+    "DASH",
+    "DOGE",
+    "XMR",
+    "ZEC"
+   ],
+   "about": "assets designed mainly as a medium of exchange for peer-to-peer or cross-border transfers"
+  },
+  {
+   "slug": "memecoins",
+   "name": "Memecoins",
+   "keys": [
+    "Meme"
+   ],
+   "legacy": "memecoins",
+   "about": "community-driven tokens whose demand comes mainly from culture and attention rather than protocol fees"
+  }
+ ],
+ "comparisons": [
+  [
+   "BTC",
+   "ETH"
+  ],
+  [
+   "SOL",
+   "ETH"
+  ],
+  [
+   "BTC",
+   "SOL"
+  ],
+  [
+   "XRP",
+   "XLM"
+  ],
+  [
+   "SOL",
+   "SUI"
+  ],
+  [
+   "DOGE",
+   "SHIB"
+  ],
+  [
+   "AVAX",
+   "SOL"
+  ],
+  [
+   "BTC",
+   "XRP"
+  ],
+  [
+   "BTC",
+   "LTC"
+  ],
+  [
+   "BTC",
+   "BCH"
+  ],
+  [
+   "ETH",
+   "ADA"
+  ],
+  [
+   "ADA",
+   "SOL"
+  ],
+  [
+   "XRP",
+   "ADA"
+  ],
+  [
+   "BTC",
+   "DOGE"
+  ],
+  [
+   "ETH",
+   "BNB"
+  ],
+  [
+   "SOL",
+   "BNB"
+  ],
+  [
+   "DOGE",
+   "PEPE"
+  ],
+  [
+   "SHIB",
+   "PEPE"
+  ],
+  [
+   "LTC",
+   "BCH"
+  ],
+  [
+   "XMR",
+   "ZEC"
+  ],
+  [
+   "DOT",
+   "ADA"
+  ],
+  [
+   "ARB",
+   "OP"
+  ],
+  [
+   "UNI",
+   "AAVE"
+  ],
+  [
+   "HBAR",
+   "XRP"
+  ],
+  [
+   "AVAX",
+   "ETH"
+  ],
+  [
+   "TRX",
+   "ETH"
+  ],
+  [
+   "SUI",
+   "APT"
+  ],
+  [
+   "NEAR",
+   "SOL"
+  ],
+  [
+   "DOT",
+   "ATOM"
+  ],
+  [
+   "TAO",
+   "RENDER"
+  ],
+  [
+   "LINK",
+   "ETH"
+  ],
+  [
+   "BTC",
+   "XMR"
+  ]
+ ],
+ "references": {
+  "BTC": {
+   "fact": "the block subsidy halves every 210,000 blocks, which limits total issuance to just under 21 million BTC",
+   "source": "Bitcoin whitepaper (Nakamoto, 2008) and the Bitcoin Core consensus rules"
+  },
+  "ETH": {
+   "fact": "there is no fixed maximum supply: a base fee is burned in every block under EIP-1559 and new ETH is issued only to proof-of-stake validators since the Merge of September 2022",
+   "source": "Ethereum Improvement Proposal 1559 and the ethereum.org protocol documentation"
+  },
+  "BNB": {
+   "fact": "the Auto-Burn mechanism removes BNB from supply each quarter toward a stated target of 100 million BNB",
+   "source": "BNB Chain documentation"
+  },
+  "XRP": {
+   "fact": "all 100 billion XRP were created when the XRP Ledger launched in 2012, no new XRP can be issued, and a small amount is destroyed with every transaction fee",
+   "source": "XRP Ledger documentation (xrpl.org)"
+  },
+  "SOL": {
+   "fact": "transactions are ordered with Proof of History alongside proof-of-stake, and the inflation rate started at 8% a year and declines 15% annually toward a 1.5% long-term rate",
+   "source": "Solana whitepaper (Yakovenko) and the Solana documentation"
+  },
+  "DOGE": {
+   "fact": "each block pays a fixed 10,000 DOGE, about 5 billion new DOGE a year, and there is no maximum supply",
+   "source": "Dogecoin Core documentation"
+  },
+  "ADA": {
+   "fact": "the Ouroboros proof-of-stake protocol secures the chain and the maximum supply is fixed at 45 billion ADA",
+   "source": "Ouroboros paper (Kiayias et al., 2017) and the Cardano documentation"
+  },
+  "TRX": {
+   "fact": "blocks are produced by 27 elected Super Representatives under delegated proof-of-stake",
+   "source": "TRON protocol documentation"
+  },
+  "LINK": {
+   "fact": "the total supply is fixed at 1 billion LINK",
+   "source": "Chainlink whitepaper"
+  },
+  "XLM": {
+   "fact": "the network reaches agreement with the Stellar Consensus Protocol, and the Stellar Development Foundation burned about 55 billion XLM in November 2019, leaving roughly 50 billion in existence",
+   "source": "Stellar Consensus Protocol paper (Mazières, 2015) and the Stellar Development Foundation"
+  },
+  "BCH": {
+   "fact": "the 21 million coin limit and four-year halving schedule were inherited from Bitcoin at the August 2017 fork",
+   "source": "Bitcoin Cash protocol specification"
+  },
+  "LTC": {
+   "fact": "supply is capped at 84 million LTC, with the block reward halving every 840,000 blocks under Scrypt proof-of-work",
+   "source": "Litecoin Core documentation"
+  },
+  "AVAX": {
+   "fact": "supply is capped at 720 million AVAX and transaction fees are burned",
+   "source": "Avalanche platform whitepaper and Avalanche documentation"
+  },
+  "SUI": {
+   "fact": "total supply is capped at 10 billion SUI",
+   "source": "Sui documentation (Sui Foundation)"
+  },
+  "HBAR": {
+   "fact": "the hashgraph consensus algorithm orders transactions and the total supply is fixed at 50 billion HBAR",
+   "source": "Hedera documentation"
+  },
+  "SHIB": {
+   "fact": "SHIB is an ERC-20 token on Ethereum that launched with a supply of 1 quadrillion tokens",
+   "source": "Shiba Inu ecosystem documentation and the Ethereum ERC-20 standard (EIP-20)"
+  },
+  "NEAR": {
+   "fact": "the chain is sharded with the Nightshade design under proof-of-stake",
+   "source": "NEAR Protocol documentation (Nightshade paper)"
+  },
+  "UNI": {
+   "fact": "1 billion UNI were minted at genesis in September 2020",
+   "source": "Uniswap governance documentation"
+  },
+  "DOT": {
+   "fact": "validators are selected through nominated proof-of-stake",
+   "source": "Polkadot Wiki (Web3 Foundation)"
+  },
+  "XMR": {
+   "fact": "mining uses the RandomX proof-of-work algorithm and a tail emission of 0.6 XMR per block has applied since 2022",
+   "source": "Monero documentation (getmonero.org)"
+  },
+  "ZEC": {
+   "fact": "supply is capped at 21 million ZEC and shielded transactions rely on zk-SNARK proofs",
+   "source": "Zcash protocol specification"
+  },
+  "ETC": {
+   "fact": "the ECIP-1017 monetary policy limits supply to about 210.7 million ETC",
+   "source": "Ethereum Classic Improvement Proposal 1017"
+  },
+  "AAVE": {
+   "fact": "total supply is 16 million AAVE",
+   "source": "Aave documentation"
+  },
+  "TAO": {
+   "fact": "supply is capped at 21 million TAO with periodic halvings of issuance",
+   "source": "Bittensor documentation"
+  },
+  "PEPE": {
+   "fact": "PEPE is an ERC-20 token on Ethereum with a total supply of 420.69 trillion tokens",
+   "source": "PEPE token contract and the Ethereum ERC-20 standard (EIP-20)"
+  },
+  "ATOM": {
+   "fact": "the Cosmos Hub runs CometBFT (formerly Tendermint) proof-of-stake consensus and ATOM has no maximum supply",
+   "source": "Cosmos Hub documentation"
+  },
+  "FIL": {
+   "fact": "maximum supply is 2 billion FIL and storage providers are verified with proof-of-replication and proof-of-spacetime",
+   "source": "Filecoin specification (Protocol Labs)"
+  },
+  "ARB": {
+   "fact": "the token launched with an initial supply of 10 billion ARB and governs the Arbitrum optimistic rollups",
+   "source": "Arbitrum DAO documentation"
+  },
+  "POL": {
+   "fact": "POL replaced MATIC through a one-to-one migration with an initial supply of 10 billion",
+   "source": "Polygon documentation"
+  },
+  "ALGO": {
+   "fact": "supply is capped at 10 billion ALGO under pure proof-of-stake",
+   "source": "Algorand documentation"
+  },
+  "KAS": {
+   "fact": "blocks are ordered with the GHOSTDAG proof-of-work protocol and maximum supply is about 28.7 billion KAS",
+   "source": "Kaspa documentation"
+  },
+  "HYPE": {
+   "fact": "maximum supply is 1 billion HYPE",
+   "source": "Hyperliquid documentation"
+  },
+  "PAXG": {
+   "fact": "each token represents one fine troy ounce of gold held in London vaults",
+   "source": "Paxos Trust Company"
+  },
+  "STX": {
+   "fact": "blocks are anchored to Bitcoin through the Proof of Transfer mechanism",
+   "source": "Stacks documentation"
+  }
+ }
+}

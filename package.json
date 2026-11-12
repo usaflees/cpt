@@ -1,0 +1,13 @@
+{
+  "name": "cryptopriceticker",
+  "private": true,
+  "description": "CryptoPriceTicker.com: static site plus the quant SEO engine that builds dist/.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build-seo-engine.mjs",
+    "build:offline": "node scripts/build-seo-engine.mjs --offline",
+    "verify": "node scripts/verify-seo-engine.mjs",
+    "build:pages": "node scripts/build-coin-pages.mjs"
+  }
+}

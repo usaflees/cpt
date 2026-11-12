@@ -3,7 +3,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 const ROOT = new URL("..", import.meta.url).pathname;
 const files = [];
-const walk = d => readdirSync(ROOT + d).forEach(f => { const p = d + f; if (["node_modules", ".git", "scripts", "docs"].includes(f)) return; if (statSync(ROOT + p).isDirectory()) walk(p + "/"); else if (f.endsWith(".html")) files.push(p); });
+const walk = d => readdirSync(ROOT + d).forEach(f => { const p = d + f; if (["node_modules", ".git", "scripts", "docs", "dist"].includes(f)) return; if (statSync(ROOT + p).isDirectory()) walk(p + "/"); else if (f.endsWith(".html")) files.push(p); });
 walk("");
 const redirects = readFileSync(ROOT + "_redirects", "utf8").split("\n").filter(l => l && !l.startsWith("#")).map(l => l.split(/\s+/)[0]);
 const idsOf = {};

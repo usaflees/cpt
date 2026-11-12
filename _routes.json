@@ -8,7 +8,8 @@
     "/.claude", "/.claude/*",
     "/.github", "/.github/*",
     "/functions", "/functions/*",
-    "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore"
+    "/public", "/public/*",
+    "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore", "/package.json"
   ],
   "exclude": []
 }
