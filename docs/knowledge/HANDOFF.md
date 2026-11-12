@@ -45,7 +45,8 @@ of where things stand and what the owner wants. Details are in the files it link
 
 ## Latest work
 - **Nov 11:** GTM container now loads only after "Accept" (empty container cost 451 KiB / ~200 ms TBT per first
-  visit); GA4 unchanged. Production QA before the change: PASSED, 32/32 live checks, Lighthouse mobile home 87 / BTC 98.
+  visit); GA4 unchanged. Live Nov 12: Lighthouse mobile home 87 → 91–94, TBT 510 → 300–380 ms, Google tags
+  451 → 168 KiB. Gotcha: repeated full QA runs from one IP get Kraken WebSocket 429s (console errors only); wait ~10 min.
 - **Nov 10–11:** home table top 25 (+ starred coins); `/race/` Coin Race live. Next Feature Lab picks (artifact "CPT
   Feature Lab"): Exchange Gap Radar (/spreads/), Time Machine, Market TV.
 - **Live Nov 10 (`29fb398`, PR #13):** the repo's working files (`/scripts`, `/docs`, `/content`, `/tests`, `/.claude`,

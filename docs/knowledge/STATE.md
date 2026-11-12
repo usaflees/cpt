@@ -27,6 +27,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 
 | Check | Result |
 | --- | --- |
+| Lighthouse mobile, live home after GTM-on-consent (Nov 12) | 91–94 performance, TBT 300–380 ms |
 | Lighthouse mobile, live site (performance / SEO) | Home 95–98/100 · Bitcoin 100/100 · Converter, heatmap, widgets, about 100/100 · AI sector 99/100 · OKB 96/100 · Brand kit 95/100 |
 | Lighthouse mobile, production, Nov 9 after the motion pass (perf / a11y / best practices / SEO) | Home 89–95 / 100 / 100 / 92 · Bitcoin 98–99 / 100 / 100 / 92 · Heatmap 98–100 / 96 → fixed / 100 / 92. SEO 92 = robots.txt `Content-Signal` line (DECISIONS) |
 | Home main thread, steady state (CDP) | ~110–130 ms per second, mostly price-flash paint; JS ~4 ms/s |
