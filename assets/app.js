@@ -655,6 +655,7 @@
       if (dirty.includes(state.coinPageSym) || dirty.some(s => RATE_COINS.includes(s))) updateCoinPage();
     }
     if (MODE === "heatmap") updateHeatmap(dirty);
+    if (MODE === "race" && window.CPT_RACE) window.CPT_RACE(dirty);
     if ((MODE === "coin" || MODE === "convert") && (dirty.includes(conv.from) || dirty.includes(conv.to) || dirty.includes(pageCoin))) updateConverter();
 
     if (MODE === "home") {
@@ -713,7 +714,7 @@
    * Data feeds — each subscribes only to the coins the current page shows
    * ------------------------------------------------------------------ */
   function activeSymbols() {
-    if (MODE === "home" || MODE === "heatmap") return Array.from(state.coins.keys());
+    if (MODE === "home" || MODE === "heatmap" || MODE === "race") return Array.from(state.coins.keys());
     if (MODE === "convert") return [conv.from, conv.to].filter(s => state.coins.has(s));
     // Widgets have a fixed currency, so they only need its rate coin; coin pages can switch currency.
     const rates = MODE === "coin" ? RATE_COINS : state.currency === "USD" ? [] : [state.currency];
@@ -2010,7 +2011,7 @@
     recomputeRanks(); // about / sector / widgets pages: header menu and widget builder only
   }
 
-  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap") {
+  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap" || MODE === "race") {
     // A page prerendered by the speculation rules connects only once the visitor actually opens it.
     if (document.prerendering) document.addEventListener("prerenderingchange", startFeeds, { once: true });
     else startFeeds();
@@ -2020,8 +2021,8 @@
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
-  // Read-only hooks for assets/flash.js (Newsflash and move alerts), loaded after this file.
-  if (MODE === "home" || MODE === "coin") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge };
+  // Read-only hooks for assets/flash.js (Newsflash and move alerts) and assets/race.js, loaded after this file.
+  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar };
 
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

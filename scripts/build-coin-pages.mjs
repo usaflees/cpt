@@ -158,6 +158,7 @@ function topbar(withFeeds, withCurrency = withFeeds) {
           <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
         </div>
@@ -810,7 +811,7 @@ writeFileSync(ROOT + "heatmap/index.html", heatmapPage());
 // (inflated freshness is a spam signal). content/page-dates.json stores a hash of each page's
 // content; the date moves to today only when that hash changes. Asset hashes and the inlined
 // theme script are ignored, so a CSS or JS release doesn't count as a content change.
-const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html", "/trust/": "trust/index.html" };
+const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html", "/trust/": "trust/index.html", "/race/": "race/index.html" };
 const pageDatesPath = ROOT + "content/page-dates.json";
 const pageDates = existsSync(pageDatesPath) ? JSON.parse(readFileSync(pageDatesPath, "utf8")) : {};
 const today = new Date().toISOString().slice(0, 10);
@@ -824,7 +825,7 @@ writeFileSync(pageDatesPath, JSON.stringify(pageDates, null, 2) + "\n");
 const pageDate = path => (pageDates[path] || {}).date || updated;
 
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}
@@ -878,9 +879,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;
