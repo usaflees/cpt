@@ -18,6 +18,7 @@
 - **Brand and trust:** /trust/ (what the site never does, public source code on GitHub, hosted on Cloudflare Pages, self-check links, why old domain scores differ), "Open source, hosted on Cloudflare Pages" + Trust & safety link in every footer, live animated logo, coin logos, brand kit (/brand/), accessibility statement, consent banner
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
 - **Motion (Nov 9):** rolling-digit prices (coin hero, pop-out), rows that glide on sort/filter, spring quick view, scroll-driven section rise, spinning logo ring on coin pages, market-mood glow on the home hero; all off with reduced motion.
+- **Coin Race (/race/, Nov 11):** 2–6 coins race live from 24 h ago, 1 h ago or "Start now"; shareable race links.
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
   embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
@@ -26,6 +27,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 
 | Check | Result |
 | --- | --- |
+| Lighthouse mobile, live home after GTM-on-consent (Nov 12) | 91–94 performance, TBT 300–380 ms |
 | Lighthouse mobile, live site (performance / SEO) | Home 95–98/100 · Bitcoin 100/100 · Converter, heatmap, widgets, about 100/100 · AI sector 99/100 · OKB 96/100 · Brand kit 95/100 |
 | Lighthouse mobile, production, Nov 9 after the motion pass (perf / a11y / best practices / SEO) | Home 89–95 / 100 / 100 / 92 · Bitcoin 98–99 / 100 / 100 / 92 · Heatmap 98–100 / 96 → fixed / 100 / 92. SEO 92 = robots.txt `Content-Signal` line (DECISIONS) |
 | Home main thread, steady state (CDP) | ~110–130 ms per second, mostly price-flash paint; JS ~4 ms/s |
@@ -41,6 +43,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 | Whole-site crawl, production (134 URLs incl. widgets and 404) | 0 errors, 0 failed requests, 0 CSP violations, 0 browser warnings (Nov 3) |
 
 ## Owner actions still open
+- **Now (Nov 12):** (a) AdSense → Sites → cryptopriceticker.com → choose *Ads.txt snippet* or *Meta tag* → Verify → Request review. (b) Scheduled tasks → **CPT daily build** → Edit → Advanced settings → Repository → add `usaflees/cpt`. (c) Search Console steps A and B in `docs/INDEXING-PLAN.md` (Manual actions check, sitemaps, 10 Request-indexing a day).
 0. **Reputation (found Nov 6):** ScamAdviser shows Trust Score 0 for the domain from its previous registration (domain re-registered 22 Oct 2026; Google Safe Browsing: no unsafe content). Send the Gmail draft to bizverify@scamadviser.com, press "Update score" on scamadviser.com/check-website/cryptopriceticker.com, claim the profile at portal.gridinsoft.com. DNS (Cloudflare): delete the duplicate `_dmarc` TXT record (`p=none` and `p=reject` both exist, which voids DMARC; keep `p=reject`); add `www` as a Pages custom domain and redirect it to the apex (www has no DNS record now).
 1. Add `usaflees/cpt` (push) to the weekly scheduled task's repositories; later `usaflees/cpt-telemetry` (read).
 2. Set the scheduled task's effort level to **Medium** in its model selector (see [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md)).

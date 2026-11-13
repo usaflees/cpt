@@ -7,7 +7,7 @@ let src = process.env.AXE;
 try { src = src || require.resolve('axe-core/axe.min.js'); } catch (_) {}
 if (!src || !fs.existsSync(src)) { console.log('axe: skipped (axe-core not installed; see the header of tests/axe.cjs)'); process.exit(0); }
 const axe = fs.readFileSync(src, 'utf8');
-const PAGES = ['/', '/coin/btc/', '/coin/shib/', '/sector/ai/', '/heatmap/', '/convert/', '/widgets/', '/about/', '/brand/', '/accessibility/', '/trust/', '/nope', '/embed/?coins=BTC&layout=single', '/embed/?coins=BTC,ETH,SOL&layout=grid'];
+const PAGES = ['/', '/coin/btc/', '/coin/shib/', '/sector/ai/', '/heatmap/', '/convert/', '/widgets/', '/about/', '/brand/', '/accessibility/', '/trust/', '/race/', '/race/?c=btc,eth&from=now', '/nope', '/embed/?coins=BTC&layout=single', '/embed/?coins=BTC,ETH,SOL&layout=grid'];
 (async () => {
   const b = await chromium.launch(); const ctx = await b.newContext({ bypassCSP: true }); let bad = 0;
   for (const theme of ['kali', 'light']) for (const path of PAGES) {

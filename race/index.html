@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="neon">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coin Race: Live Head-to-Head Crypto Price Race</title>
+  <meta name="description" content="Race up to six cryptocurrencies against each other live, from 24 hours ago, 1 hour ago or right now. Prices from Coinbase, Binance and Kraken. Share the race link." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://cryptopriceticker.com/race/" />
+  <link rel="preload" href="/assets/app.css?v=9012fe5a5c" as="style" />
+  <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CryptoPriceTicker.com" />
+  <meta property="og:title" content="Coin Race: which crypto is winning right now?" />
+  <meta property="og:description" content="Pick up to six coins and watch them race live, trade by trade, from the start line you choose." />
+  <meta property="og:url" content="https://cryptopriceticker.com/race/" />
+  <meta property="og:image" content="https://cryptopriceticker.com/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://cryptopriceticker.com/race/",
+        "url": "https://cryptopriceticker.com/race/",
+        "name": "Coin Race: Live Head-to-Head Crypto Price Race",
+        "isPartOf": { "@id": "https://cryptopriceticker.com/#website" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Live crypto prices", "item": "https://cryptopriceticker.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Coin Race", "item": "https://cryptopriceticker.com/race/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script>/*theme*/(function () {
+var themes = ["neon", "kali", "green", "slate", "oled", "light"];
+var q = new URLSearchParams(location.search);
+var t = q.get("theme");
+if (t === "auto") t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
+if (themes.indexOf(t) < 0) {
+try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
+}
+var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
+if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
+if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
+})();</script>
+  <link rel="stylesheet" href="/assets/app.css?v=9012fe5a5c" />
+  <link rel="stylesheet" href="/assets/race.css?v=235fcd6aa6" />
+  <script src="/assets/coins.js?v=88eae95f59" defer></script>
+  <script src="/assets/app.js?v=8d686c0073" defer></script>
+  <script src="/assets/race.js?v=0a1be05fe1" defer></script>
+  <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
+</head>
+<body data-page="race">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><img class="brand-logo" src="/brand/mark.svg" width="34" height="34" alt="" /><span class="brand-word">CryptoPriceTicker</span></a>
+    <a class="topbar-link" href="/">← All prices</a>
+    <div class="search-box quick-search">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="quickSearch" placeholder="Search coins…" aria-label="Search coins" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="quickResults" />
+      <kbd class="search-kbd" aria-hidden="true">/</kbd>
+      <ul class="quick-results" id="quickResults" role="listbox" aria-label="Matching coins" hidden></ul>
+    </div>
+    <div class="topbar-actions">
+      <details class="pop menu-pop">
+        <summary aria-label="Menu">☰</summary>
+        <div class="pop-panel menu-list">
+          <p class="pop-title">Theme</p>
+          <div class="theme-switcher" role="group" aria-label="Colour theme">
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="neon" title="Neon (brand)" aria-label="Theme: Neon (brand)"><span class="swatch sw-neon"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="kali" title="Kali (dark blue)" aria-label="Theme: Kali (dark blue)"><span class="swatch sw-kali"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="green" title="Terminal green" aria-label="Theme: Terminal green"><span class="swatch sw-green"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="slate" title="Slate" aria-label="Theme: Slate"><span class="swatch sw-slate"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="oled" title="Pure black" aria-label="Theme: Pure black"><span class="swatch sw-oled"></span></button>
+            <button type="button" class="theme-btn" data-action="theme" data-theme-val="light" title="Light" aria-label="Theme: Light"><span class="swatch sw-light"></span></button>
+          </div>
+          <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/race/">🏁 Coin Race</a>
+          <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
+          <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main class="container" id="main">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">Coin Race</span></nav>
+
+    <section class="hero" aria-labelledby="r-h">
+      <h1 id="r-h" class="hero-title">Coin Race</h1>
+      <p class="hero-sub">Pick two to six coins and a start line, then watch them race live, trade by trade, on prices from Coinbase, Binance and Kraken. Every race is a link you can send.</p>
+    </section>
+
+    <section class="page-section race-board" aria-labelledby="rb-h">
+      <h2 id="rb-h">Since <span id="raceFromLabel">24 hours ago</span></h2>
+      <div class="race-controls">
+        <div class="seg" role="group" aria-label="Start line">
+          <button type="button" data-race-from="24h" aria-pressed="true">24 h ago</button>
+          <button type="button" data-race-from="1h" aria-pressed="false">1 h ago</button>
+          <button type="button" data-race-from="now" aria-pressed="false">Start now</button>
+        </div>
+        <label class="sr-only" for="raceAdd">Add a coin to the race</label>
+        <select id="raceAdd" class="race-add"><option value="">Add a coin…</option></select>
+        <button type="button" class="action-btn btn-accent" id="raceShare">🔗 Share this race</button>
+      </div>
+      <ol class="race-lanes" id="raceLanes"></ol>
+      <p class="race-foot"><span>Leader: <b id="raceLeader">Waiting for live prices…</b></span><span>Lead changes: <b id="raceChanges">0</b></span><span>Race time: <b id="raceClock">—</b></span><span>Full bar: <b id="raceScale">—</b></span></p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="rhow-h">
+      <h2 id="rhow-h">How the race works</h2>
+      <ul>
+        <li><strong>24 h ago</strong> starts every coin at its price 24 hours ago (from the exchanges' rolling 24-hour change), so the race is already under way.</li>
+        <li><strong>1 h ago</strong> starts from Binance's price one hour ago. Coins without a Binance market show "—" for this start line.</li>
+        <li><strong>Start now</strong> lines everyone up at their current price; the clock shows how long the race has run.</li>
+      </ul>
+      <p>Each bar grows right of the centre line when the coin is up since the start, left when it is down. The scale adjusts so the leader fits. The race shows what prices did; it doesn't predict anything.</p>
+    </section>
+  </main>
+
+  <footer class="container site-footer" style="padding-top:0">
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+  </footer>
+</body>
+</html>

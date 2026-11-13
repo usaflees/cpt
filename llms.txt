@@ -6,6 +6,7 @@
 - [Live crypto prices](https://cryptopriceticker.com/): live table of 110+ coins by market cap, sector filters, biggest movers
 - [About & data methodology](https://cryptopriceticker.com/about/): data sources and how market cap, volume, depth and performance are calculated
 - [Market heatmap](https://cryptopriceticker.com/heatmap/): every coin sized by market cap and coloured by 24-hour change
+- [Coin Race](https://cryptopriceticker.com/race/): up to six coins racing live from 24 hours ago, 1 hour ago or a start you choose
 - [Crypto converter](https://cryptopriceticker.com/convert/): any coin to any coin or 20 fiat currencies at live prices
 - [Free website widget](https://cryptopriceticker.com/widgets/): embeddable live crypto ticker (iframe), three layouts, six themes
 - [Brand kit](https://cryptopriceticker.com/brand/): logos, colours and banners for press and partners
