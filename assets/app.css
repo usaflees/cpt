@@ -1474,6 +1474,11 @@ img.mono-light, .coin-avatar.has-logo img.mono-light { filter: var(--mono-light)
   .sector-table td.col-left { white-space: normal; }
   .sector-table .coin-cell .coin-name { white-space: normal; overflow: visible; overflow-wrap: anywhere; line-height: 1.25; }
   .sector-table td.col-center:first-child, .sector-table th.col-center:first-child { width: 28px; padding-left: 8px; padding-right: 2px; }
+  /* Narrow phones: a smaller badge and tighter cells, so names wrap between words (only a word wider than the column still splits). */
+  .sector-table .coin-cell { gap: 7px; }
+  .sector-table .coin-cell .coin-avatar { width: 26px; height: 26px; }
+  .sector-table td, .sector-table th { padding-left: 4px; padding-right: 4px; }
+  .sector-table td.col-center:first-child, .sector-table th.col-center:first-child { width: 22px; padding-left: 6px; }
 }
 
 /* Consent banner (assets/consent.js): a bar at the bottom, never covering the header */

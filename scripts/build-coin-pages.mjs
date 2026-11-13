@@ -280,7 +280,6 @@ function coinPage(c) {
   const mcap = c.price * c.supply * 1e6;
   const exNames = c.feeds.map(f => EXCHANGES[f]);
   const pairs = c.feeds.map(f => `${EXCHANGES[f]} (${PAIR[f](c.tickers?.[f] || c.sym)})`);
-  const sectors = c.sectors.map(x => SECTOR_NAMES[x] || x);
   const { primary, same, nearby, top } = relatedCoins(c);
   const st = stats[c.sym];
   const o = overrides[c.sym] || {};

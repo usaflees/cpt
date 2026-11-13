@@ -64,14 +64,17 @@
   // Single-tone logos (a white or a black mark) carry a class so app.css can flip them on a
   // background of the same tone: white XRP on the Light theme, black Stellar on the dark ones.
   const MONO = new Map(REGISTRY.filter(c => c.logo && c.mono).map(c => [c.sym, c.mono]));
-  const logoImg = (sym, size, attrs = "") => `<img class="${attrs}${MONO.has(sym) ? ` mono-${MONO.get(sym)}` : ""}" src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="${size}" height="${size}" decoding="async" />`;
+  const logoImg = (sym, size, cls, lazy) => {
+    const c = [cls, MONO.has(sym) && `mono-${MONO.get(sym)}`].filter(Boolean).join(" ");
+    return `<img${c ? ` class="${c}"` : ""} src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="${size}" height="${size}"${lazy ? ' loading="lazy"' : ""} decoding="async" />`;
+  };
 
   // Coin badge: the coin's own logo when we host one (/coin-icons/, see scripts/build-coin-icons.mjs),
   // otherwise its ticker. The neon ring and the size come from .coin-avatar in app.css.
   function avatar(sym, cls = "", style = "") {
     const logo = HAS_LOGO.has(sym);
     return `<span class="coin-avatar${cls ? " " + cls : ""}${logo ? " has-logo" : ""}" aria-hidden="true"${style ? ` style="${style}"` : ""}>` +
-      (logo ? `<img${MONO.has(sym) ? ` class="mono-${MONO.get(sym)}"` : ""} src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="20" height="20" loading="lazy" decoding="async" />` : esc(sym.slice(0, 4))) + `</span>`;
+      (logo ? logoImg(sym, 20, "", true) : esc(sym.slice(0, 4))) + `</span>`;
   }
 
   const state = {
@@ -140,9 +143,9 @@
    * ------------------------------------------------------------------ */
   state.currency = pick((params.get("curr") || (IS_EMBED ? "" : store.get("cpt_curr", ""))).toUpperCase(), CURRENCIES, "USD");
   // First visit follows the device's light/dark setting; widgets default to dark unless their embed code says otherwise.
-  const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
-  // ?theme=auto (widgets): light or Neon to match the visitor's device, and switch live when it changes.
   const prefersLight = () => Boolean(window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches);
+  const systemTheme = !IS_EMBED && prefersLight() ? "light" : "neon";
+  // ?theme=auto (widgets): light or Neon to match the visitor's device, and switch live when it changes.
   const autoTheme = (params.get("theme") || "").toLowerCase() === "auto";
   state.theme = autoTheme ? (prefersLight() ? "light" : "neon")
     : pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, systemTheme);
@@ -625,7 +628,7 @@
   function pulseLogo(dirty) {
     const now = Date.now();
     if (now - lastPulse < 3000 || !dirty.includes("BTC")) return;
-    const dir = state.coins.get("BTC") && state.coins.get("BTC").lastDir;
+    const dir = state.coins.get("BTC")?.lastDir;
     if (!dir) return;
     logoEl = logoEl || document.querySelector(".topbar-brand .brand-logo");
     if (!logoEl) return;
@@ -1082,8 +1085,9 @@
     setPageInert(true);
     (m.querySelector("input:not([readonly]), select, textarea, button:not([data-close])") || m.querySelector("button")).focus();
   }
+  const hideModals = () => document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
   function closeModals() {
-    document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
+    hideModals();
     state.activeModalSym = null;
     state.widgetModalOpen = false;
     setPageInert(false);
@@ -1174,7 +1178,7 @@
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
       notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
       bumpAppBadge();
-      if (window.CPT && window.CPT.logAlert) window.CPT.logAlert(`${c.sym} crossed $${target}`, c.sym);
+      window.CPT?.logAlert?.(`${c.sym} crossed $${target}`, c.sym);
       refreshAlertUi(c.sym);
     }
   }
@@ -1247,7 +1251,7 @@
     $("wgTheme").value = state.theme;
     state.widgetModalOpen = true;
     state.activeModalSym = null;
-    document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
+    hideModals();
     updateWidgetBuilder();
     openModal("widgetModal");
   }
@@ -1427,7 +1431,8 @@
       const digits = v >= 1 || v === 0 ? 2 : Math.min(8, 2 - Math.floor(Math.log10(v)));
       return v.toLocaleString("en-US", { style: "currency", currency: code, minimumFractionDigits: Math.min(2, digits), maximumFractionDigits: digits });
     }
-    const digits = v >= 100000 ? 0 : v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
+    // Six significant digits below 1,000 (339.098, not 339.097999), two decimals above, none from 100,000.
+    const digits = v >= 100000 ? 0 : v >= 1000 ? 2 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
     return v.toLocaleString("en-US", { maximumFractionDigits: digits }) + " " + code;
   }
   // Plain number for an <input type="number"> (no grouping separators).
@@ -1929,7 +1934,7 @@
       $("wgCoins").value = preset === "WATCHLIST" ? (state.watchlist.size ? Array.from(state.watchlist) : ["BTC", "ETH", "SOL"]).join(",") : preset;
       updateWidgetBuilder();
     },
-    expand: el => expandPairs(el)
+    expand: expandPairs
   };
 
   // Header popovers (<details>): close when clicking outside or after choosing a menu item.

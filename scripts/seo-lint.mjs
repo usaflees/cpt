@@ -6,11 +6,11 @@
 //                                             (allowed files, experiment log, per-page cooldown)
 //
 // Exits 1 on any error; warnings are printed but don't fail.
-import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, existsSync, statSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
-import { ROOT, loadRegistry } from "./lib/registry.mjs";
+import { ROOT, loadRegistry, logoTone } from "./lib/registry.mjs";
 
 const SITE = "https://cryptopriceticker.com";
 const COOLDOWN_DAYS = 28;
@@ -125,6 +125,14 @@ for (const e of experiments) {
   for (const k of REQUIRED) if (!(k in e)) err(`experiments.json: ${e.id || "?"} is missing "${k}"`);
   if (e.start && e.evaluateOn && (Date.parse(e.evaluateOn) - Date.parse(e.start)) / 864e5 < 14) err(`experiments.json: ${e.id} evaluates less than 14 days after it starts`);
   if (!["running", "kept", "reverted", "inconclusive"].includes(e.status)) err(`experiments.json: ${e.id} has unknown status "${e.status}"`);
+}
+
+// ---------- 5a. Coin logos: the registry's `logo` and `mono` marks match the files in coin-icons/ ----------
+// A single-tone logo without its mark is invisible on one of the themes (see .mono-light / .mono-dark in app.css).
+for (const c of coins) {
+  const f = join(ROOT, "coin-icons", `${c.sym.toLowerCase()}.svg`);
+  if (Boolean(c.logo) !== existsSync(f)) err(`coins.js: ${c.sym} has logo: ${Boolean(c.logo)} but coin-icons/${c.sym.toLowerCase()}.svg ${existsSync(f) ? "exists" : "is missing"}`);
+  else if (c.logo && (c.mono || null) !== logoTone(readFileSync(f, "utf8"))) err(`coins.js: ${c.sym} needs mono: ${JSON.stringify(logoTone(readFileSync(f, "utf8")))} (run node scripts/build-coin-icons.mjs --tones)`);
 }
 
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------

@@ -43,7 +43,7 @@ const B = process.argv[2] || 'http://localhost:8788';
   await p.click('[data-sector="BAG"]'); await p.waitForTimeout(300);
   console.log('My bag tab: rows', await p.evaluate(() => document.querySelectorAll('#tableBody tr[data-sym]').length), '| banner visible', await p.isVisible('#bagBanner'), '| holdings col visible', await p.isVisible('#row-BTC .col-bag'));
   await p.click('[data-sector="ALL"]');
-  await p.focus('th[data-sort="change7d"] button'); await p.keyboard.press('Enter');
+  await p.focus('th[data-sort="change7d"] button'); await p.keyboard.press('Enter'); await p.waitForTimeout(400);
   console.log('sort by 7d:', await p.getAttribute('th[data-sort="change7d"]', 'aria-sort'));
   await p.click('.menu-pop summary'); await p.click('.menu-list [data-action="open-widget"]'); await p.waitForTimeout(500);
   const snip = await p.inputValue('#wgEmbedCode'); console.log('widget builder:', snip.match(/>([^<]+)<\/a>/)[1], '| menu closed:', !(await p.evaluate(() => document.querySelector('.menu-pop').open)));
