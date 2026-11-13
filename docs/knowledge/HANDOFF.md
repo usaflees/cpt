@@ -44,6 +44,12 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Nov 11, branch `ccr-a8021aca-9rxf9x` (draft PR, not live):** access lock-down. New [ACCESS.md](ACCESS.md): every
+  way the site can change, what the repo enforces, the settings only the owner can change, public vs private.
+  `data-refresh.yml` is now two jobs (read-only `refresh` makes a patch; `publish`, the only job with a write token,
+  re-checks it with `main`'s scripts and pushes); seo-lint section 3c lints every workflow; `classify-change` compares
+  `assets/coins.js` as text; `check-refresh` restricts what the stats file may contain; `.github/CODEOWNERS`.
+  After it merges, run the refresh once by hand with "publish" unticked to see both jobs pass.
 - **Live Nov 10 (`29fb398`, PR #13):** the repo's working files (`/scripts`, `/docs`, `/content`, `/tests`, `/.claude`,
   `/.github`, `CLAUDE.md`, `README.md`, `SECURITY.md`, `.gitignore`) are no longer served: `functions/_middleware.js` returns
   404, limited by `_routes.json`; `seo-lint` checks both lists match, `check-live` requests each path. Owner wants the

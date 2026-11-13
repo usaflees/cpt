@@ -33,6 +33,8 @@ guide, research).
   element, and reserve space for anything JavaScript fills in (layout shift).
 - `scripts/`, `tests/`, `_headers`, `.github/`, `assets/app.*`, `CLAUDE.md` are off-limits to the automated weekly task
   (enforced by `seo-lint --base` on `claude/seo-*` branches and by `classify-change`).
+- Workflows are linted (seo-lint section 3c): SHA-pinned `actions/*` only, no secrets, no `${{ }}` inside `run:` scripts
+  (use `env`), and only `data-refresh.yml` job `publish` may hold a write token. Who can publish: `docs/knowledge/ACCESS.md`.
 
 ## Decisions (details in docs/knowledge/DECISIONS.md)
 - No live prices or dates in titles; titles ≤ 60, descriptions ≤ 160 (seo-lint enforces).

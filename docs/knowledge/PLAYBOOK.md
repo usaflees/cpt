@@ -125,7 +125,11 @@ Rules in [../SELF-IMPROVING.md](../SELF-IMPROVING.md); evidence in [LOOP] and [E
 - ✅ Strict CSP: no inline handlers, no inline scripts except the build-inlined theme script (allowed by its hash),
   everything wired through `data-action`; HSTS;
   `frame-ancestors *` only so widgets embed. [SEC]
-- ✅ Public repo: nothing private is committed; `docs/`, `scripts/`, `tests/`, `content/` are served but `noindex`.
+- ✅ Public repo: nothing private is committed; the repo's working files return 404 on the site (`functions/_middleware.js`).
+- ✅ Who can publish is written down in [ACCESS.md](ACCESS.md). Workflow rules are enforced by seo-lint (section 3c):
+  SHA-pinned `actions/*` only, read-only tokens, no secrets, no privileged triggers, no expressions in shell scripts.
+  The one job that can push (`data-refresh.yml` → `publish`) installs nothing and re-checks the patch it is given.
+- 👤 Owner settings from ACCESS.md §3: ruleset on `main` (no deletion, no force-push), Actions limits, account 2FA.
 - ✅ Agent guardrails: `claude/*` branches only, CI "Site checks" on every PR, `classify-change` auto-merges data
   refreshes only, forbidden-file list enforced on `claude/seo-*` branches, the agent edits JSON overrides, never
   HTML. [AGENT]
