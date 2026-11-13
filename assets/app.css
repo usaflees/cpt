@@ -162,35 +162,7 @@ body.is-embed #embedShell { display: block !important; }
 #embedShell { display: none; width: 100%; height: 100vh; overflow: hidden; background: var(--bg-primary); }
 
 /* Top Telemetry Bar */
-.telemetry-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 16px;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.telemetry-left, .telemetry-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  font-weight: 600;
-}
+
 .pulse-dot {
   width: 7px;
   height: 7px;
@@ -275,19 +247,7 @@ body.is-embed #embedShell { display: block !important; }
 }
 
 /* Main Header */
-.brand-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-}
-.brand-title-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+
 .brand-logo {
   width: 36px;
   height: 36px;
@@ -306,19 +266,6 @@ body.is-embed #embedShell { display: block !important; }
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-}
-.brand-sub {
-  font-weight: 400;
-  font-size: 11.5px;
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-}
-
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
 }
 .search-box {
   position: relative;
@@ -410,33 +357,7 @@ body.is-embed #embedShell { display: block !important; }
 }
 
 /* Bento Summary Cards */
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 14px;
-}
-@media (max-width: 960px) {
-  .bento-grid { grid-template-columns: 1fr; }
-}
-.bento-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 14px;
-}
-.bento-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
+
 .bento-metrics {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -459,59 +380,8 @@ body.is-embed #embedShell { display: block !important; }
   font-weight: 700;
   color: var(--text-primary);
 }
-.mover-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 6px;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  cursor: pointer;
-}
-.mover-row:hover { background: var(--bg-hover); }
 
 /* Sector Filter Pills */
-.filter-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-.sector-pills {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.sector-pill {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  transition: all 0.15s;
-}
-.sector-pill .count {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--text-muted);
-  background: var(--bg-primary);
-  padding: 1px 5px;
-  border-radius: 4px;
-}
-.sector-pill.active, .sector-pill:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-glow);
-}
 
 /* Main Table */
 .table-wrap {
@@ -647,9 +517,6 @@ td {
   transition: transform 0.1s, color 0.15s;
 }
 .icon-btn:hover { transform: scale(1.15); color: var(--text-primary); }
-.icon-btn.active-fav { color: #f43f5e; }
-.icon-btn.active-pin { color: var(--accent); }
-.icon-btn.active-alert { color: var(--warn); }
 
 /* Change Pill */
 .chg-pill {
@@ -663,20 +530,7 @@ td {
 .chg-down { color: var(--down); background: var(--down-bg); }
 
 /* 24h Range Bar */
-.range-wrap {
-  width: 150px;
-  display: inline-flex;
-  flex-direction: column;
-  gap: 3px;
-  vertical-align: middle;
-}
-.range-labels {
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  font-size: 9.5px;
-  color: var(--text-muted);
-}
+
 .range-track {
   width: 100%;
   height: 5px;
@@ -1008,9 +862,9 @@ th[aria-sort="ascending"] .th-sort::after { content: "▲"; font-size: 9px; }
 th[aria-sort="descending"] .th-sort::after { content: "▼"; font-size: 9px; }
 th:not([aria-sort]) { cursor: default; }
 
-a.coin-cell, a.mover-row, a.tape-item { color: inherit; text-decoration: none; }
-a.coin-cell:hover .coin-sym, a.mover-row:hover strong { color: var(--accent); }
-button.coin-cell, button.mover-row { background: none; border: 0; color: inherit; text-align: left; padding: 0; }
+a.coin-cell, a.tape-item { color: inherit; text-decoration: none; }
+a.coin-cell:hover .coin-sym { color: var(--accent); }
+button.coin-cell { background: none; border: 0; color: inherit; text-align: left; padding: 0; }
 .is-stale { opacity: 0.55; }
 .ticker-tape-wrap a { pointer-events: auto; }
 
@@ -1046,13 +900,6 @@ button.coin-cell, button.mover-row { background: none; border: 0; color: inherit
 .disclaimer { font-size: 11.5px; color: var(--text-muted); }
 
 /* Simple top bar used by coin pages and the 404 page */
-.site-bar {
-  display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
-  padding: 8px 16px; background: var(--bg-secondary); border-bottom: 1px solid var(--border);
-}
-.site-bar .brand { display: inline-flex; align-items: center; gap: 8px; color: var(--text-primary); text-decoration: none; font-weight: 800; }
-.site-bar .brand .brand-logo { width: 28px; height: 28px; font-size: 14px; }
-.site-bar-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
 .breadcrumb { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; font-family: var(--font-mono); }
 .breadcrumb a { color: var(--text-secondary); text-decoration: none; }
@@ -1313,7 +1160,6 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 
 /* Shared content blocks */
 .page-section { border-radius: var(--radius); padding: 18px 20px; }
-.site-bar { position: sticky; top: 0; z-index: 60; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg-primary) 82%, transparent); }
 .coin-hero { border-radius: var(--radius); }
 .metric-box { border-radius: 10px; }
 
@@ -1639,7 +1485,6 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
 /* Page transitions (Chromium, Safari): same-site navigations crossfade instead of flashing, the
    header stays put, and a coin's logo glides from the table into the coin page header. */
 @media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
   .topbar { view-transition-name: topbar; }
   .coin-title .coin-avatar { view-transition-name: coin-logo; }
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .18s; }
@@ -1824,10 +1669,6 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
   }
   @keyframes ring-spin { to { transform: rotate(1turn); } }
 }
-
-/* Market mood (home): the hero's glow leans green when most coins are up over 24 h, red when most
-   are down (app.js sets --mood, 0–1, at most every 30 s). A typed property so it eases. */
-@property --mood { syntax: "<number>"; inherits: true; initial-value: 0.5; }
 body:not(.is-embed) .hero { position: relative; isolation: isolate; }
 body:not(.is-embed) .hero::before {
   content: ""; position: absolute; z-index: -1; inset: -10px -40px 0; pointer-events: none;
