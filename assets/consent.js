@@ -3,8 +3,11 @@
 // - Analytics cookies stay off until the visitor clicks Accept. Before that, Consent Mode sends
 //   cookieless pings that Google uses for modelled numbers. Ad signals are always denied: the
 //   site shows no ads.
-// - GTM loads after the page has finished loading (and only once a prerendered page is actually
-//   shown), so it never delays the first paint or the live prices.
+// - GA4 (gtag.js) loads after the page has finished loading (and only once a prerendered page is
+//   actually shown), so it never delays the first paint or the live prices.
+// - The GTM container loads only for visitors who accepted (now or on an earlier visit): it holds
+//   no tags today, and its ~335 KB script cost every first visit ~200 ms of main thread (Lighthouse,
+//   Nov 11). Tags added to the container later still run for consenting visitors.
 // - Embedded widgets never load it: they run on other people's websites.
 // - The choice is kept in this browser (localStorage "cpt_consent"); "Cookie settings" in the
 //   footer, or any element with data-consent-open, shows the banner again.
@@ -35,15 +38,21 @@
   gtag("set", "url_passthrough", false);
   if (read() === "granted") gtag("consent", "update", { analytics_storage: "granted" });
 
-  var loaded = false;
-  function loadGtm() {
-    if (loaded) return;
-    loaded = true;
+  var gtmLoaded = false;
+  function loadGtmContainer() {
+    if (gtmLoaded) return;
+    gtmLoaded = true;
     window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
     var s = document.createElement("script");
     s.async = true;
     s.src = "https://www.googletagmanager.com/gtm.js?id=" + GTM_ID;
     document.head.appendChild(s);
+  }
+  var loaded = false;
+  function loadGtm() {
+    if (loaded) return;
+    loaded = true;
+    if (read() === "granted") loadGtmContainer();
     gtag("js", new Date());
     gtag("config", GA_ID, { allow_google_signals: false, allow_ad_personalization_signals: false });
     var g = document.createElement("script");
@@ -64,6 +73,7 @@
     write(v);
     gtag("consent", "update", { analytics_storage: v });
     window.dataLayer.push({ event: "cpt_consent_" + v });
+    if (v === "granted" && loaded) loadGtmContainer();
     if (bar) { bar.remove(); bar = null; }
   }
   function showBanner() {

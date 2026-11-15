@@ -1,0 +1,47 @@
+/* Coin Race (/race/): loaded only on that page, after app.css, using its theme tokens. */
+.race-board { display: grid; gap: 14px; }
+.race-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.race-controls .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.race-controls .seg button { font: 600 13px/1 var(--font-sans); padding: 10px 12px; min-height: 40px; background: transparent; color: var(--text-secondary); border: 0; cursor: pointer; }
+.race-controls .seg button[aria-pressed="true"] { background: var(--bg-tertiary); color: var(--accent); }
+.race-add { min-height: 40px; max-width: 100%; padding: 0 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); font: inherit; font-size: 14px; }
+.race-lanes { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.race-lane {
+  display: grid; grid-template-columns: 36px minmax(110px, 170px) minmax(0, 1fr) 76px 96px 32px; gap: 10px; align-items: center;
+  padding: 8px 10px; border-radius: var(--radius); background: var(--bg-secondary); border: 1px solid var(--border);
+}
+.race-lane.is-lead { border-color: var(--warn); box-shadow: 0 0 0 1px var(--warn) inset; }
+.race-place { font-family: var(--font-mono); font-weight: 800; font-size: 13px; color: var(--text-muted); text-align: center; }
+.race-lane.is-lead .race-place { color: var(--warn); }
+[data-theme="light"] .race-lane.is-lead .race-place { color: #8a5a00; }
+.race-lane.is-lead .race-place::before { content: "♛ "; }
+.race-coin { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--text-primary); text-decoration: none; }
+.race-coin span { display: grid; min-width: 0; }
+.race-coin strong { font-size: 14px; }
+.race-coin small { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.race-track {
+  position: relative; height: 28px; border-radius: 8px; overflow: hidden; background: var(--bg-tertiary);
+  background-image: repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), var(--border) calc(10% - 1px) 10%);
+}
+.race-track::after { content: ""; position: absolute; top: 0; bottom: 0; left: calc(50% - 1px); width: 2px; background: var(--text-muted); opacity: .6; }
+.race-bar { position: absolute; top: 4px; bottom: 4px; left: 50%; width: 0; border-radius: 6px; background: var(--text-muted); }
+.race-bar.up { background: var(--up); }
+.race-bar.down { background: var(--down); }
+@media (prefers-reduced-motion: no-preference) { .race-bar { transition: left .45s cubic-bezier(.2, .8, .2, 1), width .45s cubic-bezier(.2, .8, .2, 1); } }
+.race-pct, .race-price { font-family: var(--font-mono); font-weight: 700; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+.race-pct.up { color: var(--up); }
+.race-pct.down { color: var(--down); }
+.race-price { color: var(--text-secondary); font-weight: 600; }
+.race-remove { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); font-size: 18px; line-height: 1; cursor: pointer; }
+.race-remove:hover:not(:disabled) { color: var(--down); border-color: var(--down); }
+.race-remove:disabled { opacity: .4; cursor: default; }
+.race-foot { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+.race-foot b { color: var(--text-primary); font-weight: 700; }
+.race-lanes:empty { min-height: 260px; }
+@media (max-width: 640px) {
+  .race-lane { grid-template-columns: 30px minmax(0, 1fr) 72px 32px; grid-template-areas: "place coin pct x" "track track track track"; row-gap: 6px; }
+  .race-place { grid-area: place; } .race-coin { grid-area: coin; } .race-pct { grid-area: pct; } .race-remove { grid-area: x; }
+  .race-track { grid-area: track; height: 22px; }
+  .race-price { display: none; }
+  .race-controls .seg button { padding: 10px; }
+}

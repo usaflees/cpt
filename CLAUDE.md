@@ -16,6 +16,8 @@ guide, research).
   open a log only for a FAIL. Wait for deploys with `bash tests/wait-deploy.sh <url>`, not repeated polling.
 - Don't read generated or large files whole (`coin/`, `sector/`, `content/coin-stats.json`, `og/`, `brand/`,
   `docs/knowledge/research/`): grep, or read only the lines you need.
+- One chat at a time on this repo. Routine builds go through `docs/QUEUE.md` and the two daily scheduled tasks
+  (`docs/DAILY-TASKS.md`); don't run deep research or parallel chats for work the queue can carry.
 - Default effort `medium`; use `high`/`xhigh` for audits, redesigns and hard bugs (docs/knowledge/CLAUDE-OPUS-5-5.md).
 - Scripts reject unknown flags; read a script's header comment for its usage instead of trying `--help`.
 
