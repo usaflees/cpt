@@ -64,4 +64,5 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 - 24h volume is the sum of the three exchanges' USD/USDT markets, so it is far lower than "global" figures and
   drops sharply on weekends.
 - Coins without a Binance market (e.g. USDT) have no 7-day sparkline.
+- At 320 px a few long one-word coin names (e.g. "Superintelligence") still split inside the word in sector tables; 360 px and wider: only that one.
 - Not indexed by Google yet (expected for a new site until Search Console is set up).

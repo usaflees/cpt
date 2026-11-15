@@ -44,6 +44,10 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Nov 15 (PR #15, cleanup pass):** coin logos visible on every theme (`mono` marks, see DECISIONS), dialogs keep
+  focus inside, sector tables don't break names mid-word on 360–412 px phones, `app.css` 74.6 KB (64 overridden
+  declarations removed), CSV without the invented liquidity column, pinned tab title waits for a live price, service
+  worker prunes old `?v=` assets, home FAQ wording matches the UI, converter amounts below 1,000 show 6 significant digits.
 - **Nov 12:** first Search Console exports analysed: only the home page is indexed, the rest is "Discovered –
   currently not indexed" → `docs/INDEXING-PLAN.md` (owner's daily Request-indexing list, first links, hold on new URL
   families). AdSense site verification is live (`ads.txt` + home-page meta tag, publisher `ca-pub-3149203932367096`);
