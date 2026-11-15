@@ -3,12 +3,16 @@
 //
 //   node scripts/build-seo-engine.mjs            fetch a market snapshot (CoinGecko → CoinPaprika → committed cache)
 //   node scripts/build-seo-engine.mjs --offline  use data/market-snapshot-cache.json only (repeatable local builds)
+//   node scripts/build-seo-engine.mjs --new-pages  also build /compare/ and /category/ even while
+//                                                  content/quant-config.json has "newUrlFamilies": false
 //
 // dist/ is a copy of the static site in the repo root plus what this script generates from the snapshot:
 //   - a quantitative section on the coin pages of the top 50 assets (/coin/<sym>/; /coin/<name>/ already
 //     redirects there, so each asset keeps exactly one indexable URL)
-//   - /compare/<a>-vs-<b>/   25 curated comparisons          (content/quant-config.json "comparisons")
-//   - /category/<sector>/    6 sector benchmark hubs with medians (content/quant-config.json "sectors")
+//   - only with "newUrlFamilies": true (held back while Google has not indexed the existing pages,
+//     docs/INDEXING-PLAN.md §E):
+//       /compare/<a>-vs-<b>/   25 curated comparisons          (content/quant-config.json "comparisons")
+//       /category/<sector>/    6 sector benchmark hubs with medians (content/quant-config.json "sectors")
 //   - /api/v1/quant-snapshot.json and /data/crypto-quant-snapshot.csv (open data, CORS via public/_headers)
 //   - sitemap lastmod from data/lastmod-ledger.json: a URL's date moves only on a ≥ 3% price move, a rank
 //     change or a regime change; the URLs that moved are written to data/changed-urls.json for IndexNow
@@ -21,12 +25,13 @@ import { ROOT, loadRegistry } from "./lib/registry.mjs";
 import { loadSnapshot } from "./lib/market-data.mjs";
 
 const args = process.argv.slice(2);
-if (args.some(a => a !== "--offline")) { console.error("usage: node scripts/build-seo-engine.mjs [--offline]"); process.exit(1); }
+if (args.some(a => !["--offline", "--new-pages"].includes(a))) { console.error("usage: node scripts/build-seo-engine.mjs [--offline] [--new-pages]"); process.exit(1); }
 
 const SITE = "https://cryptopriceticker.com";
 const DIST = ROOT + "dist/";
 const LEDGER_PATH = ROOT + "data/lastmod-ledger.json";
 const cfg = JSON.parse(readFileSync(ROOT + "content/quant-config.json", "utf8"));
+const NEW_PAGES = cfg.newUrlFamilies === true || args.includes("--new-pages");
 const { coins } = loadRegistry();
 const snap = await loadSnapshot(cfg.coingeckoIds, { offline: args.includes("--offline") });
 const AS_OF = snap.fetchedAt;                                   // 2026-11-12T12:51:48Z
@@ -102,6 +107,9 @@ const sectors = cfg.sectors.map(s => {
   };
 }).filter(s => s.members.length >= 3);
 
+// Sector medians are always computed (the coin pages use them); the hub pages exist only with NEW_PAGES.
+const hubs = NEW_PAGES ? sectors : [];
+const sectorHref = s => NEW_PAGES ? s.path : s.legacy ? `/sector/${s.legacy}/` : null;
 const top = universe.slice(0, cfg.topN);
 const topMed = { chg24: median(top.map(m => m.chg24)), chg7: median(top.map(m => m.chg7)) };
 for (const m of universe) {
@@ -116,6 +124,14 @@ for (const m of universe) {
   const leader = m.sector && m.sector.leader !== m ? m.sector.leader : m !== BTC ? BTC : null;
   m.parityTarget = leader;
 }
+// Position of each asset among its peers (primary sector, or the top-N when it has none) for five metrics.
+const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
+for (const m of universe) {
+  const peers = m.sector ? m.sector.members : top;
+  const place = (key, desc) => { const xs = peers.filter(x => x[key] != null).sort((a, b) => desc ? b[key] - a[key] : a[key] - b[key]); const i = xs.indexOf(m); return i < 0 ? null : { pos: i + 1, n: xs.length }; };
+  m.peerName = m.sector ? `${m.sector.name} assets` : `top-${top.length} assets`;
+  m.place = { turnover: place("turnover", true), drawdown: place("drawdown", false), float: place("float", true), chg24: place("chg24", true), chg7: place("chg7", true), spread: place("spread", false) };
+}
 // Price and multiple of asset a at asset b's market cap, and at b's FDV (a's full supply basis).
 const parity = (a, b) => ({
   price: b.mcap / a.circ, mult: b.mcap / a.mcap,
@@ -125,7 +141,7 @@ const parity = (a, b) => ({
 const pairs = [];
 for (const [x, y] of cfg.comparisons) {
   const a = U.get(x), b = U.get(y);
-  if (a && b && pairs.length < cfg.maxComparisons) pairs.push({ a, b, slug: `${a.slug}-vs-${b.slug}`, path: `/compare/${a.slug}-vs-${b.slug}/` });
+  if (NEW_PAGES && a && b && pairs.length < cfg.maxComparisons) pairs.push({ a, b, slug: `${a.slug}-vs-${b.slug}`, path: `/compare/${a.slug}-vs-${b.slug}/` });
 }
 
 // ---------- lastmod ledger ----------
@@ -141,7 +157,7 @@ function track(path, state) {
 const lastmod = new Map();
 top.forEach(m => lastmod.set(m.path, track(m.path, { price: m.price, regime: m.regime, rank: m.rank })));
 pairs.forEach(p => lastmod.set(p.path, track(p.path, { price: p.a.price / p.b.price, regime: `${p.a.regime}|${p.b.regime}`, rank: `${p.a.rank}-${p.b.rank}` })));
-sectors.forEach(s => lastmod.set(s.path, track(s.path, { price: s.mcap, regime: s.dominant, rank: s.leader.sym })));
+hubs.forEach(s => lastmod.set(s.path, track(s.path, { price: s.mcap, regime: s.dominant, rank: s.leader.sym })));
 for (const k of Object.keys(ledger.urls)) if (!seen.has(k)) delete ledger.urls[k];
 
 // ---------- copy the static site ----------
@@ -294,6 +310,35 @@ const LENS = {
     f => `The ${f.spread} range is wider than the 3.5% compression threshold and the 24h move is below the momentum threshold, so no volatility regime is flagged.`]
 };
 
+// Data bands: one sentence per section chosen by where the asset's own number falls, plus its place among
+// peers. Two assets in the same regime still read differently when their liquidity, drawdown depth, supply
+// profile, relative performance or range differ.
+function bands(m) {
+  const S = m.sym, P = m.place, rk = (p, what, sense) => p ? ` Among the ${p.n} ${m.peerName} tracked, ${S} ranks ${ordinal(p.pos)} by ${what}${sense ? ` (${sense})` : ""}.` : "";
+  const liq = m.turnover > 12 ? `At ${pc(m.turnover)}, more than an eighth of the ${S} market cap changed hands in one day, the top turnover bracket.`
+    : m.turnover >= 4 ? `A turnover of ${pc(m.turnover)} sits in the 4–12% bracket, where one day's volume is a moderate fraction of capitalisation.`
+    : `At ${pc(m.turnover)}, less than one twenty-fifth of the ${S} market cap traded in 24 hours, the lowest turnover bracket.`;
+  const dd = m.drawdown < 30 ? `${S} is within 30% of its record price, the shallowest of the four drawdown bands used here.`
+    : m.drawdown < 60 ? `${S} sits in the 30–60% drawdown band, where the recovery multiple lies between 1.43x and 2.50x by construction.`
+    : m.drawdown < 85 ? `${S} sits in the 60–85% drawdown band, where the recovery multiple lies between 2.50x and 6.67x.`
+    : `${S} sits in the deepest band, more than 85% below its record, where the recovery multiple exceeds 6.67x.`;
+  const sup = m.float == null ? ""
+    : m.float >= 99.5 ? `Effectively all of the reported ${S} supply is circulating, so market cap and fully diluted valuation are nearly identical in this snapshot.`
+    : m.float >= 80 ? `Most of the ${S} supply already circulates: ${pc(100 - m.float)} of the ${m.basisKind} supply is still to be issued or released.`
+    : `${pc(100 - m.float)} of the ${S} ${m.basisKind} supply is not yet circulating, so future issuance or unlocks are a material part of the supply picture.`;
+  const b = m === BTC ? ["Ethereum (ETH)", m.alpha.eth24, m.alpha.eth7] : ["Bitcoin (BTC)", m.alpha.btc24, m.alpha.btc7];
+  const al = b[1] >= 0 && b[2] >= 0 ? `${S} is ahead of ${b[0]} on both windows, 24h and 7d.`
+    : b[1] >= 0 ? `${S} is ahead of ${b[0]} over 24h but behind over 7d, so the short window runs against the weekly one.`
+    : b[2] >= 0 ? `${S} is behind ${b[0]} over 24h but still ahead over 7d.`
+    : `${S} is behind ${b[0]} on both windows, 24h and 7d.`;
+  const rg = m.spread == null ? "" : m.spread < 3.5 ? `A ${pc(m.spread)} range is in the narrowest band (under 3.5%).`
+    : m.spread < 8 ? `A ${pc(m.spread)} range is in the middle band (3.5–8%).` : `A ${pc(m.spread)} range is in the widest band (above 8%).`;
+  return [
+    liq + rk(P.turnover, "turnover velocity", "1st = highest"), dd + rk(P.drawdown, "ATH drawdown", "1st = closest to its high"),
+    sup + rk(P.float, "supply float", "1st = most circulating"), al + rk(P.chg24, "24h return") + rk(P.chg7, "7d return").replace(/^ Among the \d+ [^,]+ tracked, \w+ ranks/, " It ranks").replace(" by 7d return", " over 7d"),
+    rg + rk(P.spread, "intraday spread", "1st = narrowest")];
+}
+
 // ---------- coin page section ----------
 function coinSections(m) {
   const N = esc(m.N), R = REGIMES[m.regime], h = H2[m.regime], lens = LENS[m.regime];
@@ -303,6 +348,7 @@ function coinSections(m) {
     unlocked: m.mcFdv == null ? "an unreported share" : pc(m.mcFdv * 100), locked: m.mcFdv == null ? "an unreported share" : pc((1 - m.mcFdv) * 100),
     bench: m.benchName, secWord: m.alpha.sec24 >= 0 ? "ahead of" : "behind", sec24abs: loc(Math.abs(m.alpha.sec24), 2, 2), sec7abs: loc(Math.abs(m.alpha.sec7), 2, 2)
   };
+  const band = bands(m);
   const ref = cfg.references[m.sym];
   const t = m.parityTarget, tp = t && parity(m, t);
   const scen = [
@@ -335,18 +381,18 @@ ${[100, 1000, 10000].map(a => `<tr><th scope="row" class="col-left">${usd(a).rep
   return `<section class="page-section q-block" id="quant" aria-label="${N} quantitative telemetry">
 <p class="q-regime"><span class="tag-badge">Regime</span> ${N} microstructure regime at ${TIME}: <strong>${R.label}</strong> (${R.rule})${also.length ? `; the snapshot also meets: ${also.join(", ")}` : ""}.</p>
 <h2 id="q-liquidity">${h[0](N)}</h2>
-<p class="prose">${N} trades at ${usd(m.price)} USD as of ${TIME}, with a market cap of ${big(m.mcap)} USD (rank #${m.rank}) and 24h spot volume of ${big(m.vol)} USD, a spot turnover velocity of ${pc(m.turnover)} (${m.turnClass}). ${lens[0](f)} Turnover as a share of capitalisation is a standard liquidity measure in market-microstructure research (Datar, Naik and Radcliffe, 1998, <cite>Journal of Financial Markets</cite>).</p>
+<p class="prose">${N} trades at ${usd(m.price)} USD as of ${TIME}, with a market cap of ${big(m.mcap)} USD (rank #${m.rank}) and 24h spot volume of ${big(m.vol)} USD, a spot turnover velocity of ${pc(m.turnover)} (${m.turnClass}). ${lens[0](f)} ${band[0]} Turnover as a share of capitalisation is a standard liquidity measure in market-microstructure research (Datar, Naik and Radcliffe, 1998, <cite>Journal of Financial Markets</cite>).</p>
 ${sparkline(m)}
 ${table(`${N} spot price, market cap and liquidity (${AS_OF_TEXT})`, ["Metric", "Value", "Unit"], [
     ["Spot price", usd(m.price), "USD"], ["24h change", pill(m.chg24), "%"], ["7d change", pill(m.chg7), "%"], ["Market cap", big(m.mcap), "USD"],
     ["24h volume", big(m.vol), "USD"], ["Spot turnover velocity", pc(m.turnover), "% of market cap"], ["Turnover classification", m.turnClass, "class"], ["Snapshot time", AS_OF_TEXT, "UTC"]])}
 <h2 id="q-ath">${h[1](N)}</h2>
-<p class="prose">${athLine} ${lens[1](f)}</p>
+<p class="prose">${athLine} ${lens[1](f)} ${band[1]}</p>
 <h3 id="q-scenarios">${N} ATH recovery and capital scenario matrix</h3>
 <p class="prose">The ${N} scenario matrix converts $100, $1,000 and $10,000 allocated at the ${usd(m.price)} USD spot price into their USD value at five reference prices: 25% below spot, spot, half the all-time high, the full all-time high${t ? ` and the price at which ${m.sym} would match the ${big(t.mcap)} USD market cap of ${esc(t.N)}` : ""}. The rows are arithmetic, not expectations; type an amount or move the slider to compute any position size.</p>
 ${matrix}
 <h2 id="q-supply">${h[2](N)}</h2>
-<p class="prose">${supplyLine} ${m.mcFdv == null ? "" : lens[2](f)}${ref ? ` On the supply schedule of ${esc(m.name)}: ${esc(ref.fact)} (source: ${esc(ref.source)}).` : ` Fully diluted valuation is taken as reported by ${esc(snap.source)}, which multiplies price by maximum supply, or total supply where no maximum is defined.`}</p>
+<p class="prose">${supplyLine} ${m.mcFdv == null ? "" : lens[2](f)} ${band[2]}${ref ? ` On the supply schedule of ${esc(m.name)}: ${esc(ref.fact)} (source: ${esc(ref.source)}).` : ` Fully diluted valuation is taken as reported by ${esc(snap.source)}, which multiplies price by maximum supply, or total supply where no maximum is defined.`}</p>
 ${table(`${N} supply float and FDV overhang (${AS_OF_TEXT})`, ["Metric", "Value", "Unit"], [
     ["Circulating supply", qty(m.circ), m.sym], [`${m.basisKind === "maximum" ? "Maximum" : "Total"} supply`, qty(m.basis), m.sym], ["Supply float", pc(m.float), "% of supply"],
     ["Market cap", big(m.mcap), "USD"], ["Fully diluted valuation (FDV)", big(m.fdv), "USD"], ["Market cap / FDV", ratio(m.mcFdv), "ratio"],
@@ -355,22 +401,22 @@ ${parRows.length ? `<h3 id="q-parity">${N} market cap parity price versus ${m !=
 <p class="prose">${N} would trade at ${usd(p0.price)} USD, ${mx(p0.mult)} its current price, if its market cap equalled the ${big(pT.mcap)} USD market cap of ${esc(pT.N)} with today's circulating supply. The FDV columns apply the same calculation to fully diluted valuations and full supply.</p>
 ${table(`${N} market cap and FDV parity prices (${AS_OF_TEXT})`, ["Parity target", "Price at market cap parity (USD)", "Multiplier (x)", "Price at FDV parity (USD)", "FDV multiplier (x)"], parRows)}` : ""}
 <h2 id="q-alpha">${h[3](N)}</h2>
-<p class="prose">${N} returned ${spc(m.chg24)} over 24 hours and ${spc(m.chg7)} over 7 days, ${m !== BTC ? `a spread of ${pp(m.alpha.btc24)} and ${pp(m.alpha.btc7)} against Bitcoin (BTC)` : `a spread of ${pp(m.alpha.eth24)} and ${pp(m.alpha.eth7)} against Ethereum (ETH)`}. ${lens[3](f)}</p>
+<p class="prose">${N} returned ${spc(m.chg24)} over 24 hours and ${spc(m.chg7)} over 7 days, ${m !== BTC ? `a spread of ${pp(m.alpha.btc24)} and ${pp(m.alpha.btc7)} against Bitcoin (BTC)` : `a spread of ${pp(m.alpha.eth24)} and ${pp(m.alpha.eth7)} against Ethereum (ETH)`}. ${lens[3](f)} ${band[3]}</p>
 ${table(`${N} benchmark alpha spread in percentage points (${AS_OF_TEXT})`, ["Benchmark", "Benchmark 24h (%)", `${m.sym} alpha 24h (pp)`, "Benchmark 7d (%)", `${m.sym} alpha 7d (pp)`], [
     ...(m !== BTC ? [["Bitcoin (BTC)", spc(BTC.chg24), pp(m.alpha.btc24), spc(BTC.chg7), pp(m.alpha.btc7)]] : []),
     ...(m !== ETH ? [["Ethereum (ETH)", spc(ETH.chg24), pp(m.alpha.eth24), spc(ETH.chg7), pp(m.alpha.eth7)]] : []),
-    [m.sector ? `<a href="${m.sector.path}">${esc(m.sector.name)} sector median</a> (${m.sector.members.length} assets)` : esc(m.benchName), spc(m.chg24 - m.alpha.sec24), pp(m.alpha.sec24), spc(m.chg7 - m.alpha.sec7), pp(m.alpha.sec7)]])}
+    [m.sector ? `${sectorHref(m.sector) ? `<a href="${sectorHref(m.sector)}">${esc(m.sector.name)} sector median</a>` : `${esc(m.sector.name)} sector median`} (${m.sector.members.length} assets)` : esc(m.benchName), spc(m.chg24 - m.alpha.sec24), pp(m.alpha.sec24), spc(m.chg7 - m.alpha.sec7), pp(m.alpha.sec7)]])}
 <h2 id="q-volatility">${h[4](N)}</h2>
 <p class="prose">${m.spread == null
     ? `${N} has no 24h high and low in the ${esc(snap.source)} fallback data used for this snapshot, so the intraday volatility spread is not computed.`
-    : `${N} ranged between ${usd(m.low)} and ${usd(m.high)} USD over the last 24 hours, an intraday volatility spread of ${pc(m.spread)} of the low. ${lens[4](f)} The high-low range is a recognised volatility estimator (Parkinson, 1980, <cite>Journal of Business</cite>).`}</p>
+    : `${N} ranged between ${usd(m.low)} and ${usd(m.high)} USD over the last 24 hours, an intraday volatility spread of ${pc(m.spread)} of the low. ${lens[4](f)} ${band[4]} The high-low range is a recognised volatility estimator (Parkinson, 1980, <cite>Journal of Business</cite>).`}</p>
 ${rangeBar(m)}
 ${table(`${N} intraday range and regime (${AS_OF_TEXT})`, ["Metric", "Value", "Unit"], [
     ["24h low", usd(m.low), "USD"], ["24h high", usd(m.high), "USD"], ["Intraday volatility spread", pc(m.spread), "% of low"],
     ["Regime classification", R.label, "regime"], ["Regime rule met", R.rule, "rule"]])}
 <h2 id="q-method">${h[5](N)}</h2>
 ${methodology(N)}
-${related.length || m.sector ? `<p class="prose q-related">More ${N} data: ${[...related, m.sector ? `<a href="${m.sector.path}">${esc(m.sector.name)} sector benchmarks</a>` : ""].filter(Boolean).join(" · ")}</p>` : ""}
+${related.length || (m.sector && NEW_PAGES) ? `<p class="prose q-related">More ${N} data: ${[...related, m.sector && NEW_PAGES ? `<a href="${m.sector.path}">${esc(m.sector.name)} sector benchmarks</a>` : ""].filter(Boolean).join(" · ")}</p>` : ""}
 </section>`;
 }
 const telemetryLine = m => `<p class="q-telemetry" id="q-telemetry"><strong>${esc(m.N)} market telemetry, ${TIME}:</strong> spot price ${usd(m.price)} USD · 24h change ${spc(m.chg24)} · market cap ${big(m.mcap)} USD · spot turnover velocity ${pc(m.turnover)} · ATH recovery multiplier ${mx(m.recovery)}. <a href="#quant">Quant telemetry ↓</a></p>`;
@@ -497,7 +543,7 @@ ${methodology(`${A} and ${B}`)}
 }
 
 // ---------- sector hubs ----------
-for (const s of sectors) {
+for (const s of hubs) {
   const url = SITE + s.path, S = esc(s.name), L = s.leader, LN = esc(L.N), n = s.members.length;
   const title = `${s.name} Crypto Sector: Quant Benchmarks`, ogTitle = `${s.name} crypto sector: median benchmarks`;
   const description = `${s.name} crypto sector benchmarks: median turnover velocity, ATH drawdown, supply float, FDV overhang, alpha vs Bitcoin and volatility across ${n} assets.`.slice(0, 160);
@@ -538,7 +584,7 @@ ${table(`${S} sector: intraday volatility spread and regime (${AS_OF_TEXT})`, ["
     [...medRow([pc(s.med.spread), "—"]), ...rows(m => [pc(m.spread), REGIMES[m.regime].label])])}
 <h2 id="q-method">How are the ${S} sector medians calculated, and is this financial advice?</h2>
 ${methodology(`${S} sector and ${LN}`, ` A sector median is the middle value of a metric across the ${n} member assets, each computed as below.`)}
-<p class="prose q-related">Other sector benchmarks: ${sectors.filter(x => x !== s).map(x => `<a href="${x.path}">${esc(x.name)}</a>`).join(" · ")}${cmp.length ? ` · Comparisons in this sector: ${cmp.map(q => `<a href="${q.path}">${esc(q.a.name)} vs ${esc(q.b.name)}</a>`).join(" · ")}` : ""}</p>
+<p class="prose q-related">Other sector benchmarks: ${hubs.filter(x => x !== s).map(x => `<a href="${x.path}">${esc(x.name)}</a>`).join(" · ")}${cmp.length ? ` · Comparisons in this sector: ${cmp.map(q => `<a href="${q.path}">${esc(q.a.name)} vs ${esc(q.b.name)}</a>`).join(" · ")}` : ""}</p>
     </section>`;
   page({
     path: s.path, title, description, ogTitle, image, main,
@@ -579,7 +625,7 @@ const csvCell = v => v == null ? "" : /[",\n]/.test(String(v)) ? `"${String(v).r
 write("data/crypto-quant-snapshot.csv", ["snapshot_utc," + cols.join(","), ...records.map(r => AS_OF + "," + cols.map(c => csvCell(r[c])).join(","))].join("\n") + "\n");
 
 // ---------- footer on every page, home Dataset, widget docs ----------
-const FOOT = `<span class="q-open">Download Open Quant Dataset: <a class="no-prerender" href="/api/v1/quant-snapshot.json">JSON</a> | <a class="no-prerender" href="/data/crypto-quant-snapshot.csv">CSV</a> (top ${top.length} assets, 6 derived metrics, snapshot ${AS_OF_TEXT}) · Sector benchmarks: ${sectors.map(s => `<a href="${s.path}">${esc(s.name)}</a>`).join(" · ")}</span>`;
+const FOOT = `<span class="q-open">Download Open Quant Dataset: <a class="no-prerender" href="/api/v1/quant-snapshot.json">JSON</a> | <a class="no-prerender" href="/data/crypto-quant-snapshot.csv">CSV</a> (top ${top.length} assets, 6 derived metrics, snapshot ${AS_OF_TEXT})${hubs.length ? ` · Sector benchmarks: ${hubs.map(s => `<a href="${s.path}">${esc(s.name)}</a>`).join(" · ")}` : ""}</span>`;
 const htmlFiles = [];
 (function walk(d) { for (const f of readdirSync(DIST + d)) { const p = d + f; if (statSync(DIST + p).isDirectory()) walk(p + "/"); else if (f.endsWith(".html")) htmlFiles.push(p); } })("");
 for (const f of htmlFiles) {
@@ -616,30 +662,32 @@ for (const f of htmlFiles) {
 // ---------- sitemap, headers, redirects ----------
 const stamp = (xml, path, date) => xml.replace(new RegExp(`(<loc>${SITE}${path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc><lastmod>)([^<]+)`), (_, pre, old) => pre + (date.slice(0, 10) >= old ? date : old));
 const urlLine = path => `  <url><loc>${SITE}${path}</loc><lastmod>${lastmod.get(path)}</lastmod></url>`;
-const quantUrls = [...sectors.map(s => s.path), ...pairs.map(p => p.path)];
+const quantUrls = [...hubs.map(s => s.path), ...pairs.map(p => p.path)];
 for (const f of ["sitemap.xml", "sitemap-coins.xml"]) {
   let xml = read(f);
   top.forEach(m => { xml = stamp(xml, m.path, lastmod.get(m.path)); });
-  if (f === "sitemap.xml") xml = sub(xml, /<\/urlset>/, quantUrls.map(urlLine).join("\n") + "\n</urlset>", "urlset");
+  if (f === "sitemap.xml" && quantUrls.length) xml = sub(xml, /<\/urlset>/, quantUrls.map(urlLine).join("\n") + "\n</urlset>", "urlset");
   write(f, xml);
 }
-write("sitemap-quant.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${quantUrls.map(urlLine).join("\n")}\n</urlset>\n`);
-write("robots.txt", read("robots.txt").replace(/\n*$/, `\nSitemap: ${SITE}/sitemap-quant.xml\n`));
+if (quantUrls.length) {
+  write("sitemap-quant.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${quantUrls.map(urlLine).join("\n")}\n</urlset>\n`);
+  write("robots.txt", read("robots.txt").replace(/\n*$/, `\nSitemap: ${SITE}/sitemap-quant.xml\n`));
+}
 
 write("llms.txt", read("llms.txt").replace(/\n*$/, `
 
 ## Quant data (snapshot every 2 hours, static HTML)
 - [Open quant dataset, JSON](${SITE}/api/v1/quant-snapshot.json) and [CSV](${SITE}/data/crypto-quant-snapshot.csv): top ${top.length} assets with spot turnover velocity, ATH drawdown and recovery multiplier, supply float and market cap/FDV, alpha vs Bitcoin, Ethereum and sector median, intraday volatility spread, market cap parity prices. CORS enabled; attribution: CryptoPriceTicker.com
-- Sector benchmarks (medians): ${sectors.map(s => `[${s.name}](${SITE}${s.path})`).join(", ")}
-- Comparisons with market cap parity ("flippening") prices: ${pairs.map(p => `[${p.a.name} vs ${p.b.name}](${SITE}${p.path})`).join(", ")}
-- The coin pages of the top ${top.length} assets carry the same metrics with a scenario matrix, for example [Bitcoin](${SITE}/coin/btc/#quant). Figures are descriptive market data, not advice.
+${hubs.length ? `- Sector benchmarks (medians): ${hubs.map(s => `[${s.name}](${SITE}${s.path})`).join(", ")}\n` : ""}${pairs.length ? `- Comparisons with market cap parity ("flippening") prices: ${pairs.map(p => `[${p.a.name} vs ${p.b.name}](${SITE}${p.path})`).join(", ")}\n` : ""}- The coin pages of the top ${top.length} assets carry the same metrics with a scenario matrix, for example [Bitcoin](${SITE}/coin/btc/#quant). Figures are descriptive market data, not advice.
 `));
 
 const appCss = (SHELL.match(/href="(\/assets\/app\.css[^"]*)"/) || [])[1];
 write("_headers", read("_headers").replace(/\n*$/, "\n\n") + readFileSync(PUBLIC + "_headers", "utf8").replaceAll("{{APP_CSS}}", appCss).replaceAll("{{QUANT_CSS}}", QCSS));
 const reverse = pairs.flatMap(p => { const r = `/compare/${p.b.slug}-vs-${p.a.slug}`; return [`${r} ${p.path} 301`, `${r}/ ${p.path} 301`]; });
-write("_redirects", read("_redirects").replace(/\n*$/, "\n") + readFileSync(PUBLIC + "_redirects", "utf8").replace(/\n*$/, "\n") +
-  "# Generated by scripts/build-seo-engine.mjs: reversed comparison names.\n" + reverse.join("\n") + "\n");
+// Without the new page families their redirects would point at pages that do not exist.
+const extraRedirects = readFileSync(PUBLIC + "_redirects", "utf8").split("\n").filter(l => NEW_PAGES || !/^\/(compare|category)/.test(l)).join("\n").replace(/\n*$/, "\n");
+write("_redirects", read("_redirects").replace(/\n*$/, "\n") + extraRedirects +
+  (reverse.length ? "# Generated by scripts/build-seo-engine.mjs: reversed comparison names.\n" + reverse.join("\n") + "\n" : ""));
 
 mkdirSync(ROOT + "data", { recursive: true });
 writeFileSync(LEDGER_PATH, `{"_readme":"Sitemap lastmod state for scripts/build-seo-engine.mjs: a URL's lastmod moves only on a 3% price move, a rank change or a regime change.","urls":{\n` +
@@ -648,6 +696,6 @@ writeFileSync(ROOT + "data/changed-urls.json", JSON.stringify({ generatedAt: AS_
 
 const tally = {};
 top.forEach(m => { tally[m.regime] = (tally[m.regime] || 0) + 1; });
-console.log(`Built dist/: ${top.length} coin pages with quant sections, ${pairs.length} comparisons, ${sectors.length} sector hubs, ${htmlFiles.length + 0} HTML files`);
+console.log(`Built dist/: ${top.length} coin pages with quant sections, ${NEW_PAGES ? `${pairs.length} comparisons, ${hubs.length} sector hubs` : "no new URL families (newUrlFamilies is false)"}, ${htmlFiles.length + 0} HTML files`);
 console.log(`Snapshot ${AS_OF_TEXT} via ${snap.source} (tier ${snap.tier}); regimes: ${Object.entries(tally).map(([k, c]) => `${k} ${c}`).join(", ")}`);
 console.log(`lastmod changed for ${changed.length} of ${seen.size} tracked URLs (data/changed-urls.json)`);

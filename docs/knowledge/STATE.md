@@ -8,8 +8,8 @@
   `content/coin-about.json`, `content/sectors.json`, `content/seo-overrides.json`.
 
 ## Quant engine (built Nov 12, not live yet)
-- `npm run build` writes `dist/`: the current site plus a quant section on the top-50 coin pages, 25 comparison pages, 6 sector
-  benchmark hubs, open JSON/CSV, `/widget.js`, a ledger-driven sitemap (163 URLs) and merged `_headers`/`_redirects`.
+- `npm run build` writes `dist/`: the current site plus a quant section on the top-50 coin pages (25 comparison pages and 6 sector
+  benchmark hubs only with `"newUrlFamilies": true`, held per INDEXING-PLAN §E), open JSON/CSV, `/widget.js`, a ledger-driven sitemap (163 URLs) and merged `_headers`/`_redirects`.
   `npm run verify` checks it. Workflow `seo-data-pipeline.yml` runs it every 2 hours but only deploys once the Cloudflare
   secrets exist (owner action 14).
 - Live production is still the repo root deployed by Cloudflare's Git integration, so none of the above is public yet.

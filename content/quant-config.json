@@ -1,7 +1,8 @@
 {
- "_readme": "Settings for scripts/build-seo-engine.mjs. coingeckoIds maps registry tickers (assets/coins.js) to CoinGecko ids; an asset without an id here gets no quant section. sectors: registry sector keys and/or explicit tickers. comparisons: curated pairs in priority order (the first 25 with data are built). references: one protocol fact per asset with its named primary source; assets without one cite only the market-data and methodology sources.",
+ "_readme": "Settings for scripts/build-seo-engine.mjs. coingeckoIds maps registry tickers (assets/coins.js) to CoinGecko ids; an asset without an id here gets no quant section. sectors: registry sector keys and/or explicit tickers. comparisons: curated pairs in priority order (the first 25 with data are built). references: one protocol fact per asset with its named primary source; assets without one cite only the market-data and methodology sources. newUrlFamilies: false builds no /compare/ or /category/ pages (docs/INDEXING-PLAN.md §E holds new URL families until Google has indexed the existing pages); set true to publish them.",
  "topN": 50,
  "maxComparisons": 25,
+ "newUrlFamilies": false,
  "coingeckoIds": {
   "BTC": "bitcoin",
   "ETH": "ethereum",

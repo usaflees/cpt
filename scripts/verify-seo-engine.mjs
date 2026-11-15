@@ -155,7 +155,10 @@ if (csv.length !== api.assets.length + 1 || !need.every(k => csv[0].split(",").i
 if (new Set(locs.map(l => l.path)).size !== locs.length) site.push("sitemap.xml has duplicate URLs");
 if (!locs.every(l => /^\d{4}-\d\d-\d\d(T\d\d:\d\d:\d\dZ)?$/.test(l.lastmod))) site.push("sitemap.xml has an invalid lastmod");
 if (new Set(locs.map(l => l.lastmod)).size < 2) site.push("every sitemap lastmod is identical");
-if (comparePages.length > 25 || comparePages.length < 20 || categoryPages.length !== 6) site.push(`${comparePages.length} comparisons, ${categoryPages.length} sector hubs`);
+// With "newUrlFamilies": false (docs/INDEXING-PLAN.md §E) there must be no comparison or sector hub pages at all.
+const families = existsSync(DIST + "compare") || existsSync(DIST + "category");
+if (families ? (comparePages.length > 25 || comparePages.length < 20 || categoryPages.length !== 6) : (comparePages.length || categoryPages.length || existsSync(DIST + "sitemap-quant.xml") || /\/(compare|category)\//.test(read("_redirects") + read("index.html") + read("coin/btc/index.html"))))
+  site.push(`${comparePages.length} comparisons, ${categoryPages.length} sector hubs, or leftovers of them`);
 const ledger = JSON.parse(readFileSync(ROOT + "data/lastmod-ledger.json", "utf8")).urls;
 for (const l of locs) if (ledger[l.path] && l.lastmod.slice(0, 10) < ledger[l.path].lastmod.slice(0, 10)) site.push(`${l.path}: sitemap lastmod older than the ledger`);
 for (const p of pages) if (!ledger[p.path]) site.push(`${p.path}: not in the ledger`);
@@ -172,5 +175,6 @@ check("d) open data, sitemap + ledger, _headers, widget, robots", site, `${locs.
 
 const words = prose.map(p => p.words).sort((a, b) => a - b);
 console.log(`\nQuant section size: median ${words[words.length >> 1]} words per coin page; regimes: ${regimes.join(", ")}`);
+console.log(`New URL families (/compare/, /category/): ${families ? "built" : "held back (newUrlFamilies is false)"}`);
 console.log(failed ? `VERIFY FAILED (${failed} check${failed > 1 ? "s" : ""})` : "VERIFY PASSED");
 process.exit(failed ? 1 : 0);
