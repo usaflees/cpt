@@ -59,9 +59,7 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   "ad-free" argument under Binance's terms).
 
 ## Done
-- [x] **QA crawl: stay under Kraken's connection limit** (Nov 16, PR #15). `tests/crawl.cjs` lets 12 sampled pages
-  connect to Kraken; every other page gets a silent stand-in socket (Playwright `routeWebSocket`). Checked: a broken
-  Kraken URL in `app.js` still fails the crawl (404 on the sampled pages); local QA then preview QA back to back passed.
+- [x] 2026-11-16 **QA crawl: stay under Kraken's connection limit.** `tests/crawl.cjs` opens the real Kraken socket only on 12 sampled pages; elsewhere a silent stand-in socket answers (Playwright `routeWebSocket`). A broken Kraken URL still fails 11 of the 12 sampled pages.
 - [x] **Finish PR #15 (logos invisible on some themes)** (Nov 16). Merged with `main` (data refresh included); the
   `mono` marks were re-applied with `--tones`. `app.css` keeps main's removals plus 64 overridden declarations.
 - 2026-11-12: AdSense site verification (`ads.txt`, meta tag), indexing plan, this queue and the two daily tasks.
