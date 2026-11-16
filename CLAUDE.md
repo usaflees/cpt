@@ -1,13 +1,17 @@
 # CryptoPriceTicker.com: notes for Claude
 
 Static site on Cloudflare Pages, deployed from `main` (repo root, no build step). The repo is **public**.
-New session? Start with `docs/knowledge/HANDOFF.md`. Roadmap: `docs/STRATEGY.md`. Knowledge base: `docs/knowledge/README.md` (playbook, decisions, current state, Opus 5.5
+New session? Run `node scripts/kb.mjs` (digest of the knowledge store: open owner actions, next builds, facts due for a
+re-check), then read `docs/knowledge/HANDOFF.md`. Roadmap: `docs/STRATEGY.md`. Knowledge base: `docs/knowledge/README.md` (playbook, decisions, current state, Opus 5.5
 guide, research).
 
 ## Check your work
 - Full QA: `bash tests/run.sh` (local Pages emulator) or `bash tests/run.sh <preview-url>`. Must end with `QA PASSED`.
   Accessibility needs axe-core; see the header of `tests/axe.cjs`.
 - Quick: `node scripts/build-coin-pages.mjs && node scripts/seo-lint.mjs` (0 errors) and `node tests/links.mjs`.
+- SEO pass: `node scripts/seo-audit.mjs` before and after (reports what crawlers see on every page; seo-lint is the gate).
+- Learned something durable (a platform change, a measurement)? Add a line to `docs/knowledge/facts.jsonl` (format in
+  the header of `scripts/kb.mjs`), run `node scripts/kb.mjs --write`, commit both. QA runs `kb.mjs --check`.
 - After a deploy: `node scripts/check-live.mjs`. IndexNow is sent by the `indexnow` CI job (don't run it by hand).
 - To ship a human-requested change, follow the `ship` skill (`.claude/skills/ship/SKILL.md`).
 

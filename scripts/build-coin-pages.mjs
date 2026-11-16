@@ -412,13 +412,6 @@ function coinPage(c) {
       <p class="disclaimer">Computed automatically from live exchange prices: measured moves, not news reports or advice.</p>
     </section>
 
-    <section class="page-section" id="convert" aria-labelledby="conv-h">
-      <h2 id="conv-h">Convert ${s} to USD</h2>
-      ${converterHtml([c, ...RATE_COINS.filter(x => x !== c.sym).map(x => coins.find(o => o.sym === x))], c.sym, "USD", num(c.price))}
-      ${conversionTables(c)}
-      <p class="disclaimer">Uses the live ${s} price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=${slug(c.sym)}">Convert ${s} to any other coin →</a></p>
-    </section>
-
     ${statsSection(c, st)}
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -433,6 +426,13 @@ function coinPage(c) {
       <p>The price above updates live in your browser from ${list(pairs)}, and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about ${supplyText} ${s} (supply last updated ${longDate(updated)}). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       ${c.formerly ? `<p>${name} previously traded under the ticker <strong>${esc(c.formerly)}</strong>; old ${esc(c.formerly)} links on this site redirect here.</p>` : ""}
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
+    </section>
+
+    <section class="page-section" id="convert" aria-labelledby="conv-h">
+      <h2 id="conv-h">Convert ${s} to USD</h2>
+      ${converterHtml([c, ...RATE_COINS.filter(x => x !== c.sym).map(x => coins.find(o => o.sym === x))], c.sym, "USD", num(c.price))}
+      ${conversionTables(c)}
+      <p class="disclaimer">Uses the live ${s} price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=${slug(c.sym)}">Convert ${s} to any other coin →</a></p>
     </section>
 
     <nav class="page-section" aria-labelledby="rel-h">
@@ -601,7 +601,7 @@ for (const x of sectors) {
 function convertPage() {
   const pageUrl = `${SITE}/convert/`;
   const title = "Crypto Converter: Live Rates for Coins & 20 Currencies";
-  const description = `Convert ${coins.length} cryptocurrencies to each other or to USD, EUR, GBP, INR and 16 more currencies at live exchange prices. Free, no sign-up.`;
+  const description = `Crypto converter: convert ${coins.length} cryptocurrencies to each other or to USD, EUR, GBP, INR and 16 more currencies at live exchange prices. Free, no sign-up.`;
   const btc = coins.find(c => c.sym === "BTC");
   const pairs = [["BTC", "USD"], ["ETH", "USD"], ["SOL", "USD"], ["XRP", "USD"], ["BTC", "EUR"], ["BTC", "GBP"], ["BTC", "INR"], ["ETH", "BTC"],
     ["SOL", "ETH"], ["USDT", "EUR"], ["DOGE", "USD"], ["USD", "BTC", 100], ["EUR", "ETH", 100]]

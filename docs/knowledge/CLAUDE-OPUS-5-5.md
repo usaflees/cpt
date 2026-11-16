@@ -75,6 +75,16 @@ Anthropic's top Claude Code tip: give Claude a check it can run. Here that is:
 - Limits: schedules at most hourly; 100 scheduled runs an hour per account; "Run now" 30 an hour per task.
 - Model and effort are chosen in the task's model selector and apply to every run.
 
+## Finding SEO work in this repo (Nov 16)
+- Start with the deterministic scan: `node scripts/seo-audit.mjs` (every sitemap page as a crawler sees it), then
+  read one page per template as plain text, first 300 words: that is what crawlers and AI fetchers weigh most.
+- Fresh platform news: several `extended` web searches in one turn, then confirm on the platform's own page before
+  recording a fact as "official" in `facts.jsonl`.
+- Whole-repo reads: split by directory into subagents at `low`/`medium` (`CLAUDE_CODE_SUBAGENT_EFFORT`), one
+  checklist, verify their evidence; `ultrathink` (runs that turn at `xhigh`) for the single synthesis turn.
+- Re-reading an unchanged file now costs full tokens (Claude Code 2.1.317): grep or read line ranges.
+- Details and sources: research/2026-11-16-seo-ai-search-and-claude.md §5.
+
 ## Keeping Pro plan usage low
 Usage grows with the number of turns, with how much text each turn adds to the context (tool output, files read),
 and with effort. What we did about each:

@@ -44,6 +44,12 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Nov 16 (PR #15):** knowledge store `docs/knowledge/facts.jsonl` (98 sourced, dated facts; `node scripts/kb.mjs`
+  digest at the start of every session, `--check` in QA, readable view FACTS.md); `scripts/seo-audit.mjs` (what
+  crawlers see on every page); research `research/2026-11-16-seo-ai-search-and-claude.md`. Google AI Mode called the
+  site "offline or defunct": home, /about/#history-h, /trust/, llms.txt and JSON-LD now say it is live, relaunched
+  Oct 2026 by the original owner, privacy-first; /trust/ no longer says "new domain owner". Preferred Sources finds
+  nothing for the domain, so its dead links were removed. Coin pages: converter moved below "About".
 - **Nov 15 (PR #15, cleanup pass):** coin logos visible on every theme (`mono` marks, see DECISIONS), dialogs keep
   focus inside, sector tables don't break names mid-word on 360–412 px phones, `app.css` 74.6 KB (64 overridden
   declarations removed), CSV without the invented liquidity column, pinned tab title waits for a live price, service

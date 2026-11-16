@@ -133,55 +133,6 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <p class="disclaimer">Computed automatically from live exchange prices: measured moves, not news reports or advice.</p>
     </section>
 
-    <section class="page-section" id="convert" aria-labelledby="conv-h">
-      <h2 id="conv-h">Convert AR to USD</h2>
-      <div class="converter is-stale" id="converter">
-        <div class="conv-side">
-          <label class="metric-label" for="cvA">Amount</label>
-          <div class="conv-field"><input id="cvA" type="number" inputmode="decimal" step="any" min="0" value="1" />
-          <select id="cvFrom" aria-label="Convert from"><optgroup label="Cryptocurrencies"><option value="AR" selected>AR · Arweave</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD">USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
-        </div>
-        <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
-        <div class="conv-side">
-          <label class="metric-label" for="cvB">Converted to</label>
-          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="2.478" />
-          <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="AR">AR · Arweave</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
-        </div>
-        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 AR = $2.478</strong> <span id="cvInverse"></span></p>
-      </div>
-      <div class="conv-tables">
-        <table class="history-table conv-table">
-          <caption>AR to <span data-cv-other>USD</span></caption>
-          <thead><tr><th scope="col" class="col-left">AR</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
-          <tbody>
-            <tr><td class="col-left">1 AR</td><td data-cv-amt="1">$2.478</td></tr>
-            <tr><td class="col-left">5 AR</td><td data-cv-amt="5">$12.390</td></tr>
-            <tr><td class="col-left">10 AR</td><td data-cv-amt="10">$24.780</td></tr>
-            <tr><td class="col-left">25 AR</td><td data-cv-amt="25">$61.950</td></tr>
-            <tr><td class="col-left">50 AR</td><td data-cv-amt="50">$123.900</td></tr>
-            <tr><td class="col-left">100 AR</td><td data-cv-amt="100">$247.800</td></tr>
-            <tr><td class="col-left">500 AR</td><td data-cv-amt="500">$1,239.00</td></tr>
-            <tr><td class="col-left">1,000 AR</td><td data-cv-amt="1000">$2,478.00</td></tr>
-          </tbody>
-        </table>
-        <table class="history-table conv-table">
-          <caption><span data-cv-other>USD</span> to AR</caption>
-          <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">AR</th></tr></thead>
-          <tbody>
-            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">0.403551 AR</td></tr>
-            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">4.035513 AR</td></tr>
-            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">20.177563 AR</td></tr>
-            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">40.355125 AR</td></tr>
-            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">201.775626 AR</td></tr>
-            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">403.551251 AR</td></tr>
-            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">2,017.76 AR</td></tr>
-            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">4,035.51 AR</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="disclaimer">Uses the live AR price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=ar">Convert AR to any other coin →</a></p>
-    </section>
-
     
     <section class="page-section" aria-labelledby="perf-h">
       <h2 id="perf-h">AR price performance</h2>
@@ -231,6 +182,55 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <p>The price above updates live in your browser from Binance (AR/USDT) and Kraken (AR/USD), and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about 65,454,200 AR (supply last updated November 16, 2026). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
+    </section>
+
+    <section class="page-section" id="convert" aria-labelledby="conv-h">
+      <h2 id="conv-h">Convert AR to USD</h2>
+      <div class="converter is-stale" id="converter">
+        <div class="conv-side">
+          <label class="metric-label" for="cvA">Amount</label>
+          <div class="conv-field"><input id="cvA" type="number" inputmode="decimal" step="any" min="0" value="1" />
+          <select id="cvFrom" aria-label="Convert from"><optgroup label="Cryptocurrencies"><option value="AR" selected>AR · Arweave</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD">USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
+        </div>
+        <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
+        <div class="conv-side">
+          <label class="metric-label" for="cvB">Converted to</label>
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="2.478" />
+          <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="AR">AR · Arweave</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
+        </div>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 AR = $2.478</strong> <span id="cvInverse"></span></p>
+      </div>
+      <div class="conv-tables">
+        <table class="history-table conv-table">
+          <caption>AR to <span data-cv-other>USD</span></caption>
+          <thead><tr><th scope="col" class="col-left">AR</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
+          <tbody>
+            <tr><td class="col-left">1 AR</td><td data-cv-amt="1">$2.478</td></tr>
+            <tr><td class="col-left">5 AR</td><td data-cv-amt="5">$12.390</td></tr>
+            <tr><td class="col-left">10 AR</td><td data-cv-amt="10">$24.780</td></tr>
+            <tr><td class="col-left">25 AR</td><td data-cv-amt="25">$61.950</td></tr>
+            <tr><td class="col-left">50 AR</td><td data-cv-amt="50">$123.900</td></tr>
+            <tr><td class="col-left">100 AR</td><td data-cv-amt="100">$247.800</td></tr>
+            <tr><td class="col-left">500 AR</td><td data-cv-amt="500">$1,239.00</td></tr>
+            <tr><td class="col-left">1,000 AR</td><td data-cv-amt="1000">$2,478.00</td></tr>
+          </tbody>
+        </table>
+        <table class="history-table conv-table">
+          <caption><span data-cv-other>USD</span> to AR</caption>
+          <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">AR</th></tr></thead>
+          <tbody>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">0.403551 AR</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">4.035513 AR</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">20.177563 AR</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">40.355125 AR</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">201.775626 AR</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">403.551251 AR</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">2,017.76 AR</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">4,035.51 AR</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="disclaimer">Uses the live AR price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=ar">Convert AR to any other coin →</a></p>
     </section>
 
     <nav class="page-section" aria-labelledby="rel-h">
