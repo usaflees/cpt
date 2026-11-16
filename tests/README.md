@@ -14,7 +14,7 @@ Needs Node 20+ and Playwright with Chromium (preinstalled in Claude Code cloud s
 | `heatmap.cjs` | Tile coverage and bounds, sector grouping, stablecoin toggle, links, phone layout |
 | `search.cjs` | Header search on every sub-page (keyboard, Enter, old tickers), home Enter-to-open, light/dark first visit, alert notifications |
 | `axe.cjs` | axe-core accessibility scan of 13 page types in dark and light themes (skips if axe-core isn't installed) |
-| `crawl.cjs` | Loads every sitemap URL plus widget variants and the 404 page; fails on console errors, uncaught errors, CSP violations or failed requests; lists browser warnings (~2 min, 4 pages at a time) |
+| `crawl.cjs` | Loads every sitemap URL plus widget variants and the 404 page; fails on console errors, uncaught errors, CSP violations or failed requests; lists browser warnings; only 12 sampled pages open a real Kraken socket (Kraken limits connections per IP) (~2 min, 4 pages at a time) |
 | `wait-deploy.sh` | Waits until a URL serves the current local build (same hashed assets, same sitemap), so a deploy wait is one command |
 
 Also run by `run.sh`: `scripts/build-coin-pages.mjs`, `scripts/seo-lint.mjs`, `scripts/check-live.mjs`.

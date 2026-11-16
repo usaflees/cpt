@@ -4,6 +4,7 @@ Newest first. Reverse a decision by adding a new row that says so; don't edit ol
 
 | Date | Decision | Why | Source |
 | --- | --- | --- | --- |
+| 2026-11-16 | QA crawl: only 12 sampled pages (home, 6 coins, AI hub, heatmap, converter, 2 widgets) open a real Kraken WebSocket; the rest get a silent stand-in via Playwright `routeWebSocket` | Kraken limits connections per IP; ~136 per crawl made local QA followed by preview QA fail with HTTP 429 (12 Nov, 16 Nov). A broken Kraken URL still fails the crawl on the sampled pages | QUEUE item, PR #15 |
 | 2026-11-15 | Single-tone coin logos carry `mono: "light" \| "dark"` in `coins.js` (set by `build-coin-icons.mjs`, `--tones` re-reads existing icons; seo-lint fails if a mark is missing or stale) and are flipped by theme tokens in `app.css` | 6 white logos (XRP, Algorand, Hedera, Mantle, AIOZ, Phala) were invisible on Light and 12 black ones (Stellar, Aptos, World, Pyth…) nearly invisible on the dark themes, Neon included | PR #15 |
 | 2026-11-15 | CSV export has no "Est_Liquidity_2Pct_USD" column | It was 24h volume × 0.065, not a measurement ("no fake data"); real ±2% depth stays in the quick view and on coin pages, measured from Binance | PR #15 |
 | 2026-11-15 | Dialogs (quick view, widget builder, sync link) make the rest of the page `inert` and stop it scrolling; focus returns to the opener, or to the menu button when the opener was inside the closed menu | Tab used to walk into the page behind an open dialog (39 of 45 Tab presses), which `aria-modal` alone doesn't prevent. Smoke test checks it | PR #15 |
