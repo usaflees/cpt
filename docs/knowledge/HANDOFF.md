@@ -44,12 +44,12 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
-- **Nov 11, branch `ccr-a8021aca-9rxf9x` (draft PR, not live):** access lock-down. New [ACCESS.md](ACCESS.md): every
+- **Live Nov 16 (PR #17):** access lock-down. New [ACCESS.md](ACCESS.md): every
   way the site can change, what the repo enforces, the settings only the owner can change, public vs private.
   `data-refresh.yml` is now two jobs (read-only `refresh` makes a patch; `publish`, the only job with a write token,
   re-checks it with `main`'s scripts and pushes); seo-lint section 3c lints every workflow; `classify-change` compares
   `assets/coins.js` as text; `check-refresh` restricts what the stats file may contain; `.github/CODEOWNERS`.
-  After it merges, run the refresh once by hand with "publish" unticked to see both jobs pass.
+  Local and preview QA PASSED; dry run of the two-job refresh from the branch on GitHub (see STATE).
 - **Nov 12:** first Search Console exports analysed: only the home page is indexed, the rest is "Discovered –
   currently not indexed" → `docs/INDEXING-PLAN.md` (owner's daily Request-indexing list, first links, hold on new URL
   families). AdSense site verification is live (`ads.txt` + home-page meta tag, publisher `ca-pub-3149203932367096`);

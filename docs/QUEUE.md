@@ -38,11 +38,9 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   the URL to `/widgets/`. Done when: the overlay renders on a transparent page at 1920×200, widget tests pass.
 
 ## Waiting on the owner
-- **Access lock-down (branch `ccr-a8021aca-9rxf9x`, draft PR).** The repo side is built and QA-passed: the weekly
-  refresh is split so only a job that installs nothing can push, and seo-lint lints every workflow. Needs from the
-  owner: say "ship it" for the PR, then the settings in `docs/knowledge/ACCESS.md` §3 (ruleset on `main`, Actions
-  limits, account 2FA and token review, fewer connectors on Claude sessions). After the merge, run "Weekly data
-  refresh" once with "publish" unticked.
+- **Access lock-down settings (code live Nov 16, PR #17).** Needs from the owner: the settings in
+  `docs/knowledge/ACCESS.md` §3 (ruleset on `main`, Actions limits, account 2FA and token review, fewer connectors
+  on Claude sessions).
 - **Redirect the 2022 site's old addresses.** The domain's earlier site was the owner's own price site (a
   CodeCanyon PHP script), and Googlebot still requests its addresses and gets 404. Needs from the owner: the
   Search Console exports in `docs/INDEXING-PLAN.md` §A.5 (404 examples and externally linked pages), or the old
