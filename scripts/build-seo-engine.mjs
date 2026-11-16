@@ -221,7 +221,10 @@ function rangeBar(m) {
   const pos = Math.max(0, Math.min(1, (m.price - m.low) / (m.high - m.low || 1))) * 300 + 10;
   return `<figure class="q-fig"><svg class="q-range" viewBox="0 0 320 24" width="320" height="24" role="img" aria-label="${esc(m.N)} 24h range: low ${usd(m.low)} USD, spot ${usd(m.price)} USD, high ${usd(m.high)} USD"><line x1="10" y1="12" x2="310" y2="12" stroke="currentColor" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><circle cx="${pos.toFixed(1)}" cy="12" r="7" fill="currentColor"/></svg><figcaption>${esc(m.N)} 24h range: low ${usd(m.low)} USD · spot ${usd(m.price)} USD · high ${usd(m.high)} USD</figcaption></figure>`;
 }
-const table = (caption, head, rows) => `<div class="table-wrap q-table"><table class="history-table"><caption>${caption}</caption><thead><tr>${head.map((h, i) => `<th scope="col"${i ? "" : ' class="col-left"'}>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row" class="col-left">${c}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+// Wide tables scroll sideways on phones: the wrapper is a labelled, focusable region so keyboard users can scroll it
+// (axe scrollable-region-focusable, WCAG 2.1.1).
+const region = caption => `role="region" tabindex="0" aria-label="${caption.replace(/<[^>]+>/g, "").replace(/"/g, "&quot;")}"`;
+const table = (caption, head, rows) => `<div class="table-wrap q-table" ${region(caption)}><table class="history-table"><caption>${caption}</caption><thead><tr>${head.map((h, i) => `<th scope="col"${i ? "" : ' class="col-left"'}>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row" class="col-left">${c}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 const coinLink = m => `<a href="${m.path}">${esc(m.name)} (${m.sym})</a>`;
 
 function methodology(subject, extra = "") {
@@ -356,7 +359,7 @@ function coinSections(m) {
     [t ? `${t.name} (${t.sym}) market cap parity` : `Sector leader market cap parity (${m.sym} is the largest asset)`, tp ? tp.mult : null]
   ];
   const cell = (amt, k) => k == null ? "n/a" : money(amt * k);
-  const matrix = `<div class="table-wrap q-table" data-q-calc="scenario" data-mults="${scen.map(s => s[1] == null ? "" : s[1].toPrecision(8)).join(",")}">
+  const matrix = `<div class="table-wrap q-table" ${region(`${N} capital scenario matrix`)} data-q-calc="scenario" data-mults="${scen.map(s => s[1] == null ? "" : s[1].toPrecision(8)).join(",")}">
 <table class="history-table"><caption>${N} capital scenario matrix: value in USD of an amount allocated at the ${usd(m.price)} USD spot price (${AS_OF_TEXT})</caption>
 <thead><tr><th scope="col" class="col-left">Allocation (USD)</th>${scen.map(s => `<th scope="col">${esc(s[0])}</th>`).join("")}</tr></thead>
 <tbody><tr><th scope="row" class="col-left">Implied ${m.sym} price (USD)</th>${scen.map(s => `<td>${s[1] == null ? "n/a" : usd(m.price * s[1])}</td>`).join("")}</tr>

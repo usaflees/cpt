@@ -31,3 +31,4 @@
 .q-open { display: block; margin-top: 8px; }
 .q-code { overflow-x: auto; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary); font-size: 12.5px; }
 .cpt-quant { margin: 12px 0; }
+.q-table:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

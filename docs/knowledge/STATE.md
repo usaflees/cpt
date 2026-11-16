@@ -13,6 +13,10 @@
   `npm run verify` checks it. Workflow `seo-data-pipeline.yml` runs it every 2 hours but only deploys once the Cloudflare
   secrets exist (owner action 14).
 - Live production is still the repo root deployed by Cloudflare's Git integration, so none of the above is public yet.
+- QA of `dist/` (Nov 16, with `--new-pages`): axe 0 violations (16 site pages × 2 themes, plus 8 engine pages × 2 themes
+  × 1280/375 px after making the wide tables focusable regions); crawl of all 167 URLs: 0 errors, 0 CSP violations,
+  0 failed requests (one Kraken 429 on an embed, the queued crawl issue). Note: `tests/crawl.cjs` reads the repo
+  root's `sitemap.xml`, so it only covers `dist/`'s extra pages when pointed at `dist/sitemap.xml`.
 
 ## Features
 - **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 25 plus starred coins, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price

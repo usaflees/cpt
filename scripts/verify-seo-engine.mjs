@@ -49,6 +49,7 @@ for (const p of pages) {
   METRICS.forEach(re => { if (!re.test(block)) staticProblems.push(`${p.path}: metric missing ${re}`); });
   if ((block.match(/<h2 /g) || []).length !== 6) staticProblems.push(`${p.path}: ${(block.match(/<h2 /g) || []).length} h2 headings, expected 6`);
   if ((block.match(/<table/g) || []).length < 5 || !/<thead>/.test(block) || !/<tbody>/.test(block)) staticProblems.push(`${p.path}: tables missing`);
+  if ((block.match(/<div class="table-wrap q-table"/g) || []).length !== (block.match(/<div class="table-wrap q-table" role="region" tabindex="0" aria-label="[^"]+"/g) || []).length) staticProblems.push(`${p.path}: a scrollable table is not a focusable, labelled region`);
   if (!/<svg[^>]*class="q-(spark|range)/.test(block) || !/<polyline/.test(block)) staticProblems.push(`${p.path}: inline SVG sparkline missing`);
   if (!/id="q-telemetry"/.test(html) || html.indexOf('id="q-telemetry"') < html.indexOf("<h1") || html.indexOf('id="q-telemetry"') > html.indexOf("<h2")) staticProblems.push(`${p.path}: telemetry box is not between the h1 and the first h2`);
   if (p.kind === "coin" && !/data-q-calc="scenario"[\s\S]*\$100<[\s\S]*\$1,000<[\s\S]*\$10,000</.test(block)) staticProblems.push(`${p.path}: scenario matrix missing`);
@@ -168,10 +169,13 @@ if (/\{\{/.test(headers)) site.push("_headers has an unfilled placeholder");
 for (const m of headers.matchAll(/Link: <(\/assets\/[^>?]+)\?v=([0-9a-f]+)>/g)) if (!existsSync(DIST + m[1].slice(1))) site.push(`_headers preloads a missing file ${m[1]}`);
 if ((headers.match(/^\S/gm) || []).filter(l => !l.startsWith("#")).length > 100) site.push("_headers has more than 100 rules");
 if (statSync(DIST + "widget.js").size >= 4096) site.push("widget.js is 4 KB or larger");
+// Same HTML budget as scripts/seo-lint.mjs (which only sees the repo root), plus budgets for the engine's own assets.
+for (const p of pages) { const f = DIST + p.path.slice(1) + "index.html"; if (existsSync(f) && statSync(f).size > 60_000) site.push(`${p.path} is ${statSync(f).size} bytes of HTML (budget 60000)`); }
+for (const [f, max] of [["assets/quant.css", 4_000], ["assets/quant.js", 3_000]]) if (statSync(DIST + f).size > max) site.push(`${f} is ${statSync(DIST + f).size} bytes (budget ${max})`);
 if (!/Data via CryptoPriceTicker\.com/.test(read("widget.js")) || !/rel = "noopener"/.test(read("widget.js"))) site.push("widget credit link");
 if (!/Sitemap: .*sitemap\.xml/.test(read("robots.txt"))) site.push("robots.txt sitemap line");
 for (const f of ["scripts", "docs", "tests", "content", "package.json", "CLAUDE.md"]) if (existsSync(DIST + f)) site.push(`dist/ contains ${f}`);
-check("d) open data, sitemap + ledger, _headers, widget, robots", site, `${locs.length} sitemap URLs, widget ${statSync(DIST + "widget.js").size} bytes`);
+check("d) open data, sitemap + ledger, _headers, widget, robots, size budgets", site, `${locs.length} sitemap URLs, widget ${statSync(DIST + "widget.js").size} bytes`);
 
 const words = prose.map(p => p.words).sort((a, b) => a - b);
 console.log(`\nQuant section size: median ${words[words.length >> 1]} words per coin page; regimes: ${regimes.join(", ")}`);
