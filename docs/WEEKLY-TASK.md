@@ -1,7 +1,8 @@
-> **RETIRED 2026-11-12.** The weekly task is switched off. Data refreshes run in `.github/workflows/data-refresh.yml`;
-> builds run through `docs/QUEUE.md` and the daily tasks in `docs/DAILY-TASKS.md`. Kept for history.
+# Weekly maintenance task (retired)
 
-# Weekly maintenance task (the prompt the scheduled Claude task runs)
+> **Retired 12–16 Nov 2026.** The task is disabled. Its data refresh runs as the GitHub Action
+> `.github/workflows/data-refresh.yml` (Mondays), and its SEO work moved to the "CPT daily SEO" task
+> (`docs/DAILY-TASKS.md`). Kept for history.
 
 This is a copy of the instructions stored in the Claude Code scheduled task "CryptoPriceTicker weekly
 self-improvement". Editing this file does **not** change the task; edit the task at

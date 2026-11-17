@@ -107,8 +107,8 @@ of where things stand and what the owner wants. Details are in the files it link
 1. **Search Console**: Domain property, submit `sitemap.xml`, request indexing for key pages. Google hasn't
    indexed the site yet; this is the biggest lever. Then Bing Webmaster Tools (import from Search Console).
 2. **Scheduled tasks:** the old weekly task was switched off on 12 Nov. **CPT daily build** (Sonnet, 1:13 am CT) still
-   has **no repository attached** and stops at its access test every night: claude.ai/code → Scheduled tasks → CPT daily
-   build → Edit → Advanced settings → Repository → add `usaflees/cpt`. **CPT daily check** (Haiku, 12:07 pm CT) runs.
+   and **CPT daily SEO** (Sonnet, 3:47 am CT) need `usaflees/cpt` attached (claude.ai/code → Scheduled tasks → the task →
+   Edit → Advanced settings → Repository) and a model set. **CPT daily check** (Haiku, 12:07 pm CT) runs. See `docs/DAILY-TASKS.md`.
 3. Cloudflare Web Analytics on (real-visitor speed data); Apps Script telemetry (`scripts/telemetry/README.md`).
 4. News/monetization decisions (`docs/NEWS-AND-MONETIZATION.md` §9): editor of record, licensed headline source
    and budget, adding a Cloudflare Worker, sponsor-first vs ads, whether crypto sponsors may be shown to UK/EU
