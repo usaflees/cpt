@@ -32,11 +32,10 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
 - **The domain was re-registered Oct 22, 2026; the earlier site (2021-2022) was the owner's own CodeCanyon PHP crypto price script, so Google's memory of the domain is on-topic. ScamAdviser scores it 0/100 from the old registration.** → Redirect old addresses that match today's pages (needs the owner's 404 export); keep /trust/ factual. _(2026-11-12, measured; `site-domain-history`)_
 - **Google AI Mode answered that CryptoPriceTicker.com 'appears to be offline or defunct' (active about 2018-2022, X @CoinPriceTicker, a Quora space) and recommended Coinlib, Coinpaprika and others (owner's screenshot, 16 Nov). Cause: one indexed page, and no page stated that the site is live, relaunched by the same owner, and privacy-first.** → Fixed on our side 16 Nov (home, /about/#history-h, /trust/, llms.txt, JSON-LD). Owner: request indexing for /, /about/, /trust/; thumbs-down + report the answer with https://cryptopriceticker.com/about/#history-h; update the old X/Quora profiles if they're yours. Re-test the same question. _(2026-11-16, measured, re-check by 2026-12-15; `brand-ai-defunct`)_
 
-### 🔜 build next (4)
+### 🔜 build next (3)
 
 - **Per-page unique, verifiable data is the defence against scaled-content risk: performance stats, monthly closes, best/worst month, largest fall, 90-day BTC correlation, sector rank, per-exchange prices.** → Keep adding computed facts, never written filler. Next: all-time-high/drawdown once a reliable ATH source exists; static spread snapshot. _(2026-11-05, reported; `content-unique-facts`)_
 - **Preferred Sources, feed readers (Chrome iOS Follow, Feedly, Inoreader) and AI crawlers favour dated content that changes on a schedule; the site's only regularly changing page content is the weekly data refresh.** → Next build (queued): a weekly computed market report page with an Atom feed, built from the refresh data. Needs the owner's OK on NEWS-AND-MONETIZATION §9 (it's data, not headlines or AI text). _(2026-11-16, reported; `channels-weekly-report-feed`)_
-- **Static HTML under 250 visible words: /heatmap/, /race/ and the smallest sector hubs (privacy 195, gaming 233).** → Next: add computed static text where it's real (sector hubs: each coin's 30-day/1-year line; heatmap/race: a dated snapshot table of the biggest movers). No filler. _(2026-11-16, measured; `thin-tool-pages`)_
 - **Original data posts (e.g. which sectors moved most this month) are the most linkable content a data site can produce.** → Next: a monthly sector-performance post built from the sector tables (owner publishes in own words). _(2026-10-30, reported; `links-data-posts`)_
 
 ## google (9)
@@ -182,8 +181,8 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
 - ✅ **Coin pages put the converter (about 50 identical currency/coin labels) before the unique performance figures and 'About' text.**
   → Moved the converter below 'About' (16 Nov): crawlers and AI fetchers reading top-down reach unique figures first. #convert anchor unchanged.
   _2026-11-16 · measured · `coin-page-order` · [2026-11-16-seo-ai-search-and-claude.md](research/2026-11-16-seo-ai-search-and-claude.md)_
-- 🔜 **Static HTML under 250 visible words: /heatmap/, /race/ and the smallest sector hubs (privacy 195, gaming 233).**
-  → Next: add computed static text where it's real (sector hubs: each coin's 30-day/1-year line; heatmap/race: a dated snapshot table of the biggest movers). No filler.
+- ✅ **Static HTML under 250 visible words: /heatmap/, /race/ and the smallest sector hubs (privacy 195, gaming 233).**
+  → Done 17 Nov: sector hubs list every coin with dated figures and its 1-year rank in that hub (full sentence only on the coin's main hub, so overlapping hubs don't repeat paragraphs); /heatmap/ and /race/ carry a dated weekly-moves table. seo-audit: 0 findings.
   _2026-11-16 · measured · `thin-tool-pages` · [2026-11-16-seo-ai-search-and-claude.md](research/2026-11-16-seo-ai-search-and-claude.md)_
 - 👀 **Crypto media saw large core-update swings in 2024-2026 (e.g. Cointelegraph's organic traffic fell sharply from late 2025); analysts attribute losses to weak trust signals and scaled content. No data isolates price-data sites in the Nov 2026 update.**
   → Keep trust pages (/trust/, /about/ methodology, sources), no invented authors, no AI filler; measure after the update instead of reacting during it.
@@ -350,7 +349,7 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
 - ✅ **Right after tests/wait-deploy.sh reported a branch preview as deployed, Cloudflare Pages answered HTTP 500 for every URL for a short time (check-live: 43 problems); a minute later the same checks passed 39/39 and the crawl of 136 pages was clean.**
   → If check-live fails on every URL with 500 just after a deploy, re-run it once before investigating; a second failure is real.
   _2026-11-16 · measured · `preview-transient-500` · [2026-11-16-seo-ai-search-and-claude.md](research/2026-11-16-seo-ai-search-and-claude.md)_
-- ✅ **scripts/seo-audit.mjs reads every sitemap page as crawlers do and reports words, own-phrase share per template, title/H1/description agreement, heading order, alt text, link text, inbound links, OG/Twitter tags, JSON-LD fields, stray template text and brand facts. 16 Nov baseline after fixes: coin pages avg 762 words, 47% own phrases; sector pages 303 words, 55%; 5 pages under 250 words (heatmap, race, privacy and gaming sectors, one more).**
+- ✅ **scripts/seo-audit.mjs reads every sitemap page as crawlers do and reports words, own-phrase share per template, title/H1/description agreement, heading order, alt text, link text, inbound links, OG/Twitter tags, JSON-LD fields, stray template text and brand facts. 16 Nov baseline: coin pages avg 762 words, 47% own phrases; sector pages 303 words, 55%; 5 pages under 250 words (heatmap, race, privacy and gaming sectors, one more). 17 Nov: 0 findings; sector pages avg 984 words, 64% own phrases.**
   → Run it before and after any SEO pass and compare; seo-lint stays the gate.
   _2026-11-16 · measured · `seo-audit-script` · [2026-11-16-seo-ai-search-and-claude.md](research/2026-11-16-seo-ai-search-and-claude.md)_
 - ✅ **Seven parallel chats on this repo re-merged and re-tested each other's work and hit the usage limit repeatedly.**

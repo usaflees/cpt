@@ -469,6 +469,24 @@ for (const c of coins) {
   writeFileSync(`${coinDir}${slug(c.sym)}/index.html`, coinPage(c));
 }
 
+// The week's biggest moves from daily closes: real, dated numbers in the static HTML of the live tool pages
+// (/heatmap/, /race/), which otherwise only fill in with JavaScript. Stablecoins excluded.
+function weeklyMovesHtml(headingId) {
+  const moved = byCap.filter(c => !c.sectors.includes("Stable") && typeof stats[c.sym]?.change7d === "number")
+    .sort((a, b) => stats[b.sym].change7d - stats[a.sym].change7d);
+  if (moved.length < 10) return "";
+  const asOf = moved.map(c => stats[c.sym].asOf).sort().pop();
+  const row = c => `<tr><td class="col-left"><a href="/coin/${slug(c.sym)}/">${esc(c.name)} (${esc(c.sym)})</a></td><td><span class="chg-pill ${pctClass(stats[c.sym].change7d)}">${pctText(stats[c.sym].change7d)}</span></td><td class="hide-mobile">${usd(stats[c.sym].close)}</td></tr>`;
+  const table = (cap, list) => `<table class="history-table conv-table sector-table"><caption>${cap}</caption><thead><tr><th scope="col" class="col-left">Coin</th><th scope="col">7 days</th><th scope="col" class="hide-mobile">Close</th></tr></thead><tbody>${list.map(row).join("")}</tbody></table>`;
+  const up = moved.filter(c => stats[c.sym].change7d > 0).length;
+  return `<section class="page-section" aria-labelledby="${headingId}">
+      <h2 id="${headingId}">Biggest moves of the week</h2>
+      <p class="prose">From daily closes as of <time datetime="${asOf}">${longDate(asOf)}</time>: ${up} of the ${moved.length} non-stablecoins tracked here rose over 7 days. ${esc(shortName(moved[0]))} gained most (${pctText(stats[moved[0].sym].change7d)}) and ${esc(shortName(moved[moved.length - 1]))} fell most (${pctText(stats[moved[moved.length - 1].sym].change7d)}).</p>
+      <div class="conv-tables">${table("Biggest 7-day risers", moved.slice(0, 5))}${table("Biggest 7-day fallers", moved.slice(-5).reverse())}</div>
+      <p class="disclaimer">Updated weekly. Live 24-hour moves are on the page above once it connects to the exchanges.</p>
+    </section>`;
+}
+
 // 1b. Sector hub pages
 function sectorPage(x) {
   const members = byCap.filter(c => c.sectors.some(k => x.keys.includes(k)));
@@ -503,6 +521,25 @@ function sectorPage(x) {
           </tr>`;
   }).join("\n          ");
   const others = sectors.filter(o => o !== x).map(o => `<a href="/sector/${o.slug}/">${esc(o.name)}</a>`).join("\n        ");
+  // Coin by coin: the same dated figures as each coin page's key facts, in one sentence each.
+  const by1y = risky.filter(c => stats[c.sym].change1y !== null && stats[c.sym].historyDays >= 365).sort((a, b) => stats[b.sym].change1y - stats[a.sym].change1y);
+  const coinLines = withStats.map(c => {
+    const st = stats[c.sym], n = esc(shortName(c));
+    const r = by1y.indexOf(c) + 1;
+    const rankHere = r && by1y.length >= 3 ? ` That ranks it ${ordinal(r)} of the ${by1y.length} ${esc(x.noun)} here with a full year of data.` : "";
+    const link = `<a href="/coin/${slug(c.sym)}/">${esc(c.name)} (${esc(c.sym)})</a>`;
+    const span = st.historyDays >= 365 ? "the past year" : `${st.historyDays} days`;
+    if (c.sectors.includes("Stable")) return `<li>${link} closed at ${usd(st.close)} and stayed between ${usd(st.low52w)} and ${usd(st.high52w)} over ${span}.</li>`;
+    // Coins listed in several sectors get the full sentence only on their main sector's hub; elsewhere a short,
+    // hub-specific line, so overlapping hubs (AI and DePIN share many coins) don't repeat the same paragraph.
+    const main = sectorOf(c.sectors[0]);
+    if (main && main !== x) return `<li>${link}: ${st.change1y !== null ? `${pctText(st.change1y)} over one year` : `${pctText(st.change30d)} over 30 days`}${r && by1y.length >= 3 ? `, ${ordinal(r)} of ${by1y.length} here` : ""}; mainly listed under <a href="/sector/${main.slug}/">${esc(main.name)}</a>.</li>`;
+    const parts = [`closed at ${usd(st.close)}`];
+    if (st.change30d !== null) parts.push(`${pctText(st.change30d)} over 30 days`);
+    if (st.change1y !== null) parts.push(`${pctText(st.change1y)} over one year`);
+    const fall = typeof st.maxDrawdown1y === "number" && st.maxDrawdown1y <= -1 ? `; its largest fall in that time was ${Math.abs(st.maxDrawdown1y).toFixed(1)}%` : "";
+    return `<li>${link} ${parts.join(", ")}.${rankHere} ${n} traded between ${usd(st.low52w)} and ${usd(st.high52w)} over ${span}${fall}.</li>`;
+  }).join("\n        ");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -571,6 +608,14 @@ function sectorPage(x) {
       </div>
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) as of ${asOf ? longDate(asOf) : longDate(updated)}; updated weekly. Tap any coin for its live price.</p>
     </section>
+
+    ${coinLines ? `<section class="page-section prose" aria-labelledby="each-h">
+      <h2 id="each-h">${esc(x.name)} coins one by one</h2>
+      <ul class="brand-rules">
+        ${coinLines}
+      </ul>
+      <p class="disclaimer">Daily closes (UTC) as of ${longDate(asOf)}. Each coin page has the full history.</p>
+    </section>` : ""}
 
     <nav class="page-section" aria-labelledby="more-h">
       <h2 id="more-h">Other sectors</h2>
@@ -781,6 +826,8 @@ function heatmapPage() {
     <div class="hm-box" id="heatmap" role="group" aria-label="Crypto heatmap: coins sized by market cap and coloured by 24-hour change"></div>
     <div class="hm-legend" aria-hidden="true"><span>−8%</span><span class="hm-scale"></span><span>+8%</span></div>
 
+    ${weeklyMovesHtml("moves-h")}
+
     <section class="page-section prose" aria-labelledby="read-h">
       <h2 id="read-h">How to read the heatmap</h2>
       <p>Bigger boxes mean a larger market cap (live price × circulating supply). By default the map is “balanced”: box area follows the square root of market cap, with a minimum size so the smallest coins stay readable and easy to tap; the order is unchanged. Choose “True market cap” to make every area exactly proportional, which shows how much of the market Bitcoin really is. The colour shows the price change over the last 24 hours, from deep red at −8% or worse through grey to deep green at +8% or better. Stablecoins are hidden by default because they barely move; switch them on to see their share of the market.</p>
@@ -810,6 +857,14 @@ writeFileSync(ROOT + "heatmap/index.html", heatmapPage());
 // (inflated freshness is a spam signal). content/page-dates.json stores a hash of each page's
 // content; the date moves to today only when that hash changes. Asset hashes and the inlined
 // theme script are ignored, so a CSS or JS release doesn't count as a content change.
+// /race/ is hand-written; its weekly-moves block is generated between markers (before the page hashes below,
+// so its sitemap date changes only when the numbers do).
+{
+  const racePath = ROOT + "race/index.html", rh = readFileSync(racePath, "utf8");
+  const a = rh.indexOf("<!-- weekly-moves:start"), b = rh.indexOf("<!-- weekly-moves:end -->");
+  if (a < 0 || b < 0) throw new Error("weekly-moves markers not found in race/index.html");
+  writeFileSync(racePath, rh.slice(0, rh.indexOf("\n", a) + 1) + "    " + weeklyMovesHtml("moves-h") + "\n    " + rh.slice(b));
+}
 const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html", "/trust/": "trust/index.html", "/race/": "race/index.html" };
 const pageDatesPath = ROOT + "content/page-dates.json";
 const pageDates = existsSync(pageDatesPath) ? JSON.parse(readFileSync(pageDatesPath, "utf8")) : {};
