@@ -5,6 +5,13 @@ New session? Run `node scripts/kb.mjs` (digest of the knowledge store: open owne
 re-check), then read `docs/knowledge/HANDOFF.md`. Roadmap: `docs/STRATEGY.md`. Knowledge base: `docs/knowledge/README.md` (playbook, decisions, current state, Opus 5.5
 guide, research).
 
+## Goals, in priority order (every session works toward these; details in the linked file)
+1. **Get indexed and ranked:** `docs/INDEXING-PLAN.md` (Google has indexed 1 of 134 pages; no new URL families until it catches up).
+2. **Keep the live site correct and fast:** every change passes `bash tests/run.sh` locally and on the preview.
+3. **Unique, verifiable data features** users can't get free elsewhere: `docs/QUEUE.md` "Ready", one item per daily build.
+4. **Revenue only after AdSense approves**, per `docs/NEWS-AND-MONETIZATION.md` §6–7 (queue: "Waiting on the owner").
+5. **Low usage:** one chat at a time; record durable lessons in `docs/knowledge/facts.jsonl`, not in chat.
+
 ## Check your work
 - Full QA: `bash tests/run.sh` (local Pages emulator) or `bash tests/run.sh <preview-url>`. Must end with `QA PASSED`.
   Accessibility needs axe-core; see the header of `tests/axe.cjs`.
@@ -37,7 +44,7 @@ guide, research).
 - Widgets (`/embed/`) run in narrow iframes: phone-width rules for the site must be scoped to `body:not(.is-embed)`.
 - Prices start as a build-time snapshot (`is-stale`) and go live in the browser. Don't put opacity on the largest
   element, and reserve space for anything JavaScript fills in (layout shift).
-- `scripts/`, `tests/`, `_headers`, `.github/`, `assets/app.*`, `CLAUDE.md` are off-limits to the automated weekly task
+- `scripts/`, `tests/`, `_headers`, `.github/`, `assets/app.*`, `CLAUDE.md` are off-limits to the automated daily build and the data-refresh workflow
   (enforced by `seo-lint --base` on `claude/seo-*` branches and by `classify-change`).
 
 ## Decisions (details in docs/knowledge/DECISIONS.md)

@@ -1,3 +1,6 @@
+> **RETIRED 2026-11-12.** The weekly task is switched off. Data refreshes run in `.github/workflows/data-refresh.yml`;
+> builds run through `docs/QUEUE.md` and the daily tasks in `docs/DAILY-TASKS.md`. Kept for history.
+
 # Weekly maintenance task (the prompt the scheduled Claude task runs)
 
 This is a copy of the instructions stored in the Claude Code scheduled task "CryptoPriceTicker weekly
