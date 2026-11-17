@@ -20,7 +20,7 @@ the evidence behind a rule.
 Related, outside this folder:
 - [../../CLAUDE.md](../../CLAUDE.md): the short instructions every Claude session in this repo loads.
 - [../SELF-IMPROVING.md](../SELF-IMPROVING.md): the rules the automated loop follows.
-- [../WEEKLY-TASK.md](../WEEKLY-TASK.md): copy of the scheduled task's prompt.
+- [../DAILY-TASKS.md](../DAILY-TASKS.md): the daily scheduled tasks' prompts (build, SEO, check). [../WEEKLY-TASK.md](../WEEKLY-TASK.md) is retired.
 - [../LAUNCH-KIT.md](../LAUNCH-KIT.md): launch checklist, venues and post skeletons.
 - [../AUDIT.md](../AUDIT.md): the original audit (October 2026), kept as history.
 - [../../tests/README.md](../../tests/README.md): the QA suite (`bash tests/run.sh`).

@@ -96,8 +96,8 @@ and with effort. What we did about each:
 | Huge diffs (a refresh changed ~8,400 lines, 7,278 of them in the stats file) | `content/coin-stats.json` is one coin per line: a refresh now changes ~114 lines in it |
 | Reading big generated files | CLAUDE.md says to grep them instead |
 | Accidental reruns (a stray `--help` once ran a real refresh) | Data scripts reject unknown flags |
-| Effort higher than the job needs | Weekly task on **Medium**; interactive default `medium`, `xhigh` only for audits/redesigns |
-| Unneeded connectors in scheduled tasks | The weekly task has none; keep it that way |
+| Effort higher than the job needs | Daily build on Sonnet 5.5, daily check on Haiku 5.5; interactive default `medium`, `xhigh` only for audits/redesigns |
+| Unneeded connectors in scheduled tasks | Both daily tasks have none; keep it that way (a task can write through every connector it includes) |
 Other levers: `/clear` between unrelated tasks; one Claude session changing the site at a time (two in parallel
 cost a merge on Nov 2); Batch/API pricing doesn't apply to the subscription, so fewer, fuller turns are what saves.
 
