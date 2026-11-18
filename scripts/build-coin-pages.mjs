@@ -5,6 +5,7 @@
 //   _redirects              old tickers (e.g. /coin/ton/ → /coin/gram/)
 //   convert/index.html      the crypto converter page
 //   heatmap/index.html      the live market heatmap page
+//   market/index.html       the weekly market report, and market/feed.xml (scripts/lib/market-report.mjs)
 //   index.html              the "Live price pages" link list between the coin-index markers
 //
 //   node scripts/build-coin-pages.mjs
@@ -14,6 +15,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
+import { buildMarketReport } from "./lib/market-report.mjs";
 if (process.argv.length > 2) { console.error("Unknown argument(s): " + process.argv.slice(2).join(" ") + "\nUsage: node scripts/build-coin-pages.mjs   (no options; regenerates pages, sitemap, _redirects, hashes)"); process.exit(1); }
 
 const SITE = "https://cryptopriceticker.com";
@@ -158,6 +160,7 @@ function topbar(withFeeds, withCurrency = withFeeds) {
           <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/market/">📰 Weekly market report</a>
           <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
@@ -823,8 +826,11 @@ for (const [path, file] of Object.entries(STATIC_PAGES)) {
 writeFileSync(pageDatesPath, JSON.stringify(pageDates, null, 2) + "\n");
 const pageDate = path => (pageDates[path] || {}).date || updated;
 
+// 1e. Weekly market report (/market/ and its Atom feed), from the same daily-close stats
+buildMarketReport({ SITE, esc, longDate, list, pctText, pctClass, usd, avatarHtml, topbar, slug, coins, stats, sectors, week: statsFile.updated });
+
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/market/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}
@@ -906,5 +912,5 @@ for (const f of [...htmlFiles, "sw.js"]) {
   if (next !== headers) writeFileSync(ROOT + "_headers", next);
 }
 
-console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter and heatmap, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
+console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter, heatmap and market report, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
 if (!existsSync(ROOT + "og-image.jpg")) console.warn("⚠ og-image.jpg is missing");

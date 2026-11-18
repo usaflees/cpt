@@ -25,6 +25,11 @@
   Content-Type: application/speculationrules+json
   Cache-Control: public, max-age=3600
 
+# The weekly market report's Atom feed: the right media type for feed readers, refetched hourly at most.
+/market/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
 # The service worker must always be revalidated so updates reach visitors.
 /sw.js
   Cache-Control: no-cache
