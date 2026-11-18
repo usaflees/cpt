@@ -16,6 +16,9 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   sprite (`scripts/build-coin-icons.mjs`) instead of one file per coin; keep per-coin files for coin pages and
   widgets. Done when: image requests on `/` fall by at least half, logos look the same on every theme, LCP and CLS
   don't get worse, QA passes. Skip with a note if the measurement shows fewer than 30.
+  **Status (18 Nov):** built on branch `claude/home-icon-sprite` (draft PR); every page now draws logos from
+  `coin-icons/sprite.svg`. Still needs a Chromium check on the preview (logos on every theme, request count, LCP/CLS)
+  before merge. The daily build should skip this item while that PR is open.
 - [ ] **Backup and restore.** What: "Export my data" and "Import" in the home menu: one JSON file with watchlist,
   holdings, price alerts, move/portfolio alert settings and theme (all from `localStorage`; nothing uploaded).
   Import validates the file and asks before replacing. Done when: export → clear site data → import restores
