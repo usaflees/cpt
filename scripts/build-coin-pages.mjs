@@ -38,6 +38,8 @@ const SPRITE = buildSprite(ROOT, coins);
   if (next !== appJs) writeFileSync(ROOT + "assets/app.js", next);
 }
 const about = JSON.parse(readFileSync(ROOT + "content/coin-about.json", "utf8"));
+// Verified entity links (Wikidata + English Wikipedia) for the JSON-LD "about" of coin pages; see the file's _note.
+const entities = JSON.parse(readFileSync(ROOT + "content/coin-entities.json", "utf8")).coins;
 // Per-coin performance figures from scripts/fetch-coin-stats.mjs (optional).
 const statsFile = existsSync(ROOT + "content/coin-stats.json") ? JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")) : { coins: {} };
 const stats = statsFile.coins;
@@ -323,7 +325,7 @@ function coinPage(c) {
         description,
         dateModified: updated,
         isPartOf: { "@id": `${SITE}/#website` },
-        about: { "@type": "Thing", name: c.name, alternateName: c.sym }
+        about: { "@type": "Thing", name: c.name, alternateName: c.sym, ...(entities[c.sym] ? { sameAs: [entities[c.sym].wikidata, entities[c.sym].wikipedia] } : {}) }
       },
       {
         "@type": "BreadcrumbList",

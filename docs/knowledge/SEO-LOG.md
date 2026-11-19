@@ -3,6 +3,16 @@
 One dated entry per run of the "CPT daily SEO" scheduled task (prompt: `docs/DAILY-TASKS.md`): the check run and its
 result, and the action taken. Durable findings go in `docs/knowledge/facts.jsonl`, not here. Keep under 150 lines.
 
+## 2026-11-19 (full SEO pass, interactive)
+- Checks: seo-lint 0 errors; seo-audit 0 findings; check-live 40/40; all 132 sitemap URLs 200 with self-canonicals; no
+  noindex/nosnippet; JSON-LD parses everywhere and dateModified = lastmod; 159 internal link targets all 200; llms.txt
+  covers every non-coin page; robots.txt has entries for Googlebot, Bingbot, OAI-SearchBot, PerplexityBot,
+  Claude-SearchBot, GPTBot, ClaudeBot, Applebot; weakest coin page has 5 inbound links; crawl cost / 264 KB, /coin/btc/
+  381 KB of same-origin resources (sprite 48 KB compressed, cached 7 days, shared).
+- Found: HTML on the custom domain has no ETag/Last-Modified (pages.dev has one): owner fix in Cloudflare (facts:
+  html-no-etag-custom-domain).
+- Action: sameAs entity links for 28 coins (content/coin-entities.json).
+
 ## 2026-11-19 (interactive session)
 - Check: CPT daily SEO run on 18 Nov stopped at its access step (no repository attached; 23 s).
 - Action: shipped PR #18's content (sector hubs list each coin with dated figures; /heatmap/ and /race/ get a weekly
