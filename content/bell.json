@@ -1,0 +1,119 @@
+{
+ "updated": "2026-11-19T21:28:55.450Z",
+ "next": [
+  {
+   "edition": "open",
+   "date": "2026-11-20",
+   "at": "2026-11-20T14:25:00.000Z",
+   "early": false
+  },
+  {
+   "edition": "close",
+   "date": "2026-11-20",
+   "at": "2026-11-20T21:05:00.000Z",
+   "early": false
+  },
+  {
+   "edition": "open",
+   "date": "2026-11-23",
+   "at": "2026-11-23T14:25:00.000Z",
+   "early": false
+  },
+  {
+   "edition": "close",
+   "date": "2026-11-23",
+   "at": "2026-11-23T21:05:00.000Z",
+   "early": false
+  },
+  {
+   "edition": "open",
+   "date": "2026-11-24",
+   "at": "2026-11-24T14:25:00.000Z",
+   "early": false
+  },
+  {
+   "edition": "close",
+   "date": "2026-11-24",
+   "at": "2026-11-24T21:05:00.000Z",
+   "early": false
+  }
+ ],
+ "editions": [
+  {
+   "id": "2026-11-19-close",
+   "edition": "close",
+   "date": "2026-11-19",
+   "cutoff": "2026-11-19T21:05:00.000Z",
+   "generated": "2026-11-19T21:28:55.450Z",
+   "windowStart": "2026-11-19T14:25:00.000Z",
+   "earlyClose": false,
+   "btcAtCutoff": 61841.6,
+   "items": [
+    {
+     "feed": "sec",
+     "source": "SEC",
+     "topic": "",
+     "title": "SEC: Eight Entities Used Fake Crypto Asset Trading Platforms to Steal More Than $37 Million From U.S. Investors",
+     "link": "https://www.sec.gov/newsroom/press-releases/2026-115-sec-eight-entities-used-fake-crypto-asset-trading-platforms-steal-more-37-million-us-investors",
+     "published": "2026-11-19T14:39:02.000Z",
+     "score": 9.7,
+     "btcChange": -3.19
+    },
+    {
+     "feed": "fed",
+     "source": "Federal Reserve",
+     "topic": "Monetary Policy",
+     "title": "Minutes of the Federal Open Market Committee, October 27-28, 2026",
+     "link": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm",
+     "published": "2026-11-18T19:00:00.000Z",
+     "score": 8.9,
+     "btcChange": -1.99
+    },
+    {
+     "feed": "cftc",
+     "source": "CFTC",
+     "topic": "",
+     "title": "CFTC Announces Agenda for December Roundtable on 24/7 Trading",
+     "link": "https://www.cftc.gov/PressRoom/PressReleases/9327-26",
+     "published": "2026-11-17T15:18:19.000Z",
+     "score": 3.8,
+     "btcChange": -4.16
+    }
+   ],
+   "sourcesFailed": []
+  },
+  {
+   "id": "2026-11-19-open",
+   "edition": "open",
+   "date": "2026-11-19",
+   "cutoff": "2026-11-19T14:25:00.000Z",
+   "generated": "2026-11-19T17:12:26.964Z",
+   "windowStart": "2026-11-18T21:05:00.000Z",
+   "earlyClose": false,
+   "btcAtCutoff": 63864.7,
+   "items": [
+    {
+     "feed": "fed",
+     "source": "Federal Reserve",
+     "topic": "Monetary Policy",
+     "title": "Minutes of the Federal Open Market Committee, October 27-28, 2026",
+     "link": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm",
+     "published": "2026-11-18T19:00:00.000Z",
+     "score": 9.2,
+     "btcChange": 1.21
+    },
+    {
+     "feed": "cftc",
+     "source": "CFTC",
+     "topic": "",
+     "title": "CFTC Announces Agenda for December Roundtable on 24/7 Trading",
+     "link": "https://www.cftc.gov/PressRoom/PressReleases/9327-26",
+     "published": "2026-11-17T15:18:19.000Z",
+     "score": 4,
+     "btcChange": -1.03
+    }
+   ],
+   "sourcesFailed": []
+  }
+ ]
+}

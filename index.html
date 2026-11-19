@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Live Crypto Prices &amp; Real-Time Ticker | CryptoPriceTicker</title>
-  <meta name="description" content="Live crypto prices streamed straight from Coinbase, Binance and Kraken. Track 110+ coins, DePIN and AI sectors, a private portfolio and free embeddable widgets." />
+  <meta name="description" content="Privacy-first live crypto prices from Coinbase, Binance and Kraken: 110+ coins, alerts and free widgets. No account or ads; your watchlist stays on your device." />
   <meta name="robots" content="index, follow, max-image-preview:large" id="metaRobots" />
   <link rel="canonical" href="https://cryptopriceticker.com/" />
   <meta name="google-adsense-account" content="ca-pub-3149203932367096" />
@@ -18,7 +18,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=9012fe5a5c" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3d62e20d1e" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -27,7 +27,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="Live Crypto Prices — Real-Time Multi-Exchange Ticker" />
-  <meta property="og:description" content="110+ coins streaming live from Coinbase, Binance and Kraken. No login, no ads, private portfolio and free website widgets." />
+  <meta property="og:description" content="Privacy-first live crypto prices: 110+ coins streaming from Coinbase, Binance and Kraken. No login, no ads; your watchlist and portfolio stay in your browser." />
   <meta property="og:url" content="https://cryptopriceticker.com/" />
   <meta property="og:image" content="https://cryptopriceticker.com/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
@@ -43,14 +43,18 @@
         "@type": "WebSite",
         "@id": "https://cryptopriceticker.com/#website",
         "name": "CryptoPriceTicker.com",
+        "alternateName": ["CryptoPriceTicker", "Crypto Price Ticker"],
         "url": "https://cryptopriceticker.com/",
+        "description": "Privacy-first live cryptocurrency prices streamed from Coinbase, Binance and Kraken, relaunched in October 2026.",
         "publisher": { "@id": "https://cryptopriceticker.com/#org" }
       },
       {
         "@type": "Organization",
         "@id": "https://cryptopriceticker.com/#org",
         "name": "CryptoPriceTicker.com",
+        "alternateName": ["CryptoPriceTicker", "Crypto Price Ticker"],
         "url": "https://cryptopriceticker.com/",
+        "description": "CryptoPriceTicker.com is a free, privacy-first live crypto price ticker: no account, no ads, and watchlists, holdings and alerts stay in the visitor's browser. The original CryptoPriceTicker.com went offline in 2022; its owner relaunched the site in October 2026 with public source code.",
         "logo": { "@type": "ImageObject", "url": "https://cryptopriceticker.com/brand/mark-1024.png", "width": 1024, "height": 1024 },
         "sameAs": ["https://github.com/usaflees/cpt"],
         "publishingPrinciples": "https://cryptopriceticker.com/about/"
@@ -81,12 +85,14 @@ try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=9012fe5a5c" />
-  <script src="/assets/coins.js?v=05cb1ac4c6" defer></script>
-  <script src="/assets/app.js?v=8d686c0073" defer></script>
-  <script src="/assets/flash.js?v=19bde32626" defer></script>
+  <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
+  <script src="/assets/coins.js?v=163eeb3e6d" defer></script>
+  <script src="/assets/app.js?v=9a252edc09" defer></script>
+  <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
+  <script src="/assets/bell.js?v=56aacbea56" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="home">
@@ -137,6 +143,8 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
             <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
             <button type="button" class="menu-item" data-action="sync">💾 Copy my list to another device</button>
             <button type="button" class="menu-item" data-action="csv">📥 Download table (CSV)</button>
+            <button type="button" class="menu-item" id="backupExport">🗄️ Back up my data (file)</button>
+            <button type="button" class="menu-item" id="backupImport">♻️ Restore from a backup file</button>
             <button type="button" class="menu-item" id="densityBtn" data-action="density" aria-pressed="false">📐 Compact rows</button>
             <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
           <a class="menu-item" href="/race/">🏁 Coin Race</a>
@@ -155,8 +163,8 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <section class="hero" aria-labelledby="hero-h">
         <p class="brand-name"><img class="eyebrow-mark" src="/brand/mark-intro.svg" width="22" height="22" alt="" />CryptoPriceTicker.com</p>
         <h1 id="hero-h" class="hero-title">Live crypto prices from Coinbase, Binance &amp; Kraken</h1>
-        <p class="hero-sub">Every trade, the moment it happens. No login, no ads, nothing to install.</p>
-        <p class="hero-links"><a href="/heatmap/">🟩 Market heatmap</a><a href="/race/">🏁 Coin Race</a><a href="/convert/">🔁 Converter</a><a href="/widgets/">🧩 Free widget</a><button type="button" data-action="pip" hidden>⧉ Pop-out ticker</button></p>
+        <p class="hero-sub">Every trade, the moment it happens. Privacy-first: no login, no ads, nothing to install, and your watchlist never leaves your browser.</p>
+        <p class="hero-links"><a href="/heatmap/">🟩 Market heatmap</a><a href="/race/">🏁 Coin Race</a><a href="/convert/">🔁 Converter</a><a href="/widgets/">🧩 Free widget</a><a href="#bell-brief">🔔 Bell Brief</a><button type="button" data-action="pip">⧉ Pop-out ticker</button></p>
         <div class="hero-stats">
           <div class="stat"><span class="stat-label">Market cap</span><span class="stat-val" id="globalMcap">—</span></div>
           <div class="stat"><span class="stat-label">24h volume</span><span class="stat-val" id="globalVol">—</span></div>
@@ -175,6 +183,42 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         </div>
         <div class="mover-cards" id="moversList"><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div></div>
       </section>
+
+      <!-- bell-brief:start (generated by scripts/build-coin-pages.mjs from content/bell.json — do not edit by hand) -->
+      <link rel="stylesheet" href="/assets/bell.css?v=b88898d4fe" />
+      <section class="bell-box" id="bell-brief" aria-labelledby="bell-h" data-cutoff="2026-11-19T21:05:00.000Z" data-btc="61841.6" data-next='[{&quot;edition&quot;:&quot;open&quot;,&quot;at&quot;:&quot;2026-11-20T14:25:00.000Z&quot;,&quot;early&quot;:false},{&quot;edition&quot;:&quot;close&quot;,&quot;at&quot;:&quot;2026-11-20T21:05:00.000Z&quot;,&quot;early&quot;:false},{&quot;edition&quot;:&quot;open&quot;,&quot;at&quot;:&quot;2026-11-23T14:25:00.000Z&quot;,&quot;early&quot;:false},{&quot;edition&quot;:&quot;close&quot;,&quot;at&quot;:&quot;2026-11-23T21:05:00.000Z&quot;,&quot;early&quot;:false},{&quot;edition&quot;:&quot;open&quot;,&quot;at&quot;:&quot;2026-11-24T14:25:00.000Z&quot;,&quot;early&quot;:false},{&quot;edition&quot;:&quot;close&quot;,&quot;at&quot;:&quot;2026-11-24T21:05:00.000Z&quot;,&quot;early&quot;:false}]'>
+        <div class="bell-head">
+          <h2 id="bell-h"><span class="bell-icon" aria-hidden="true">🔔</span>Bell Brief <span class="muted bell-ed">Closing bell, Thu, Nov 19</span></h2>
+          <p class="bell-clock"><span id="bellNext">Next: opening bell, Nov 20, 9:25 am ET</span><span class="bell-bar" aria-hidden="true"><span id="bellBar"></span></span></p>
+        </div>
+        <p class="bell-lede">Up to three official releases most likely to move crypto, published 5 minutes before the NYSE opening bell and 5 minutes after the close (this edition: Nov 19, 4:05 pm ET).</p>
+        <ol class="bell-list">
+          <li class="bell-item" style="--i:0">
+            <span class="bell-rank" aria-hidden="true">1</span>
+            <span class="bell-body"><a class="bell-title" href="https://www.sec.gov/newsroom/press-releases/2026-115-sec-eight-entities-used-fake-crypto-asset-trading-platforms-steal-more-37-million-us-investors" rel="noopener">SEC: Eight Entities Used Fake Crypto Asset Trading Platforms to Steal More Than $37 Million From U.S. Investors</a>
+              <span class="bell-meta">SEC · <time datetime="2026-11-19T14:39:02.000Z">Nov 19, 9:39 am ET</time></span></span>
+            <span class="chg-pill chg-down bell-move" title="Bitcoin's change on Coinbase (BTC-USD) from this release to the bell">BTC -3.19%</span>
+          </li>
+          <li class="bell-item" style="--i:1">
+            <span class="bell-rank" aria-hidden="true">2</span>
+            <span class="bell-body"><a class="bell-title" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm" rel="noopener">Minutes of the Federal Open Market Committee, October 27-28, 2026</a>
+              <span class="bell-meta">Federal Reserve · Monetary Policy · <time datetime="2026-11-18T19:00:00.000Z">Nov 18, 2:00 pm ET</time></span></span>
+            <span class="chg-pill chg-down bell-move" title="Bitcoin's change on Coinbase (BTC-USD) from this release to the bell">BTC -1.99%</span>
+          </li>
+          <li class="bell-item" style="--i:2">
+            <span class="bell-rank" aria-hidden="true">3</span>
+            <span class="bell-body"><a class="bell-title" href="https://www.cftc.gov/PressRoom/PressReleases/9327-26" rel="noopener">CFTC Announces Agenda for December Roundtable on 24/7 Trading</a>
+              <span class="bell-meta">CFTC · <time datetime="2026-11-17T15:18:19.000Z">Nov 17, 10:18 am ET</time></span></span>
+            <span class="chg-pill chg-down bell-move" title="Bitcoin's change on Coinbase (BTC-USD) from this release to the bell">BTC -4.16%</span>
+          </li>
+        </ol>
+        <p class="bell-live"><span>BTC at this bell: $61,841.60 (Coinbase)</span><span>Since then: <span id="bellSince">—</span></span></p>
+        <details class="bell-how">
+          <summary>How the Bell Brief is chosen</summary>
+          <p>Sources are the public press and statistical releases of U.S. federal agencies: the Federal Reserve, the Bureau of Labor Statistics (CPI, jobs, producer prices), the Bureau of Economic Analysis, the SEC and the CFTC. A fixed rule ranks them: Federal Reserve monetary policy first, then the CPI and jobs reports, GDP and PCE, producer prices and crypto-related SEC actions, crypto, prediction-market and 24/7-trading CFTC actions, SEC news on exchange-traded funds, then Federal Reserve banking regulation and trade data, with a bonus for anything released since the last bell. Other releases (routine statistics, bank applications, and enforcement actions that don't involve crypto) never fill a slot. The BTC figure is Bitcoin's measured change on Coinbase from each release to the bell; it shows what the market did afterwards, not that the release caused it. Titles link to the agency's own page. Not financial advice.</p>
+        </details>
+      </section>
+      <!-- bell-brief:end -->
 
       <section class="flash-box" aria-labelledby="flash-h">
         <div class="section-head">
@@ -259,18 +303,22 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
       <section class="page-section prose" aria-labelledby="how-h">
         <h2 id="how-h">How CryptoPriceTicker.com works</h2>
-        <div class="methodology-grid" style="background:none;border:0;padding:0">
+        <div class="methodology-grid">
           <div>
             <h3>⚡ Straight from the exchanges</h3>
             <p>Your browser opens WebSocket connections to <strong>Coinbase</strong>, <strong>Binance</strong> and <strong>Kraken</strong> and shows each trade as it happens. The small CB/BN/KR badge on every row shows which exchange sent the latest price.</p>
           </div>
           <div>
-            <h3>📊 Market cap, volume &amp; liquidity</h3>
+            <h3>📊 Market cap, volume &amp; depth</h3>
             <p>Market cap is the live price × circulating supply (supply data last refreshed <span id="registryDate">recently</span>). Volume is the 24h total of the coin's USD/USDT markets on those three exchanges. Each coin's details panel and page show real order-book depth within ±2% of the price, measured live from Binance.</p>
           </div>
           <div>
-            <h3>🔒 Private by design</h3>
+            <h3>🔒 Privacy-first by design</h3>
             <p>No account and no ads. Your watchlist, bag quantities and alerts are saved only in this browser (localStorage). A sync link copies them to another device; anyone with the link can see them.</p>
+          </div>
+          <div id="history">
+            <h3>📅 Back and live since October 2026</h3>
+            <p>The original CryptoPriceTicker.com went offline in 2022. Its owner relaunched it on 23 October 2026 as a new, privacy-first live price site with <a href="https://github.com/usaflees/cpt">public source code</a>. It is maintained and updated every week; see the <a href="/about/#history-h">history</a>.</p>
           </div>
         </div>
       </section>
@@ -279,19 +327,19 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <h2 id="faq-h">Frequently asked questions</h2>
         <details>
           <summary>Are these prices real-time?</summary>
-          <p>Yes. Prices update tick-by-tick from the exchanges' public WebSocket feeds, typically within a second of a trade. If a feed disconnects, its badge at the top switches to RETRY and reconnects automatically.</p>
+          <p>Yes. Prices update tick-by-tick from the exchanges' public WebSocket feeds, typically within a second of a trade. If a feed disconnects, its badge under <strong>Live</strong> at the top switches to RETRY and it reconnects automatically.</p>
         </details>
         <details>
           <summary>Why is a coin's price slightly different on each exchange?</summary>
-          <p>Every exchange has its own order book, so prices differ a little; Binance also quotes in USDT rather than US dollars. Open the 🔔 inspector or a coin's page to see each exchange's price and the cross-exchange spread.</p>
+          <p>Every exchange has its own order book, so prices differ a little; Binance also quotes in USDT rather than US dollars. Tap <span aria-hidden="true">⋯</span> next to a coin, or open its page, to see each exchange's price and the cross-exchange spread.</p>
         </details>
         <details>
           <summary>How do price alerts work?</summary>
-          <p>Set a USD target in the 🔔 inspector. When the live price crosses it, you hear a beep and see a notification. Alerts are stored in your browser and only fire while this page is open.</p>
+          <p>Tap <span aria-hidden="true">⋯</span> next to a coin (or open its page) and set a USD target. When the live price crosses it, you hear a beep and see a notification. Alerts are stored in your browser and only fire while this page is open.</p>
         </details>
         <details>
           <summary>Can I add a live crypto ticker to my own website?</summary>
-          <p>Yes, for free. Use <strong>Get Widget</strong> to choose a scrolling bar, a card grid or a single-coin card, then paste the HTML snippet into your page. The widget runs in a lazy-loaded iframe, so it adds no scripts to your site.</p>
+          <p>Yes, for free. Open the menu (☰) and choose <strong>Get a free website widget</strong>, or go to the <a href="/widgets/">widgets page</a>, to pick a scrolling bar, a card grid or a single-coin card, then paste the HTML snippet into your page. The widget runs in a lazy-loaded iframe, so it adds no scripts to your site.</p>
         </details>
         <details>
           <summary>Is this investment advice?</summary>
@@ -425,7 +473,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
     <footer class="container site-footer" style="padding-top:0">
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" />CryptoPriceTicker.com — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/convert/">Crypto converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="https://www.google.com/preferences/source?q=cryptopriceticker.com" rel="noopener">Add us as a preferred source on Google</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+        <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" />CryptoPriceTicker.com — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/convert/">Crypto converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
         <span class="kbd-hint">Shortcuts: <kbd>/</kbd> search • 📌 pin a price to the tab title • 🧩 embed a widget</span>
       </div>
       <p class="disclaimer">Not financial advice. Prices come from Coinbase, Binance and Kraken public market-data feeds and may be delayed or inaccurate.</p>

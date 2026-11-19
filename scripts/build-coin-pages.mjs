@@ -6,6 +6,8 @@
 //   convert/index.html      the crypto converter page
 //   heatmap/index.html      the live market heatmap page
 //   index.html              the "Live price pages" link list between the coin-index markers
+//   coin-icons/sprite.svg   every coin logo in one file (scripts/lib/sprite.mjs); its ?v= hash is
+//                           stamped into assets/app.js (LOGO_SPRITE) and the static coin badges
 //
 //   node scripts/build-coin-pages.mjs
 //
@@ -14,6 +16,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
+import { buildSprite } from "./lib/sprite.mjs";
 if (process.argv.length > 2) { console.error("Unknown argument(s): " + process.argv.slice(2).join(" ") + "\nUsage: node scripts/build-coin-pages.mjs   (no options; regenerates pages, sitemap, _redirects, hashes)"); process.exit(1); }
 
 const SITE = "https://cryptopriceticker.com";
@@ -25,11 +28,25 @@ const SECTOR_NAMES = {
 };
 
 const { coins, updated: registryUpdated } = loadRegistry();
+// One file for every logo (one image request per page instead of one per coin). Stamp its hash into
+// app.js before the cache-busting hashes below are computed, so app.js's own ?v= covers the change.
+const SPRITE = buildSprite(ROOT, coins);
+{
+  const appJs = readFileSync(ROOT + "assets/app.js", "utf8");
+  const next = appJs.replace(/\/coin-icons\/sprite\.svg\?v=[0-9a-f]+/, SPRITE);
+  if (!next.includes(SPRITE)) throw new Error("assets/app.js: LOGO_SPRITE constant not found");
+  if (next !== appJs) writeFileSync(ROOT + "assets/app.js", next);
+}
 const about = JSON.parse(readFileSync(ROOT + "content/coin-about.json", "utf8"));
+// Verified entity links (Wikidata + English Wikipedia) for the JSON-LD "about" of coin pages; see the file's _note.
+const entities = JSON.parse(readFileSync(ROOT + "content/coin-entities.json", "utf8")).coins;
 // Per-coin performance figures from scripts/fetch-coin-stats.mjs (optional).
 const statsFile = existsSync(ROOT + "content/coin-stats.json") ? JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")) : { coins: {} };
 const stats = statsFile.coins;
 const updated = [registryUpdated, statsFile.updated].filter(Boolean).sort().pop();
+// Bell Brief editions (scripts/build-bell.mjs), rendered on the home page.
+const bellPath = ROOT + "content/bell.json";
+const bell = existsSync(bellPath) ? JSON.parse(readFileSync(bellPath, "utf8")) : null;
 // Hand- or agent-edited title/description/h1 per coin; validated by scripts/seo-lint.mjs.
 const overrides = existsSync(ROOT + "content/seo-overrides.json") ? JSON.parse(readFileSync(ROOT + "content/seo-overrides.json", "utf8")) : {};
 const byCap = [...coins].sort((a, b) => b.supply * b.price - a.supply * a.price);
@@ -111,10 +128,10 @@ function conversionTables(c) {
       </div>`;
 }
 
-// Coin badge: the coin's logo (coin-icons/, scripts/build-coin-icons.mjs) or its ticker. The page's
-// own coin loads eagerly; badges in tables load lazily.
+// Coin badge: the coin's logo (from coin-icons/sprite.svg, see scripts/lib/sprite.mjs) or its ticker.
+// The page's own coin loads eagerly; badges in tables load lazily.
 const avatarHtml = (c, eager = false) => c.logo
-  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/${slug(c.sym)}.svg" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
+  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img${c.mono ? ` class="mono-${c.mono}"` : ""} src="${SPRITE}#c-${slug(c.sym)}" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
   : `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>`;
 
 const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];
@@ -281,7 +298,6 @@ function coinPage(c) {
   const mcap = c.price * c.supply * 1e6;
   const exNames = c.feeds.map(f => EXCHANGES[f]);
   const pairs = c.feeds.map(f => `${EXCHANGES[f]} (${PAIR[f](c.tickers?.[f] || c.sym)})`);
-  const sectors = c.sectors.map(x => SECTOR_NAMES[x] || x);
   const { primary, same, nearby, top } = relatedCoins(c);
   const st = stats[c.sym];
   const o = overrides[c.sym] || {};
@@ -312,7 +328,7 @@ function coinPage(c) {
         description,
         dateModified: updated,
         isPartOf: { "@id": `${SITE}/#website` },
-        about: { "@type": "Thing", name: c.name, alternateName: c.sym }
+        about: { "@type": "Thing", name: c.name, alternateName: c.sym, ...(entities[c.sym] ? { sameAs: [entities[c.sym].wikidata, entities[c.sym].wikipedia] } : {}) }
       },
       {
         "@type": "BreadcrumbList",
@@ -385,7 +401,7 @@ function coinPage(c) {
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="${s}" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>
-          <button type="button" class="action-btn" data-action="pip" data-sym="${s}" hidden>⧉ Pop out</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="${s}">⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>
@@ -413,13 +429,6 @@ function coinPage(c) {
       <p class="disclaimer">Computed automatically from live exchange prices: measured moves, not news reports or advice.</p>
     </section>
 
-    <section class="page-section" id="convert" aria-labelledby="conv-h">
-      <h2 id="conv-h">Convert ${s} to USD</h2>
-      ${converterHtml([c, ...RATE_COINS.filter(x => x !== c.sym).map(x => coins.find(o => o.sym === x))], c.sym, "USD", num(c.price))}
-      ${conversionTables(c)}
-      <p class="disclaimer">Uses the live ${s} price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=${slug(c.sym)}">Convert ${s} to any other coin →</a></p>
-    </section>
-
     ${statsSection(c, st)}
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -434,6 +443,13 @@ function coinPage(c) {
       <p>The price above updates live in your browser from ${list(pairs)}, and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about ${supplyText} ${s} (supply last updated ${longDate(updated)}). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       ${c.formerly ? `<p>${name} previously traded under the ticker <strong>${esc(c.formerly)}</strong>; old ${esc(c.formerly)} links on this site redirect here.</p>` : ""}
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
+    </section>
+
+    <section class="page-section" id="convert" aria-labelledby="conv-h">
+      <h2 id="conv-h">Convert ${s} to USD</h2>
+      ${converterHtml([c, ...RATE_COINS.filter(x => x !== c.sym).map(x => coins.find(o => o.sym === x))], c.sym, "USD", num(c.price))}
+      ${conversionTables(c)}
+      <p class="disclaimer">Uses the live ${s} price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=${slug(c.sym)}">Convert ${s} to any other coin →</a></p>
     </section>
 
     <nav class="page-section" aria-labelledby="rel-h">
@@ -470,6 +486,24 @@ for (const c of coins) {
   writeFileSync(`${coinDir}${slug(c.sym)}/index.html`, coinPage(c));
 }
 
+// The week's biggest moves from daily closes: real, dated numbers in the static HTML of the live tool pages
+// (/heatmap/, /race/), which otherwise only fill in with JavaScript. Stablecoins excluded.
+function weeklyMovesHtml(headingId) {
+  const moved = byCap.filter(c => !c.sectors.includes("Stable") && typeof stats[c.sym]?.change7d === "number")
+    .sort((a, b) => stats[b.sym].change7d - stats[a.sym].change7d);
+  if (moved.length < 10) return "";
+  const asOf = moved.map(c => stats[c.sym].asOf).sort().pop();
+  const row = c => `<tr><td class="col-left"><a href="/coin/${slug(c.sym)}/">${esc(c.name)} (${esc(c.sym)})</a></td><td><span class="chg-pill ${pctClass(stats[c.sym].change7d)}">${pctText(stats[c.sym].change7d)}</span></td><td class="hide-mobile">${usd(stats[c.sym].close)}</td></tr>`;
+  const table = (cap, list) => `<table class="history-table conv-table sector-table"><caption>${cap}</caption><thead><tr><th scope="col" class="col-left">Coin</th><th scope="col">7 days</th><th scope="col" class="hide-mobile">Close</th></tr></thead><tbody>${list.map(row).join("")}</tbody></table>`;
+  const up = moved.filter(c => stats[c.sym].change7d > 0).length;
+  return `<section class="page-section" aria-labelledby="${headingId}">
+      <h2 id="${headingId}">Biggest moves of the week</h2>
+      <p class="prose">From daily closes as of <time datetime="${asOf}">${longDate(asOf)}</time>: ${up} of the ${moved.length} non-stablecoins tracked here rose over 7 days. ${esc(shortName(moved[0]))} gained most (${pctText(stats[moved[0].sym].change7d)}) and ${esc(shortName(moved[moved.length - 1]))} fell most (${pctText(stats[moved[moved.length - 1].sym].change7d)}).</p>
+      <div class="conv-tables">${table("Biggest 7-day risers", moved.slice(0, 5))}${table("Biggest 7-day fallers", moved.slice(-5).reverse())}</div>
+      <p class="disclaimer">Updated weekly. Live 24-hour moves are on the page above once it connects to the exchanges.</p>
+    </section>`;
+}
+
 // 1b. Sector hub pages
 function sectorPage(x) {
   const members = byCap.filter(c => c.sectors.some(k => x.keys.includes(k)));
@@ -504,6 +538,25 @@ function sectorPage(x) {
           </tr>`;
   }).join("\n          ");
   const others = sectors.filter(o => o !== x).map(o => `<a href="/sector/${o.slug}/">${esc(o.name)}</a>`).join("\n        ");
+  // Coin by coin: the same dated figures as each coin page's key facts, in one sentence each.
+  const by1y = risky.filter(c => stats[c.sym].change1y !== null && stats[c.sym].historyDays >= 365).sort((a, b) => stats[b.sym].change1y - stats[a.sym].change1y);
+  const coinLines = withStats.map(c => {
+    const st = stats[c.sym], n = esc(shortName(c));
+    const r = by1y.indexOf(c) + 1;
+    const rankHere = r && by1y.length >= 3 ? ` That ranks it ${ordinal(r)} of the ${by1y.length} ${esc(x.noun)} here with a full year of data.` : "";
+    const link = `<a href="/coin/${slug(c.sym)}/">${esc(c.name)} (${esc(c.sym)})</a>`;
+    const span = st.historyDays >= 365 ? "the past year" : `${st.historyDays} days`;
+    if (c.sectors.includes("Stable")) return `<li>${link} closed at ${usd(st.close)} and stayed between ${usd(st.low52w)} and ${usd(st.high52w)} over ${span}.</li>`;
+    // Coins listed in several sectors get the full sentence only on their main sector's hub; elsewhere a short,
+    // hub-specific line, so overlapping hubs (AI and DePIN share many coins) don't repeat the same paragraph.
+    const main = sectorOf(c.sectors[0]);
+    if (main && main !== x) return `<li>${link}: ${st.change1y !== null ? `${pctText(st.change1y)} over one year` : `${pctText(st.change30d)} over 30 days`}${r && by1y.length >= 3 ? `, ${ordinal(r)} of ${by1y.length} here` : ""}; mainly listed under <a href="/sector/${main.slug}/">${esc(main.name)}</a>.</li>`;
+    const parts = [`closed at ${usd(st.close)}`];
+    if (st.change30d !== null) parts.push(`${pctText(st.change30d)} over 30 days`);
+    if (st.change1y !== null) parts.push(`${pctText(st.change1y)} over one year`);
+    const fall = typeof st.maxDrawdown1y === "number" && st.maxDrawdown1y <= -1 ? `; its largest fall in that time was ${Math.abs(st.maxDrawdown1y).toFixed(1)}%` : "";
+    return `<li>${link} ${parts.join(", ")}.${rankHere} ${n} traded between ${usd(st.low52w)} and ${usd(st.high52w)} over ${span}${fall}.</li>`;
+  }).join("\n        ");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -573,6 +626,14 @@ function sectorPage(x) {
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) as of ${asOf ? longDate(asOf) : longDate(updated)}; updated weekly. Tap any coin for its live price.</p>
     </section>
 
+    ${coinLines ? `<section class="page-section prose" aria-labelledby="each-h">
+      <h2 id="each-h">${esc(x.noun[0].toUpperCase() + x.noun.slice(1))} one by one</h2>
+      <ul class="brand-rules">
+        ${coinLines}
+      </ul>
+      <p class="disclaimer">Daily closes (UTC) as of ${longDate(asOf)}. Each coin page has the full history.</p>
+    </section>` : ""}
+
     <nav class="page-section" aria-labelledby="more-h">
       <h2 id="more-h">Other sectors</h2>
       <div class="coin-index">
@@ -602,7 +663,7 @@ for (const x of sectors) {
 function convertPage() {
   const pageUrl = `${SITE}/convert/`;
   const title = "Crypto Converter: Live Rates for Coins & 20 Currencies";
-  const description = `Convert ${coins.length} cryptocurrencies to each other or to USD, EUR, GBP, INR and 16 more currencies at live exchange prices. Free, no sign-up.`;
+  const description = `Crypto converter: convert ${coins.length} cryptocurrencies to each other or to USD, EUR, GBP, INR and 16 more currencies at live exchange prices. Free, no sign-up.`;
   const btc = coins.find(c => c.sym === "BTC");
   const pairs = [["BTC", "USD"], ["ETH", "USD"], ["SOL", "USD"], ["XRP", "USD"], ["BTC", "EUR"], ["BTC", "GBP"], ["BTC", "INR"], ["ETH", "BTC"],
     ["SOL", "ETH"], ["USDT", "EUR"], ["DOGE", "USD"], ["USD", "BTC", 100], ["EUR", "ETH", 100]]
@@ -782,6 +843,8 @@ function heatmapPage() {
     <div class="hm-box" id="heatmap" role="group" aria-label="Crypto heatmap: coins sized by market cap and coloured by 24-hour change"></div>
     <div class="hm-legend" aria-hidden="true"><span>−8%</span><span class="hm-scale"></span><span>+8%</span></div>
 
+    ${weeklyMovesHtml("moves-h")}
+
     <section class="page-section prose" aria-labelledby="read-h">
       <h2 id="read-h">How to read the heatmap</h2>
       <p>Bigger boxes mean a larger market cap (live price × circulating supply). By default the map is “balanced”: box area follows the square root of market cap, with a minimum size so the smallest coins stay readable and easy to tap; the order is unchanged. Choose “True market cap” to make every area exactly proportional, which shows how much of the market Bitcoin really is. The colour shows the price change over the last 24 hours, from deep red at −8% or worse through grey to deep green at +8% or better. Stablecoins are hidden by default because they barely move; switch them on to see their share of the market.</p>
@@ -811,6 +874,14 @@ writeFileSync(ROOT + "heatmap/index.html", heatmapPage());
 // (inflated freshness is a spam signal). content/page-dates.json stores a hash of each page's
 // content; the date moves to today only when that hash changes. Asset hashes and the inlined
 // theme script are ignored, so a CSS or JS release doesn't count as a content change.
+// /race/ is hand-written; its weekly-moves block is generated between markers (before the page hashes below,
+// so its sitemap date changes only when the numbers do).
+{
+  const racePath = ROOT + "race/index.html", rh = readFileSync(racePath, "utf8");
+  const a = rh.indexOf("<!-- weekly-moves:start"), b = rh.indexOf("<!-- weekly-moves:end -->");
+  if (a < 0 || b < 0) throw new Error("weekly-moves markers not found in race/index.html");
+  writeFileSync(racePath, rh.slice(0, rh.indexOf("\n", a) + 1) + "    " + weeklyMovesHtml("moves-h") + "\n    " + rh.slice(b));
+}
 const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html", "/trust/": "trust/index.html", "/race/": "race/index.html" };
 const pageDatesPath = ROOT + "content/page-dates.json";
 const pageDates = existsSync(pageDatesPath) ? JSON.parse(readFileSync(pageDatesPath, "utf8")) : {};
@@ -823,19 +894,21 @@ for (const [path, file] of Object.entries(STATIC_PAGES)) {
 }
 writeFileSync(pageDatesPath, JSON.stringify(pageDates, null, 2) + "\n");
 const pageDate = path => (pageDates[path] || {}).date || updated;
+// The home page changes with each Bell Brief edition (ET date of its cutoff).
+const homeDate = [updated, bell?.editions?.[0] ? new Date(bell.editions[0].cutoff).toLocaleDateString("en-CA", { timeZone: "America/New_York" }) : null].filter(Boolean).sort().pop();
 
 // 2. Sitemap
 const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}
+${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : u === `${SITE}/` ? homeDate : updated}</lastmod></url>`).join("\n")}
 </urlset>
 `);
 // Per-section copies for Search Console's Page indexing report (filter by sitemap): submit these three there
 // to see how many coin, sector and other pages are indexed. sitemap.xml stays the complete list.
 const sitemapOf = list => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${list.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}
+${list.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : u === `${SITE}/` ? homeDate : updated}</lastmod></url>`).join("\n")}
 </urlset>
 `;
 writeFileSync(ROOT + "sitemap-coins.xml", sitemapOf(urls.filter(u => u.includes("/coin/"))));
@@ -865,6 +938,47 @@ writeFileSync(ROOT + "_redirects", `# Generated by scripts/build-coin-pages.mjs 
 ${redirects.join("\n")}
 `);
 
+// 3b. Bell Brief on the home page (content/bell.json, written by scripts/build-bell.mjs twice per trading day)
+const etTime = iso => new Date(iso).toLocaleString("en-US", { timeZone: "America/New_York", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).replace(" AM", " am").replace(" PM", " pm") + " ET";
+const etDay = iso => new Date(iso).toLocaleDateString("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric" });
+const bellName = (e, early) => (e === "open" ? "Opening bell" : early ? "Early closing bell" : "Closing bell");
+function bellHtml() {
+  const ed = bell?.editions?.[0];
+  const next = (bell?.next || []).filter(n => !ed || n.at > ed.cutoff);
+  const nextText = next[0] ? `Next: ${bellName(next[0].edition, next[0].early).toLowerCase()}, ${etTime(next[0].at)}` : "";
+  const items = ed ? ed.items.map((it, i) => `
+          <li class="bell-item" style="--i:${i}">
+            <span class="bell-rank" aria-hidden="true">${i + 1}</span>
+            <span class="bell-body"><a class="bell-title" href="${esc(it.link)}" rel="noopener">${esc(it.title)}</a>
+              <span class="bell-meta">${esc(it.source)}${it.topic ? ` · ${esc(it.topic)}` : ""} · <time datetime="${it.published}">${etTime(it.published)}</time></span></span>
+            ${it.btcChange === null ? `<span class="bell-move muted">BTC —</span>` : `<span class="chg-pill ${pctClass(it.btcChange)} bell-move" title="Bitcoin's change on Coinbase (BTC-USD) from this release to the bell">BTC ${pctText(it.btcChange)}</span>`}
+          </li>`).join("") : "";
+  const words = ["no", "only one", "only two"];
+  const quiet = ed && ed.items.length < 3 ? `<li class="bell-quiet">A quiet session: ${words[ed.items.length]} federal release${ed.items.length === 1 ? "" : "s"} met the bar in the last four days.</li>` : "";
+  const first = !ed ? `<li class="bell-quiet">The first edition arrives with the next bell${next[0] ? `: ${etTime(next[0].at)}` : ""}.</li>` : "";
+  return `<link rel="stylesheet" href="/assets/bell.css" />
+      <section class="bell-box" id="bell-brief" aria-labelledby="bell-h"${ed ? ` data-cutoff="${ed.cutoff}" data-btc="${ed.btcAtCutoff ?? ""}"` : ""} data-next='${esc(JSON.stringify(next.map(({ edition, at, early }) => ({ edition, at, early }))))}'>
+        <div class="bell-head">
+          <h2 id="bell-h"><span class="bell-icon" aria-hidden="true">🔔</span>Bell Brief${ed ? ` <span class="muted bell-ed">${bellName(ed.edition, ed.earlyClose)}, ${etDay(ed.cutoff)}</span>` : ""}</h2>
+          <p class="bell-clock"><span id="bellNext">${esc(nextText)}</span><span class="bell-bar" aria-hidden="true"><span id="bellBar"></span></span></p>
+        </div>
+        <p class="bell-lede">Up to three official releases most likely to move crypto, published 5 minutes before the NYSE opening bell and 5 minutes after the close${ed ? ` (this edition: ${etTime(ed.cutoff)})` : ""}.</p>
+        <ol class="bell-list">${items}${quiet}${first}
+        </ol>
+        ${ed?.btcAtCutoff ? `<p class="bell-live"><span>BTC at this bell: ${usd(ed.btcAtCutoff)} (Coinbase)</span><span>Since then: <span id="bellSince">—</span></span></p>` : ""}
+        <details class="bell-how">
+          <summary>How the Bell Brief is chosen</summary>
+          <p>Sources are the public press and statistical releases of U.S. federal agencies: the Federal Reserve, the Bureau of Labor Statistics (CPI, jobs, producer prices), the Bureau of Economic Analysis, the SEC and the CFTC. A fixed rule ranks them: Federal Reserve monetary policy first, then the CPI and jobs reports, GDP and PCE, producer prices and crypto-related SEC actions, crypto, prediction-market and 24/7-trading CFTC actions, SEC news on exchange-traded funds, then Federal Reserve banking regulation and trade data, with a bonus for anything released since the last bell. Other releases (routine statistics, bank applications, and enforcement actions that don't involve crypto) never fill a slot. The BTC figure is Bitcoin's measured change on Coinbase from each release to the bell; it shows what the market did afterwards, not that the release caused it.${ed?.sourcesFailed?.length ? ` This edition could not reach: ${esc(ed.sourcesFailed.join(", "))}.` : ""} Titles link to the agency's own page. Not financial advice.</p>
+        </details>
+      </section>`;
+}
+{
+  const path = ROOT + "index.html", h = readFileSync(path, "utf8");
+  const a = h.indexOf("<!-- bell-brief:start"), b = h.indexOf("<!-- bell-brief:end -->");
+  if (a < 0 || b < 0) throw new Error("bell-brief markers not found in index.html");
+  writeFileSync(path, h.slice(0, h.indexOf("\n", a) + 1) + "      " + bellHtml() + "\n      " + h.slice(b));
+}
+
 // 4. Coin link list on the home page
 const indexPath = ROOT + "index.html";
 const html = readFileSync(indexPath, "utf8");
@@ -879,9 +993,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;

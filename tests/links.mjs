@@ -1,6 +1,5 @@
 // Internal link, #anchor and duplicate-id check over every HTML file. Usage: node tests/links.mjs
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
 const ROOT = new URL("..", import.meta.url).pathname;
 const files = [];
 const walk = d => readdirSync(ROOT + d).forEach(f => { const p = d + f; if (["node_modules", ".git", "scripts", "docs", "dist"].includes(f)) return; if (statSync(ROOT + p).isDirectory()) walk(p + "/"); else if (f.endsWith(".html")) files.push(p); });

@@ -35,7 +35,6 @@ const B = process.argv[2] || 'http://localhost:8788';
   const nc = await b.newContext({ permissions: ['notifications'] }); const np = await nc.newPage();
   await np.addInitScript(() => { window.__notes = []; const N = window.Notification; window.Notification = function (t, o) { window.__notes.push(t + ' | ' + o.body); }; window.Notification.permission = 'granted'; window.Notification.requestPermission = N.requestPermission.bind(N); Object.defineProperty(navigator, 'serviceWorker', { value: undefined }); });
   await np.goto(B + '/coin/btc/'); await np.waitForFunction(() => !document.getElementById('cpPrice').classList.contains('is-stale'), null, { timeout: 20000 });
-  const price = await np.evaluate(() => parseFloat(document.getElementById('cpPrice').textContent.replace(/[$,]/g, '')));
   // The alert fires only when the live price crosses the target, so try just above, then just below, the current price.
   const nowPrice = () => np.evaluate(() => parseFloat(document.getElementById('cpPrice').textContent.replace(/[^0-9.]/g, '')));
   for (const delta of [0.01, -0.01, 0.01, -0.01]) {

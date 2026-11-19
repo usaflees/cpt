@@ -25,7 +25,27 @@ const onlyAssetHashes = f => {
     return unhash(before) === unhash(after);
   } catch (_) { return false; }
 };
-for (const f of [...changed, ...untracked]) if (!DATA_FILES.some(r => r.test(f)) && !onlyAssetHashes(f)) reasons.push(`${f} is not a data file`);
+// Hand-written pages with a generated data block (between markers) and their entry in content/page-dates.json:
+// data when nothing outside the block changed, and when only those pages' dates moved.
+const GENERATED_BLOCKS = { "race/index.html": "weekly-moves" };
+const show = f => execSync(`git show ${fork}:${f}`, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+const read = f => execSync(`cat ${JSON.stringify(f)}`, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+const onlyGeneratedBlock = f => {
+  const name = GENERATED_BLOCKS[f];
+  if (!name) return false;
+  const strip = t => unhash(t).replace(new RegExp(`<!-- ${name}:start[\\s\\S]*?<!-- ${name}:end -->`), "");
+  try { return strip(show(f)) === strip(read(f)); } catch (_) { return false; }
+};
+const onlyGeneratedPageDates = f => {
+  if (f !== "content/page-dates.json") return false;
+  try {
+    const before = JSON.parse(show(f)), after = JSON.parse(read(f));
+    const keys = new Set([...Object.keys(before), ...Object.keys(after)]);
+    const pages = Object.keys(GENERATED_BLOCKS).map(x => "/" + x.replace(/index\.html$/, ""));
+    return [...keys].every(k => JSON.stringify(before[k]) === JSON.stringify(after[k]) || pages.includes(k));
+  } catch (_) { return false; }
+};
+for (const f of [...changed, ...untracked]) if (!DATA_FILES.some(r => r.test(f)) && !onlyAssetHashes(f) && !onlyGeneratedBlock(f) && !onlyGeneratedPageDates(f)) reasons.push(`${f} is not a data file`);
 
 // Registry: only supply/price numbers may change — not the coin list, names, sectors, feeds or tickers.
 if (changed.includes("assets/coins.js")) {

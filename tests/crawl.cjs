@@ -8,12 +8,18 @@ const BASE = (process.argv[2] || 'http://localhost:8788').replace(/\/$/, '');
 const VT_SKIP = /Transition was (aborted because of invalid state|skipped)/; // see tests/README.md
 const paths = [...fs.readFileSync(__dirname + '/../sitemap.xml', 'utf8').matchAll(/<loc>https:\/\/cryptopriceticker\.com([^<]*)<\/loc>/g)].map(m => m[1] || '/')
   .concat(['/embed/?coins=BTC,ETH,SOL&layout=marquee', '/embed/?coins=BTC,ETH,SOL,XRP&layout=grid', '/embed/?coins=BTC&layout=single', '/this-page-does-not-exist']);
+// Kraken limits WebSocket connections per IP: a full crawl right after another one (local QA, then preview QA) got
+// HTTP 429 on dozens of pages. Only these sampled pages open the real Kraken socket, so its errors still fail the
+// crawl there; elsewhere a silent stand-in socket answers. Coinbase and Binance stay real everywhere.
+const KRAKEN_PAGES = new Set(['/', '/coin/btc/', '/coin/eth/', '/coin/sol/', '/coin/xrp/', '/coin/doge/', '/coin/ada/',
+  '/sector/ai/', '/heatmap/', '/convert/', '/embed/?coins=BTC,ETH,SOL&layout=marquee', '/embed/?coins=BTC&layout=single']);
 (async () => {
   const b = await chromium.launch(); const problems = []; const warnings = new Map(); let i = 0;
   const worker = async () => {
     const ctx = await b.newContext({ serviceWorkers: 'block' });
     while (i < paths.length) {
       const path = paths[i++]; const p = await ctx.newPage(); const local = [];
+      if (!KRAKEN_PAGES.has(path)) await p.routeWebSocket(/^wss:\/\/ws\.kraken\.com\//, () => {});
       // (the crawl blocks service workers itself so every page loads fresh; that notice is ours, not the site's)
       p.on('console', m => { if (m.type() === 'warning' && !/blocked by Playwright/.test(m.text())) warnings.set(m.text().slice(0, 160), path); });
       p.on('console', m => { if ((m.type() === 'error' || /Content Security Policy|Refused/.test(m.text())) && !VT_SKIP.test(m.text()) && !(path.startsWith('/this-page') && /404/.test(m.text()))) local.push('console: ' + m.text().slice(0, 140)); });

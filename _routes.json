@@ -9,7 +9,8 @@
     "/.github", "/.github/*",
     "/functions", "/functions/*",
     "/public", "/public/*",
-    "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore", "/package.json"
+    "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore", "/package.json",
+    "/data/market-snapshot-cache.json", "/data/lastmod-ledger.json", "/data/changed-urls.json"
   ],
   "exclude": []
 }

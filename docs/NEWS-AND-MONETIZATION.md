@@ -219,7 +219,7 @@ Three layers, in this order of SEO value:
 ## 10. Answer: why the sitemap said 30 October
 
 - The sitemap's `lastmod` for coin, sector, home, converter and heatmap pages is **the date of the last market-data refresh**, which was 30 October. Hand-written pages (about, widgets, brand, accessibility) use their own content-change date.
-- The refresh is normally done by the weekly scheduled task.
+- The refresh is normally done by the weekly data-refresh GitHub workflow (Mondays).
 - On 2 November we ran it by hand:
   - supplies and seed prices came from CoinLore and the exchanges;
   - performance stats run through the 1 November daily close;

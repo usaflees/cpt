@@ -25,6 +25,23 @@ const B = process.argv[2] || 'http://localhost:8788';
     h1: document.querySelector('h1').textContent,
     unlabeled: [...document.querySelectorAll('button')].filter(x => !x.textContent.trim() && !x.getAttribute('aria-label') && !x.title).length,
   }))));
+  // Bell Brief: the edition is in the static HTML (1-3 releases or a quiet note), and bell.js fills in the countdown.
+  const bell = await p.evaluate(() => { const b = document.getElementById('bell-brief'); return b && { items: b.querySelectorAll('.bell-item').length, quiet: b.querySelectorAll('.bell-quiet').length, next: (document.getElementById('bellNext') || {}).textContent || '', js: b.classList.contains('js-bell'), links: [...b.querySelectorAll('.bell-title')].every(a => /^https:\/\/(www\.)?(federalreserve|bls|bea|sec|cftc)\.gov\//.test(a.href)) }; });
+  console.log('bell brief:', JSON.stringify(bell));
+  if (!bell) issues.push('home: Bell Brief block missing');
+  else {
+    if (bell.items + bell.quiet < 1 || bell.items > 3) issues.push(`home: Bell Brief has ${bell.items} items`);
+    if (!bell.js || !/^(Next|Publishing|Newer edition)/.test(bell.next)) issues.push(`home: Bell Brief countdown not filled ("${bell.next}")`);
+    if (!bell.links) issues.push('home: a Bell Brief item links outside the federal sources');
+  }
+  // Dialogs keep keyboard focus inside: the page behind is inert. (<body> is the browser's own stop
+  // between the last and the first control, as with a native <dialog>; it is not a page element.)
+  await p.click('#row-BTC .more-btn'); await p.waitForTimeout(200);
+  let escaped = 0; for (let i = 0; i < 30; i++) { await p.keyboard.press('Tab'); if (await p.evaluate(() => document.activeElement !== document.body && !document.activeElement.closest('.modal-backdrop.open'))) escaped++; }
+  console.log('dialog focus trap: tab stops in the page behind:', escaped);
+  if (escaped) issues.push(`home: focus left the open dialog ${escaped} times in 30 Tab presses`);
+  await p.keyboard.press('Escape');
+  if (await p.evaluate(() => document.querySelector('#appShell').inert)) issues.push('home: page still inert after the dialog closed');
   await p.click('#row-BTC .more-btn'); await p.fill('#md-alert', '123456'); await p.waitForTimeout(2000);
   console.log('alert input kept:', await p.inputValue('#md-alert'), '| depth', await p.textContent('#md-depth'));
   await p.fill('#md-hold', '0.5'); await p.press('#md-hold', 'Tab'); await p.waitForTimeout(300);
@@ -35,7 +52,7 @@ const B = process.argv[2] || 'http://localhost:8788';
   await p.click('[data-sector="BAG"]'); await p.waitForTimeout(300);
   console.log('My bag tab: rows', await p.evaluate(() => document.querySelectorAll('#tableBody tr[data-sym]').length), '| banner visible', await p.isVisible('#bagBanner'), '| holdings col visible', await p.isVisible('#row-BTC .col-bag'));
   await p.click('[data-sector="ALL"]');
-  await p.focus('th[data-sort="change7d"] button'); await p.keyboard.press('Enter');
+  await p.focus('th[data-sort="change7d"] button'); await p.keyboard.press('Enter'); await p.waitForTimeout(400);
   console.log('sort by 7d:', await p.getAttribute('th[data-sort="change7d"]', 'aria-sort'));
   await p.click('.menu-pop summary'); await p.click('.menu-list [data-action="open-widget"]'); await p.waitForTimeout(500);
   const snip = await p.inputValue('#wgEmbedCode'); console.log('widget builder:', snip.match(/>([^<]+)<\/a>/)[1], '| menu closed:', !(await p.evaluate(() => document.querySelector('.menu-pop').open)));

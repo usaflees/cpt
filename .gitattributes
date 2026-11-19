@@ -1,0 +1,3 @@
+# Every line of the facts store is an independent fact: keep both sides when parallel sessions add lines.
+# scripts/kb.mjs --check (in QA) still validates the merged file, and --write regenerates FACTS.md.
+docs/knowledge/facts.jsonl merge=union
