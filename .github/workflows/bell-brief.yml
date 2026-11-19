@@ -1,0 +1,102 @@
+# Bell Brief: publishes the home page's list of official releases 5 minutes before the NYSE opening bell (9:25 ET)
+# and 5 minutes after the close (16:05 ET; 13:05 ET on early-close days), on trading days only.
+#
+# GitHub starts scheduled runs late (often several minutes), so the first run of each pair starts about 10 minutes
+# before the cutoff and scripts/build-bell.mjs waits for the exact cutoff; the second is a fallback in case the
+# first was skipped. Two crons per bell cover daylight saving (ET is UTC-4 in summer, UTC-5 in winter); the script
+# itself decides what is due (exit 3 = nothing to do) and never publishes the same edition twice.
+#
+# Only content/bell.json, index.html and the sitemaps may change; seo-lint, the link check and the knowledge-store
+# check must pass. No secrets, no AI: the sources are public U.S. federal releases and Coinbase's public candles.
+# Run by hand: Actions → Bell Brief → Run workflow (choose an edition to rebuild the latest one now).
+name: Bell Brief
+
+on:
+  schedule:
+    - cron: "15 13,14 * * 1-5" # before the 9:25 ET cutoff (EDT / EST)
+    - cron: "40 13,14 * * 1-5" # fallback
+    - cron: "55 19,20 * * 1-5" # before the 16:05 ET cutoff
+    - cron: "20 20,21 * * 1-5" # fallback
+    - cron: "55 16,17 * * 1-5" # before 13:05 ET on early-close days
+    - cron: "20 17,18 * * 1-5" # fallback
+  workflow_dispatch:
+    inputs:
+      edition:
+        description: "Rebuild this edition for the latest trading day now (leave empty: whatever is due)"
+        type: choice
+        options: ["", "open", "close"]
+        default: ""
+
+permissions: {}
+
+concurrency:
+  group: bell-brief
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Build the edition that is due
+        id: bell
+        env:
+          EDITION: ${{ inputs.edition }}
+        run: |
+          set +e
+          if [ -n "$EDITION" ]; then node scripts/build-bell.mjs --edition "$EDITION"; else node scripts/build-bell.mjs; fi
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          # 0 written, 3 nothing due: fine. 1 failure: red run, the previous edition stays live.
+          [ "$code" = 0 ] || [ "$code" = 3 ]
+
+      - name: Render and check
+        if: steps.bell.outputs.code == '0'
+        run: |
+          node scripts/build-coin-pages.mjs
+          node scripts/seo-lint.mjs
+          node tests/links.mjs
+          node scripts/kb.mjs --check
+          changed=$(git status --porcelain | awk '{print $2}')
+          echo "$changed"
+          bad=$(echo "$changed" | grep -vxE 'content/bell\.json|index\.html|sitemap(-pages)?\.xml' || true)
+          if [ -n "$bad" ]; then echo "Unexpected changes: $bad"; exit 1; fi
+
+      - name: Publish to main
+        id: publish
+        if: steps.bell.outputs.code == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "old=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          id=$(node -e "console.log(require('./content/bell.json').editions[0].id)")
+          git add content/bell.json index.html sitemap.xml sitemap-pages.xml
+          git commit -q -m "Bell Brief ${id} (automated)"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for i in 1 2 3; do git push "$remote" HEAD:main && exit 0; git pull -q --rebase "$remote" main; done
+          exit 1
+
+      - name: Production check
+        if: steps.publish.outcome == 'success'
+        run: |
+          bash tests/wait-deploy.sh https://cryptopriceticker.com 600
+          node scripts/check-live.mjs
+
+      - name: Tell IndexNow search engines
+        if: steps.publish.outcome == 'success'
+        env:
+          OLD: ${{ steps.publish.outputs.old }}
+        run: node scripts/indexnow.mjs "$OLD"

@@ -8,7 +8,7 @@
   <meta name="description" content="Live prices for 11 memecoins from Coinbase, Binance and Kraken, with 7-day, 30-day and 1-year performance and market caps." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/sector/memecoins/" />
-  <link rel="preload" href="/assets/app.css?v=3ac6cc247b" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3d62e20d1e" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -35,11 +35,12 @@ try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3ac6cc247b" />
+  <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
   <script src="/assets/coins.js?v=163eeb3e6d" defer></script>
-  <script src="/assets/app.js?v=17f716addd" defer></script>
+  <script src="/assets/app.js?v=9a252edc09" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="sector">
@@ -189,6 +190,24 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         </table>
       </div>
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) as of November 15, 2026; updated weekly. Tap any coin for its live price.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="each-h">
+      <h2 id="each-h">Memecoins one by one</h2>
+      <ul class="brand-rules">
+        <li><a href="/coin/doge/">Dogecoin (DOGE)</a> closed at $0.0599, -26.04% over 30 days, -63.31% over one year. That ranks it 4th of the 11 memecoins here with a full year of data. Dogecoin traded between $0.0574 and $0.1617 over the past year; its largest fall in that time was 64.5%.</li>
+        <li><a href="/coin/shib/">Shiba Inu (SHIB)</a> closed at $0.00000396, -22.35% over 30 days, -56.19% over one year. That ranks it 3rd of the 11 memecoins here with a full year of data. Shiba Inu traded between $0.00000384 and $0.00000927 over the past year; its largest fall in that time was 58.6%.</li>
+        <li><a href="/coin/pepe/">Pepe (PEPE)</a> closed at $0.00000388, -3.72% over 30 days, -22.24% over one year. That ranks it 1st of the 11 memecoins here with a full year of data. Pepe traded between $0.00000233 and $0.00000718 over the past year; its largest fall in that time was 67.5%.</li>
+        <li><a href="/coin/bonk/">Bonk (BONK)</a> closed at $0.00000236, -23.13% over 30 days, -78.66% over one year. That ranks it 10th of the 11 memecoins here with a full year of data. Bonk traded between $0.00000223 and $0.00001210 over the past year; its largest fall in that time was 81.6%.</li>
+        <li><a href="/coin/floki/">FLOKI (FLOKI)</a> closed at $0.00001876, -22.42% over 30 days, -65.96% over one year. That ranks it 5th of the 11 memecoins here with a full year of data. FLOKI traded between $0.00001792 and $0.00005796 over the past year; its largest fall in that time was 69.1%.</li>
+        <li><a href="/coin/wif/">dogwifhat (WIF)</a> closed at $0.1336, -34.32% over 30 days, -68.49% over one year. That ranks it 7th of the 11 memecoins here with a full year of data. dogwifhat traded between $0.1293 and $0.4380 over the past year; its largest fall in that time was 70.5%.</li>
+        <li><a href="/coin/turbo/">Turbo (TURBO)</a> closed at $0.000610, -32.67% over 30 days, -66.00% over one year. That ranks it 6th of the 11 memecoins here with a full year of data. Turbo traded between $0.000587 and $0.002479 over the past year; its largest fall in that time was 76.3%.</li>
+        <li><a href="/coin/bome/">BOOK OF MEME (BOME)</a> closed at $0.000494, -26.44% over 30 days, -39.85% over one year. That ranks it 2nd of the 11 memecoins here with a full year of data. BOOK OF MEME traded between $0.000366 and $0.001222 over the past year; its largest fall in that time was 59.9%.</li>
+        <li><a href="/coin/mog/">Mog Coin (MOG)</a> closed at $0.00000008, -24.66% over 30 days, -79.16% over one year. That ranks it 11th of the 11 memecoins here with a full year of data. Mog Coin traded between $0.00000007 and $0.00000036 over the past year; its largest fall in that time was 79.2%.</li>
+        <li><a href="/coin/popcat/">Popcat (POPCAT)</a> closed at $0.0288, -38.20% over 30 days, -73.89% over one year. That ranks it 8th of the 11 memecoins here with a full year of data. Popcat traded between $0.0278 and $0.1111 over the past year; its largest fall in that time was 75.0%.</li>
+        <li><a href="/coin/mew/">cat in a dogs world (MEW)</a> closed at $0.000299, -28.64% over 30 days, -78.30% over one year. That ranks it 9th of the 11 memecoins here with a full year of data. cat in a dogs world traded between $0.000296 and $0.001359 over the past year; its largest fall in that time was 78.2%.</li>
+      </ul>
+      <p class="disclaimer">Daily closes (UTC) as of November 15, 2026. Each coin page has the full history.</p>
     </section>
 
     <nav class="page-section" aria-labelledby="more-h">

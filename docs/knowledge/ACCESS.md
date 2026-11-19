@@ -15,6 +15,7 @@ accounts around it.
 | Push to `main` on GitHub | Only `usaflees` (the single collaborator, admin). Checked through the API on 2026-11-11 | GitHub account security (§3.1). `main` has **no ruleset yet** (§3.2) |
 | Claude Code sessions | Push as the owner through the Claude GitHub App, only to the repositories attached to the session | Whoever can sign in to the owner's claude.ai account can push. Session scope, connectors (§3.4) |
 | `data-refresh.yml` (weekly, GitHub's own token) | One job, `publish`, may write | Split jobs and re-checks (§2) |
+| `bell-brief.yml` (trading days, GitHub's own token) | One job, `publish`, may write; it installs nothing and may only change `content/bell.json`, `index.html` and the sitemaps | Checked-files list, seo-lint, links, kb check before the push |
 | Pull requests from strangers (public repo) | Anyone can open one; nobody but the owner can merge | Checks run with a read-only token and no secrets; `CODEOWNERS` |
 | Cloudflare account | Dashboard users and API tokens can deploy directly, change DNS, headers and redirects | Cloudflare account security (§3.3) |
 | Domain registrar and DNS | Whoever controls them controls the site whatever the repository says | Registrar lock, 2FA, DNSSEC (§3.3) |
@@ -26,7 +27,7 @@ accounts around it.
   `permissions: {}`; every action is a GitHub-maintained `actions/*` pinned to a full commit SHA; no
   `pull_request_target`, `workflow_run`, issue or comment triggers; no repository secrets or variables; every
   checkout uses `persist-credentials: false`; no `${{ }}` expression inside a shell script (values go through
-  `env`); a write permission or the token is allowed only in `data-refresh.yml` job `publish`.
+  `env`); a write permission or the token is allowed only in the `publish` jobs of `data-refresh.yml` and `bell-brief.yml`, neither of which installs anything.
 - **The weekly refresh cannot be used to publish anything but numbers.** Job `refresh` (read-only token) calls the
   exchange APIs, installs Playwright and axe-core from npm (`--ignore-scripts`, exact versions) and runs QA; all it
   hands on is a patch. Job `publish` installs nothing, applies the patch to a clean `main` and re-checks it with
