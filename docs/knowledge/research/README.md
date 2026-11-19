@@ -5,6 +5,7 @@ Each file is a dated, sourced snapshot of web research done for this site. Facts
 
 | File | Topic | Key takeaways |
 | --- | --- | --- |
+| [2026-11-18-claude-code-and-duet.md](2026-11-18-claude-code-and-duet.md) | Claude Code 2.1.323–2.1.327 and Claude Duet, Nov 11–18; official best practices | Cloud/Duet threads load CLAUDE.md and `.claude/rules/` but not skills, hooks or settings; project threads default to high effort; scheduled tasks ask before skills with `allowed-tools`; drop old-model prompt habits |
 | [2026-11-16-seo-ai-search-and-claude.md](2026-11-16-seo-ai-search-and-claude.md) | Nov 6–16 search/AI changes; AI Mode calling the site "defunct"; Preferred Sources; other claim/follow channels; Opus 5.5 audit method | Core update Nov 10; Hydrogen in AI Mode Nov 12; ChatGPT Business Hub; brand facts fixed on-site; seo-audit.mjs; every finding in facts.jsonl |
 | [2026-11-09-ai-search-updates.md](2026-11-09-ai-search-updates.md) | AI search changes since 4 Nov | Search Console Generative AI report + "Search generative AI" setting; Bing AI Performance topics; Cloudflare Crawler Hints feed IndexNow (owner toggle) |
 | [2026-11-08-repo-audit.md](2026-11-08-repo-audit.md) | Repo, CI, headers, crawlers and Lighthouse audit | Empty GTM container costs ~280 KiB/page; no LICENSE behind the "open source" claim; www has no DNS; pages.dev now noindex; actions SHA-pinned |
