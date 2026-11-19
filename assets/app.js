@@ -64,9 +64,13 @@
   // Single-tone logos (a white or a black mark) carry a class so app.css can flip them on a
   // background of the same tone: white XRP on the Light theme, black Stellar on the dark ones.
   const MONO = new Map(REGISTRY.filter(c => c.logo && c.mono).map(c => [c.sym, c.mono]));
+  // Pages draw every logo from one sprite (one request instead of one per coin; the hash is stamped by
+  // scripts/build-coin-pages.mjs). Widgets show a few coins inside other sites, so they keep the small files.
+  const LOGO_SPRITE = "/coin-icons/sprite.svg?v=e4ff608e95";
+  const logoSrc = sym => IS_EMBED ? `/coin-icons/${sym.toLowerCase()}.svg` : `${LOGO_SPRITE}#c-${sym.toLowerCase()}`;
   const logoImg = (sym, size, cls, lazy) => {
     const c = [cls, MONO.has(sym) && `mono-${MONO.get(sym)}`].filter(Boolean).join(" ");
-    return `<img${c ? ` class="${c}"` : ""} src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="${size}" height="${size}"${lazy ? ' loading="lazy"' : ""} decoding="async" />`;
+    return `<img${c ? ` class="${c}"` : ""} src="${logoSrc(sym)}" alt="" width="${size}" height="${size}"${lazy ? ' loading="lazy"' : ""} decoding="async" />`;
   };
 
   // Coin badge: the coin's own logo when we host one (/coin-icons/, see scripts/build-coin-icons.mjs),

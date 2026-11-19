@@ -6,6 +6,8 @@
 //   convert/index.html      the crypto converter page
 //   heatmap/index.html      the live market heatmap page
 //   index.html              the "Live price pages" link list between the coin-index markers
+//   coin-icons/sprite.svg   every coin logo in one file (scripts/lib/sprite.mjs); its ?v= hash is
+//                           stamped into assets/app.js (LOGO_SPRITE) and the static coin badges
 //
 //   node scripts/build-coin-pages.mjs
 //
@@ -14,6 +16,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
+import { buildSprite } from "./lib/sprite.mjs";
 if (process.argv.length > 2) { console.error("Unknown argument(s): " + process.argv.slice(2).join(" ") + "\nUsage: node scripts/build-coin-pages.mjs   (no options; regenerates pages, sitemap, _redirects, hashes)"); process.exit(1); }
 
 const SITE = "https://cryptopriceticker.com";
@@ -25,7 +28,18 @@ const SECTOR_NAMES = {
 };
 
 const { coins, updated: registryUpdated } = loadRegistry();
+// One file for every logo (one image request per page instead of one per coin). Stamp its hash into
+// app.js before the cache-busting hashes below are computed, so app.js's own ?v= covers the change.
+const SPRITE = buildSprite(ROOT, coins);
+{
+  const appJs = readFileSync(ROOT + "assets/app.js", "utf8");
+  const next = appJs.replace(/\/coin-icons\/sprite\.svg\?v=[0-9a-f]+/, SPRITE);
+  if (!next.includes(SPRITE)) throw new Error("assets/app.js: LOGO_SPRITE constant not found");
+  if (next !== appJs) writeFileSync(ROOT + "assets/app.js", next);
+}
 const about = JSON.parse(readFileSync(ROOT + "content/coin-about.json", "utf8"));
+// Verified entity links (Wikidata + English Wikipedia) for the JSON-LD "about" of coin pages; see the file's _note.
+const entities = JSON.parse(readFileSync(ROOT + "content/coin-entities.json", "utf8")).coins;
 // Per-coin performance figures from scripts/fetch-coin-stats.mjs (optional).
 const statsFile = existsSync(ROOT + "content/coin-stats.json") ? JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")) : { coins: {} };
 const stats = statsFile.coins;
@@ -114,10 +128,10 @@ function conversionTables(c) {
       </div>`;
 }
 
-// Coin badge: the coin's logo (coin-icons/, scripts/build-coin-icons.mjs) or its ticker. The page's
-// own coin loads eagerly; badges in tables load lazily.
+// Coin badge: the coin's logo (from coin-icons/sprite.svg, see scripts/lib/sprite.mjs) or its ticker.
+// The page's own coin loads eagerly; badges in tables load lazily.
 const avatarHtml = (c, eager = false) => c.logo
-  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img${c.mono ? ` class="mono-${c.mono}"` : ""} src="/coin-icons/${slug(c.sym)}.svg" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
+  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img${c.mono ? ` class="mono-${c.mono}"` : ""} src="${SPRITE}#c-${slug(c.sym)}" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
   : `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>`;
 
 const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];
@@ -314,7 +328,7 @@ function coinPage(c) {
         description,
         dateModified: updated,
         isPartOf: { "@id": `${SITE}/#website` },
-        about: { "@type": "Thing", name: c.name, alternateName: c.sym }
+        about: { "@type": "Thing", name: c.name, alternateName: c.sym, ...(entities[c.sym] ? { sameAs: [entities[c.sym].wikidata, entities[c.sym].wikipedia] } : {}) }
       },
       {
         "@type": "BreadcrumbList",
