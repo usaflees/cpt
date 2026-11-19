@@ -149,6 +149,17 @@ function score(it) {
   return Math.round((base + crypto + inWindow - age / 24) * 10) / 10;
 }
 
+// A release links only to its own agency's site: the feed's domain or a subdomain of it (www.bea.gov for apps.bea.gov),
+// over https. A feed that was tampered with or misconfigured can't put a link to anywhere else on the home page.
+function onAgencySite(link, feedUrl) {
+  try {
+    const u = new URL(link), domain = new URL(feedUrl).hostname.split(".").slice(-2).join(".");
+    return u.protocol === "https:" && !u.username && !u.password && (u.hostname === domain || u.hostname.endsWith("." + domain));
+  } catch { return false; }
+}
+// Coinbase candle values are written into the page (data-btc): accept only finite positive numbers.
+const price = v => (typeof v === "number" && Number.isFinite(v) && v > 0 ? v : null);
+
 const items = [], failures = [];
 await Promise.all(FEEDS.map(async f => {
   try {
@@ -159,7 +170,7 @@ await Promise.all(FEEDS.map(async f => {
       const title = tag(raw, "title");
       const link = tag(raw, "link") || decode((raw.match(/<link\b[^>]*\bhref="([^"]+)"/) || [])[1] || "");
       const published = parseDate(tag(raw, "pubDate") || tag(raw, "dc:date") || tag(raw, "published") || tag(raw, "updated"));
-      if (!title || !/^https:\/\//.test(link) || !published) continue;
+      if (!title || !published || !onAgencySite(link, f.url)) continue;
       items.push({ feed: f.id, source: f.name, topic: f.topic || tag(raw, "category") || "", title, link, published });
       n++;
     }
@@ -185,11 +196,11 @@ async function minute(t) {
 }
 async function priceAtOpenOf(t) { // open of the minute containing t (or the nearest earlier traded minute)
   const m = Math.floor(t / 60e3) * 60, row = (await minute(t)).find(r => r[0] <= m);
-  return row ? (row[0] === m ? row[3] : row[4]) : null;
+  return row ? price(row[0] === m ? row[3] : row[4]) : null;
 }
 async function priceAt(t) { // close of the minute ending at t
   const m = Math.floor(t / 60e3) * 60 - 60, row = (await minute(t - 60e3)).find(r => r[0] <= m);
-  return row ? row[4] : null;
+  return row ? price(row[4]) : null;
 }
 let btcAtCutoff = null;
 try { btcAtCutoff = await priceAt(+cutoff); } catch (e) { console.warn(`bell: BTC at the cutoff unavailable (${e.message})`); }
