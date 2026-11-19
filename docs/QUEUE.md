@@ -33,6 +33,23 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   visible; Esc exits. `noindex` isn't needed (same URL, query only). Done when: works on a 1920×1080 and a 375 px
   screen, wake lock released on exit, QA passes.
 
+- [ ] **Profit and loss for holdings (competitor research Nov 19).** What: in "My bag", an optional average buy
+  price (USD) per coin next to the amount; the table and the bag banner show unrealized profit in $ and % per coin
+  and in total, live. Saved in `localStorage` with the holdings, included in CSV export and the sync link. Files:
+  `assets/app.js`, `assets/app.css`. Done when: holding 1 BTC bought at $50,000 shows the right live profit; blank
+  buy price shows "—"; works at 375 px in both themes; QA passes.
+- [ ] **Fiat display currencies (competitor research Nov 19).** What: add EUR, GBP, CAD, AUD, JPY, INR, BRL, KRW to
+  the currency switch on the home table, movers, quick view and coin pages, using the FX rates the converter already
+  loads (`loadFx`); prices show "—" until rates load. Same URLs: a setting, not per-currency pages. Files:
+  `assets/app.js`, `assets/app.css`. Done when: EUR prices match USD × the loaded rate; the choice persists; QA passes.
+- [ ] **Choose columns and order the watchlist (competitor research Nov 19).** What: a "Columns" menu on the home
+  table (7d, 7-day chart, market cap, volume; saved in the browser), and a "Watchlist" view sortable by the
+  visitor's own order (move up/down buttons, keyboard accessible). Files: `assets/app.js`, `assets/app.css`, `index.html`.
+  Done when: hidden columns stay hidden after reload, the custom order survives reload, no layout shift, QA passes.
+- [ ] **Movers timeframe: 24 h or 7 d (competitor research Nov 19).** What: a two-button switch on "Biggest
+  movers"; 7 d uses the 7-day candles the table already loads (`c.spark7`), "—" until loaded. Files:
+  `assets/app.js`, `index.html`. Done when: 7 d gainers match the 7d column, choice persists, QA passes.
+
 ## Waiting on the owner
 - **Weekly market report page with a feed (makes the site a "regularly updated source").** Google's Preferred
   Sources tool and feed readers only list sources that publish on a schedule. Build `/market/` (one page, replaced
