@@ -19,6 +19,20 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   and no credit-link hover effects, for OBS and similar browser sources; add a short "Use in a stream" paragraph and
   the URL to `/widgets/`. Done when: the overlay renders on a transparent page at 1920×200, widget tests pass.
 
+- [ ] **Exchange gap board (Feature Lab #2, no new URL).** What: a home-page section under the movers listing the
+  live price gap between Coinbase, Binance and Kraken for each coin quoted on 2+ exchanges, widest first (top 8),
+  in basis points, with cheapest/dearest exchange; "—" until two exchanges report. Says gaps ignore fees and
+  transfer times. Uses `c.exPrices` the quick view already fills. Done when: the section updates live, costs under
+  5 ms/s main thread (measure), QA passes at 375 px in both themes.
+- [ ] **Time Machine on coin pages (Feature Lab #3, no new URL).** What: a "What would it be worth?" box on each coin
+  page: amount + date → value today, the lowest and highest point along the way, from Binance/Kraken/Coinbase daily
+  candles fetched in the browser on submit (none on load). Done when: BTC from 2018-01-01 matches the exchange's
+  daily closes, "—" when the coin has no data for that date, no layout shift, QA passes.
+- [ ] **Market TV mode (Feature Lab #4, no new URL).** What: `/?tv=1` (button in the home menu) turns the home page
+  into a full-screen board: watchlist as large live tiles, ticker tape, market-mood glow; Screen Wake Lock while
+  visible; Esc exits. `noindex` isn't needed (same URL, query only). Done when: works on a 1920×1080 and a 375 px
+  screen, wake lock released on exit, QA passes.
+
 ## Waiting on the owner
 - **Weekly market report page with a feed (makes the site a "regularly updated source").** Google's Preferred
   Sources tool and feed readers only list sources that publish on a schedule. Build `/market/` (one page, replaced
