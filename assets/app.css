@@ -1625,3 +1625,7 @@ body:not(.is-embed) .hero::before {
 [data-theme="light"] body:not(.is-embed) .hero::before { opacity: .6; }
 .keep-alerts { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; }
 .move-alert-form .form-input { width: 7.5em; }
+
+/* Pop-out ticker buttons: visible only where the API exists (has-pip is set by the inlined theme script before
+   the first paint, so the quick-link row never re-wraps after load). */
+html:not(.has-pip) [data-action="pip"] { display: none; }

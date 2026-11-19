@@ -303,6 +303,44 @@
     store.set("cpt_cbprod", { t: Date.now(), online, auction });
   }
 
+  /* Backup and restore (home menu): one JSON file, nothing uploaded. Caches and the cookie choice stay put. */
+  const BACKUP_KEYS = ["cpt_watch", "cpt_bag", "cpt_alerts", "cpt_alert_repeat", "cpt_movealert", "cpt_bagalert",
+    "cpt_alertlog", "cpt_theme", "cpt_curr", "cpt_compact", "cpt_pin"];
+  const ls = (fn, ...a) => { try { return localStorage[fn](...a); } catch (_) { return null; } };
+  function exportData() {
+    const data = {};
+    BACKUP_KEYS.forEach(k => { const v = ls("getItem", k); if (v !== null) data[k] = v; });
+    const day = new Date().toISOString().slice(0, 10);
+    const blob = new Blob([JSON.stringify({ app: "cryptopriceticker", version: 1, exported: new Date().toISOString(), data }, null, 1)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `cryptopriceticker-backup-${day}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    api.showToast(`Saved ${Object.keys(data).length} settings to ${a.download}`);
+  }
+  function importData(text) {
+    let f;
+    try { f = JSON.parse(text); } catch (_) { return api.showToast("That file isn't a CryptoPriceTicker backup."); }
+    const data = f && f.app === "cryptopriceticker" && f.version === 1 && f.data && typeof f.data === "object" ? f.data : null;
+    const keys = data ? Object.keys(data).filter(k => BACKUP_KEYS.includes(k) && typeof data[k] === "string" && data[k].length < 200000) : [];
+    if (!keys.length) return api.showToast("That file isn't a CryptoPriceTicker backup.");
+    const when = String(f.exported || "").slice(0, 10) || "an unknown date";
+    if (!confirm(`Replace the watchlist, holdings, alerts and settings in this browser with the backup from ${when}?`)) return;
+    BACKUP_KEYS.forEach(k => (keys.includes(k) ? ls("setItem", k, data[k]) : ls("removeItem", k)));
+    location.reload();
+  }
+  if (MODE === "home") {
+    const ex = $("backupExport"), im = $("backupImport");
+    if (ex) ex.addEventListener("click", exportData);
+    if (im) im.addEventListener("click", () => {
+      const input = document.createElement("input");
+      input.type = "file"; input.accept = "application/json,.json"; input.hidden = true;
+      input.addEventListener("change", () => { const file = input.files && input.files[0]; input.remove(); if (file) file.text().then(importData); });
+      document.body.appendChild(input); input.click();
+    });
+  }
+
   render();
   renderLog();
   setInterval(sample, SAMPLE_MS);

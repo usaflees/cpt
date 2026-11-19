@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=3ac6cc247b" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3d62e20d1e" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -29,7 +29,7 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/usdt/","url":"https://cryptopriceticker.com/coin/usdt/","name":"Tether (USDT) Price: Live Chart & Market Cap","description":"Tether (USDT) price today in USD, live from Coinbase and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-16","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Tether","alternateName":"USDT"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Stablecoins","item":"https://cryptopriceticker.com/sector/stablecoins/"},{"@type":"ListItem","position":3,"name":"Tether (USDT)","item":"https://cryptopriceticker.com/coin/usdt/"}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://cryptopriceticker.com/coin/usdt/","url":"https://cryptopriceticker.com/coin/usdt/","name":"Tether (USDT) Price: Live Chart & Market Cap","description":"Tether (USDT) price today in USD, live from Coinbase and Kraken. 24h change, chart, market cap, 1-year performance and 52-week range.","dateModified":"2026-11-16","isPartOf":{"@id":"https://cryptopriceticker.com/#website"},"about":{"@type":"Thing","name":"Tether","alternateName":"USDT","sameAs":["https://www.wikidata.org/wiki/Q47528658","https://en.wikipedia.org/wiki/Tether_(cryptocurrency)"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Live crypto prices","item":"https://cryptopriceticker.com/"},{"@type":"ListItem","position":2,"name":"Stablecoins","item":"https://cryptopriceticker.com/sector/stablecoins/"},{"@type":"ListItem","position":3,"name":"Tether (USDT)","item":"https://cryptopriceticker.com/coin/usdt/"}]}]}</script>
   <script>/*theme*/(function () {
 var themes = ["neon", "kali", "green", "slate", "oled", "light"];
 var q = new URLSearchParams(location.search);
@@ -41,12 +41,13 @@ try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3ac6cc247b" />
+  <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
   <script src="/assets/coins.js?v=163eeb3e6d" defer></script>
-  <script src="/assets/app.js?v=42db0ee5d9" defer></script>
-  <script src="/assets/flash.js?v=19bde32626" defer></script>
+  <script src="/assets/app.js?v=9a252edc09" defer></script>
+  <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="coin" data-sym="USDT">
@@ -93,7 +94,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
-        <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/usdt.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">Tether (USDT) price</h1></div>
+        <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-usdt" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">Tether (USDT) price</h1></div>
         <p class="hero-price is-stale" id="cpPrice">$0.9988</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
@@ -105,7 +106,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <div class="hero-actions">
           <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="USDT" aria-pressed="false">♡ Add to watchlist</button>
           <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="USDT">🧩 Embed USDT widget</button>
-          <button type="button" class="action-btn" data-action="pip" data-sym="USDT" hidden>⧉ Pop out</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="USDT">⧉ Pop out</button>
           <a class="action-btn" href="/">All prices →</a>
         </div>
       </div>

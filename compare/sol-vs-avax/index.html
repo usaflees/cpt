@@ -8,7 +8,7 @@
   <meta name="description" content="Solana (SOL) vs Avalanche (AVAX) side by side: market cap, 1-year performance, volatility, 52-week range and monthly closes from daily exchange data." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/compare/sol-vs-avax/" />
-  <link rel="preload" href="/assets/app.css?v=3ac6cc247b" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3d62e20d1e" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -35,11 +35,12 @@ try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3ac6cc247b" />
+  <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
   <script src="/assets/coins.js?v=163eeb3e6d" defer></script>
-  <script src="/assets/app.js?v=42db0ee5d9" defer></script>
+  <script src="/assets/app.js?v=9a252edc09" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="compare">
@@ -73,7 +74,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
   <main class="container" id="main">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <a href="/compare/">Coin comparisons</a> › <span aria-current="page">SOL vs AVAX</span></nav>
     <section class="hero" aria-labelledby="cmp-h">
-      <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sol.svg" alt="" width="20" height="20" decoding="async" /></span><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/avax.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="cmp-h" class="hero-title">Solana vs Avalanche (SOL vs AVAX)</h1></div>
+      <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-sol" alt="" width="20" height="20" decoding="async" /></span><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-avax" alt="" width="20" height="20" decoding="async" /></span><h1 id="cmp-h" class="hero-title">Solana vs Avalanche (SOL vs AVAX)</h1></div>
       <p class="hero-facts">As of <time datetime="2026-11-15">November 15, 2026</time> (Binance daily close): Solana closed at $72.770 and Avalanche at $7.311, so 1 SOL = 9.953 AVAX.</p>
       <p class="hero-actions"><a class="action-btn btn-accent" href="/coin/sol/">⚡ Live SOL price</a> <a class="action-btn btn-accent" href="/coin/avax/">⚡ Live AVAX price</a> <a class="action-btn" href="/convert/?from=sol&amp;to=avax">🔁 Convert SOL to AVAX</a></p>
     </section>

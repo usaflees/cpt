@@ -8,7 +8,7 @@
   <meta name="description" content="Live prices for 23 AI coins from Coinbase, Binance and Kraken, with 7-day, 30-day and 1-year performance and market caps." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/sector/ai/" />
-  <link rel="preload" href="/assets/app.css?v=3ac6cc247b" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3d62e20d1e" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -35,11 +35,12 @@ try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3ac6cc247b" />
+  <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
   <script src="/assets/coins.js?v=163eeb3e6d" defer></script>
-  <script src="/assets/app.js?v=42db0ee5d9" defer></script>
+  <script src="/assets/app.js?v=9a252edc09" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="sector">
@@ -88,7 +89,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <tbody>
           <tr>
             <td class="col-center muted">1</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/link/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/link.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Chainlink</span><span class="coin-sym-row"><span class="coin-sym">LINK</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/link/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-link" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Chainlink</span><span class="coin-sym-row"><span class="coin-sym">LINK</span></span></span></a></td>
             <td>$9.297</td>
             <td><span class="chg-pill chg-down">-10.70%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-24.72%</span></td>
@@ -97,7 +98,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">2</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/near/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/near.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">NEAR Protocol</span><span class="coin-sym-row"><span class="coin-sym">NEAR</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/near/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-near" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">NEAR Protocol</span><span class="coin-sym-row"><span class="coin-sym">NEAR</span></span></span></a></td>
             <td>$3.216</td>
             <td><span class="chg-pill chg-down">-10.32%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-36.54%</span></td>
@@ -115,7 +116,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">4</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/icp/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/icp.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Internet Computer</span><span class="coin-sym-row"><span class="coin-sym">ICP</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/icp/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-icp" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Internet Computer</span><span class="coin-sym-row"><span class="coin-sym">ICP</span></span></span></a></td>
             <td>$2.235</td>
             <td><span class="chg-pill chg-down">-3.71%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-26.29%</span></td>
@@ -124,7 +125,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">5</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/render/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/render.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Render</span><span class="coin-sym-row"><span class="coin-sym">RENDER</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/render/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-render" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Render</span><span class="coin-sym-row"><span class="coin-sym">RENDER</span></span></span></a></td>
             <td>$1.406</td>
             <td><span class="chg-pill chg-down">-8.04%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-27.30%</span></td>
@@ -133,7 +134,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">6</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/inj/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/inj.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Injective</span><span class="coin-sym-row"><span class="coin-sym">INJ</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/inj/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-inj" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Injective</span><span class="coin-sym-row"><span class="coin-sym">INJ</span></span></span></a></td>
             <td>$6.992</td>
             <td><span class="chg-pill chg-down">-13.13%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-19.97%</span></td>
@@ -142,7 +143,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">7</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/wld/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/wld.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">World</span><span class="coin-sym-row"><span class="coin-sym">WLD</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/wld/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/sprite.svg?v=e4ff608e95#c-wld" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">World</span><span class="coin-sym-row"><span class="coin-sym">WLD</span></span></span></a></td>
             <td>$0.2715</td>
             <td><span class="chg-pill chg-down">-13.01%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-47.48%</span></td>
@@ -151,7 +152,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">8</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/fil/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/fil.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Filecoin</span><span class="coin-sym-row"><span class="coin-sym">FIL</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/fil/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-fil" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Filecoin</span><span class="coin-sym-row"><span class="coin-sym">FIL</span></span></span></a></td>
             <td>$0.6135</td>
             <td><span class="chg-pill chg-down">-17.41%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-46.92%</span></td>
@@ -160,7 +161,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">9</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/fet/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/fet.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Artificial Superintelligence Alliance</span><span class="coin-sym-row"><span class="coin-sym">FET</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/fet/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/sprite.svg?v=e4ff608e95#c-fet" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Artificial Superintelligence Alliance</span><span class="coin-sym-row"><span class="coin-sym">FET</span></span></span></a></td>
             <td>$0.1326</td>
             <td><span class="chg-pill chg-down">-4.26%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-33.33%</span></td>
@@ -178,7 +179,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">11</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/grt/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/grt.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">The Graph</span><span class="coin-sym-row"><span class="coin-sym">GRT</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/grt/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-grt" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">The Graph</span><span class="coin-sym-row"><span class="coin-sym">GRT</span></span></span></a></td>
             <td>$0.0170</td>
             <td><span class="chg-pill chg-down">-7.17%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-31.56%</span></td>
@@ -187,7 +188,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">12</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/ar/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/ar.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Arweave</span><span class="coin-sym-row"><span class="coin-sym">AR</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/ar/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-ar" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Arweave</span><span class="coin-sym-row"><span class="coin-sym">AR</span></span></span></a></td>
             <td>$2.543</td>
             <td><span class="chg-pill chg-down">-16.43%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-35.46%</span></td>
@@ -196,7 +197,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">13</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/akt/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/akt.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Akash Network</span><span class="coin-sym-row"><span class="coin-sym">AKT</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/akt/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-akt" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Akash Network</span><span class="coin-sym-row"><span class="coin-sym">AKT</span></span></span></a></td>
             <td>$0.4940</td>
             <td><span class="chg-pill chg-down">-18.10%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-30.61%</span></td>
@@ -205,7 +206,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">14</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/theta/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/theta.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Theta Network</span><span class="coin-sym-row"><span class="coin-sym">THETA</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/theta/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-theta" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Theta Network</span><span class="coin-sym-row"><span class="coin-sym">THETA</span></span></span></a></td>
             <td>$0.1346</td>
             <td><span class="chg-pill chg-down">-1.54%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-32.23%</span></td>
@@ -214,7 +215,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">15</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/glm/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/glm.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Golem</span><span class="coin-sym-row"><span class="coin-sym">GLM</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/glm/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-glm" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Golem</span><span class="coin-sym-row"><span class="coin-sym">GLM</span></span></span></a></td>
             <td>$0.0922</td>
             <td><span class="chg-pill chg-down">-9.07%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-21.20%</span></td>
@@ -223,7 +224,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">16</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/aioz/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-light" src="/coin-icons/aioz.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">AIOZ Network</span><span class="coin-sym-row"><span class="coin-sym">AIOZ</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/aioz/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-light" src="/coin-icons/sprite.svg?v=e4ff608e95#c-aioz" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">AIOZ Network</span><span class="coin-sym-row"><span class="coin-sym">AIOZ</span></span></span></a></td>
             <td>$0.0780</td>
             <td><span class="chg-pill chg-down">-11.66%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-24.86%</span></td>
@@ -232,7 +233,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">17</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/nmr/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/nmr.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Numeraire</span><span class="coin-sym-row"><span class="coin-sym">NMR</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/nmr/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/sprite.svg?v=e4ff608e95#c-nmr" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Numeraire</span><span class="coin-sym-row"><span class="coin-sym">NMR</span></span></span></a></td>
             <td>$8.000</td>
             <td><span class="chg-pill chg-down">-11.31%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-31.15%</span></td>
@@ -241,7 +242,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">18</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/lpt/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/lpt.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Livepeer</span><span class="coin-sym-row"><span class="coin-sym">LPT</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/lpt/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-lpt" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Livepeer</span><span class="coin-sym-row"><span class="coin-sym">LPT</span></span></span></a></td>
             <td>$1.111</td>
             <td><span class="chg-pill chg-down">-14.14%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-36.95%</span></td>
@@ -268,7 +269,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">21</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/rose/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/rose.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Oasis</span><span class="coin-sym-row"><span class="coin-sym">ROSE</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/rose/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-rose" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Oasis</span><span class="coin-sym-row"><span class="coin-sym">ROSE</span></span></span></a></td>
             <td>$0.004690</td>
             <td><span class="chg-pill chg-down">-11.68%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-42.24%</span></td>
@@ -277,7 +278,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">22</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/pha/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-light" src="/coin-icons/pha.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Phala Network</span><span class="coin-sym-row"><span class="coin-sym">PHA</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/pha/"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-light" src="/coin-icons/sprite.svg?v=e4ff608e95#c-pha" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Phala Network</span><span class="coin-sym-row"><span class="coin-sym">PHA</span></span></span></a></td>
             <td>$0.0305</td>
             <td><span class="chg-pill chg-down">-10.29%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-42.78%</span></td>
@@ -286,7 +287,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tr>
           <tr>
             <td class="col-center muted">23</td>
-            <td class="col-left"><a class="coin-cell" href="/coin/flux/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/flux.svg" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Flux</span><span class="coin-sym-row"><span class="coin-sym">FLUX</span></span></span></a></td>
+            <td class="col-left"><a class="coin-cell" href="/coin/flux/"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/sprite.svg?v=e4ff608e95#c-flux" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="coin-main"><span class="coin-name">Flux</span><span class="coin-sym-row"><span class="coin-sym">FLUX</span></span></span></a></td>
             <td>$0.0477</td>
             <td><span class="chg-pill chg-down">-6.47%</span></td>
             <td class="hide-mobile"><span class="chg-pill chg-down">-38.21%</span></td>
@@ -297,6 +298,36 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         </table>
       </div>
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) as of November 15, 2026; updated weekly. Tap any coin for its live price.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="each-h">
+      <h2 id="each-h">AI coins one by one</h2>
+      <ul class="brand-rules">
+        <li><a href="/coin/link/">Chainlink (LINK)</a>: -34.25% over one year, 6th of 23 here; mainly listed under <a href="/sector/defi/">DeFi &amp; real-world assets</a>.</li>
+        <li><a href="/coin/near/">NEAR Protocol (NEAR)</a>: +33.61% over one year, 1st of 23 here; mainly listed under <a href="/sector/layer-1/">Layer 1</a>.</li>
+        <li><a href="/coin/tao/">Bittensor (TAO)</a> closed at $195.000, -29.32% over 30 days, -41.93% over one year. That ranks it 7th of the 23 AI coins here with a full year of data. Bittensor traded between $145.900 and $347.000 over the past year; its largest fall in that time was 56.1%.</li>
+        <li><a href="/coin/icp/">Internet Computer (ICP)</a>: -57.64% over one year, 12th of 23 here; mainly listed under <a href="/sector/layer-1/">Layer 1</a>.</li>
+        <li><a href="/coin/render/">Render (RENDER)</a>: -34.15% over one year, 5th of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/inj/">Injective (INJ)</a>: +3.59% over one year, 2nd of 23 here; mainly listed under <a href="/sector/layer-1/">Layer 1</a>.</li>
+        <li><a href="/coin/wld/">World (WLD)</a> closed at $0.2715, -47.48% over 30 days, -61.16% over one year. That ranks it 15th of the 23 AI coins here with a full year of data. World traded between $0.2341 and $0.6870 over the past year; its largest fall in that time was 65.9%.</li>
+        <li><a href="/coin/fil/">Filecoin (FIL)</a>: -69.85% over one year, 19th of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/fet/">Artificial Superintelligence Alliance (FET)</a> closed at $0.1326, -33.33% over 30 days, -53.64% over one year. That ranks it 11th of the 23 AI coins here with a full year of data. Artificial Superintelligence Alliance traded between $0.1215 and $0.3303 over the past year; its largest fall in that time was 63.2%.</li>
+        <li><a href="/coin/virtual/">Virtuals Protocol (VIRTUAL)</a> closed at $0.4557, -32.13% over 30 days, -60.36% over one year. That ranks it 14th of the 23 AI coins here with a full year of data. Virtuals Protocol traded between $0.4364 and $1.146 over the past year; its largest fall in that time was 61.9%.</li>
+        <li><a href="/coin/grt/">The Graph (GRT)</a> closed at $0.0170, -31.56% over 30 days, -70.25% over one year. That ranks it 21st of the 23 AI coins here with a full year of data. The Graph traded between $0.0132 and $0.0561 over the past year; its largest fall in that time was 76.5%.</li>
+        <li><a href="/coin/ar/">Arweave (AR)</a>: -43.86% over one year, 8th of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/akt/">Akash Network (AKT)</a>: -14.07% over one year, 3rd of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/theta/">Theta Network (THETA)</a>: -68.03% over one year, 17th of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/glm/">Golem (GLM)</a>: -60.31% over one year, 13th of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/aioz/">AIOZ Network (AIOZ)</a>: -47.01% over one year, 10th of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/nmr/">Numeraire (NMR)</a> closed at $8.000, -31.15% over 30 days, -23.00% over one year. That ranks it 4th of the 23 AI coins here with a full year of data. Numeraire traded between $6.300 and $16.100 over the past year; its largest fall in that time was 52.4%.</li>
+        <li><a href="/coin/lpt/">Livepeer (LPT)</a>: -76.27% over one year, 22nd of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+        <li><a href="/coin/arkm/">Arkham (ARKM)</a> closed at $0.0895, -27.82% over 30 days, -69.97% over one year. That ranks it 20th of the 23 AI coins here with a full year of data. Arkham traded between $0.0861 and $0.2870 over the past year; its largest fall in that time was 70.0%.</li>
+        <li><a href="/coin/turbo/">Turbo (TURBO)</a>: -66.00% over one year, 16th of 23 here; mainly listed under <a href="/sector/memecoins/">Memecoins</a>.</li>
+        <li><a href="/coin/rose/">Oasis (ROSE)</a>: -76.77% over one year, 23rd of 23 here; mainly listed under <a href="/sector/privacy/">Privacy</a>.</li>
+        <li><a href="/coin/pha/">Phala Network (PHA)</a> closed at $0.0305, -42.78% over 30 days, -44.95% over one year. That ranks it 9th of the 23 AI coins here with a full year of data. Phala Network traded between $0.0195 and $0.0867 over the past year; its largest fall in that time was 67.0%.</li>
+        <li><a href="/coin/flux/">Flux (FLUX)</a>: -68.97% over one year, 18th of 23 here; mainly listed under <a href="/sector/depin/">DePIN</a>.</li>
+      </ul>
+      <p class="disclaimer">Daily closes (UTC) as of November 15, 2026. Each coin page has the full history.</p>
     </section>
 
     <nav class="page-section" aria-labelledby="more-h">

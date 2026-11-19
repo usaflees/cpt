@@ -3,7 +3,7 @@
 Static site on Cloudflare Pages, deployed from `main` (repo root, no build step). The repo is **public**.
 New session? Run `node scripts/kb.mjs` (digest of the knowledge store: open owner actions, next builds, facts due for a
 re-check), then read `docs/knowledge/HANDOFF.md`. Roadmap: `docs/STRATEGY.md`. Knowledge base: `docs/knowledge/README.md` (playbook, decisions, current state, Opus 5.5
-guide, research).
+guide, research). How sessions work here (cloud/Duet threads, feature recipe): `docs/knowledge/CLAUDE-CODE-WORKFLOW.md`.
 
 ## Goals, in priority order (every session works toward these; details in the linked file)
 1. **Get indexed and ranked:** `docs/INDEXING-PLAN.md` (Google has indexed 1 of 134 pages; no new URL families until it catches up).
