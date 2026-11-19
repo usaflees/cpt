@@ -43,6 +43,9 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   `assets/app.js`, `index.html`. Done when: 7 d gainers match the 7d column, choice persists, QA passes.
 
 ## Waiting on the owner
+- **Access lock-down settings (PR #17, then these).** Needs from the owner: the settings in
+  `docs/knowledge/ACCESS.md` §3 (ruleset on `main`, Actions limits, account 2FA and token review, fewer connectors
+  on Claude sessions).
 - **Weekly market report page with a feed (makes the site a "regularly updated source").** Google's Preferred
   Sources tool and feed readers only list sources that publish on a schedule. Build `/market/` (one page, replaced
   each week by the data refresh: the week's biggest movers, sector medians, new highs/lows, all computed from
