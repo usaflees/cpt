@@ -1,0 +1,25 @@
+{
+  "_note": "Coin comparison pages (/compare/<a>-vs-<b>/), built by scripts/lib/compare-pages.mjs. At most 20 pairs (docs/STRATEGY.md B6). Order inside a pair is the canonical URL order; the reversed URL redirects to it.",
+  "pairs": [
+    ["BTC", "ETH"],
+    ["ETH", "SOL"],
+    ["BTC", "SOL"],
+    ["BTC", "XRP"],
+    ["XRP", "ETH"],
+    ["XRP", "SOL"],
+    ["XRP", "XLM"],
+    ["XRP", "ADA"],
+    ["ADA", "ETH"],
+    ["ADA", "SOL"],
+    ["DOGE", "SHIB"],
+    ["DOGE", "PEPE"],
+    ["BTC", "LTC"],
+    ["BTC", "BCH"],
+    ["ETH", "ETC"],
+    ["ETH", "BNB"],
+    ["SOL", "AVAX"],
+    ["SOL", "SUI"],
+    ["ARB", "OP"],
+    ["USDT", "USDC"]
+  ]
+}
