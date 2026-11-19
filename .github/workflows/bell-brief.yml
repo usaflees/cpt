@@ -93,6 +93,14 @@ jobs:
         if: steps.publish.outcome == 'success'
         run: |
           bash tests/wait-deploy.sh https://cryptopriceticker.com 600
+          # wait-deploy skips HTML, and an edition changes only index.html and bell.json (the sitemap often stays the
+          # same), so also wait until the live home page carries this edition's cutoff before checking and pinging.
+          cutoff=$(node -e "console.log(require('./content/bell.json').editions[0].cutoff)")
+          for i in $(seq 1 60); do
+            curl -s --max-time 10 "https://cryptopriceticker.com/?bell=$i" | grep -q "data-cutoff=\"$cutoff\"" && { echo "live: edition $cutoff"; break; }
+            [ "$i" = 60 ] && { echo "timeout: the live home page does not show edition $cutoff"; exit 1; }
+            sleep 10
+          done
           node scripts/check-live.mjs
 
       - name: Tell IndexNow search engines
