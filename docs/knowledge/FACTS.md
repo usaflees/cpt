@@ -338,8 +338,8 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
 
 ## data-sources (2)
 
-- ✅ **Public-domain feeds reachable without keys (checked 19 Nov 2026): Federal Reserve press_all.xml (has categories such as Monetary Policy), BLS per-release feeds cpi.rss, empsit.rss, ppi.rss (bls_latest.rss is one generic item), BEA rss.xml, SEC pressreleases.rss, CFTC rssgp.xml. Treasury's press-release feed timed out. Coinbase BTC-USD candles: 60 s for up to 300 minutes, 900 s for about 3 days per request.**
-  → scripts/build-bell.mjs uses these; if a feed moves, the run warns and continues (fails only when more than 3 sources fail).
+- ✅ **Public-domain feeds reachable without keys (checked 19 Nov 2026): Federal Reserve press_all.xml (has categories such as Monetary Policy), BLS per-release feeds cpi.rss, empsit.rss, ppi.rss, which are Atom despite the .rss name (<entry>, <updated>, <link href>; bls_latest.rss is one generic item), BEA rss.xml, SEC pressreleases.rss, CFTC rssgp.xml. Treasury's press-release feed timed out. Coinbase BTC-USD candles: 60 s for up to 300 minutes, 900 s for about 3 days per request.**
+  → scripts/build-bell.mjs reads RSS and Atom; a feed that returns no parsable items counts as failed and is named on the page; the run fails only when more than 3 sources fail. BTC is measured with 1-minute Coinbase candles at both ends (open of the release minute, close of the minute ending at the bell).
   _2026-11-19 · measured · `bell-brief-sources` · [build-bell.mjs](scripts/build-bell.mjs)_
 - 👤 **Exchange market-data terms (Coinbase 'Derived Works', OKX, Binance) restrict public display of their data, live prices included.**
   → Owner: accept and document, license, or ask in writing before any sponsor or ads.

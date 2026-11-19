@@ -36,12 +36,12 @@
     const passed = next.filter(n => n.t <= now).pop();
     if (passed && now - passed.t < 15 * 60e3) {
       // The next edition is being published (the page itself is static); a reload shows it.
-      nextEl.textContent = `The ${name(passed)} edition is being published now. Reload in a minute or two.`;
+      nextEl.textContent = `Publishing the ${name(passed)} edition: reload in a minute`;
       if (lastPassed !== passed.t) { lastPassed = passed.t; ring(); }
     } else if (passed) {
-      nextEl.textContent = `A newer edition (${name(passed)}, ${local(passed.t)}) is out. Reload to see it.`;
+      nextEl.textContent = `Newer edition out (${name(passed)}): reload to see it`;
     } else if (upcoming) {
-      nextEl.textContent = `Next edition: ${name(upcoming)} in ${span(upcoming.t - now)} (${local(upcoming.t)} your time)`;
+      nextEl.textContent = `Next: ${name(upcoming)} in ${span(upcoming.t - now)} (${local(upcoming.t)} your time)`;
     }
     if (bar && cutoff && upcoming) {
       const p = Math.min(1, Math.max(0, (now - cutoff) / (upcoming.t - cutoff)));
@@ -53,7 +53,7 @@
     const c = window.CPT && window.CPT.state && window.CPT.state.coins.get("BTC");
     if (!since || !btc0 || !c || !c.live) return;
     const pct = ((c.price - btc0) / btc0) * 100;
-    since.textContent = `${pct >= 0 ? "+" : "−"}${Math.abs(pct).toFixed(2)}% (live, ${window.CPT.fmtPrice(c.price, "USD")})`;
+    since.textContent = `${pct >= 0 ? "+" : "−"}${Math.abs(pct).toFixed(2)}% · ${window.CPT.fmtPrice(c.price, "USD")} live`;
     since.className = pct >= 0 ? "txt-up" : "txt-down";
   }
 

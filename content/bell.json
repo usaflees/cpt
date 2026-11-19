@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T16:55:04.593Z",
+ "updated": "2026-11-19T17:12:26.964Z",
  "next": [
   {
    "edition": "close",
@@ -44,10 +44,10 @@
    "edition": "open",
    "date": "2026-11-19",
    "cutoff": "2026-11-19T14:25:00.000Z",
-   "generated": "2026-11-19T16:55:04.593Z",
+   "generated": "2026-11-19T17:12:26.964Z",
    "windowStart": "2026-11-18T21:05:00.000Z",
    "earlyClose": false,
-   "btcAtCutoff": 63863.62,
+   "btcAtCutoff": 63864.7,
    "items": [
     {
      "feed": "fed",
@@ -67,7 +67,7 @@
      "link": "https://www.cftc.gov/PressRoom/PressReleases/9327-26",
      "published": "2026-11-17T15:18:19.000Z",
      "score": 4,
-     "btcChange": -1.08
+     "btcChange": -1.03
     }
    ],
    "sourcesFailed": []

@@ -18,7 +18,7 @@
 @keyframes bell-ring { 0% { transform: rotate(0); } 15% { transform: rotate(18deg); } 30% { transform: rotate(-15deg); } 45% { transform: rotate(10deg); } 60% { transform: rotate(-6deg); } 75% { transform: rotate(3deg); } 100% { transform: rotate(0); } }
 .bell-clock { margin: 2px 0 0; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 13px; color: var(--text-secondary); min-height: 2.6em; text-align: right; }
 /* The countdown text is replaced by bell.js: reserve its final size (2 lines on phones) so nothing below moves. */
-#bellNext { display: block; min-width: min(26em, 100%); }
+#bellNext { display: block; min-width: min(30em, 100%); min-height: 1.45em; }
 .bell-bar { display: block; width: min(220px, 100%); height: 4px; border-radius: 4px; background: var(--bg-tertiary); overflow: hidden; }
 .bell-bar > span { display: block; height: 100%; background: var(--brand-ring); transform-origin: left center; transform: scaleX(0); transition: transform 1.2s cubic-bezier(.2, .8, .2, 1); }
 .bell-lede { margin: 6px 0 0; font-size: 14px; color: var(--text-secondary); max-width: 72ch; }
@@ -35,7 +35,9 @@
 .bell-meta { display: block; margin-top: 3px; font-size: 12.5px; color: var(--text-muted); }
 .bell-move { white-space: nowrap; font-size: 12px; }
 .bell-quiet { padding: 10px 12px; border: 1px dashed var(--border); border-radius: 12px; color: var(--text-muted); font-size: 14px; }
-.bell-live { margin: 10px 0 0; font: 13px var(--font-mono); color: var(--text-muted); }
+.bell-live { margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 2px 16px; font: 13px var(--font-mono); color: var(--text-muted); }
+/* "Since then" is filled live: its own line on phones, wide enough for the final text everywhere (no shift). */
+.bell-live > span:last-child { min-width: 23ch; white-space: nowrap; }
 .bell-how { margin-top: 8px; font-size: 13.5px; color: var(--text-secondary); }
 .bell-how summary { cursor: pointer; color: var(--accent); min-height: 24px; }
 .bell-how p { margin: 6px 0 2px; max-width: 80ch; line-height: 1.55; }

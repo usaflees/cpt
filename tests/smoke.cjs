@@ -31,7 +31,7 @@ const B = process.argv[2] || 'http://localhost:8788';
   if (!bell) issues.push('home: Bell Brief block missing');
   else {
     if (bell.items + bell.quiet < 1 || bell.items > 3) issues.push(`home: Bell Brief has ${bell.items} items`);
-    if (!bell.js || !/^(Next edition|The |A newer)/.test(bell.next)) issues.push(`home: Bell Brief countdown not filled ("${bell.next}")`);
+    if (!bell.js || !/^(Next|Publishing|Newer edition)/.test(bell.next)) issues.push(`home: Bell Brief countdown not filled ("${bell.next}")`);
     if (!bell.links) issues.push('home: a Bell Brief item links outside the federal sources');
   }
   // Dialogs keep keyboard focus inside: the page behind is inert. (<body> is the browser's own stop

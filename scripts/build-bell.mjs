@@ -7,6 +7,7 @@
 //   node scripts/build-bell.mjs --edition open|close  build that edition for the latest trading day now (by hand)
 //   node scripts/build-bell.mjs --now <ISO time>      pretend the clock reads this (tests; no waiting)
 //   node scripts/build-bell.mjs --dry                 print the edition, write nothing
+// The edition shown on the page is always the newest by cutoff, also after a manual rebuild of an older one.
 // Exit codes: 0 edition written, 3 nothing due (or already published), 1 failure (the previous edition stays).
 //
 // Sources are U.S. federal agencies' press releases and statistical releases (public domain, 17 U.S.C. § 105):
@@ -119,20 +120,25 @@ async function fetchText(url) {
 }
 
 const CRYPTO = /\b(crypto|bitcoin|digital asset|stablecoin|blockchain|tokeni[sz]|ether(eum)?|defi|virtual currenc)/i;
+// Enforcement actions (charges, suits, settlements, judgments, bars): only crypto-related ones can fill a slot.
+const ENFORCEMENT = /\b(charg(es|ed)|sues|sued|settles?|settlement|judgment|obtains|bars?|barred|fraud|scheme|ponzi|indict|sentenc|penalt)/i;
 const MACRO = /\b(federal funds|fomc|federal open market|interest rate|monetary policy|inflation)\b/i;
-// Fixed scoring rule, highest first; the page explains it. `base` is the release's own weight: releases under
-// MIN_BASE (routine statistics, enforcement notices against individuals) never fill a slot, so a quiet session
-// shows fewer than three items rather than padding.
-const MIN_BASE = 3;
+// Fixed scoring rule, highest first; the page explains it (keep the "How the Bell Brief is chosen" text in
+// scripts/build-coin-pages.mjs in step). `base` is the release's own weight; releases under MIN_BASE never fill a
+// slot, so a quiet session shows fewer than three items rather than padding:
+//   10 Fed monetary policy · 9 CPI, jobs report · 8 GDP, PCE/personal income · 7 PPI, crypto-related SEC action ·
+//   6 crypto/prediction-market/24-7 CFTC action · 5 SEC ETF news · 4 Fed banking regulation, trade data ·
+//   below the bar: other SEC/CFTC/Fed releases, routine statistics, enforcement not involving crypto, bank applications.
+const MIN_BASE = 4;
 function baseOf(it) {
   const t = it.title;
   let base;
-  if (it.feed === "fed") base = /Monetary Policy/i.test(it.topic) || MACRO.test(t) ? 10 : /Banking|Regulat|Supervis/i.test(it.topic) ? 4 : /Enforcement/i.test(it.topic) ? 1 : 3;
+  if (it.feed === "fed") base = /Monetary Policy/i.test(it.topic) || MACRO.test(t) ? 10 : /\bapplications?\b|\bapproval\b/i.test(t) || /Enforcement/i.test(it.topic) ? 1 : /Banking|Regulat|Supervis/i.test(it.topic) ? 4 : 3;
   else if (it.feed === "bls-cpi" || it.feed === "bls-jobs") base = 9;
   else if (it.feed === "bls-ppi") base = 7;
   else if (it.feed === "bea") base = /gross domestic product|\bGDP\b|personal income|outlays|\bPCE\b/i.test(t) ? 8 : /trade/i.test(t) ? 4 : 2;
-  else if (it.feed === "sec") base = CRYPTO.test(t) ? 7 : /exchange-traded|\bETF\b/i.test(t) ? 5 : 3;
-  else base = CRYPTO.test(t) || /prediction|event contract|24\/7/i.test(t) ? 6 : 3; // CFTC
+  else if (it.feed === "sec") base = CRYPTO.test(t) ? 7 : ENFORCEMENT.test(t) ? 1 : /exchange-traded|\bETF\b/i.test(t) ? 5 : 3;
+  else base = CRYPTO.test(t) || /prediction|event contract|24\/7/i.test(t) ? 6 : ENFORCEMENT.test(t) ? 1 : 3; // CFTC
   return base;
 }
 function score(it) {
@@ -147,11 +153,17 @@ const items = [], failures = [];
 await Promise.all(FEEDS.map(async f => {
   try {
     const xml = await fetchText(f.url);
-    for (const raw of xml.match(/<item\b[\s\S]*?<\/item>/g) || []) {
-      const title = tag(raw, "title"), link = tag(raw, "link"), published = parseDate(tag(raw, "pubDate") || tag(raw, "dc:date"));
+    let n = 0;
+    // RSS <item> (Fed, BEA, SEC, CFTC) or Atom <entry> (BLS: <updated>, <link href="…">).
+    for (const raw of xml.match(/<item\b[\s\S]*?<\/item>|<entry\b[\s\S]*?<\/entry>/g) || []) {
+      const title = tag(raw, "title");
+      const link = tag(raw, "link") || decode((raw.match(/<link\b[^>]*\bhref="([^"]+)"/) || [])[1] || "");
+      const published = parseDate(tag(raw, "pubDate") || tag(raw, "dc:date") || tag(raw, "published") || tag(raw, "updated"));
       if (!title || !/^https:\/\//.test(link) || !published) continue;
       items.push({ feed: f.id, source: f.name, topic: f.topic || tag(raw, "category") || "", title, link, published });
+      n++;
     }
+    if (!n) throw new Error("no items parsed");
   } catch (e) { failures.push(`${f.name} (${f.id}): ${e.message}`); }
 }));
 if (failures.length) console.warn(`bell: feeds that failed: ${failures.join("; ")}`);
@@ -164,21 +176,28 @@ const ranked = pool.filter(it => baseOf(it) >= MIN_BASE).map(it => ({ ...it, sco
 if (!items.length) { console.error("bell: no releases parsed from any source; keeping the previous edition"); process.exit(1); }
 
 // ---------- BTC from each release to the cutoff (Coinbase BTC-USD candles) ----------
-async function btcBetween(from, to) {
-  const span = (to - from) / 6e4;
-  const g = span <= 290 ? 60 : span <= 290 * 15 ? 900 : 3600;
-  const start = new Date(Math.floor(from / (g * 1000)) * g * 1000), url = `https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=${g}&start=${start.toISOString()}&end=${to.toISOString()}`;
-  const rows = JSON.parse(await fetchText(url)); // [time, low, high, open, close, volume], newest first
-  if (!Array.isArray(rows) || rows.length < 2) return null;
-  const oldest = rows[rows.length - 1], newest = rows[0];
-  return { from: oldest[3], to: newest[4] };
+// One-minute candles at both ends: the open of the minute the release came out, and the close of the minute that
+// ends at the cutoff (the price at the bell). Coinbase keys candles by their start time.
+async function minute(t) {
+  const start = new Date(Math.floor(t / 60e3) * 60e3 - 4 * 60e3), end = new Date(Math.floor(t / 60e3) * 60e3 + 60e3);
+  const rows = JSON.parse(await fetchText(`https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=60&start=${start.toISOString()}&end=${end.toISOString()}`));
+  return Array.isArray(rows) ? rows : []; // [time, low, high, open, close, volume], newest first
+}
+async function priceAtOpenOf(t) { // open of the minute containing t (or the nearest earlier traded minute)
+  const m = Math.floor(t / 60e3) * 60, row = (await minute(t)).find(r => r[0] <= m);
+  return row ? (row[0] === m ? row[3] : row[4]) : null;
+}
+async function priceAt(t) { // close of the minute ending at t
+  const m = Math.floor(t / 60e3) * 60 - 60, row = (await minute(t - 60e3)).find(r => r[0] <= m);
+  return row ? row[4] : null;
 }
 let btcAtCutoff = null;
+try { btcAtCutoff = await priceAt(+cutoff); } catch (e) { console.warn(`bell: BTC at the cutoff unavailable (${e.message})`); }
 for (const it of ranked) {
   try {
-    const m = await btcBetween(it.published, cutoff);
-    if (m) { it.btcChange = Math.round(((m.to - m.from) / m.from) * 10000) / 100; btcAtCutoff = m.to; }
-  } catch (e) { console.warn(`bell: BTC move for "${it.title.slice(0, 40)}…" unavailable (${e.message})`); }
+    const p0 = btcAtCutoff ? await priceAtOpenOf(+it.published) : null;
+    if (p0) it.btcChange = Math.round(((btcAtCutoff - p0) / p0) * 10000) / 100;
+  } catch (e) { console.warn(`bell: BTC at "${it.title.slice(0, 40)}…" unavailable (${e.message})`); }
 }
 
 // ---------- Write ----------
@@ -188,7 +207,7 @@ const edition = {
   items: ranked.map(({ feed, source, topic, title, link, published, score, btcChange }) => ({ feed, source, topic, title, link, published: published.toISOString(), score, btcChange: btcChange ?? null })),
   sourcesFailed: failures.map(f => f.split(" (")[0]),
 };
-const editions = [edition, ...(previous?.editions || []).filter(e => e.id !== edition.id)].slice(0, 6);
+const editions = [edition, ...(previous?.editions || []).filter(e => e.id !== edition.id)].sort((a, b) => b.cutoff.localeCompare(a.cutoff)).slice(0, 6);
 const outJson = { updated: edition.generated, next: upcoming(cutoff, 6), editions };
 console.log(`bell: ${edition.id} (cutoff ${cutoff.toISOString()}):\n${edition.items.map((it, i) => `  ${i + 1}. [${it.score}] ${it.source}: ${it.title.slice(0, 90)} (BTC ${it.btcChange ?? "—"}%)`).join("\n")}`);
 if (!opt.dry) writeFileSync(OUT, JSON.stringify(outJson, null, 1) + "\n");
