@@ -610,7 +610,7 @@ function sectorPage(x) {
     </section>
 
     ${coinLines ? `<section class="page-section prose" aria-labelledby="each-h">
-      <h2 id="each-h">${esc(x.name)} coins one by one</h2>
+      <h2 id="each-h">${esc(x.noun[0].toUpperCase() + x.noun.slice(1))} one by one</h2>
       <ul class="brand-rules">
         ${coinLines}
       </ul>
