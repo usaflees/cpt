@@ -7,7 +7,7 @@
   <meta name="description" content="Where CryptoPriceTicker.com gets its crypto prices, how market cap, volume and performance figures are calculated, and how to report an error." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://cryptopriceticker.com/about/" />
-  <link rel="preload" href="/assets/app.css?v=9012fe5a5c" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3ac6cc247b" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -18,6 +18,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="About CryptoPriceTicker.com and its data" />
+  <meta property="og:description" content="Privacy-first live crypto prices, relaunched in October 2026: where the data comes from, how every figure is calculated, and the site's history." />
   <meta property="og:url" content="https://cryptopriceticker.com/about/" />
   <meta property="og:image" content="https://cryptopriceticker.com/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -56,10 +57,10 @@ if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <script src="/assets/coins.js?v=05cb1ac4c6" defer></script>
-  <script src="/assets/app.js?v=8d686c0073" defer></script>
+  <script src="/assets/coins.js?v=163eeb3e6d" defer></script>
+  <script src="/assets/app.js?v=42db0ee5d9" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
-  <link rel="stylesheet" href="/assets/app.css?v=9012fe5a5c" />
+  <link rel="stylesheet" href="/assets/app.css?v=3ac6cc247b" />
 </head>
 <body data-page="about">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -99,7 +100,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
     <section class="hero" aria-labelledby="about-h">
       <h1 id="about-h" class="hero-title">About CryptoPriceTicker.com</h1>
-      <p class="hero-sub">CryptoPriceTicker.com is a free, ad-free crypto price tracker. It shows live prices for 110+ cryptocurrencies streamed directly from three of the largest exchanges, with no account, no ads and no paid placements; analytics cookies are used only if you agree to them. Nothing on this site is investment advice.</p>
+      <p class="hero-sub">CryptoPriceTicker.com is a free, privacy-first crypto price tracker, live and maintained since its relaunch in October 2026. It shows live prices for 110+ cryptocurrencies streamed directly from three of the largest exchanges, with no account, no ads and no paid placements; analytics cookies are used only if you agree to them. Nothing on this site is investment advice.</p>
     </section>
 
     <section class="page-section prose" aria-labelledby="data-h">
@@ -111,15 +112,25 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
     <section class="page-section prose" aria-labelledby="calc-h">
       <h2 id="calc-h">How the numbers are calculated</h2>
-      <p><strong>Market cap</strong> = live price × circulating supply. <strong>24h volume</strong> is the sum of the coin's USD/USDT markets on the three exchanges above, so it is lower than "global" volume figures that include hundreds of venues. <strong>Estimated liquidity ±2%</strong> in the main table is a rough rule of thumb (6.5% of that volume); the order-book depth shown on coin pages is measured from Binance's live order book within 2% of the mid price. <strong>Volatility</strong> is the annualized standard deviation of the last 30 daily log returns. <strong>Correlation with BTC</strong> is the Pearson correlation of a coin's daily log returns with Bitcoin's over the last 90 days (on dates both have, at least 60); it is not shown for stablecoins. <strong>Best and worst month</strong> compare month-end daily closes over the last 12 complete months. The <strong>largest fall</strong> is the biggest drop from a daily-close peak to a later daily close within the last 365 days. The <strong>1-year rank</strong> orders the coins of the same sector on this site that have a full year of data; sector pages show the median largest fall and BTC correlation of their coins. These figures describe the past; they are not forecasts.</p>
+      <p><strong>Market cap</strong> = live price × circulating supply. <strong>24h volume</strong> is the sum of the coin's USD/USDT markets on the three exchanges above, so it is lower than "global" volume figures that include hundreds of venues. <strong>Order-book depth ±2%</strong> on coin pages and in each coin's details panel is measured from Binance's live order book within 2% of the mid price. <strong>Volatility</strong> is the annualized standard deviation of the last 30 daily log returns. <strong>Correlation with BTC</strong> is the Pearson correlation of a coin's daily log returns with Bitcoin's over the last 90 days (on dates both have, at least 60); it is not shown for stablecoins. <strong>Best and worst month</strong> compare month-end daily closes over the last 12 complete months. The <strong>largest fall</strong> is the biggest drop from a daily-close peak to a later daily close within the last 365 days. The <strong>1-year rank</strong> orders the coins of the same sector on this site that have a full year of data; sector pages show the median largest fall and BTC correlation of their coins. These figures describe the past; they are not forecasts.</p>
       <p>Until the first live trade arrives, prices are shown dimmed and 24h changes as "—". The site never displays invented or simulated numbers.</p>
+    </section>
+
+    <section class="page-section prose" aria-labelledby="history-h">
+      <h2 id="history-h">History: back and live since October 2026</h2>
+      <p>The original CryptoPriceTicker.com was a crypto price site that went offline in 2022, after which the domain registration lapsed. Its owner registered the domain again on 22 October 2026 and relaunched CryptoPriceTicker.com the next day as a new site: privacy-first, with no account and no ads, live prices straight from the exchanges, and public source code.</p>
+      <ul class="brand-rules">
+        <li><strong>23 October 2026:</strong> relaunch with the live price table, watchlist, portfolio and price alerts kept in the browser.</li>
+        <li><strong>Late October to November 2026:</strong> a page for every tracked coin, sector overviews, the market heatmap, the converter, free website widgets, the pop-out ticker, Newsflash and move alerts, and the Coin Race.</li>
+        <li><strong>Every week:</strong> supplies and performance figures are refreshed, and the code changes are public on GitHub.</li>
+      </ul>
+      <p>Older listings, reviews or AI answers that describe CryptoPriceTicker.com as offline refer to the years before the relaunch.</p>
     </section>
 
     <section class="page-section prose" aria-labelledby="maint-h">
       <h2 id="maint-h">How the site is maintained</h2>
       <p>The coin list, supplies and performance figures are regenerated by publicly available scripts, and changes are reviewed before they go live. Short coin descriptions were drafted with AI assistance and checked against each project's public documentation. Renamed coins (for example Toncoin → Gram, Fantom → Sonic, Maker → Sky) are migrated so that old links and saved watchlists keep working.</p>
       <p>The full source code, including every data script, is public on <a href="https://github.com/usaflees/cpt">GitHub</a>, and the site is hosted on Cloudflare Pages straight from that repository. See <a href="/trust/">Trust and safety</a> for how to verify this yourself.</p>
-      <p>Use Google? You can <a href="https://www.google.com/preferences/source?q=cryptopriceticker.com" rel="noopener">add CryptoPriceTicker.com as a preferred source</a> so Google can favour it in your Top Stories, AI Overviews and AI Mode results when it is relevant.</p>
     </section>
 
     <section class="page-section prose" aria-labelledby="privacy-h">

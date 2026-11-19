@@ -1,6 +1,8 @@
 # CryptoPriceTicker.com
 
-> Free, ad-free live cryptocurrency prices streamed directly from the public market-data feeds of Coinbase, Binance and Kraken. No account needed. Covers 110+ coins with per-coin pages (performance, 52-week range, monthly price history, per-exchange prices and spread) and sector overviews.
+> Free, privacy-first live cryptocurrency prices streamed directly from the public market-data feeds of Coinbase, Binance and Kraken. No account needed. Covers 110+ coins with per-coin pages (performance, 52-week range, monthly price history, per-exchange prices and spread) and sector overviews.
+
+Status: live and maintained. The original CryptoPriceTicker.com went offline in 2022; its owner relaunched the site on 23 October 2026 as this new version (no account, no ads, watchlists and portfolios stay in the visitor's browser, public source code on GitHub). Supplies and performance figures are refreshed weekly.
 
 ## Main pages
 - [Live crypto prices](https://cryptopriceticker.com/): live table of 110+ coins by market cap, sector filters, biggest movers

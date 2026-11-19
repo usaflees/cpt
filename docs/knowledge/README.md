@@ -6,6 +6,7 @@ the evidence behind a rule.
 
 | File | What it holds | Update when |
 | --- | --- | --- |
+| [facts.jsonl](facts.jsonl) → [FACTS.md](FACTS.md) | **The knowledge store**: every sourced, dated finding (Google, AI search, Bing, Cloudflare, Claude tooling, our own measurements) with status, confidence and a re-check date. `node scripts/kb.mjs` prints the digest; `--topic`, `--status`, `--find` query it | Any new finding: add a line, run `node scripts/kb.mjs --write` |
 | [HANDOFF.md](HANDOFF.md) | **Start here in a new session**: where things stand, what's blocked on the owner, tooling notes | End of every long session |
 | [../STRATEGY.md](../STRATEGY.md) | **The roadmap**: measured baseline, pillars A–F, prioritized backlog, what we decided against, KPIs | Roadmap items ship or priorities change |
 | [../NEWS-AND-MONETIZATION.md](../NEWS-AND-MONETIZATION.md) | News block and phased, compliance-gated monetization plan; decisions only the owner can make | Owner decisions, phase changes |
@@ -20,15 +21,16 @@ the evidence behind a rule.
 Related, outside this folder:
 - [../../CLAUDE.md](../../CLAUDE.md): the short instructions every Claude session in this repo loads.
 - [../SELF-IMPROVING.md](../SELF-IMPROVING.md): the rules the automated loop follows.
-- [../WEEKLY-TASK.md](../WEEKLY-TASK.md): copy of the scheduled task's prompt.
+- [../DAILY-TASKS.md](../DAILY-TASKS.md): the daily scheduled tasks' prompts (build, SEO, check). [../WEEKLY-TASK.md](../WEEKLY-TASK.md) is retired.
 - [../LAUNCH-KIT.md](../LAUNCH-KIT.md): launch checklist, venues and post skeletons.
 - [../AUDIT.md](../AUDIT.md): the original audit (October 2026), kept as history.
 - [../../tests/README.md](../../tests/README.md): the QA suite (`bash tests/run.sh`).
 
 ## How to use it
+- **Start of every session:** `node scripts/kb.mjs`. For a topic: `node scripts/kb.mjs --topic google` (or `--status owner`, `--find indexnow`).
 - **Before changing the site:** read the relevant PLAYBOOK section and check DECISIONS for a past call on the same thing.
 - **After a release:** update STATE.md (scores, page count, open items) and tick PLAYBOOK items that shipped.
-- **New research:** save it as `research/YYYY-MM-DD-topic.md` with sources inline, then fold any changed rule into
-  PLAYBOOK.md and log the decision. Research files are snapshots: correct a mistake with a note, don't rewrite them.
+- **New research:** save it as `research/YYYY-MM-DD-topic.md` with sources inline, add each finding to `facts.jsonl`
+  (with confidence and a re-check date), then fold any changed rule into PLAYBOOK.md and log the decision. Research files are snapshots: correct a mistake with a note, don't rewrite them.
 - This repo is **public**. Never add search queries, analytics exports, credentials or personal data here; they
   belong in the private `usaflees/cpt-telemetry` repo.

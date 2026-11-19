@@ -43,10 +43,17 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 | Whole-site crawl, production (134 URLs incl. widgets and 404) | 0 errors, 0 failed requests, 0 CSP violations, 0 browser warnings (Nov 3) |
 
 ## Owner actions still open
+- **Now (Nov 16), so AI answers stop calling the site defunct** (research/2026-11-16 §2): after this release,
+  Search Console → URL Inspection → Request indexing for `/`, `/about/`, `/trust/`; under the wrong AI Mode answer,
+  thumbs-down → quote "appears to be offline or defunct" and give `https://cryptopriceticker.com/about/#history-h`;
+  if `@CoinPriceTicker` on X and the Quora space are yours, update their bio/pinned post to "back at
+  cryptopriceticker.com since Oct 2026" and tell a session so they're added to the site's `sameAs`. Then claim the
+  site in ChatGPT Business Hub, list it on AlternativeTo (alternative to CoinMarketCap, CoinGecko, Coinlib) and turn
+  on Cloudflare Crawler Hints. Full list: `node scripts/kb.mjs --status owner`.
 - **Now (Nov 12):** (a) AdSense → Sites → cryptopriceticker.com → choose *Ads.txt snippet* or *Meta tag* → Verify → Request review. (b) Scheduled tasks → **CPT daily build** → Edit → Advanced settings → Repository → add `usaflees/cpt`. (c) Search Console steps A and B in `docs/INDEXING-PLAN.md` (Manual actions check, sitemaps, 10 Request-indexing a day).
 0. **Reputation (found Nov 6):** ScamAdviser shows Trust Score 0 for the domain from its previous registration (domain re-registered 22 Oct 2026; Google Safe Browsing: no unsafe content). Send the Gmail draft to bizverify@scamadviser.com, press "Update score" on scamadviser.com/check-website/cryptopriceticker.com, claim the profile at portal.gridinsoft.com. DNS (Cloudflare): delete the duplicate `_dmarc` TXT record (`p=none` and `p=reject` both exist, which voids DMARC; keep `p=reject`); add `www` as a Pages custom domain and redirect it to the apex (www has no DNS record now).
-1. Add `usaflees/cpt` (push) to the weekly scheduled task's repositories; later `usaflees/cpt-telemetry` (read).
-2. Set the scheduled task's effort level to **Medium** in its model selector (see [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md)).
+1. Add `usaflees/cpt` to **CPT daily build**'s repositories (the old weekly task is off since 12 Nov); later `usaflees/cpt-telemetry` (read).
+2. Optional: add `usaflees/cpt` to **CPT daily check** too, so it can read CI status (GitHub's API answers its anonymous calls with 403).
 3. **Search Console** Domain property, sitemap, Request Indexing for key pages; Bing Webmaster Tools import (biggest growth lever: not indexed yet).
 4. Cloudflare Web Analytics on.
 5. Apps Script telemetry collector (`scripts/telemetry/README.md`); now also collects GA4 if you set `GA4_PROPERTY` (your property's numeric ID).
@@ -65,4 +72,5 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 - 24h volume is the sum of the three exchanges' USD/USDT markets, so it is far lower than "global" figures and
   drops sharply on weekends.
 - Coins without a Binance market (e.g. USDT) have no 7-day sparkline.
+- At 320 px a few long one-word coin names (e.g. "Superintelligence") still split inside the word in sector tables; 360 px and wider: only that one.
 - Not indexed by Google yet (expected for a new site until Search Console is set up).

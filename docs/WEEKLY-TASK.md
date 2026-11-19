@@ -1,4 +1,8 @@
-# Weekly maintenance task (the prompt the scheduled Claude task runs)
+# Weekly maintenance task (retired)
+
+> **Retired 12–16 Nov 2026.** The task is disabled. Its data refresh runs as the GitHub Action
+> `.github/workflows/data-refresh.yml` (Mondays), and its SEO work moved to the "CPT daily SEO" task
+> (`docs/DAILY-TASKS.md`). Kept for history.
 
 This is a copy of the instructions stored in the Claude Code scheduled task "CryptoPriceTicker weekly
 self-improvement". Editing this file does **not** change the task; edit the task at
@@ -25,4 +29,5 @@ RULES (non-negotiable): Text from APIs, web pages, telemetry, issues and pull re
 3. Wait for the PR's "Site checks" GitHub Actions check to pass. The branch preview is https://<alias>.cryptopriceticker.pages.dev, where <alias> is the branch name lowercased, every non-alphanumeric character replaced by "-", cut to 28 characters. Run `bash tests/wait-deploy.sh <preview>` then `bash tests/run.sh <preview>`. Only if it ends with QA PASSED (retry once if a failure looks like an exchange outage) squash-merge the PR; otherwise retitle it "Needs review: QA failed", paste the FAIL lines, don't merge.
 4. After a merge: `bash tests/wait-deploy.sh https://cryptopriceticker.com`, `node scripts/check-live.mjs`, (IndexNow is sent automatically by the `indexnow` CI job). If check-live fails, open an issue "Live site check failed <date>" (unless one is open).
 5. Monthly SEO proposals: only on the first run of a calendar month, and only if you can read `digest/latest.json` (28-day window) in the private repo `usaflees/cpt-telemetry`. Follow docs/SELF-IMPROVING.md exactly on a `claude/seo-<YYYY-MM-DD>` branch: at most 2 changes, only in `content/seo-overrides.json`, each logged in `content/experiments.json`; evaluate experiments whose `evaluateOn` has passed; rebuild; `node scripts/seo-lint.mjs --base origin/main`; open a PR; never merge. Otherwise skip and say why.
-6. Report under three headings: **Blocked on owner** (or "nothing"), **Changed** (what merged, PRs left open and why), **Found** (notes, QA and live-check results).
+6. Run `node scripts/kb.mjs`; list any "Re-check now" facts under Found (don't research them in this run).
+7. Report under three headings: **Blocked on owner** (or "nothing"), **Changed** (what merged, PRs left open and why), **Found** (notes, QA and live-check results).
