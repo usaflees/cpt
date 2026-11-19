@@ -1625,3 +1625,7 @@ body:not(.is-embed) .hero::before {
 [data-theme="light"] body:not(.is-embed) .hero::before { opacity: .6; }
 .keep-alerts { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; }
 .move-alert-form .form-input { width: 7.5em; }
+
+/* Weekly movers tables (/heatmap/, /race/): coin names wrap so the change and close columns fit at 375 px. */
+.m7-table { width: 100%; }
+.m7-table td:first-child { white-space: normal; font-family: var(--font-sans); }
