@@ -1780,7 +1780,6 @@
   // live prices that keeps updating while the visitor works in other apps. The button stays hidden
   // where the API doesn't exist, so other browsers never see a control that can't work.
   const PIP_OK = "documentPictureInPicture" in window && !IS_EMBED;
-  if (PIP_OK) document.querySelectorAll("[data-action=pip]").forEach(b => { b.hidden = false; });
   function pipCoins(sym) {
     if (sym && state.coins.has(sym)) return [sym];
     const watch = Array.from(state.watchlist).filter(s => state.coins.has(s));

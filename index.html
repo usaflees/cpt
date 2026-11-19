@@ -18,7 +18,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=3ac6cc247b" as="style" />
+  <link rel="preload" href="/assets/app.css?v=3d62e20d1e" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -85,11 +85,12 @@ try { t = localStorage.getItem("cpt_theme"); } catch (e) { t = null; }
 var embed = /^\/embed\//.test(location.pathname) || q.get("embed") === "1";
 if (themes.indexOf(t) < 0 && !embed && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) t = "light";
 if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", t);
+if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3ac6cc247b" />
+  <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
   <script src="/assets/coins.js?v=163eeb3e6d" defer></script>
-  <script src="/assets/app.js?v=17f716addd" defer></script>
+  <script src="/assets/app.js?v=9a252edc09" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/bell.js?v=56aacbea56" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -163,7 +164,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <p class="brand-name"><img class="eyebrow-mark" src="/brand/mark-intro.svg" width="22" height="22" alt="" />CryptoPriceTicker.com</p>
         <h1 id="hero-h" class="hero-title">Live crypto prices from Coinbase, Binance &amp; Kraken</h1>
         <p class="hero-sub">Every trade, the moment it happens. Privacy-first: no login, no ads, nothing to install, and your watchlist never leaves your browser.</p>
-        <p class="hero-links"><a href="/heatmap/">🟩 Market heatmap</a><a href="/race/">🏁 Coin Race</a><a href="/convert/">🔁 Converter</a><a href="/widgets/">🧩 Free widget</a><a href="#bell-brief">🔔 Bell Brief</a><button type="button" data-action="pip" hidden>⧉ Pop-out ticker</button></p>
+        <p class="hero-links"><a href="/heatmap/">🟩 Market heatmap</a><a href="/race/">🏁 Coin Race</a><a href="/convert/">🔁 Converter</a><a href="/widgets/">🧩 Free widget</a><a href="#bell-brief">🔔 Bell Brief</a><button type="button" data-action="pip">⧉ Pop-out ticker</button></p>
         <div class="hero-stats">
           <div class="stat"><span class="stat-label">Market cap</span><span class="stat-val" id="globalMcap">—</span></div>
           <div class="stat"><span class="stat-label">24h volume</span><span class="stat-val" id="globalVol">—</span></div>
