@@ -25,6 +25,15 @@ const B = process.argv[2] || 'http://localhost:8788';
     h1: document.querySelector('h1').textContent,
     unlabeled: [...document.querySelectorAll('button')].filter(x => !x.textContent.trim() && !x.getAttribute('aria-label') && !x.title).length,
   }))));
+  // Bell Brief: the edition is in the static HTML (1-3 releases or a quiet note), and bell.js fills in the countdown.
+  const bell = await p.evaluate(() => { const b = document.getElementById('bell-brief'); return b && { items: b.querySelectorAll('.bell-item').length, quiet: b.querySelectorAll('.bell-quiet').length, next: (document.getElementById('bellNext') || {}).textContent || '', js: b.classList.contains('js-bell'), links: [...b.querySelectorAll('.bell-title')].every(a => /^https:\/\/(www\.)?(federalreserve|bls|bea|sec|cftc)\.gov\//.test(a.href)) }; });
+  console.log('bell brief:', JSON.stringify(bell));
+  if (!bell) issues.push('home: Bell Brief block missing');
+  else {
+    if (bell.items + bell.quiet < 1 || bell.items > 3) issues.push(`home: Bell Brief has ${bell.items} items`);
+    if (!bell.js || !/^(Next edition|The |A newer)/.test(bell.next)) issues.push(`home: Bell Brief countdown not filled ("${bell.next}")`);
+    if (!bell.links) issues.push('home: a Bell Brief item links outside the federal sources');
+  }
   // Dialogs keep keyboard focus inside: the page behind is inert. (<body> is the browser's own stop
   // between the last and the first control, as with a native <dialog>; it is not a page element.)
   await p.click('#row-BTC .more-btn'); await p.waitForTimeout(200);
