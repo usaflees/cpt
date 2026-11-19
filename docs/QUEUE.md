@@ -7,14 +7,6 @@ chat "queue: …") instead of opening a new long chat: that is the cheapest way 
 Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item small enough for one run).
 
 ## Ready
-- [ ] **PR #14 (wait-deploy false timeouts).** What: `tests/wait-deploy.sh` compares plain `/assets/…` URLs that
-  are cached for a year; skip `assets/` in that byte comparison as PR #14 does (this item names `tests/wait-deploy.sh`,
-  so the edit is allowed). Done when: the script returns "serves the current build" against production right after a
-  release that changes an asset; PR #14 merged or closed as superseded.
-- [ ] **Backup and restore.** What: "Export my data" and "Import" in the home menu: one JSON file with watchlist,
-  holdings, price alerts, move/portfolio alert settings and theme (all from `localStorage`; nothing uploaded).
-  Import validates the file and asks before replacing. Done when: export → clear site data → import restores
-  everything; a `tests/` browser check covers it (this item allows adding one test file); QA passes.
 - [ ] **Stream overlay preset for widgets.** What: `/embed/?overlay=1` gives a transparent background, larger type
   and no credit-link hover effects, for OBS and similar browser sources; add a short "Use in a stream" paragraph and
   the URL to `/widgets/`. Done when: the overlay renders on a transparent page at 1920×200, widget tests pass.
@@ -62,6 +54,8 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   "ad-free" argument under Binance's terms).
 
 ## Done
+- [x] 2026-11-19 **Backup and restore.** Home menu "Back up my data" / "Restore from a backup file" (`assets/flash.js`): one JSON file with watchlist, holdings, alerts, alert settings and history, theme, currency, density and pin; caches and the cookie choice excluded; foreign files refused; asks before replacing. `tests/backup.cjs` (in `tests/run.sh`) covers export → clear → import.
+- [x] 2026-11-19 **PR #14 (wait-deploy false timeouts).** Already on main (4f72fc3 skips `assets/`); PR #14 closed as superseded.
 - [x] 2026-11-19 **One icon sprite on the home page.** Logos come from `coin-icons/sprite.svg`: home image requests 33 → 3 (coin logos 31 → 1), LCP 840 → 216 ms in one Chromium run, CLS unchanged (0.0044); logos identical on Neon, Light and OLED; local and preview QA passed.
 - [x] 2026-11-17 **More real text on the thinnest pages.** Sector hubs list every coin with its dated close, 30-day and
   1-year change, 1-year rank in that hub, range and largest fall (full sentence on the coin's main hub, a short line on
