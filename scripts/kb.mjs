@@ -10,6 +10,8 @@
 //   node scripts/kb.mjs --check          validate the store and confirm FACTS.md is current (QA runs this)
 //
 // Adding a finding: append one JSON line (keep the file sorted by topic, then date), run --write, commit both.
+// Merges: .gitattributes merges this file line by line (union), so parallel sessions' new facts combine without
+// conflicts. If both sides edited the same fact, --check reports a duplicate id: keep the newer line, run --write.
 // Fields: id (kebab-case, unique), date (YYYY-MM-DD the fact was published or measured), topic, claim (what is
 // true, with numbers), so_what (what it means for this site), status, confidence, sources (URLs or repo paths),
 // review (optional YYYY-MM-DD: re-check by then; required for status "watch").

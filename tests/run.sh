@@ -29,6 +29,7 @@ step "smoke (home, coin, sector, widgets, embed, 404, mobile)"; run node tests/s
 step "converter";                     run node tests/converter.cjs "$BASE"
 step "heatmap";                       run node tests/heatmap.cjs "$BASE"
 step "search, theme, notifications";  run node tests/search.cjs "$BASE"
+step "backup and restore";            run node tests/backup.cjs "$BASE"
 step "accessibility";                 run node tests/axe.cjs "$BASE"
 step "every page: errors, CSP, failed requests"; run node tests/crawl.cjs "$BASE"
 [ -n "${SERVER:-}" ] && kill "$SERVER" 2>/dev/null

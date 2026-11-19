@@ -114,7 +114,7 @@ export function buildMarketReport(h) {
   const archive = weeks.slice(1).map(x => `<li id="week-${x.week}"><strong>Week to ${longDate(x.week)}.</strong> ${summary(x, false)}</li>`).join("\n        ");
 
   const title = "Weekly Crypto Market Report: Biggest Movers and Sectors";
-  const description = "The week's best and worst performing coins, sector medians and new 52-week highs and lows, computed from exchange daily closes. Updated every Monday.";
+  const description = "Weekly crypto market report: the best and worst coins, sector medians and new 52-week highs and lows, from exchange daily closes. Updated every Monday.";
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [

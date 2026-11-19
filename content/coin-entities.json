@@ -1,0 +1,117 @@
+{
+ "_note": "Entity links for each coin page's JSON-LD 'about' (sameAs). Only coins whose Wikidata item has an English Wikipedia article clearly about that coin or its network, checked 2026-11-19 via the Wikidata query service. Leave a coin out rather than guess (GRAM and WLFI were left out: ambiguous articles).",
+ "coins": {
+  "BTC": {
+   "wikidata": "https://www.wikidata.org/wiki/Q131723",
+   "wikipedia": "https://en.wikipedia.org/wiki/Bitcoin"
+  },
+  "ETH": {
+   "wikidata": "https://www.wikidata.org/wiki/Q16783523",
+   "wikipedia": "https://en.wikipedia.org/wiki/Ethereum"
+  },
+  "USDT": {
+   "wikidata": "https://www.wikidata.org/wiki/Q47528658",
+   "wikipedia": "https://en.wikipedia.org/wiki/Tether_(cryptocurrency)"
+  },
+  "SOL": {
+   "wikidata": "https://www.wikidata.org/wiki/Q108695872",
+   "wikipedia": "https://en.wikipedia.org/wiki/Solana_(blockchain_platform)"
+  },
+  "USDC": {
+   "wikidata": "https://www.wikidata.org/wiki/Q100781882",
+   "wikipedia": "https://en.wikipedia.org/wiki/USDC_(cryptocurrency)"
+  },
+  "DOGE": {
+   "wikidata": "https://www.wikidata.org/wiki/Q15377916",
+   "wikipedia": "https://en.wikipedia.org/wiki/Dogecoin"
+  },
+  "ADA": {
+   "wikidata": "https://www.wikidata.org/wiki/Q47273538",
+   "wikipedia": "https://en.wikipedia.org/wiki/Cardano_(blockchain_platform)"
+  },
+  "AVAX": {
+   "wikidata": "https://www.wikidata.org/wiki/Q110233099",
+   "wikipedia": "https://en.wikipedia.org/wiki/Avalanche_(blockchain_platform)"
+  },
+  "SUI": {
+   "wikidata": "https://www.wikidata.org/wiki/Q140734193",
+   "wikipedia": "https://en.wikipedia.org/wiki/Sui_(blockchain_platform)"
+  },
+  "DOT": {
+   "wikidata": "https://www.wikidata.org/wiki/Q46166265",
+   "wikipedia": "https://en.wikipedia.org/wiki/Polkadot_(blockchain_platform)"
+  },
+  "BCH": {
+   "wikidata": "https://www.wikidata.org/wiki/Q34328146",
+   "wikipedia": "https://en.wikipedia.org/wiki/Bitcoin_Cash"
+  },
+  "LTC": {
+   "wikidata": "https://www.wikidata.org/wiki/Q4043030",
+   "wikipedia": "https://en.wikipedia.org/wiki/Litecoin"
+  },
+  "UNI": {
+   "wikidata": "https://www.wikidata.org/wiki/Q104438477",
+   "wikipedia": "https://en.wikipedia.org/wiki/Uniswap"
+  },
+  "DAI": {
+   "wikidata": "https://www.wikidata.org/wiki/Q102230654",
+   "wikipedia": "https://en.wikipedia.org/wiki/Dai_(cryptocurrency)"
+  },
+  "ETC": {
+   "wikidata": "https://www.wikidata.org/wiki/Q29583124",
+   "wikipedia": "https://en.wikipedia.org/wiki/Ethereum_Classic"
+  },
+  "XMR": {
+   "wikidata": "https://www.wikidata.org/wiki/Q19893485",
+   "wikipedia": "https://en.wikipedia.org/wiki/Monero"
+  },
+  "POL": {
+   "wikidata": "https://www.wikidata.org/wiki/Q111446062",
+   "wikipedia": "https://en.wikipedia.org/wiki/Polygon_(blockchain)"
+  },
+  "FIL": {
+   "wikidata": "https://www.wikidata.org/wiki/Q39048590",
+   "wikipedia": "https://en.wikipedia.org/wiki/Filecoin"
+  },
+  "AAVE": {
+   "wikidata": "https://www.wikidata.org/wiki/Q125457725",
+   "wikipedia": "https://en.wikipedia.org/wiki/Aave"
+  },
+  "ATOM": {
+   "wikidata": "https://www.wikidata.org/wiki/Q139553035",
+   "wikipedia": "https://en.wikipedia.org/wiki/Cosmos_(network)"
+  },
+  "AR": {
+   "wikidata": "https://www.wikidata.org/wiki/Q129196013",
+   "wikipedia": "https://en.wikipedia.org/wiki/Arweave"
+  },
+  "ALGO": {
+   "wikidata": "https://www.wikidata.org/wiki/Q30938181",
+   "wikipedia": "https://en.wikipedia.org/wiki/Algorand"
+  },
+  "PYTH": {
+   "wikidata": "https://www.wikidata.org/wiki/Q140365635",
+   "wikipedia": "https://en.wikipedia.org/wiki/Pyth_Network"
+  },
+  "ZEC": {
+   "wikidata": "https://www.wikidata.org/wiki/Q27148141",
+   "wikipedia": "https://en.wikipedia.org/wiki/Zcash"
+  },
+  "DASH": {
+   "wikidata": "https://www.wikidata.org/wiki/Q17155887",
+   "wikipedia": "https://en.wikipedia.org/wiki/Dash_(cryptocurrency)"
+  },
+  "CAKE": {
+   "wikidata": "https://www.wikidata.org/wiki/Q111446865",
+   "wikipedia": "https://en.wikipedia.org/wiki/PancakeSwap"
+  },
+  "MANA": {
+   "wikidata": "https://www.wikidata.org/wiki/Q107210481",
+   "wikipedia": "https://en.wikipedia.org/wiki/Decentraland"
+  },
+  "AXS": {
+   "wikidata": "https://www.wikidata.org/wiki/Q94653118",
+   "wikipedia": "https://en.wikipedia.org/wiki/Axie_Infinity"
+  }
+ }
+}

@@ -9,6 +9,7 @@ Status: live and maintained. The original CryptoPriceTicker.com went offline in 
 - [About & data methodology](https://cryptopriceticker.com/about/): data sources and how market cap, volume, depth and performance are calculated
 - [Market heatmap](https://cryptopriceticker.com/heatmap/): every coin sized by market cap and coloured by 24-hour change
 - [Weekly market report](https://cryptopriceticker.com/market/): the week's best and worst performers, sector medians and new 52-week highs and lows, from daily closes ([Atom feed](https://cryptopriceticker.com/market/feed.xml))
+- [Bell Brief](https://cryptopriceticker.com/#bell-brief): on the home page, up to three official U.S. federal releases (Federal Reserve, BLS, BEA, SEC, CFTC) most likely to move crypto, published 5 minutes before the NYSE opening bell and 5 minutes after the close, each with Bitcoin's measured move from release to bell
 - [Coin Race](https://cryptopriceticker.com/race/): up to six coins racing live from 24 hours ago, 1 hour ago or a start you choose
 - [Crypto converter](https://cryptopriceticker.com/convert/): any coin to any coin or 20 fiat currencies at live prices
 - [Free website widget](https://cryptopriceticker.com/widgets/): embeddable live crypto ticker (iframe), three layouts, six themes
