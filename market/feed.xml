@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>CryptoPriceTicker weekly market report</title>
+  <subtitle>The week's best and worst performing coins, sector medians and new 52-week highs and lows, computed from exchange daily closes.</subtitle>
+  <id>https://cryptopriceticker.com/market/feed.xml</id>
+  <link rel="self" type="application/atom+xml" href="https://cryptopriceticker.com/market/feed.xml" />
+  <link rel="alternate" type="text/html" href="https://cryptopriceticker.com/market/" />
+  <updated>2026-11-15T23:59:59Z</updated>
+  <author><name>CryptoPriceTicker.com</name><uri>https://cryptopriceticker.com/</uri></author>
+  <icon>https://cryptopriceticker.com/favicon.svg</icon>
+  <entry>
+    <title>Crypto market report: week to November 15, 2026</title>
+    <id>tag:cryptopriceticker.com,2026:market/2026-11-15</id>
+    <link rel="alternate" type="text/html" href="https://cryptopriceticker.com/market/#week-2026-11-15" />
+    <published>2026-11-15T23:59:59Z</published>
+    <updated>2026-11-15T23:59:59Z</updated>
+    <summary type="text">In the seven days to November 15, 2026, Bitcoin fell 12.7% and Ethereum fell 13.7%. Of the 110 coins tracked here (stablecoins excluded), 5 rose and 105 fell; the median coin fell 11.5%. The best performer was Jupiter, which rose 15.2%, and the worst was Aerodrome Finance, which fell 25.8%. By sector median, Layer 1 did best (-10.32%) and Privacy did worst (-16.37%). Among coins with a full year of data, none closed at a new 52-week high and 34 coins at a new 52-week low.</summary>
+  </entry>
+</feed>
