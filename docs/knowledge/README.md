@@ -15,6 +15,7 @@ the evidence behind a rule.
 | [STATE.md](STATE.md) | Snapshot of the live site: pages, features, scores, QA results, open owner actions, known trade-offs | After each release |
 | [CLAUDE-OPUS-5-5.md](CLAUDE-OPUS-5-5.md) | How to get the most out of Claude Opus 5.5 and Claude Code on this project: effort levels, scheduled tasks, prompting, verification | New model or Claude Code features |
 | [ACCESS.md](ACCESS.md) | Who can change the repository and publish the site: every path, what the repo enforces, the owner's settings checklist, public vs private | Access, workflows or hosting change |
+| [CLAUDE-CODE-WORKFLOW.md](CLAUDE-CODE-WORKFLOW.md) | How sessions are set up here (what cloud and Claude Duet threads load), the feature recipe, prompts, keeping project threads cheap. Summary auto-loads from `.claude/rules/claude-workflow.md` | New Claude Code or Duet features, a change in how we work |
 | [RETROSPECTIVE.md](RETROSPECTIVE.md) | What we did Oct 29 – Nov 3, what it achieved (before/after), what went wrong and the lessons | After a major round of work |
 | [research/](research/README.md) | Raw, sourced research snapshots (web crawls of Google, Bing, Cloudflare, Anthropic and practitioner sources) | New research round (add a new dated file; don't rewrite old ones) |
 

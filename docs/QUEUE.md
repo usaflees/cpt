@@ -11,11 +11,6 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   are cached for a year; skip `assets/` in that byte comparison as PR #14 does (this item names `tests/wait-deploy.sh`,
   so the edit is allowed). Done when: the script returns "serves the current build" against production right after a
   release that changes an asset; PR #14 merged or closed as superseded.
-- [ ] **One icon sprite on the home page.** What: measure first (count image requests on a cold load of `/` in
-  Chromium). If more than 30 are coin logos, serve the home table, movers and tape logos from one generated SVG
-  sprite (`scripts/build-coin-icons.mjs`) instead of one file per coin; keep per-coin files for coin pages and
-  widgets. Done when: image requests on `/` fall by at least half, logos look the same on every theme, LCP and CLS
-  don't get worse, QA passes. Skip with a note if the measurement shows fewer than 30.
 - [ ] **Backup and restore.** What: "Export my data" and "Import" in the home menu: one JSON file with watchlist,
   holdings, price alerts, move/portfolio alert settings and theme (all from `localStorage`; nothing uploaded).
   Import validates the file and asks before replacing. Done when: export → clear site data → import restores
@@ -62,6 +57,7 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   "ad-free" argument under Binance's terms).
 
 ## Done
+- [x] 2026-11-19 **One icon sprite on the home page.** Logos come from `coin-icons/sprite.svg`: home image requests 33 → 3 (coin logos 31 → 1), LCP 840 → 216 ms in one Chromium run, CLS unchanged (0.0044); logos identical on Neon, Light and OLED; local and preview QA passed.
 - [x] 2026-11-16 **QA crawl: stay under Kraken's connection limit.** `tests/crawl.cjs` opens the real Kraken socket only on 12 sampled pages; elsewhere a silent stand-in socket answers (Playwright `routeWebSocket`). A broken Kraken URL still fails 11 of the 12 sampled pages.
 - [x] **Finish PR #15 (logos invisible on some themes)** (Nov 16). Merged with `main` (data refresh included); the
   `mono` marks were re-applied with `--tones`. `app.css` keeps main's removals plus 64 overridden declarations.
