@@ -114,7 +114,7 @@ function conversionTables(c) {
 // Coin badge: the coin's logo (coin-icons/, scripts/build-coin-icons.mjs) or its ticker. The page's
 // own coin loads eagerly; badges in tables load lazily.
 const avatarHtml = (c, eager = false) => c.logo
-  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/${slug(c.sym)}.svg" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
+  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img${c.mono ? ` class="mono-${c.mono}"` : ""} src="/coin-icons/${slug(c.sym)}.svg" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
   : `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>`;
 
 const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];
@@ -158,6 +158,7 @@ function topbar(withFeeds, withCurrency = withFeeds) {
           <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
         </div>
@@ -280,7 +281,6 @@ function coinPage(c) {
   const mcap = c.price * c.supply * 1e6;
   const exNames = c.feeds.map(f => EXCHANGES[f]);
   const pairs = c.feeds.map(f => `${EXCHANGES[f]} (${PAIR[f](c.tickers?.[f] || c.sym)})`);
-  const sectors = c.sectors.map(x => SECTOR_NAMES[x] || x);
   const { primary, same, nearby, top } = relatedCoins(c);
   const st = stats[c.sym];
   const o = overrides[c.sym] || {};
@@ -412,13 +412,6 @@ function coinPage(c) {
       <p class="disclaimer">Computed automatically from live exchange prices: measured moves, not news reports or advice.</p>
     </section>
 
-    <section class="page-section" id="convert" aria-labelledby="conv-h">
-      <h2 id="conv-h">Convert ${s} to USD</h2>
-      ${converterHtml([c, ...RATE_COINS.filter(x => x !== c.sym).map(x => coins.find(o => o.sym === x))], c.sym, "USD", num(c.price))}
-      ${conversionTables(c)}
-      <p class="disclaimer">Uses the live ${s} price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=${slug(c.sym)}">Convert ${s} to any other coin →</a></p>
-    </section>
-
     ${statsSection(c, st)}
 
     <section class="page-section" aria-labelledby="ex-h">
@@ -433,6 +426,13 @@ function coinPage(c) {
       <p>The price above updates live in your browser from ${list(pairs)}, and the badge shows which exchange reported the latest trade. Market cap is the live price × a circulating supply of about ${supplyText} ${s} (supply last updated ${longDate(updated)}). Prices on different exchanges can differ slightly; the table above shows each one and the spread between them.</p>
       ${c.formerly ? `<p>${name} previously traded under the ticker <strong>${esc(c.formerly)}</strong>; old ${esc(c.formerly)} links on this site redirect here.</p>` : ""}
       <p class="disclaimer">Not financial advice. Data comes from third-party exchanges and may be delayed or inaccurate.</p>
+    </section>
+
+    <section class="page-section" id="convert" aria-labelledby="conv-h">
+      <h2 id="conv-h">Convert ${s} to USD</h2>
+      ${converterHtml([c, ...RATE_COINS.filter(x => x !== c.sym).map(x => coins.find(o => o.sym === x))], c.sym, "USD", num(c.price))}
+      ${conversionTables(c)}
+      <p class="disclaimer">Uses the live ${s} price above. Currencies other than USD use Coinbase's reference exchange rates. <a href="/convert/?from=${slug(c.sym)}">Convert ${s} to any other coin →</a></p>
     </section>
 
     <nav class="page-section" aria-labelledby="rel-h">
@@ -601,7 +601,7 @@ for (const x of sectors) {
 function convertPage() {
   const pageUrl = `${SITE}/convert/`;
   const title = "Crypto Converter: Live Rates for Coins & 20 Currencies";
-  const description = `Convert ${coins.length} cryptocurrencies to each other or to USD, EUR, GBP, INR and 16 more currencies at live exchange prices. Free, no sign-up.`;
+  const description = `Crypto converter: convert ${coins.length} cryptocurrencies to each other or to USD, EUR, GBP, INR and 16 more currencies at live exchange prices. Free, no sign-up.`;
   const btc = coins.find(c => c.sym === "BTC");
   const pairs = [["BTC", "USD"], ["ETH", "USD"], ["SOL", "USD"], ["XRP", "USD"], ["BTC", "EUR"], ["BTC", "GBP"], ["BTC", "INR"], ["ETH", "BTC"],
     ["SOL", "ETH"], ["USDT", "EUR"], ["DOGE", "USD"], ["USD", "BTC", 100], ["EUR", "ETH", 100]]
@@ -810,7 +810,7 @@ writeFileSync(ROOT + "heatmap/index.html", heatmapPage());
 // (inflated freshness is a spam signal). content/page-dates.json stores a hash of each page's
 // content; the date moves to today only when that hash changes. Asset hashes and the inlined
 // theme script are ignored, so a CSS or JS release doesn't count as a content change.
-const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html", "/trust/": "trust/index.html" };
+const STATIC_PAGES = { "/about/": "about/index.html", "/widgets/": "widgets/index.html", "/brand/": "brand/index.html", "/accessibility/": "accessibility/index.html", "/trust/": "trust/index.html", "/race/": "race/index.html" };
 const pageDatesPath = ROOT + "content/page-dates.json";
 const pageDates = existsSync(pageDatesPath) ? JSON.parse(readFileSync(pageDatesPath, "utf8")) : {};
 const today = new Date().toISOString().slice(0, 10);
@@ -824,7 +824,7 @@ writeFileSync(pageDatesPath, JSON.stringify(pageDates, null, 2) + "\n");
 const pageDate = path => (pageDates[path] || {}).date || updated;
 
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : updated}</lastmod></url>`).join("\n")}
@@ -878,9 +878,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;

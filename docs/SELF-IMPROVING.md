@@ -16,8 +16,8 @@ queries, and never changes code, headers or workflows on its own.
 | Phase | Status | What happens |
 | --- | --- | --- |
 | 0. Setup | **owner** | Search Console Domain property + sitemap; Cloudflare Web Analytics; telemetry collector (`scripts/telemetry/README.md`) |
-| 1. Self-auditing | **live** | Weekly task refreshes market data, rebuilds pages, runs `seo-lint`, audits the live site, and opens PRs for anything unusual |
-| 2. Self-optimizing | after 4–8 weeks of Search Console data | Weekly task reads `digest/latest.json` and may propose up to 2 title/description changes per week |
+| 1. Self-auditing | **live** | The data-refresh workflow (Mondays) refreshes market data, rebuilds pages, runs `seo-lint`, audits the live site, and opens PRs for anything unusual |
+| 2. Self-optimizing | after 4–8 weeks of Search Console data | A queued daily-build item reads `digest/latest.json` and may propose up to 2 title/description changes per week |
 | 3. Experiments | when coin pages get ≥ ~100 impressions/day | Page-group tests with an untouched control group, evaluated by script |
 
 ## What the automated loop may change

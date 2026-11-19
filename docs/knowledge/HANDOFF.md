@@ -44,6 +44,27 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Nov 16 (PR #15):** knowledge store `docs/knowledge/facts.jsonl` (98 sourced, dated facts; `node scripts/kb.mjs`
+  digest at the start of every session, `--check` in QA, readable view FACTS.md); `scripts/seo-audit.mjs` (what
+  crawlers see on every page); research `research/2026-11-16-seo-ai-search-and-claude.md`. Google AI Mode called the
+  site "offline or defunct": home, /about/#history-h, /trust/, llms.txt and JSON-LD now say it is live, relaunched
+  Oct 2026 by the original owner, privacy-first; /trust/ no longer says "new domain owner". Preferred Sources finds
+  nothing for the domain, so its dead links were removed. Coin pages: converter moved below "About".
+- **Nov 15 (PR #15, cleanup pass):** coin logos visible on every theme (`mono` marks, see DECISIONS), dialogs keep
+  focus inside, sector tables don't break names mid-word on 360–412 px phones, `app.css` 74.6 KB (64 overridden
+  declarations removed), CSV without the invented liquidity column, pinned tab title waits for a live price, service
+  worker prunes old `?v=` assets, home FAQ wording matches the UI, converter amounts below 1,000 show 6 significant digits.
+- **Nov 12:** first Search Console exports analysed: only the home page is indexed, the rest is "Discovered –
+  currently not indexed" → `docs/INDEXING-PLAN.md` (owner's daily Request-indexing list, first links, hold on new URL
+  families). AdSense site verification is live (`ads.txt` + home-page meta tag, publisher `ca-pub-3149203932367096`);
+  **no ad code runs until Google approves the site** (next steps in `docs/QUEUE.md` → Waiting on the owner). Usage:
+  work now flows through `docs/QUEUE.md` and two daily scheduled tasks (`docs/DAILY-TASKS.md`); one chat at a time.
+  Open PRs from other chats: #14 and #15 are queued for the daily build, #16 waits on owner decisions.
+- **Nov 11:** GTM container now loads only after "Accept" (empty container cost 451 KiB / ~200 ms TBT per first
+  visit); GA4 unchanged. Live Nov 12: Lighthouse mobile home 87 → 91–94, TBT 510 → 300–380 ms, Google tags
+  451 → 168 KiB. Repeated full QA runs used to get Kraken WebSocket 429s; since Nov 16 the crawl opens only 12 real Kraken sockets.
+- **Nov 10–11:** home table top 25 (+ starred coins); `/race/` Coin Race live. Next Feature Lab picks (artifact "CPT
+  Feature Lab"): Exchange Gap Radar (/spreads/), Time Machine, Market TV.
 - **Live Nov 10 (`29fb398`, PR #13):** the repo's working files (`/scripts`, `/docs`, `/content`, `/tests`, `/.claude`,
   `/.github`, `CLAUDE.md`, `README.md`, `SECURITY.md`, `.gitignore`) are no longer served: `functions/_middleware.js` returns
   404, limited by `_routes.json`; `seo-lint` checks both lists match, `check-live` requests each path. Owner wants the
@@ -85,9 +106,9 @@ of where things stand and what the owner wants. Details are in the files it link
    Gridinsoft claim, duplicate DMARC record, `www` custom domain.
 1. **Search Console**: Domain property, submit `sitemap.xml`, request indexing for key pages. Google hasn't
    indexed the site yet; this is the biggest lever. Then Bing Webmaster Tools (import from Search Console).
-2. **Weekly scheduled task** "CryptoPriceTicker weekly self-improvement" has **no repository attached**, so its
-   pushes fail with 403: claude.ai/code → Scheduled tasks → the task → Edit → Advanced settings → Repository →
-   add `usaflees/cpt`. Set its effort to **Medium**.
+2. **Scheduled tasks:** the old weekly task was switched off on 12 Nov. **CPT daily build** (Sonnet, 1:13 am CT) still
+   and **CPT daily SEO** (Sonnet, 3:47 am CT) need `usaflees/cpt` attached (claude.ai/code → Scheduled tasks → the task →
+   Edit → Advanced settings → Repository) and a model set. **CPT daily check** (Haiku, 12:07 pm CT) runs. See `docs/DAILY-TASKS.md`.
 3. Cloudflare Web Analytics on (real-visitor speed data); Apps Script telemetry (`scripts/telemetry/README.md`).
 4. News/monetization decisions (`docs/NEWS-AND-MONETIZATION.md` §9): editor of record, licensed headline source
    and budget, adding a Cloudflare Worker, sponsor-first vs ads, whether crypto sponsors may be shown to UK/EU

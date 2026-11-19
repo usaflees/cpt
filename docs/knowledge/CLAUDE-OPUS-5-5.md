@@ -75,6 +75,16 @@ Anthropic's top Claude Code tip: give Claude a check it can run. Here that is:
 - Limits: schedules at most hourly; 100 scheduled runs an hour per account; "Run now" 30 an hour per task.
 - Model and effort are chosen in the task's model selector and apply to every run.
 
+## Finding SEO work in this repo (Nov 16)
+- Start with the deterministic scan: `node scripts/seo-audit.mjs` (every sitemap page as a crawler sees it), then
+  read one page per template as plain text, first 300 words: that is what crawlers and AI fetchers weigh most.
+- Fresh platform news: several `extended` web searches in one turn, then confirm on the platform's own page before
+  recording a fact as "official" in `facts.jsonl`.
+- Whole-repo reads: split by directory into subagents at `low`/`medium` (`CLAUDE_CODE_SUBAGENT_EFFORT`), one
+  checklist, verify their evidence; `ultrathink` (runs that turn at `xhigh`) for the single synthesis turn.
+- Re-reading an unchanged file now costs full tokens (Claude Code 2.1.317): grep or read line ranges.
+- Details and sources: research/2026-11-16-seo-ai-search-and-claude.md §5.
+
 ## Keeping Pro plan usage low
 Usage grows with the number of turns, with how much text each turn adds to the context (tool output, files read),
 and with effort. What we did about each:
@@ -86,8 +96,8 @@ and with effort. What we did about each:
 | Huge diffs (a refresh changed ~8,400 lines, 7,278 of them in the stats file) | `content/coin-stats.json` is one coin per line: a refresh now changes ~114 lines in it |
 | Reading big generated files | CLAUDE.md says to grep them instead |
 | Accidental reruns (a stray `--help` once ran a real refresh) | Data scripts reject unknown flags |
-| Effort higher than the job needs | Weekly task on **Medium**; interactive default `medium`, `xhigh` only for audits/redesigns |
-| Unneeded connectors in scheduled tasks | The weekly task has none; keep it that way |
+| Effort higher than the job needs | Daily build on Sonnet 5.5, daily check on Haiku 5.5; interactive default `medium`, `xhigh` only for audits/redesigns |
+| Unneeded connectors in scheduled tasks | Both daily tasks have none; keep it that way (a task can write through every connector it includes) |
 Other levers: `/clear` between unrelated tasks; one Claude session changing the site at a time (two in parallel
 cost a merge on Nov 2); Batch/API pricing doesn't apply to the subscription, so fewer, fuller turns are what saves.
 

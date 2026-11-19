@@ -61,13 +61,20 @@
   const renamed = sym => RENAMED[sym] || sym;
   const pip = { win: null, rows: new Map() }; // pop-out ticker window (see openPip); read by flush()
   const HAS_LOGO = new Set(REGISTRY.filter(c => c.logo).map(c => c.sym));
+  // Single-tone logos (a white or a black mark) carry a class so app.css can flip them on a
+  // background of the same tone: white XRP on the Light theme, black Stellar on the dark ones.
+  const MONO = new Map(REGISTRY.filter(c => c.logo && c.mono).map(c => [c.sym, c.mono]));
+  const logoImg = (sym, size, cls, lazy) => {
+    const c = [cls, MONO.has(sym) && `mono-${MONO.get(sym)}`].filter(Boolean).join(" ");
+    return `<img${c ? ` class="${c}"` : ""} src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="${size}" height="${size}"${lazy ? ' loading="lazy"' : ""} decoding="async" />`;
+  };
 
   // Coin badge: the coin's own logo when we host one (/coin-icons/, see scripts/build-coin-icons.mjs),
   // otherwise its ticker. The neon ring and the size come from .coin-avatar in app.css.
   function avatar(sym, cls = "", style = "") {
     const logo = HAS_LOGO.has(sym);
     return `<span class="coin-avatar${cls ? " " + cls : ""}${logo ? " has-logo" : ""}" aria-hidden="true"${style ? ` style="${style}"` : ""}>` +
-      (logo ? `<img src="/coin-icons/${sym.toLowerCase()}.svg" alt="" width="20" height="20" loading="lazy" decoding="async" />` : esc(sym.slice(0, 4))) + `</span>`;
+      (logo ? logoImg(sym, 20, "", true) : esc(sym.slice(0, 4))) + `</span>`;
   }
 
   const state = {
@@ -113,7 +120,6 @@
       mcap: c.price * c.supply * 1e6,
       vol24h: 0,
       exVol: { CB: 0, BN: 0, KR: 0 },
-      liq: 0,
       sectors: c.sectors,
       feeds: c.feeds,
       tickers: c.tickers || {},
@@ -137,9 +143,9 @@
    * ------------------------------------------------------------------ */
   state.currency = pick((params.get("curr") || (IS_EMBED ? "" : store.get("cpt_curr", ""))).toUpperCase(), CURRENCIES, "USD");
   // First visit follows the device's light/dark setting; widgets default to dark unless their embed code says otherwise.
-  const systemTheme = !IS_EMBED && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "neon";
-  // ?theme=auto (widgets): light or Neon to match the visitor's device, and switch live when it changes.
   const prefersLight = () => Boolean(window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches);
+  const systemTheme = !IS_EMBED && prefersLight() ? "light" : "neon";
+  // ?theme=auto (widgets): light or Neon to match the visitor's device, and switch live when it changes.
   const autoTheme = (params.get("theme") || "").toLowerCase() === "auto";
   state.theme = autoTheme ? (prefersLight() ? "light" : "neon")
     : pick((params.get("theme") || (IS_EMBED ? "" : store.get("cpt_theme", ""))).toLowerCase(), THEMES, systemTheme);
@@ -249,7 +255,7 @@
 
     if (cfg.layout === "marquee") {
       const items = picked.map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="tape-item">
-          ${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}<span class="tape-sym">${esc(c.sym)}</span>
+          ${HAS_LOGO.has(c.sym) ? logoImg(c.sym, 14, "tape-logo") : ""}<span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</span>
           <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "padding:1px 5px;font-size:12px")}</span>
         </a>`).join("");
@@ -295,7 +301,7 @@
 
     const cards = picked.slice(0, 8).map(c => `<a href="${link(c)}" target="_blank" rel="noopener" class="embed-card">
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong style="font-family:var(--font-mono);font-size:12.5px;display:inline-flex;align-items:center;gap:6px">${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}${esc(c.sym)}</strong>
+            <strong style="font-family:var(--font-mono);font-size:12.5px;display:inline-flex;align-items:center;gap:6px">${HAS_LOGO.has(c.sym) ? logoImg(c.sym, 14, "tape-logo") : ""}${esc(c.sym)}</strong>
             <span data-wg-chg="${esc(c.sym)}">${chgPill(c, "font-size:12px;padding:1px 5px")}</span>
           </div>
           <div style="font-family:var(--font-mono);font-size:14px;font-weight:800" data-wg-price="${esc(c.sym)}">${fmtPrice(c.price, curr)}</div>
@@ -537,7 +543,7 @@
   function renderTape() {
     const top = Array.from(state.coins.values()).filter(c => c.hasPage).sort((a, b) => a.rank - b.rank).slice(0, 16);
     const html = top.map(c => `<a class="tape-item" href="${coinUrl(c.sym)}" tabindex="-1">
-          ${HAS_LOGO.has(c.sym) ? `<img class="tape-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="14" height="14" decoding="async" />` : ""}<span class="tape-sym">${esc(c.sym)}</span>
+          ${HAS_LOGO.has(c.sym) ? logoImg(c.sym, 14, "tape-logo") : ""}<span class="tape-sym">${esc(c.sym)}</span>
           <span class="tape-price" data-tape="${esc(c.sym)}">${fmtPrice(c.price)}</span>
           <span style="color:${c.change24h >= 0 ? "var(--up)" : "var(--down)"}">${c.live ? (c.change24h >= 0 ? "▲ " : "▼ ") + Math.abs(c.change24h).toFixed(2) + "%" : ""}</span>
         </a>`).join("");
@@ -567,7 +573,6 @@
       // Volume = sum of the tracked exchanges' USD/USDT markets (Coinbase + Binance + Kraken).
       c.exVol[source] = o.quoteVol;
       c.vol24h = c.exVol.CB + c.exVol.BN + c.exVol.KR;
-      c.liq = c.vol24h * 0.065; // rough estimate, labelled as such in the UI
     }
     c.mcap = c.price * c.supply;
     const wasLive = c.live;
@@ -623,7 +628,7 @@
   function pulseLogo(dirty) {
     const now = Date.now();
     if (now - lastPulse < 3000 || !dirty.includes("BTC")) return;
-    const dir = state.coins.get("BTC") && state.coins.get("BTC").lastDir;
+    const dir = state.coins.get("BTC")?.lastDir;
     if (!dir) return;
     logoEl = logoEl || document.querySelector(".topbar-brand .brand-logo");
     if (!logoEl) return;
@@ -655,6 +660,7 @@
       if (dirty.includes(state.coinPageSym) || dirty.some(s => RATE_COINS.includes(s))) updateCoinPage();
     }
     if (MODE === "heatmap") updateHeatmap(dirty);
+    if (MODE === "race" && window.CPT_RACE) window.CPT_RACE(dirty);
     if ((MODE === "coin" || MODE === "convert") && (dirty.includes(conv.from) || dirty.includes(conv.to) || dirty.includes(pageCoin))) updateConverter();
 
     if (MODE === "home") {
@@ -705,7 +711,7 @@
   function updateTabTitle() {
     if (MODE !== "home") return;
     const pinned = state.pinnedSym && state.coins.get(state.pinnedSym);
-    const title = pinned ? `${pinned.sym} ${fmtPrice(pinned.price)} ${pinned.change24h >= 0 ? "▲" : "▼"} | CryptoPriceTicker.com` : CANONICAL_TITLE;
+    const title = pinned && pinned.live ? `${pinned.sym} ${fmtPrice(pinned.price)} ${pinned.change24h >= 0 ? "▲" : "▼"} | CryptoPriceTicker.com` : CANONICAL_TITLE;
     if (title !== lastTitle) { document.title = title; lastTitle = title; }
   }
 
@@ -713,7 +719,7 @@
    * Data feeds — each subscribes only to the coins the current page shows
    * ------------------------------------------------------------------ */
   function activeSymbols() {
-    if (MODE === "home" || MODE === "heatmap") return Array.from(state.coins.keys());
+    if (MODE === "home" || MODE === "heatmap" || MODE === "race") return Array.from(state.coins.keys());
     if (MODE === "convert") return [conv.from, conv.to].filter(s => state.coins.has(s));
     // Widgets have a fixed currency, so they only need its rate coin; coin pages can switch currency.
     const rates = MODE === "coin" ? RATE_COINS : state.currency === "USD" ? [] : [state.currency];
@@ -1000,7 +1006,7 @@
     wrap.innerHTML = `
       <div class="modal-backdrop" id="syncModal" role="dialog" aria-modal="true" aria-labelledby="syncTitle">
         <div class="modal-card">
-          <div class="modal-head"><h2 id="syncTitle" style="font-size:15px">💾 Sync watchlist &amp; bag (no account)</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
+          <div class="modal-head"><h2 id="syncTitle">💾 Sync watchlist &amp; bag (no account)</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
           <p style="color:var(--text-secondary);font-size:12.5px">Open this link on another device to copy your watchlist and bag quantities there. Anyone with the link can see them, so keep it private.</p>
           <input type="text" class="sync-input" id="syncUrlInput" readonly aria-label="Sync link" />
           <div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="action-btn btn-accent" data-action="copy" data-target="syncUrlInput" data-msg="📋 Sync link copied.">📋 Copy sync link</button></div>
@@ -1008,13 +1014,13 @@
       </div>
       <div class="modal-backdrop" id="coinModal" role="dialog" aria-modal="true" aria-labelledby="modalCoinTitle">
         <div class="modal-card">
-          <div class="modal-head"><h2 id="modalCoinTitle" style="font-size:15px"></h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
+          <div class="modal-head"><h2 id="modalCoinTitle"></h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
           <div id="modalCoinBody" style="display:flex;flex-direction:column;gap:12px"></div>
         </div>
       </div>
       <div class="modal-backdrop" id="widgetModal" role="dialog" aria-modal="true" aria-labelledby="widgetTitle">
         <div class="modal-card modal-wide">
-          <div class="modal-head"><h2 id="widgetTitle" style="font-size:15px">🧩 Free live crypto ticker widget</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
+          <div class="modal-head"><h2 id="widgetTitle">🧩 Free live crypto ticker widget</h2><button type="button" class="icon-btn" data-close aria-label="Close">✕</button></div>
           <p style="color:var(--text-secondary);font-size:12.5px;margin-bottom:12px">Add a live, ad-free price ticker to your blog, docs or portal. Pick a layout, coins and theme, then paste the snippet into your HTML.</p>
           <div class="form-grid">
             <div class="form-group"><label for="wgLayout">1. Layout</label>
@@ -1066,23 +1072,33 @@
     ["wgLayout", "wgTheme", "wgCurr", "wgAnchor", "wgCoins"].forEach(id => $(id).addEventListener("input", updateWidgetBuilder));
   }
 
+  // While a dialog is open the rest of the page is inert, so Tab and screen readers stay inside it
+  // (aria-modal alone doesn't keep Tab in). Toasts stay live: they announce what the dialog did.
+  const setPageInert = on => Array.from(document.body.children).forEach(el => {
+    if (!el.matches(".modal-backdrop, .toast-container")) el.inert = on;
+  });
   let modalOpener = null;
   function openModal(id) {
     ensureModals();
-    modalOpener = document.activeElement;
+    modalOpener = modalOpener || document.activeElement; // a dialog opened from another keeps the first opener
     const m = $(id);
     m.classList.add("open");
+    setPageInert(true);
     (m.querySelector("input:not([readonly]), select, textarea, button:not([data-close])") || m.querySelector("button")).focus();
   }
+  const hideModals = () => document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
   function closeModals() {
-    document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
+    hideModals();
     state.activeModalSym = null;
     state.widgetModalOpen = false;
+    setPageInert(false);
     // The table may have re-rendered while the sheet was open: refocus the same row's button if needed.
     let target = modalOpener;
     if (target && !document.contains(target) && target.dataset?.sym) {
       target = document.querySelector(`#row-${CSS.escape(target.dataset.sym)} [data-action="${target.dataset.action}"]`);
     }
+    // Opened from the header menu, which has closed since: go back to the menu button.
+    if (target && !target.getClientRects().length) target = target.closest("details")?.querySelector("summary");
     if (target) target.focus();
     modalOpener = null;
   }
@@ -1163,7 +1179,7 @@
       showToast(`🚨 ${c.sym} crossed $${target} (now ${fmtPrice(newPrice, "USD")})`);
       notify(`${c.sym} crossed $${target}`, `${c.name} is now ${fmtPrice(newPrice, "USD")}`, c.sym);
       bumpAppBadge();
-      if (window.CPT && window.CPT.logAlert) window.CPT.logAlert(`${c.sym} crossed $${target}`, c.sym);
+      window.CPT?.logAlert?.(`${c.sym} crossed $${target}`, c.sym);
       refreshAlertUi(c.sym);
     }
   }
@@ -1236,7 +1252,7 @@
     $("wgTheme").value = state.theme;
     state.widgetModalOpen = true;
     state.activeModalSym = null;
-    document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
+    hideModals();
     updateWidgetBuilder();
     openModal("widgetModal");
   }
@@ -1292,7 +1308,7 @@
         state.coins.set(sym, {
           sym, name: `${sym} (Binance pair)`, supply: (vol * 14.5) / price, price,
           change24h: +t.priceChangePercent, low24h: +t.lowPrice || price, high24h: +t.highPrice || price,
-          mcap: vol * 14.5, vol24h: vol, exVol: { CB: 0, BN: vol, KR: 0 }, liq: vol * 0.065,
+          mcap: vol * 14.5, vol24h: vol, exVol: { CB: 0, BN: vol, KR: 0 },
           sectors: [], feeds: ["BN"], tickers: {}, history: [price], rank: state.coins.size + 1,
           exPrices: { CB: null, BN: price, KR: null }, lastSource: "BN", live: true, hasPage: false, estimated: true
         });
@@ -1416,7 +1432,8 @@
       const digits = v >= 1 || v === 0 ? 2 : Math.min(8, 2 - Math.floor(Math.log10(v)));
       return v.toLocaleString("en-US", { style: "currency", currency: code, minimumFractionDigits: Math.min(2, digits), maximumFractionDigits: digits });
     }
-    const digits = v >= 100000 ? 0 : v >= 1000 ? 2 : v >= 1 ? 6 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
+    // Six significant digits below 1,000 (339.098, not 339.097999), two decimals above, none from 100,000.
+    const digits = v >= 100000 ? 0 : v >= 1000 ? 2 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
     return v.toLocaleString("en-US", { maximumFractionDigits: digits }) + " " + code;
   }
   // Plain number for an <input type="number"> (no grouping separators).
@@ -1588,7 +1605,7 @@
       const fs = Math.max(8, Math.min(30, side / 3.6, (r.w - 4) / (c.sym.length * 0.72)));
       const show = r.w > 26 && r.h > 16;
       return `<a class="hm-tile" id="hm-${s}" href="${coinUrl(c.sym)}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;font-size:${fs.toFixed(1)}px;background:${heatColor(c)}">` +
-        (r.h > fs * 4.6 + 12 && r.w > 80 && HAS_LOGO.has(c.sym) ? `<img class="hm-logo" src="/coin-icons/${c.sym.toLowerCase()}.svg" alt="" width="${Math.round(fs * 1.15)}" height="${Math.round(fs * 1.15)}" decoding="async" />` : "") +
+        (r.h > fs * 4.6 + 12 && r.w > 80 && HAS_LOGO.has(c.sym) ? logoImg(c.sym, Math.round(fs * 1.15), "hm-logo") : "") +
         (show ? `<span class="hm-sym">${s}</span>` : "") +
         (r.h > 38 && r.w > 46 ? `<span class="hm-chg">${fmtChange(c)}</span>` : "") +
         (r.h > 70 && r.w > 80 ? `<span class="hm-price">${fmtPrice(c.price, "USD")}</span>` : "") + `</a>`;
@@ -1896,8 +1913,8 @@
     },
     csv() {
       const q = v => `"${String(v).replace(/"/g, '""')}"`;
-      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Est_Liquidity_2Pct_USD", "Bag_Qty"]];
-      filteredSorted().forEach(c => rows.push([c.rank, q(c.sym), q(c.name), c.price, c.live ? c.change24h.toFixed(2) : "", Math.round(c.mcap), Math.round(c.vol24h), Math.round(c.liq), state.bag[c.sym] || 0]));
+      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Bag_Qty"]];
+      filteredSorted().forEach(c => rows.push([c.rank, q(c.sym), q(c.name), c.price, c.live ? c.change24h.toFixed(2) : "", Math.round(c.mcap), Math.round(c.vol24h), state.bag[c.sym] || 0]));
       const a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" }));
       a.download = `cryptopriceticker-${new Date().toISOString().slice(0, 10)}.csv`;
@@ -1918,7 +1935,7 @@
       $("wgCoins").value = preset === "WATCHLIST" ? (state.watchlist.size ? Array.from(state.watchlist) : ["BTC", "ETH", "SOL"]).join(",") : preset;
       updateWidgetBuilder();
     },
-    expand: el => expandPairs(el)
+    expand: expandPairs
   };
 
   // Header popovers (<details>): close when clicking outside or after choosing a menu item.
@@ -2010,7 +2027,7 @@
     recomputeRanks(); // about / sector / widgets pages: header menu and widget builder only
   }
 
-  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap") {
+  if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap" || MODE === "race") {
     // A page prerendered by the speculation rules connects only once the visitor actually opens it.
     if (document.prerendering) document.addEventListener("prerenderingchange", startFeeds, { once: true });
     else startFeeds();
@@ -2020,8 +2037,8 @@
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
-  // Read-only hooks for assets/flash.js (Newsflash and move alerts), loaded after this file.
-  if (MODE === "home" || MODE === "coin") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge };
+  // Read-only hooks for assets/flash.js (Newsflash and move alerts) and assets/race.js, loaded after this file.
+  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar };
 
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

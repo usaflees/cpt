@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Builds coin-icons/<sym>.svg (self-hosted coin logos) from open-source icon packs, and marks
-// each coin that got one with `logo: true` in assets/coins.js. Coins without a logo keep the
-// text badge, so a missing icon never breaks a page.
+// each coin that got one with `logo: true` in assets/coins.js (plus `mono: "light" | "dark"` when
+// the logo is a single white or black mark). Coins without a logo keep the text badge, so a
+// missing icon never breaks a page.
 //
 // Sources (fetched with npm pack into a scratch folder you pass in, never committed):
 //   @web3icons/core      MIT    tokens + network (chain) logos
@@ -13,6 +14,9 @@
 //   node scripts/build-coin-icons.mjs /tmp/icons
 //   node scripts/build-coin-pages.mjs
 //
+//   node scripts/build-coin-icons.mjs --tones   only re-reads the logos already in coin-icons/ and
+//                                               rewrites the `mono` marks (no icon packs needed)
+//
 // Every icon is shrunk with svgo (npx, not a dependency). A logo whose vector file is still over
 // MAX_BYTES (very detailed artwork such as DOGE or PEPE) is rasterized once in Chromium to a
 // 64 px WebP wrapped in an SVG, so every logo keeps the same /coin-icons/<sym>.svg URL.
@@ -21,12 +25,29 @@ import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import vm from "node:vm";
 import { createRequire } from "node:module";
-import { ROOT, loadRegistry, writeRegistry } from "./lib/registry.mjs";
+import { ROOT, loadRegistry, writeRegistry, logoTone } from "./lib/registry.mjs";
 
-const SRC = process.argv[2];
-if (!SRC || !existsSync(SRC)) { console.error("usage: node scripts/build-coin-icons.mjs <folder with unpacked icon packages>"); process.exit(1); }
-const MAX_BYTES = 6000;
 const OUT = join(ROOT, "coin-icons");
+// Single-tone marks: recorded in the registry so pages can flip them where they would vanish.
+const markTones = coins => {
+  const mono = [];
+  for (const c of coins) {
+    const f = join(OUT, `${c.sym.toLowerCase()}.svg`);
+    const tone = c.logo && existsSync(f) ? logoTone(readFileSync(f, "utf8")) : null;
+    if (tone) { c.mono = tone; mono.push(`${c.sym} (${tone})`); } else delete c.mono;
+  }
+  return mono;
+};
+if (process.argv[2] === "--tones" && process.argv.length === 3) {
+  const { coins, updated } = loadRegistry();
+  const mono = markTones(coins);
+  writeRegistry(coins, updated);
+  console.log(`${mono.length} single-tone logos: ${mono.join(", ")}`);
+  process.exit(0);
+}
+const SRC = process.argv[2];
+if (process.argv.length !== 3 || !SRC || !existsSync(SRC)) { console.error("usage: node scripts/build-coin-icons.mjs <folder with unpacked icon packages> | --tones"); process.exit(1); }
+const MAX_BYTES = 6000;
 
 const dirOf = prefix => { const d = readdirSync(SRC).find(n => n.startsWith(prefix) && !n.endsWith(".tgz")); return d && join(SRC, d, "package"); };
 const w3 = dirOf("web3icons-core-"), ti = dirOf("token-icons-core-"), cc = dirOf("cryptocurrency-icons-");
@@ -104,6 +125,7 @@ if (heavy.length) {
   await browser.close();
 }
 for (const c of coins) { if (got.has(c.sym)) c.logo = true; else delete c.logo; }
+const mono = markTones(coins);
 writeRegistry(coins, updated);
 writeFileSync(join(OUT, "LICENSES.md"), `# Coin logos
 
@@ -127,4 +149,4 @@ AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABL
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 `);
-console.log(`${got.size} of ${coins.length} coins have a logo in coin-icons/.` + (heavy.length ? ` Rasterized (detailed artwork): ${heavy.join(", ")}.` : "") + (skipped.length ? ` Skipped as too large: ${skipped.join(", ")}` : ""));
+console.log(`${got.size} of ${coins.length} coins have a logo in coin-icons/.` + (heavy.length ? ` Rasterized (detailed artwork): ${heavy.join(", ")}.` : "") + (skipped.length ? ` Skipped as too large: ${skipped.join(", ")}` : "") + ` Single-tone: ${mono.join(", ") || "none"}.`);

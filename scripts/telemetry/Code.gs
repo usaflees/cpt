@@ -3,6 +3,7 @@
  *
  * Runs as you, so there is no service account, no key and nothing stored in the public repo.
  *   nightly()       Search Console (1 finalized day), URL Inspection (rotating), Cloudflare analytics,
+ *                   Google Analytics 4 (pages and traffic sources, 2 days back so the day is complete),
  *                   plus a health-alert email when something breaks.
  *   weeklyDigest()  Page-level summary with query text reduced to known coin terms, pushed as JSON
  *                   to a PRIVATE GitHub repo for the weekly improvement task to read.
@@ -19,6 +20,7 @@ function props_() {
   const p = PropertiesService.getScriptProperties().getProperties();
   return {
     gscSite: p.GSC_SITE || 'sc-domain:cryptopriceticker.com',
+    ga4Property: p.GA4_PROPERTY, // numeric property ID (GA4 Admin → Property details), not the G- measurement ID
     cfToken: p.CF_API_TOKEN, cfAccount: p.CF_ACCOUNT_ID, cfZone: p.CF_ZONE_ID, cfSiteTag: p.CF_SITE_TAG,
     ghToken: p.GITHUB_TOKEN, ghRepo: p.GITHUB_REPO || 'usaflees/cpt-telemetry',
     alertEmail: p.ALERT_EMAIL || Session.getEffectiveUser().getEmail()
@@ -175,6 +177,48 @@ function collectCloudflare_(cfg) {
   return { summary: out.join(', '), errors: errors };
 }
 
+/* ------------------------------ Google Analytics 4 ------------------------------ */
+
+// Page paths and traffic sources are visitor-controllable text, so like search queries they are reduced
+// before anything leaves the Sheet: unknown paths and sources become "other".
+const GA4_SOURCES = ['google', 'bing', 'duckduckgo', 'yahoo', 'yandex', 'brave', 'ecosia', '(direct)', 'chatgpt.com',
+  'perplexity', 'perplexity.ai', 'claude.ai', 'copilot.microsoft.com', 'gemini.google.com', 'you.com', 'reddit.com',
+  'x.com', 't.co', 'facebook.com', 'news.ycombinator.com', 'github.com', 'producthunt.com'];
+const safePath_ = p => (/^\/[a-z0-9/-]{0,60}$/.test(String(p)) ? String(p) : 'other');
+const safeSource_ = s => (GA4_SOURCES.indexOf(String(s).toLowerCase()) >= 0 ? String(s).toLowerCase() : 'other');
+
+function ga4Report_(cfg, body) {
+  const url = 'https://analyticsdata.googleapis.com/v1beta/properties/' + encodeURIComponent(cfg.ga4Property) + ':runReport';
+  const res = fetchJson_(url, { method: 'post', contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }, payload: JSON.stringify(body) });
+  return (res.rows || []).map(r => r.dimensionValues.map(d => d.value).concat(r.metricValues.map(m => +m.value)));
+}
+
+function collectGa4_(cfg) {
+  const day = ymd_(new Date(Date.now() - 2 * DAY_MS));
+  const range = [{ startDate: day, endDate: day }];
+  const pages = ga4Report_(cfg, { dateRanges: range, dimensions: [{ name: 'pagePath' }],
+    metrics: [{ name: 'screenPageViews' }, { name: 'sessions' }, { name: 'engagedSessions' }], limit: 1000 });
+  const sources = ga4Report_(cfg, { dateRanges: range, dimensions: [{ name: 'sessionSource' }],
+    metrics: [{ name: 'sessions' }, { name: 'engagedSessions' }], limit: 200 });
+  append_('ga4_pages', ['date', 'path', 'views', 'sessions', 'engagedSessions'], pages.map(r => [day, safePath_(r[0]), r[1], r[2], r[3]]));
+  append_('ga4_sources', ['date', 'source', 'sessions', 'engagedSessions'], sources.map(r => [day, safeSource_(r[0]), r[1], r[2]]));
+  return day + ': ' + pages.length + ' pages, ' + sources.length + ' sources';
+}
+
+// 28-day totals per key (rows: [date, key, ...numbers]) for the weekly digest.
+function ga4Totals_(ss, name, end) {
+  const sh = ss.getSheetByName(name);
+  const out = {};
+  (sh ? sh.getDataRange().getValues().slice(1) : []).forEach(r => {
+    const t = new Date(r[0]).getTime();
+    if (t <= end - 28 * DAY_MS || t > end) return;
+    const o = out[r[1]] = out[r[1]] || r.slice(2).map(() => 0);
+    r.slice(2).forEach((v, i) => { o[i] += Number(v) || 0; });
+  });
+  return out;
+}
+
 /* ------------------------------ Entry points ------------------------------ */
 
 function nightly() {
@@ -186,6 +230,7 @@ function nightly() {
     changes.forEach(c => alerts.push('Index status changed: ' + c));
     log_('inspection', 'ok', changes.length + ' changes');
   } catch (e) { log_('inspection', 'error', e.message); }
+  if (cfg.ga4Property) { try { log_('ga4', 'ok', collectGa4_(cfg)); } catch (e) { log_('ga4', 'error', e.message); } }
   if (cfg.cfToken) {
     const cf = collectCloudflare_(cfg);
     log_('cloudflare', 'ok', cf.summary);
@@ -193,6 +238,8 @@ function nightly() {
       .forEach(x => alerts.push(x.dimensions.edgeResponseStatus + ' × ' + x.count + ' on ' + x.dimensions.clientRequestPath));
   }
   trimOld_('gsc_queries', 120);
+  trimOld_('ga4_pages', 120);
+  trimOld_('ga4_sources', 120);
   if (alerts.length) MailApp.sendEmail(cfg.alertEmail, 'CryptoPriceTicker health alerts (' + alerts.length + ')', alerts.join('\n'));
 }
 
@@ -242,7 +289,16 @@ function weeklyDigest() {
       return { page: page, query: query, clicks: q.clicks, impressions: q.impressions, position: +(q.posWeighted / q.impressions).toFixed(1) }; })
       .filter(q => q.impressions >= 10).sort((a, b) => b.impressions - a.impressions).slice(0, 300),
     index: latestInspection_(ss),
-    vitals: recent_(ss, 'cf_vitals', 7), errors: recent_(ss, 'cf_errors', 7)
+    vitals: recent_(ss, 'cf_vitals', 7), errors: recent_(ss, 'cf_errors', 7),
+    ga4: (() => {
+      const gaEnd = Date.now() - 2 * DAY_MS;
+      const pg = ga4Totals_(ss, 'ga4_pages', gaEnd), src = ga4Totals_(ss, 'ga4_sources', gaEnd);
+      return {
+        note: 'Last 28 complete days. Before cookie consent GA4 only gets cookieless pings, so these undercount.',
+        pages: Object.keys(pg).map(k => ({ page: k, views: pg[k][0], sessions: pg[k][1], engagedSessions: pg[k][2] })).sort((a, b) => b.views - a.views).slice(0, 200),
+        sources: Object.keys(src).map(k => ({ source: k, sessions: src[k][0], engagedSessions: src[k][1] })).sort((a, b) => b.sessions - a.sessions)
+      };
+    })()
   };
   pushToGitHub_(cfg, 'digest/latest.json', JSON.stringify(digest, null, 1));
   pushToGitHub_(cfg, 'digest/' + lastDay + '.json', JSON.stringify(digest));
@@ -302,6 +358,10 @@ function trimOld_(name, days) {
 function testSetup() {
   const cfg = props_();
   try { Logger.log('Search Console latest final day: ' + gscLatestFinalDate_(cfg)); } catch (e) { Logger.log('Search Console FAILED: ' + e.message); }
+  if (cfg.ga4Property) {
+    try { Logger.log('GA4: ' + ga4Report_(cfg, { dateRanges: [{ startDate: '7daysAgo', endDate: 'yesterday' }], metrics: [{ name: 'sessions' }] }).map(r => r[0] + ' sessions in the last 7 days').join('') || 'GA4: OK, no sessions yet'); }
+    catch (e) { Logger.log('GA4 FAILED: ' + e.message + ' (enable the Google Analytics Data API in the linked Cloud project)'); }
+  } else Logger.log('GA4: GA4_PROPERTY not set (optional)');
   if (cfg.cfToken) { try { Logger.log('Cloudflare: ' + collectCloudflare_(cfg).summary); } catch (e) { Logger.log('Cloudflare FAILED: ' + e.message); } }
   else Logger.log('Cloudflare: CF_API_TOKEN not set (optional until Web Analytics is on)');
   if (cfg.ghToken) { try { fetchJson_('https://api.github.com/repos/' + cfg.ghRepo, { headers: { Authorization: 'Bearer ' + cfg.ghToken } }); Logger.log('GitHub repo OK: ' + cfg.ghRepo); } catch (e) { Logger.log('GitHub FAILED: ' + e.message); } }

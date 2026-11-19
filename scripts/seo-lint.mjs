@@ -6,11 +6,11 @@
 //                                             (allowed files, experiment log, per-page cooldown)
 //
 // Exits 1 on any error; warnings are printed but don't fail.
-import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, existsSync, statSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
-import { ROOT, loadRegistry } from "./lib/registry.mjs";
+import { ROOT, loadRegistry, logoTone } from "./lib/registry.mjs";
 
 const SITE = "https://cryptopriceticker.com";
 const COOLDOWN_DAYS = 28;
@@ -23,7 +23,7 @@ const decode = s => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&l
 // ---------- 1. Pages: titles, descriptions, H1, canonical, JSON-LD ----------
 const { coins } = loadRegistry();
 const sectorSlugs = JSON.parse(read("content/sectors.json")).map(x => x.slug);
-const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", "brand/index.html", "accessibility/index.html", "trust/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
+const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", "brand/index.html", "accessibility/index.html", "trust/index.html", "race/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
   ...coins.map(c => `coin/${c.sym.toLowerCase()}/index.html`)];
 const seen = { title: new Map(), description: new Map() };
 const CSP = (read("_headers").match(/Content-Security-Policy: ([^\n]*)/) || [])[1] || "";
@@ -127,10 +127,18 @@ for (const e of experiments) {
   if (!["running", "kept", "reverted", "inconclusive"].includes(e.status)) err(`experiments.json: ${e.id} has unknown status "${e.status}"`);
 }
 
+// ---------- 5a. Coin logos: the registry's `logo` and `mono` marks match the files in coin-icons/ ----------
+// A single-tone logo without its mark is invisible on one of the themes (see .mono-light / .mono-dark in app.css).
+for (const c of coins) {
+  const f = join(ROOT, "coin-icons", `${c.sym.toLowerCase()}.svg`);
+  if (Boolean(c.logo) !== existsSync(f)) err(`coins.js: ${c.sym} has logo: ${Boolean(c.logo)} but coin-icons/${c.sym.toLowerCase()}.svg ${existsSync(f) ? "exists" : "is missing"}`);
+  else if (c.logo && (c.mono || null) !== logoTone(readFileSync(f, "utf8"))) err(`coins.js: ${c.sym} needs mono: ${JSON.stringify(logoTone(readFileSync(f, "utf8")))} (run node scripts/build-coin-icons.mjs --tones)`);
+}
+
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000 };
+const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/race.js": 10_000, "assets/race.css": 5_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
