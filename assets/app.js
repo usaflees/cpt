@@ -19,9 +19,6 @@
   const LAYOUTS = ["marquee", "grid", "single"];
   const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed so non-USD currencies work
   const BINANCE_REST = "https://data-api.binance.vision/api/v3";
-  const COINBASE_REST = "https://api.exchange.coinbase.com";
-  const KRAKEN_REST = "https://api.kraken.com/0/public";
-  const KRAKEN_REST_NAME = { BTC: "XBT", DOGE: "XDG" }; // Kraken REST names that differ from the ticker
   const BINANCE_WS = "wss://data-stream.binance.vision/stream?streams=";
   const COINBASE_WS = "wss://ws-feed.exchange.coinbase.com";
   const KRAKEN_WS = "wss://ws.kraken.com/v2";
@@ -1374,55 +1371,11 @@
     $("cpVol").textContent = fmtCompact(c.vol24h);
     $("cpRange").style.width = rangePct(c).toFixed(0) + "%";
     // Until the 24h candles load (or for coins without them), draw live ticks only once there are enough to mean something.
-    if (!chartLoaded) $("cpChart").innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
+    if (!coinChart.loaded) $("cpChart").innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
     updateCoinDetail(c.sym, "cp");
   }
 
-  let chartLoaded = false;
-  async function loadCoinChart() {
-    const c = state.coins.get(state.coinPageSym);
-    const pair = $("cpChartPair");
-    const draw = (closes, note, quote) => {
-      chartLoaded = true;
-      $("cpChart").innerHTML = buildSparkline(closes, closes[closes.length - 1] >= closes[0], 600, 140, { fluid: true, label: `${c.name} price, last 24 hours` });
-      $("cpChartNote").textContent = note;
-      if (pair) pair.textContent = `${c.sym}/${quote}`;
-    };
-    // Binance first (USDT pair); coins without a Binance market use Coinbase's, then Kraken's, 15-minute candles (USD pair).
-    if (c.feeds.includes("BN")) {
-      try {
-        const res = await fetch(`${BINANCE_REST}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=15m&limit=96`);
-        if (!res.ok) throw new Error(res.status);
-        const closes = (await res.json()).map(k => +k[4]);
-        if (closes.length < 2) throw new Error("empty");
-        return draw(closes, "Last 24h · 15-min closes · Binance", "USDT");
-      } catch (_) { /* fall through to Coinbase */ }
-    }
-    if (c.feeds.includes("CB")) {
-      try {
-        const res = await fetch(`${COINBASE_REST}/products/${tickerOf(c, "CB")}-USD/candles?granularity=900`);
-        if (!res.ok) throw new Error(res.status);
-        // Newest first: [time, low, high, open, close, volume]; keep the last 24 hours, oldest first.
-        const closes = (await res.json()).slice(0, 96).reverse().map(k => +k[4]);
-        if (closes.length < 2) throw new Error("empty");
-        return draw(closes, "Last 24h · 15-min closes · Coinbase", "USD");
-      } catch (_) { /* try Kraken */ }
-    }
-    if (c.feeds.includes("KR")) {
-      try {
-        const t = tickerOf(c, "KR");
-        const res = await fetch(`${KRAKEN_REST}/OHLC?pair=${KRAKEN_REST_NAME[t] || t}USD&interval=15`);
-        if (!res.ok) throw new Error(res.status);
-        // { error: [], result: { <pair>: [[time, open, high, low, close, vwap, volume, count], …], last } }, oldest first.
-        const body = await res.json();
-        const rows = body && body.result && Object.entries(body.result).find(([k]) => k !== "last");
-        const closes = rows ? rows[1].slice(-96).map(k => +k[4]) : [];
-        if (closes.length < 2 || closes.some(isNaN)) throw new Error("empty");
-        return draw(closes, "Last 24h · 15-min closes · Kraken", "USD");
-      } catch (_) { /* live ticks only */ }
-    }
-    $("cpChartNote").textContent = "Live ticks since you opened this page";
-  }
+  const coinChart = { loaded: false }; // assets/chart.js sets it once exchange candles are drawn
 
   function initCoinPage() {
     const c = state.coins.get(state.coinPageSym);
@@ -1430,7 +1383,6 @@
     $("coinDetail").innerHTML = coinDetailHtml(c.sym, "cp");
     syncFavButton();
     updateCoinPage();
-    loadCoinChart();
     loadDepth(c.sym, "cp");
   }
 
@@ -2097,7 +2049,7 @@
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
   // Read-only hooks for assets/flash.js (Newsflash and move alerts) and assets/race.js, loaded after this file.
-  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar };
+  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, buildSparkline, tickerOf, coinChart };
   // AI-agent tools (WebMCP, Chrome origin trial): only browsers with document.modelContext fetch assets/agent.js,
   // whose hashed URL the build writes into <meta name="cpt-agent">. The two setters below are its only write access.
   const agentSrc = document.querySelector('meta[name="cpt-agent"]')?.content;
