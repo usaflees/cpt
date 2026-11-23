@@ -59,8 +59,9 @@ Use this for anything a visitor will see: a new tool, page section, chart, widge
 - Ask for evidence (the command and its output) rather than "all checks pass".
 
 ## 4. Keeping Claude Duet and project threads cheap (Pro plan)
-- **Thread effort:** a new project runs threads on Opus at `high`, which drains a Pro plan fastest. Set Project
-  settings > General > Thread effort to Medium; ask for High in the task when a job needs it.
+- **Effort:** Claude Duet has no model or effort setting; it runs on Opus 5.5 and picks the effort per job, so
+  there's nothing to change there. Claude Code's own Projects (claude.ai/code) default threads to Opus at `high`;
+  if you use one, set Project settings > General > Thread effort to Medium.
 - **Close finished tasks.** Open tasks are re-checked every few hours and use the plan even when idle (user reports).
   Mark a task done once its PR is merged or the answer landed.
 - **Few channels.** Channels share one memory; extra channels mostly add places to look. One for this site is enough.
