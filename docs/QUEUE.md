@@ -7,6 +7,14 @@ chat "queue: …") instead of opening a new long chat: that is the cheapest way 
 Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item small enough for one run).
 
 ## Ready
+- [ ] **Widget-only bundle for /embed/.** What: widgets load the whole site bundle (app.js ~33 KB gzip, app.css ~17 KB,
+  coins.js ~4 KB) inside other people's pages, and caches are per site, so every embedding site's visitors pay ~54 KB.
+  Build `assets/embed.js` + `assets/embed.css` with only the widget markup, the feeds for the shown coins and the
+  formatting (move shared code into a small module both files load, or duplicate the ~3 KB of helpers). Done when:
+  /embed/ transfers ≤ 15 KB of JS+CSS gzip, the three layouts and six themes look the same (screenshots before/after),
+  widget tests and full QA pass, and the site's own pages are unchanged.
+
+## In progress (owner chat, Nov 23: building all eight in one session; the daily build skips these)
 - [ ] **Stream overlay preset for widgets.** What: `/embed/?overlay=1` gives a transparent background, larger type
   and no credit-link hover effects, for OBS and similar browser sources; add a short "Use in a stream" paragraph and
   the URL to `/widgets/`. Done when: the overlay renders on a transparent page at 1920×200, widget tests pass.
@@ -41,13 +49,6 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
 - [ ] **Movers timeframe: 24 h or 7 d (competitor research Nov 19).** What: a two-button switch on "Biggest
   movers"; 7 d uses the 7-day candles the table already loads (`c.spark7`), "—" until loaded. Files:
   `assets/app.js`, `index.html`. Done when: 7 d gainers match the 7d column, choice persists, QA passes.
-
-- [ ] **Widget-only bundle for /embed/.** What: widgets load the whole site bundle (app.js ~33 KB gzip, app.css ~17 KB,
-  coins.js ~4 KB) inside other people's pages, and caches are per site, so every embedding site's visitors pay ~54 KB.
-  Build `assets/embed.js` + `assets/embed.css` with only the widget markup, the feeds for the shown coins and the
-  formatting (move shared code into a small module both files load, or duplicate the ~3 KB of helpers). Done when:
-  /embed/ transfers ≤ 15 KB of JS+CSS gzip, the three layouts and six themes look the same (screenshots before/after),
-  widget tests and full QA pass, and the site's own pages are unchanged.
 
 ## Waiting on the owner
 - **Access lock-down settings (code live Nov 23, PR #17).** Needs from the owner: the settings in
