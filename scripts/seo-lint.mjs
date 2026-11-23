@@ -120,8 +120,9 @@ for (const line of read("robots.txt").split("\n")) {
     // One exception (DECISIONS 2026-11-23): the public mirror's deploy key, read only by the job that pushes the
     // served files to usaflees/CryptoPriceTicker. That job installs nothing and can't write to this repository.
     const allowed = SECRETS[f] || {};
-    const textNoAllowed = text.replace(/\bsecrets\.([A-Z0-9_]+)/g, (m, n) => Object.values(allowed).flat().includes(n) ? "" : m);
-    if (/\bsecrets\.|\bvars\./.test(textNoAllowed)) err(`${p}: uses a repository secret or variable; workflows here run without any (decide in DECISIONS.md first)`);
+    const textNoAllowed = text.replace(/\bsecrets\.([A-Z0-9_]+)\b(?![\w.[(])/g, (m, n) => Object.values(allowed).flat().includes(n) ? "" : m);
+    // Any other mention of secrets or vars (toJSON(secrets), secrets['X'], secrets.X) is refused.
+    if (/\bsecrets\b|\bvars\b/.test(textNoAllowed)) err(`${p}: uses a repository secret or variable; workflows here run without any (decide in DECISIONS.md first)`);
     if (Object.keys(allowed).length && /npm |npx |setup-node|pip |apt-get|curl |wget /.test(text)) err(`${p}: a job that reads a secret must install and download nothing`);
     for (const m of text.matchAll(/^\s*(?:-\s*)?uses:\s*(\S+)/gm)) {
       if (!/^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/.test(m[1])) err(`${p}: "${m[1]}" must be pinned to a full commit SHA`);
@@ -150,6 +151,7 @@ for (const line of read("robots.txt").split("\n")) {
       if (inRun && l.includes("${{")) err(`${p}: expression inside a run script; pass it through env instead: ${l.trim()}`);
       if (/:\s*write\b/.test(l) && !(WRITERS[f] || []).includes(job)) err(`${p}: job "${job || "(workflow)"}" asks for a write permission; only ${JSON.stringify(WRITERS)} may`);
       if (/\bgithub\.token\b|GITHUB_TOKEN/.test(l) && !(WRITERS[f] || []).includes(job)) err(`${p}: job "${job}" reads the token; only the publishing job may`);
+      if (/\bsecrets\b/.test(l) && !/\bsecrets\.[A-Z0-9_]+\b/.test(l)) err(`${p}: job "${job}" reads secrets in a form other than secrets.NAME`);
       for (const m of l.matchAll(/\bsecrets\.([A-Z0-9_]+)/g)) if (!((SECRETS[f] || {})[job] || []).includes(m[1])) err(`${p}: job "${job}" reads secrets.${m[1]}; only ${JSON.stringify(SECRETS)} may`);
     }
     if (/permissions:\s*write-all/.test(text)) err(`${p}: "write-all" is never allowed`);

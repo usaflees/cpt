@@ -2,7 +2,7 @@
 // Copies the files the live site serves into <outdir>, for the public mirror repository
 // (.github/workflows/publish-public.yml; DECISIONS 2026-11-23). The working files stay out: everything
 // _routes.json sends to the 404 middleware (scripts, docs, content, tests, .claude, .github, functions,
-// CLAUDE.md, README.md, SECURITY.md, .gitignore), plus _routes.json and .gitattributes. So the mirror holds
+// CLAUDE.md, README.md, SECURITY.md, .gitignore), plus _routes.json, .gitattributes, _headers and _redirects. So the mirror holds
 // exactly what a visitor's browser can already download, and nothing about how it is built.
 // Only files tracked by git are copied. Writes a README.md of its own. Installs nothing, needs no network.
 // Usage: node scripts/build-public-mirror.mjs <outdir>   (outdir must not exist yet)
@@ -22,7 +22,8 @@ if (OUT === ROOT || OUT.startsWith(ROOT + "/")) { console.error("outdir must be 
 
 // Hidden paths come from the same list the live site uses, so the two can't drift apart.
 const routes = JSON.parse(readFileSync(join(ROOT, "_routes.json"), "utf8"));
-const hidden = new Set(["/_routes.json", "/.gitattributes"]);
+// _headers and _redirects are Cloudflare settings, not files a browser can download.
+const hidden = new Set(["/_routes.json", "/.gitattributes", "/_headers", "/_redirects"]);
 for (const p of routes.include || []) hidden.add(p.replace(/\/\*$/, "").toLowerCase());
 const isHidden = file => {
   const p = "/" + file.toLowerCase();
@@ -43,7 +44,7 @@ for (const f of files) {
 writeFileSync(join(OUT, "README.md"), `# CryptoPriceTicker.com
 
 The files that [cryptopriceticker.com](https://cryptopriceticker.com/) serves: every page, script, stylesheet
-and image a visitor's browser downloads, published here each time the site changes. Compare them with what
+and image a visitor's browser downloads, published here within a day of each change. Compare them with what
 your browser receives (View source) to check that the site does what its [Trust page](https://cryptopriceticker.com/trust/)
 says.
 

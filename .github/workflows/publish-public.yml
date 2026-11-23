@@ -13,7 +13,7 @@
 # PUBLIC_MIRROR_KEY in this repository (Settings → Secrets and variables → Actions); delete both files.
 # Until the secret exists the job reports that it skipped and passes.
 #
-# Runs on every push to main, and daily, because pushes made with GitHub's own token (weekly data refresh)
+# Runs on every push to main, and daily (so the mirror is at most a day behind), because pushes made with GitHub's own token (weekly data refresh)
 # don't start other workflows. Run by hand: Actions → Publish public mirror → Run workflow.
 name: Publish public mirror
 
@@ -55,11 +55,11 @@ jobs:
           fi
           umask 077
           dir="$RUNNER_TEMP/ssh"; mkdir -p "$dir"
+          trap 'rm -rf "$dir"' EXIT
           printf '%s\n' "$MIRROR_KEY" > "$dir/key"
           # GitHub's published ed25519 host key (fingerprint SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU).
           echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > "$dir/known_hosts"
           export GIT_SSH_COMMAND="ssh -i $dir/key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$dir/known_hosts"
-          trap 'rm -rf "$dir"' EXIT
           git clone --quiet --depth 1 "git@github.com:$MIRROR_REPO.git" "$RUNNER_TEMP/mirror"
           cd "$RUNNER_TEMP/mirror"
           # Replace the whole tree with this build, so files the site no longer serves disappear too.
