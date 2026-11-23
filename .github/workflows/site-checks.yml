@@ -44,6 +44,35 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
         run: node scripts/seo-lint.mjs --base "origin/$BASE_REF"
 
+  # The full QA suite on every pull request: local Pages emulator, browser tests (Playwright Chromium), axe
+  # accessibility and the whole-site crawl, as the weekly data refresh runs it. Test tools are installed
+  # outside the repo, so nothing here changes the site. Must end with "QA PASSED".
+  browser-qa:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 25
+    env:
+      QA: ${{ github.workspace }}/../qa
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Install browser test tools (outside the repo)
+        run: |
+          npm i --no-save --no-audit --no-fund --ignore-scripts --prefix "$QA" playwright@1.63.0 axe-core@4.10.2
+          "$QA/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Full QA
+        run: |
+          set -o pipefail
+          NODE_PATH="$QA/node_modules" AXE="$QA/node_modules/axe-core/axe.min.js" bash tests/run.sh | tee "$RUNNER_TEMP/qa.log"
+          grep -q "^QA PASSED" "$RUNNER_TEMP/qa.log"
+
   # After a push to main: wait until production serves this build, then tell IndexNow engines (Bing, Yandex,
   # Seznam, Naver, Yep, Internet Archive, Amazon) which pages changed. Google doesn't use IndexNow; it reads the
   # sitemap. No secrets: the key is the public file in the repo root. Never blocks a deploy.

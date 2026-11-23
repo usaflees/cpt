@@ -5,6 +5,7 @@
 //   _redirects              old tickers (e.g. /coin/ton/ → /coin/gram/)
 //   convert/index.html      the crypto converter page
 //   heatmap/index.html      the live market heatmap page
+//   market/index.html       the weekly market report, and market/feed.xml (scripts/lib/market-report.mjs)
 //   index.html              the "Live price pages" link list between the coin-index markers
 //   coin-icons/sprite.svg   every coin logo in one file (scripts/lib/sprite.mjs); its ?v= hash is
 //                           stamped into assets/app.js (LOGO_SPRITE) and the static coin badges
@@ -17,6 +18,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, existsSync
 import { createHash } from "node:crypto";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
 import { loadComparePairs, comparePages, compareLinksHtml } from "./lib/compare-pages.mjs";
+import { buildMarketReport } from "./lib/market-report.mjs";
 import { buildSprite } from "./lib/sprite.mjs";
 if (process.argv.length > 2) { console.error("Unknown argument(s): " + process.argv.slice(2).join(" ") + "\nUsage: node scripts/build-coin-pages.mjs   (no options; regenerates pages, sitemap, _redirects, hashes)"); process.exit(1); }
 
@@ -178,6 +180,7 @@ function topbar(withFeeds, withCurrency = withFeeds) {
           <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/market/">📰 Weekly market report</a>
           <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
@@ -357,6 +360,8 @@ function coinPage(c) {
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
+  <meta name="cpt-agent" content="/assets/agent.js" />
+  <meta name="cpt-ondevice" content="/assets/ondevice.js" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -904,8 +909,11 @@ const pageDate = path => (pageDates[path] || {}).date || updated;
 // The home page changes with each Bell Brief edition (ET date of its cutoff).
 const homeDate = [updated, bell?.editions?.[0] ? new Date(bell.editions[0].cutoff).toLocaleDateString("en-CA", { timeZone: "America/New_York" }) : null].filter(Boolean).sort().pop();
 
+// 1e. Weekly market report (/market/ and its Atom feed), from the same daily-close stats
+buildMarketReport({ SITE, esc, longDate, list, pctText, pctClass, usd, avatarHtml, topbar, slug, coins, stats, sectors, week: statsFile.updated });
+
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...compareUrls, ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/market/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...compareUrls, ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : u === `${SITE}/` ? homeDate : updated}</lastmod></url>`).join("\n")}
@@ -1001,9 +1009,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css|agent\.js|ondevice\.js)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;
@@ -1029,5 +1037,5 @@ for (const f of [...htmlFiles, "sw.js"]) {
   if (next !== headers) writeFileSync(ROOT + "_headers", next);
 }
 
-console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter and heatmap, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
+console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter, heatmap and market report, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
 if (!existsSync(ROOT + "og-image.jpg")) console.warn("⚠ og-image.jpg is missing");

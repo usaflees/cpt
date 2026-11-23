@@ -1629,3 +1629,13 @@ body:not(.is-embed) .hero::before {
 /* Pop-out ticker buttons: visible only where the API exists (has-pip is set by the inlined theme script before
    the first paint, so the quick-link row never re-wraps after load). */
 html:not(.has-pip) [data-action="pip"] { display: none; }
+
+/* On-device AI on coin pages (assets/ondevice.js, added only in browsers with Chrome's built-in model or translator). */
+.ondevice-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.ondevice-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.ondevice-form .form-input { flex: 1 1 14em; min-width: 0; }
+.ondevice-answer { min-height: 1.5em; margin: 10px 0 0; white-space: pre-wrap; }
+.ondevice-answer:empty { display: none; }
+.ondevice-status:empty { display: none; }
+.ondevice-translate { margin-top: 18px; }
+.ondevice-translate .action-btn + .action-btn { margin-left: 0; }

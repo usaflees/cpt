@@ -19,7 +19,7 @@ run() {
 }
 if [ -z "$BASE" ]; then
   step "generator is deterministic";   run node scripts/build-coin-pages.mjs
-  git diff --quiet -- coin sector compare convert heatmap sitemap.xml sitemap-coins.xml sitemap-sectors.xml sitemap-pages.xml _redirects || echo "(note: generated files differ from the last commit; commit them)"
+  git diff --quiet -- coin sector compare convert heatmap market content/market-reports.json sitemap.xml sitemap-coins.xml sitemap-sectors.xml sitemap-pages.xml _redirects || echo "(note: generated files differ from the last commit; commit them)"
   step "seo-lint";                     run node scripts/seo-lint.mjs
   step "links / anchors / ids";        run node tests/links.mjs
   step "knowledge store";              run node scripts/kb.mjs --check
@@ -32,6 +32,8 @@ step "converter";                     run node tests/converter.cjs "$BASE"
 step "heatmap";                       run node tests/heatmap.cjs "$BASE"
 step "search, theme, notifications";  run node tests/search.cjs "$BASE"
 step "backup and restore";            run node tests/backup.cjs "$BASE"
+step "AI-agent tools (WebMCP)";      run node tests/agent.cjs "$BASE"
+step "On-device AI (coin pages)";      run node tests/ondevice.cjs "$BASE"
 step "accessibility";                 run node tests/axe.cjs "$BASE"
 step "every page: errors, CSP, failed requests"; run node tests/crawl.cjs "$BASE"
 [ -n "${SERVER:-}" ] && kill "$SERVER" 2>/dev/null
