@@ -60,9 +60,13 @@ const lib = f => import('file://' + path.join(__dirname, '..', f));
     if (calls.length !== 1) issues.push(`swap: expected one /bell request, saw ${calls.length}`);
     await p.close();
   }
-  // 3. Through the server: without a KV binding /bell is a 404 (never the home page or a 500).
+  // 3. Through the server: 404 without the KV binding or an edition, else an edition with its section (never the
+  // home page or a 500).
   const r = await fetch(B + '/bell');
-  if (r.status !== 404) issues.push(`server /bell: HTTP ${r.status} (expected 404 without the KV binding)`);
+  if (r.status === 200) {
+    const j = await r.json().catch(() => null), ed = j && j.editions && j.editions[0];
+    if (!ed || !String(j.html).includes(`data-cutoff="${ed.cutoff}"`)) issues.push('server /bell: 200 without an edition and its html');
+  } else if (r.status !== 404) issues.push(`server /bell: HTTP ${r.status} (expected 404, or 200 with an edition)`);
   console.log(`ISSUES (${issues.length}):`, issues.join(' | '));
   await b.close(); process.exitCode = issues.length ? 1 : 0;
 })();

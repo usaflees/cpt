@@ -11,10 +11,12 @@ compatibility_date = "2026-10-01"
 workers_dev = false
 preview_urls = false
 
-# UTC. Opening bell cutoff 9:25 ET = 13:25 UTC (EDT) or 14:25 UTC (EST): runs at :26, retry at :36.
-# Closing bell 16:05 ET = 20:05/21:05 UTC; early close 13:05 ET = 17:05/18:05 UTC: runs at :06, retry at :16.
+# UTC, Monday to Friday by name (in Cloudflare's cron syntax day 1 is Sunday, so "1-5" would skip Fridays).
+# Opening bell cutoff 9:25 ET = 13:25 UTC (EDT) or 14:25 UTC (EST): runs at :26, retries at :36 and an hour later.
+# Closing bell 16:05 ET = 20:05/21:05 UTC; early close 13:05 ET = 17:05/18:05 UTC: runs at :06, retries at :16 and an
+# hour later. A run with nothing due only reads KV (the core publishes each edition once, up to 4 hours late).
 [triggers]
-crons = ["26,36 13,14 * * 1-5", "6,16 17,18,20,21 * * 1-5"]
+crons = ["26,36 13,14,15 * * MON-FRI", "6,16 17,18,19,20,21,22 * * MON-FRI"]
 
 [[kv_namespaces]]
 binding = "BELL"

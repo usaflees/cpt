@@ -7,7 +7,7 @@
 // back to KV. functions/bell.js serves that at /bell, and assets/bell.js swaps the section in when it is newer
 // than the edition in the static page. Nothing is committed to the repository and the site is not rebuilt.
 //
-// Setup and deploy: see wrangler.toml next to this file. Cron times are UTC; two expressions per bell cover
+// Setup and deploy: see wrangler.toml next to this file. Cron times are UTC (Monday to Friday by name); two hours per bell cover
 // daylight saving, and the core decides what is due (a run with nothing due does nothing).
 import { dueEdition, buildEdition, withEdition, cutoffOf, etDate, CALENDAR_END } from "../lib/bell-core.mjs";
 import { bellSection } from "../lib/bell-html.mjs";
