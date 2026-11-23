@@ -14,6 +14,7 @@
 //
 // Runs only for /mcp (listed in /_routes.json); every other request never invokes a Function.
 const SITE = "https://cryptopriceticker.com";
+// Newest first; Cloudflare's own MCP servers list 2026-07-28 support (developers.cloudflare.com, read 2026-11-23).
 const VERSIONS = ["2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"];
 const SECTORS = ["L1", "L2", "DePIN", "AI", "DeFi", "RWA", "Privacy", "Gaming", "Meme", "Stable"];
 const KRAKEN_REST = { BTC: "XBT", DOGE: "XDG" }; // Kraken's REST names that differ from the ticker
@@ -133,11 +134,11 @@ const TOOLS = [
   {
     name: "get_live_price",
     title: "Live price on two exchanges",
-    description: "Current USD price of up to 10 coins on Coinbase and Kraken (where listed), fetched now and cached for 20 seconds, with the gap between the two in basis points. A missing exchange is null.",
-    inputSchema: { type: "object", properties: { symbols: symbolList }, required: ["symbols"] },
+    description: "Current USD price of up to 5 coins on Coinbase and Kraken (where listed), fetched now and cached for 20 seconds, with the gap between the two in basis points. A missing exchange is null.",
+    inputSchema: { type: "object", properties: { symbols: { ...symbolList, maxItems: 5 } }, required: ["symbols"] },
     annotations: { readOnlyHint: true, openWorldHint: true },
     run: async (d, { symbols }) => {
-      const list = (Array.isArray(symbols) ? symbols : []).slice(0, 10);
+      const list = (Array.isArray(symbols) ? symbols : []).slice(0, 5); // at most 10 upstream requests per call
       const out = await Promise.all(list.map(async s => {
         const c = d.bySym.get(String(s).toUpperCase());
         if (!c) return { symbol: String(s), error: "unknown symbol" };
@@ -155,8 +156,12 @@ const json = (body, status = 200, extra = {}) => new Response(body === null ? nu
 const rpcError = (id, code, message) => ({ jsonrpc: "2.0", id: id ?? null, error: { code, message } });
 
 async function handle(msg, env, origin) {
-  const { id, method, params = {} } = msg || {};
-  if (!msg || msg.jsonrpc !== "2.0" || typeof method !== "string") return rpcError(id, -32600, "Invalid Request");
+  if (!msg || typeof msg !== "object") return rpcError(null, -32600, "Invalid Request");
+  const { id, method } = msg;
+  const params = msg.params && typeof msg.params === "object" ? msg.params : {};
+  // A JSON-RPC response or error posted by the client (no method): accepted, nothing to answer.
+  if (msg.jsonrpc === "2.0" && method === undefined && ("result" in msg || "error" in msg)) return null;
+  if (msg.jsonrpc !== "2.0" || typeof method !== "string") return rpcError(id, -32600, "Invalid Request");
   if (id === undefined) return null; // notification (e.g. notifications/initialized): nothing to answer
   if (method === "initialize") {
     const asked = params.protocolVersion;
@@ -173,7 +178,7 @@ async function handle(msg, env, origin) {
     const tool = TOOLS.find(t => t.name === params.name);
     if (!tool) return rpcError(id, -32602, `Unknown tool: ${params.name}`);
     let data;
-    try { data = await tool.run(await loadData(env, origin), params.arguments || {}); }
+    try { data = await tool.run(await loadData(env, origin), params.arguments && typeof params.arguments === "object" ? params.arguments : {}); }
     catch (e) { data = { error: "The site's data could not be read just now; try again." }; }
     return { jsonrpc: "2.0", id, result: { content: [{ type: "text", text: JSON.stringify(data) }], structuredContent: data, isError: Boolean(data && data.error) } };
   }
@@ -188,5 +193,5 @@ export async function onRequest({ request, env }) {
   try { body = await request.json(); } catch (e) { return json(rpcError(null, -32700, "Parse error"), 400); }
   if (Array.isArray(body)) return json(rpcError(null, -32600, "Batches are not supported"), 400);
   const out = await handle(body, env, origin);
-  return out === null ? new Response(null, { status: 202, headers: CORS }) : json(out, 200, body.method === "initialize" ? { "mcp-protocol-version": out.result?.protocolVersion || VERSIONS[0] } : {});
+  return out === null ? new Response(null, { status: 202, headers: CORS }) : json(out, 200, body?.method === "initialize" ? { "mcp-protocol-version": out.result?.protocolVersion || VERSIONS[0] } : {});
 }

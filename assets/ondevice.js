@@ -44,7 +44,7 @@
     const perf = document.querySelector('section[aria-labelledby="perf-h"]');
     if (perf) {
       lines.push(`Performance summary: ${text(perf.querySelector("p.prose"))}`);
-      perf.querySelectorAll(".stat-grid .metric-box").forEach(b => lines.push(`${text(b)}.`));
+      perf.querySelectorAll(".stat-grid .metric-box").forEach(b => lines.push(`${Array.from(b.children, text).filter(Boolean).join(": ")}.`));
       const months = Array.from(perf.querySelectorAll(".history-table tbody tr")).slice(0, 6).map(text);
       if (months.length) lines.push(`Recent month-end closes (month, close, change): ${months.join(" | ")}`);
     }
@@ -84,7 +84,7 @@
       <p class="ondevice-answer" aria-live="polite"></p>`;
     const status = wrap.querySelector(".ondevice-status"), out = wrap.querySelector(".ondevice-answer");
     const input = wrap.querySelector("#askInput");
-    let session = null, busy = null;
+    let session = null, busy = null; // session: a promise of the shared base session, so one download serves every click
     async function ask(q) {
       q = String(q || "").trim().slice(0, 200);
       if (!q) return;
@@ -94,16 +94,15 @@
       try {
         if (!session) {
           status.textContent = "Starting your browser's AI model…";
-          session = await LanguageModel.create({
+          session = LanguageModel.create({
             ...LANG_OPTS,
             initialPrompts: [{ role: "system", content: SYSTEM }],
-            monitor(m) { m.addEventListener("downloadprogress", e => { status.textContent = `Downloading your browser's AI model: ${Math.round(e.loaded * 100)}%`; }); },
-            signal: ctl.signal
-          });
+            monitor(m) { m.addEventListener("downloadprogress", e => { status.textContent = `Downloading your browser's AI model: ${Math.round(e.loaded * 100)}%`; }); }
+          }); // no signal: aborting a question must not destroy the shared session
         }
         status.textContent = "Thinking on your device…";
         // A clone keeps each question independent (no memory of earlier answers or their facts).
-        const one = await session.clone({ signal: ctl.signal });
+        const one = await (await session).clone({ signal: ctl.signal });
         try {
           const stream = one.promptStreaming(`FACTS:\n${facts()}\n\nQUESTION: ${q}`, { signal: ctl.signal });
           let acc = "";
@@ -113,6 +112,7 @@
         } finally { one.destroy(); }
       } catch (e) {
         if (e && e.name === "AbortError") return;
+        if (session) { session.then(x => x.destroy(), () => {}); session = null; } // start fresh on the next question
         status.textContent = e && e.name === "NotAllowedError"
           ? "Your browser needs a click to start its AI model. Press a question again."
           : "Your browser's AI model couldn't answer just now. The numbers above are unchanged.";
@@ -120,7 +120,7 @@
     }
     wrap.addEventListener("click", e => { const b = e.target.closest("[data-preset]"); if (b) ask(PRESETS[+b.dataset.preset][1]); });
     wrap.querySelector("form").addEventListener("submit", e => { e.preventDefault(); ask(input.value); });
-    addEventListener("pagehide", e => { if (!e.persisted && session) { session.destroy(); session = null; } });
+    addEventListener("pagehide", e => { if (!e.persisted && session) { session.then(x => x.destroy(), () => {}); session = null; } });
     return wrap;
   }
 
