@@ -1,6 +1,7 @@
 // Part of the QA suite (see tests/README.md). On-device AI on coin pages (assets/ondevice.js): with stand-in
 // LanguageModel and Translator objects the "Ask about" section answers a preset from the page's own numbers and
-// translates the About section and back; without them the browser never requests ondevice.js.
+// translates the About section and back; without them the browser never requests ondevice.js. Recent Chromium
+// builds expose both APIs even headless, so the "without" case removes them first.
 // Usage: node tests/ondevice.cjs [base-url]
 const { chromium } = require('playwright');
 const B = process.argv[2] || 'http://localhost:8788';
@@ -14,12 +15,13 @@ const fake = () => {
   const b = await chromium.launch(); const issues = [];
   const check = (ok, msg) => { if (!ok) issues.push(msg); };
   {
-    const p = await b.newPage(); const urls = [];
+    const ctx0 = await b.newContext(); await ctx0.addInitScript(() => { delete globalThis.LanguageModel; delete globalThis.Translator; });
+    const p = await ctx0.newPage(); const urls = [];
     p.on('request', r => urls.push(r.url()));
     await p.goto(B + '/coin/sol/'); await p.waitForTimeout(1200);
     check(!urls.some(u => u.includes('/assets/ondevice.js')), 'ondevice.js was requested in a browser without built-in AI');
     check(!(await p.$('section.ondevice')), 'on-device section shown without built-in AI');
-    await p.close();
+    await ctx0.close();
   }
   const ctx = await b.newContext({ locale: 'es-ES' }); await ctx.addInitScript(fake);
   const p = await ctx.newPage();

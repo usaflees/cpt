@@ -1,8 +1,11 @@
 // Local Cloudflare Pages emulator for QA: applies _headers (incl. CSP), _redirects, directory indexes and 404.html.
 // Usage: node tests/serve.mjs [root] [port]   (defaults: repo root, 8788)
+// Also runs the Pages Function functions/mcp.js for /mcp, with env.ASSETS reading files straight from the root
+// (like Cloudflare's static layer, which the function reads past the middleware).
 import http from "node:http";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import { join, extname } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const ROOT = process.argv[2] || new URL("..", import.meta.url).pathname;
 const PORT = +process.argv[3] || 8788;
@@ -27,8 +30,24 @@ const redirects = existsSync(join(ROOT, "_redirects")) ? readFileSync(join(ROOT,
 const routesFile = join(ROOT, "_routes.json");
 const privateRes = existsSync(routesFile) ? JSON.parse(readFileSync(routesFile, "utf8")).include.map(p => new RegExp("^" + p.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$", "i")) : [];
 
+// Pages Functions with their own route (listed in _routes.json "include" but not private).
+const FUNCTIONS = { "/mcp": "functions/mcp.js" };
+const ASSETS = { fetch: async u => {
+  const f = join(ROOT, decodeURIComponent(new URL(u).pathname));
+  return existsSync(f) && statSync(f).isFile() ? new Response(readFileSync(f), { headers: { "content-type": TYPES[extname(f)] || "application/octet-stream" } }) : new Response("Not found", { status: 404 });
+} };
+async function runFunction(file, req, res) {
+  const mod = await import(pathToFileURL(join(ROOT, file)).href);
+  const chunks = []; for await (const c of req) chunks.push(c);
+  const request = new Request(`http://localhost:${PORT}${req.url}`, { method: req.method, headers: req.headers, body: ["GET", "HEAD"].includes(req.method) ? undefined : Buffer.concat(chunks) });
+  const r = await mod.onRequest({ request, env: { ASSETS }, waitUntil() {}, next: () => new Response("Not found", { status: 404 }) });
+  res.writeHead(r.status, Object.fromEntries(r.headers));
+  res.end(Buffer.from(await r.arrayBuffer()));
+}
+
 http.createServer((req, res) => {
   const path = decodeURIComponent(new URL(req.url, "http://x").pathname);
+  if (FUNCTIONS[path]) return runFunction(FUNCTIONS[path], req, res).catch(e => { res.writeHead(500, { "Content-Type": "text/plain" }); res.end(String(e)); });
   if (privateRes.some(re => re.test(path))) { res.writeHead(404, { "Content-Type": "text/html; charset=utf-8", "X-Robots-Tag": "noindex", "Cache-Control": "no-store" }); return res.end(readFileSync(join(ROOT, "404.html"))); }
   const r = redirects.find(([from]) => from === path);
   if (r) { res.writeHead(+r[2] || 302, { Location: r[1] }); return res.end(); }
