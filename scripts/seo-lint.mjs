@@ -197,6 +197,12 @@ for (const p of pages) {
   const size = statSync(join(ROOT, p)).size;
   if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
 }
+// Every /assets/ link carries a real content hash; "?v=undefined" means the file is missing from the build's ASSETS list.
+for (const p of pages) {
+  if (!existsSync(join(ROOT, p))) continue;
+  const bad = readFileSync(join(ROOT, p), "utf8").match(/\/assets\/[\w.-]+\?v=(?![0-9a-f]{10}\b)[^"'\s>]*/);
+  if (bad) err(`cache: ${p} links ${bad[0]} (add the file to ASSETS in scripts/build-coin-pages.mjs)`);
+}
 // Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
 const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://api.kraken.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
   "wss://data-stream.binance.vision", "wss://ws-feed.exchange.coinbase.com", "wss://ws.kraken.com",

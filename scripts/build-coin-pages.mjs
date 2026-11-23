@@ -1019,7 +1019,7 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js", "chart.js"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
 const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css|agent\.js|ondevice\.js|chart\.js)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];

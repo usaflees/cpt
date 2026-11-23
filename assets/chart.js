@@ -77,6 +77,7 @@
     if (!d) {
       coinChart.loaded = false; // app.js draws live ticks on its next update
       box.innerHTML = buildSparkline([], true, 600, 140, { fluid: true });
+      if (pair) pair.textContent = `${c.sym}/USD`;
       note.textContent = key === "1d" ? "Live ticks since you opened this page" : `No ${RANGES[key].name} history from the exchanges right now · live ticks`;
       return;
     }
