@@ -373,15 +373,15 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
 ## data-sources (2)
 
 - ✅ **Public-domain feeds reachable without keys (checked 19 Nov 2026): Federal Reserve press_all.xml (has categories such as Monetary Policy), BLS per-release feeds cpi.rss, empsit.rss, ppi.rss, which are Atom despite the .rss name (<entry>, <updated>, <link href>; bls_latest.rss is one generic item), BEA rss.xml, SEC pressreleases.rss, CFTC rssgp.xml. Treasury's press-release feed timed out. Coinbase BTC-USD candles: 60 s for up to 300 minutes, 900 s for about 3 days per request.**
-  → scripts/build-bell.mjs reads RSS and Atom; a feed that returns no parsable items counts as failed and is named on the page; the run fails only when more than 3 sources fail. BTC is measured with 1-minute Coinbase candles at both ends (open of the release minute, close of the minute ending at the bell).
-  _2026-11-19 · measured · `bell-brief-sources` · [build-bell.mjs](scripts/build-bell.mjs)_
+  → scripts/lib/bell-core.mjs (used by scripts/build-bell.mjs and scripts/bell-worker/) reads RSS and Atom; a feed that returns no parsable items counts as failed and is named on the page; the run fails only when more than 3 sources fail. BTC is measured with 1-minute Coinbase candles at both ends (open of the release minute, close of the minute ending at the bell).
+  _2026-11-19 · measured · `bell-brief-sources` · [bell-core.mjs](scripts/lib/bell-core.mjs)_
 - 👤 **Exchange market-data terms (Coinbase 'Derived Works', OKX, Binance) restrict public display of their data, live prices included.**
   → Owner: accept and document, license, or ask in writing before any sponsor or ads.
   _2026-11-08 · reported · `exchange-data-terms` · [2026-11-08-competitor-gaps-and-news.md](research/2026-11-08-competitor-gaps-and-news.md), [STATE.md](STATE.md)_
 
 ## site (8)
 
-- 👀 **NYSE holidays 2026-2027 and early closes at 1:00 pm ET (27 Nov 2026, 24 Dec 2026, 26 Nov 2027) are hard-coded in scripts/build-bell.mjs; the script warns after 31 Dec 2027.**
+- 👀 **NYSE holidays 2026-2027 and early closes at 1:00 pm ET (27 Nov 2026, 24 Dec 2026, 26 Nov 2027) are hard-coded in scripts/lib/bell-core.mjs (shared by scripts/build-bell.mjs and the Cloudflare cron Worker in scripts/bell-worker/); both warn after 31 Dec 2027.**
   → Add 2028 from nyse.com before the end of 2027.
   _2026-11-19 · official · re-check by 2027-10-01 · `bell-nyse-calendar` · [nyse.com](https://www.nyse.com/markets/hours-calendars)_
 - 🔜 **Reviewers call LiveCoinWatch's Advanced Portfolios (logged buys, fees, average buy, unrealized/total profit, FIFO/FILO/HIFO) its strongest feature; users elsewhere miss more per-coin detail.**

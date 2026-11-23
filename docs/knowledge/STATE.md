@@ -13,6 +13,8 @@
 - **Bell Brief (home, Nov 19):** up to three official U.S. federal releases most likely to move crypto, published 5 min
   before the NYSE open and 5 min after the close by `.github/workflows/bell-brief.yml` (`scripts/build-bell.mjs` →
   `content/bell.json`), with BTC's move since each release (Coinbase 1-minute candles) and a live countdown (`assets/bell.js`).
+  A Cloudflare cron Worker (`scripts/bell-worker/` → Workers KV → `/bell`, swapped in by `assets/bell.js`) shares the same
+  core (`scripts/lib/bell-core.mjs`) and replaces the GitHub schedule once the owner deploys it (DECISIONS 2026-11-23).
 - **Home:** pop-out live ticker of the watchlist (Chrome/Edge desktop), live table (top 25 plus starred coins, "Show all"), biggest movers, sector filters, watchlist, holdings ("My bag"), price
   alerts with optional system notifications and an app-icon badge for alerts missed while away, quick view sheet, CSV export, sync link, ticker tape, search with
   Enter-to-open, 5 themes (first visit follows the device), installable app.
