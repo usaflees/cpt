@@ -3,8 +3,9 @@
 #
 # GitHub starts scheduled runs late (often several minutes), so the first run of each pair starts about 10 minutes
 # before the cutoff and scripts/build-bell.mjs waits for the exact cutoff; the second is a fallback in case the
-# first was skipped. Two crons per bell cover daylight saving (ET is UTC-4 in summer, UTC-5 in winter); the script
-# itself decides what is due (exit 3 = nothing to do) and never publishes the same edition twice.
+# first was skipped; a second fallback ~1.5 h later covers runs GitHub drops (20 Nov 2026: no morning run started at
+# all, and afternoon runs started up to 2.5 h late). Two crons per bell cover daylight saving (ET is UTC-4 in summer,
+# UTC-5 in winter); the script itself decides what is due (exit 3 = nothing to do) and never publishes the same edition twice.
 #
 # Only content/bell.json, index.html and the sitemaps may change; seo-lint, the link check and the knowledge-store
 # check must pass. No secrets, no AI: the sources are public U.S. federal releases and Coinbase's public candles.
@@ -15,10 +16,13 @@ on:
   schedule:
     - cron: "15 13,14 * * 1-5" # before the 9:25 ET cutoff (EDT / EST)
     - cron: "40 13,14 * * 1-5" # fallback
+    - cron: "10 15,16 * * 1-5" # second fallback (~11:10 ET; runs are often hours late or dropped)
     - cron: "55 19,20 * * 1-5" # before the 16:05 ET cutoff
     - cron: "20 20,21 * * 1-5" # fallback
+    - cron: "50 21,22 * * 1-5" # second fallback (~17:50 ET)
     - cron: "55 16,17 * * 1-5" # before 13:05 ET on early-close days
     - cron: "20 17,18 * * 1-5" # fallback
+    - cron: "50 18,19 * * 1-5" # second fallback (~14:50 ET)
   workflow_dispatch:
     inputs:
       edition:
@@ -44,6 +48,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 2
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
@@ -75,6 +80,8 @@ jobs:
       - name: Publish to main
         id: publish
         if: steps.bell.outputs.code == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -82,7 +89,8 @@ jobs:
           id=$(node -e "console.log(require('./content/bell.json').editions[0].id)")
           git add content/bell.json index.html sitemap.xml sitemap-pages.xml
           git commit -q -m "Bell Brief ${id} (automated)"
-          for i in 1 2 3; do git push origin HEAD:main && exit 0; git pull -q --rebase origin main; done
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for i in 1 2 3; do git push "$remote" HEAD:main && exit 0; git pull -q --rebase "$remote" main; done
           exit 1
 
       - name: Production check
@@ -101,4 +109,6 @@ jobs:
 
       - name: Tell IndexNow search engines
         if: steps.publish.outcome == 'success'
-        run: node scripts/indexnow.mjs ${{ steps.publish.outputs.old }}
+        env:
+          OLD: ${{ steps.publish.outputs.old }}
+        run: node scripts/indexnow.mjs "$OLD"
