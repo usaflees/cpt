@@ -947,6 +947,61 @@
     connectBinance(syms);
     connectCoinbase(syms);
     connectKraken(syms);
+    setTimeout(backupPoll, BACKUP_FIRST_MS);
+  }
+
+  // Backup feed: a quiet Coinbase product or a dropped socket freezes a price. A watched coin with no live
+  // price for BACKUP_STALE_MS is refreshed over REST: Kraken (one call), then Coinbase (one per product).
+  const COINBASE_REST = "https://api.exchange.coinbase.com";
+  const KRAKEN_REST = "https://api.kraken.com/0/public";
+  const KRAKEN_REST_NAME = { BTC: "XBT", DOGE: "XDG" }; // Kraken REST names that differ from the ticker
+  const BACKUP_FIRST_MS = 20e3, BACKUP_EVERY_MS = 45e3, BACKUP_STALE_MS = 60e3, BACKUP_CB_MAX = 6, BACKUP_KR_MAX = 30;
+  const lastLive = c => Math.max(0, ...Object.values(c.exAt || {}));
+  async function backupKraken(coins) {
+    if (!coins.length) return [];
+    const names = coins.slice(0, BACKUP_KR_MAX).map(c => { const t = tickerOf(c, "KR"); return [c, KRAKEN_REST_NAME[t] || t]; });
+    const res = await fetch(`${KRAKEN_REST}/Ticker?pair=${names.map(([, n]) => n + "USD").join(",")}`);
+    if (!res.ok) throw new Error(res.status);
+    const result = ((await res.json()) || {}).result || {};
+    const done = [];
+    names.forEach(([c, n]) => {
+      // Older pairs answer as XXMRZUSD, newer ones as typed (KASUSD).
+      const t = result[n + "USD"] || result["X" + n + "ZUSD"] || result["X" + n + "USD"] || result[n + "ZUSD"];
+      const last = t && +t.c[0];
+      if (!(last > 0)) return;
+      // Kraken's "o" is today's UTC open, not 24h ago: leave the 24h change to the live feeds.
+      applyTick(c.sym, last, "KR", { high24h: +t.h[1], low24h: +t.l[1], quoteVol: +t.v[1] * (+t.p[1] || last) });
+      done.push(c.sym);
+    });
+    return done;
+  }
+  async function backupCoinbase(coins) {
+    const done = [];
+    for (const c of coins.slice(0, BACKUP_CB_MAX)) {
+      try {
+        const res = await fetch(`${COINBASE_REST}/products/${tickerOf(c, "CB")}-USD/stats`);
+        if (!res.ok) continue;
+        const m = await res.json(); // 24h open, high, low, last, volume
+        const last = +m.last, open = +m.open;
+        if (!(last > 0)) continue;
+        applyTick(c.sym, last, "CB", { change24h: open > 0 ? ((last - open) / open) * 100 : undefined, high24h: +m.high, low24h: +m.low, quoteVol: +m.volume * last });
+        done.push(c.sym);
+      } catch (_) { /* next product */ }
+    }
+    return done;
+  }
+  async function backupPoll() {
+    if (!feedsPaused && !document.hidden) {
+      const now = Date.now();
+      const stale = Array.from(subscribed, s => state.coins.get(s)).filter(c => c && now - lastLive(c) > BACKUP_STALE_MS);
+      if (stale.length) {
+        let done = [];
+        try { done = await backupKraken(stale.filter(c => c.feeds.includes("KR"))); } catch (_) { /* try Coinbase */ }
+        try { await backupCoinbase(stale.filter(c => c.feeds.includes("CB") && !done.includes(c.sym))); } catch (_) {}
+        flush(); // patches the changed prices in place (no table rebuild, so typing in a field isn't interrupted)
+      }
+    }
+    setTimeout(backupPoll, BACKUP_EVERY_MS);
   }
 
   // Adds coins to the running feeds (the converter can pick any coin after the page has loaded).
