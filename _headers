@@ -11,12 +11,17 @@
 # The Link header sends the Binance preconnect as a 103 Early Hint: Pages skips <link> tags that
 # carry extra attributes such as crossorigin, so the one in the HTML is never hinted.
 
+# Origin-Trial turns on Chrome's WebMCP trial (assets/agent.js) for real visitors. The token is public and works only
+# on https://cryptopriceticker.com (not pages.dev previews); it expires 30 Mar 2027. Renew it at
+# developer.chrome.com/origintrials (owner's account) and replace it here; an expired token fails silently.
+
 /*
   Strict-Transport-Security: max-age=31536000
   Link: <https://data-api.binance.vision>; rel=preconnect; crossorigin
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Origin-Trial: Armqi3G16MU36mrFkDc0EB5Ho3JHZjEG9sblWJdb0RMsNOOtnb+Gu8rxoQk16J1x0afs6Hi+TeMa6ZdfG+DjeQcAAABVeyJvcmlnaW4iOiJodHRwczovL2NyeXB0b3ByaWNldGlja2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViTUNQIiwiZXhwaXJ5IjoxODA2MzY0ODAwfQ==
   Speculation-Rules: "/speculation-rules.json"
   Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-hjKs/A/tNNrKuIl4FnCUPxWeQU65z/SWUD2AkP7TQEQ=' https://static.cloudflareinsights.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com; font-src 'self'; connect-src 'self' https://data-api.binance.vision https://api.coinbase.com https://api.exchange.coinbase.com wss://data-stream.binance.vision wss://ws-feed.exchange.coinbase.com wss://ws.kraken.com https://cloudflareinsights.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; manifest-src 'self'; frame-ancestors *; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
 

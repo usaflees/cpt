@@ -56,7 +56,8 @@ Duet channels run on:
 - Project instructions (up to 16,000 characters) are sent to every thread; project memory `MEMORY.md` is read at
   thread start. Repo rules belong in the repo's CLAUDE.md.
 - New projects run threads on Opus at **high** effort, the fastest way to use the plan; change **Thread effort** in
-  Project settings > General. A thread idle over an hour re-reads its whole conversation on a follow-up; threads
+  Project settings > General (*correction 19 Nov: that setting is in Claude Code Projects at claude.ai/code; Claude
+  Duet shows no such option and picks effort itself, per its help center*). A thread idle over an hour re-reads its whole conversation on a follow-up; threads
   watching a PR wake on CI failures and comments.
 - When several threads guess or stall, fix the gap once in project instructions or the environment, send one thread,
   then the rest.

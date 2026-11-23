@@ -34,5 +34,6 @@ Every coin has a page at `https://cryptopriceticker.com/coin/<ticker>/` (lowerca
 ## Notes
 - Prices on the pages update live in the browser; the static HTML contains weekly snapshots with their dates.
 - Each coin page states its performance figures (7-day to 1-year change, 52-week range, volatility, monthly closes) with the exchange and date of the latest daily close.
+- AI apps can also read this data through a public MCP server: add `https://cryptopriceticker.com/mcp` as a remote MCP connector (Streamable HTTP, read-only tools for coin stats, sectors and live prices).
 - Citing a figure: please link the coin page and give the "as of" date shown on it.
 - Not financial advice.

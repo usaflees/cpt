@@ -32,6 +32,8 @@ step "converter";                     run node tests/converter.cjs "$BASE"
 step "heatmap";                       run node tests/heatmap.cjs "$BASE"
 step "search, theme, notifications";  run node tests/search.cjs "$BASE"
 step "backup and restore";            run node tests/backup.cjs "$BASE"
+step "AI-agent tools (WebMCP)";      run node tests/agent.cjs "$BASE"
+step "On-device AI (coin pages)";      run node tests/ondevice.cjs "$BASE"
 step "accessibility";                 run node tests/axe.cjs "$BASE"
 step "every page: errors, CSP, failed requests"; run node tests/crawl.cjs "$BASE"
 [ -n "${SERVER:-}" ] && kill "$SERVER" 2>/dev/null
