@@ -2042,6 +2042,24 @@
    * ------------------------------------------------------------------ */
   // Read-only hooks for assets/flash.js (Newsflash and move alerts) and assets/race.js, loaded after this file.
   if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar };
+  // AI-agent tools (WebMCP, Chrome origin trial): only browsers with document.modelContext fetch assets/agent.js,
+  // whose hashed URL the build writes into <meta name="cpt-agent">. The two setters below are its only write access.
+  const agentSrc = document.querySelector('meta[name="cpt-agent"]')?.content;
+  if ((MODE === "home" || MODE === "coin") && agentSrc && typeof document.modelContext?.registerTool === "function") {
+    window.CPT.setWatch = (sym, on) => {
+      if (on) state.watchlist.add(sym); else state.watchlist.delete(sym);
+      store.set("cpt_watch", Array.from(state.watchlist));
+      if (MODE === "home") deferRender(glideTable); else syncFavButton();
+      refreshQuickActions();
+    };
+    window.CPT.setAlert = (sym, usd) => {
+      if (usd > 0) state.alerts[sym] = usd; else delete state.alerts[sym];
+      store.set("cpt_alerts", state.alerts);
+      refreshAlertUi(sym);
+    };
+    const s = document.createElement("script");
+    s.src = agentSrc; s.defer = true; document.head.append(s);
+  }
 
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

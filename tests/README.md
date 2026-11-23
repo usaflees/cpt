@@ -13,6 +13,7 @@ Needs Node 20+ and Playwright with Chromium (preinstalled in Claude Code cloud s
 | `converter.cjs` | /convert/ and coin-page converter: live rates, both directions, swap, fiat rates, coins added after load, deep links, renamed tickers, phone layout |
 | `heatmap.cjs` | Tile coverage and bounds, sector grouping, stablecoin toggle, links, phone layout |
 | `search.cjs` | Header search on every sub-page (keyboard, Enter, old tickers), home Enter-to-open, light/dark first visit, alert notifications |
+| `agent.cjs` | AI-agent tools (WebMCP, `assets/agent.js`): never downloaded without `document.modelContext`; with a stand-in, home and coin pages register 7 tools whose answers, watchlist and alert writes are checked |
 | `axe.cjs` | axe-core accessibility scan of 13 page types in dark and light themes (skips if axe-core isn't installed) |
 | `crawl.cjs` | Loads every sitemap URL plus widget variants and the 404 page; fails on console errors, uncaught errors, CSP violations or failed requests; lists browser warnings; only 12 sampled pages open a real Kraken socket (Kraken limits connections per IP) (~2 min, 4 pages at a time) |
 | `wait-deploy.sh` | Waits until a URL serves the current local build (same hashed assets, same sitemap), so a deploy wait is one command |
