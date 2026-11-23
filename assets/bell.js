@@ -6,7 +6,7 @@
  *   - Bitcoin's live move since this bell (data-btc), from the price app.js streams (window.CPT)
  *   - the reveal and the bell ring when the block scrolls into view, and again when a new bell passes
  *   - after a bell the page doesn't show yet, a newer edition from /bell (functions/bell.js, written by the
- *     Cloudflare cron Worker), swapped in without a reload; a 404 there means none, and the page stays as it is
+ *     Cloudflare cron Worker), swapped in without a reload; a 204 there means none, and the page stays as it is
  * Every element it fills has its text or space in the HTML already, so nothing shifts.
  */
 (function () {
@@ -39,13 +39,13 @@
     requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add("ring")));
   }
 
-  // Once a minute for up to 20 minutes after each bell; never again on this page after a 404 (no Worker yet).
+  // Once a minute for up to 20 minutes after each bell; never again on this page after a 204 or 404 (no Worker edition).
   async function fresh(now) {
     if (off || busy || tries >= 20 || now - lastTry < 60e3) return;
     busy = true; lastTry = now; tries++;
     try {
       const r = await fetch("/bell", { cache: "no-store" });
-      if (r.status === 404) { off = true; return; }
+      if (r.status === 204 || r.status === 404) { off = true; return; }
       const j = r.ok ? await r.json() : null, ed = j && j.editions && j.editions[0];
       if (!ed || !(Date.parse(ed.cutoff) > (cutoff || 0)) || typeof j.html !== "string") return;
       const t = document.createElement("template");

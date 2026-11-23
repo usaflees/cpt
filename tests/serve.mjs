@@ -32,7 +32,7 @@ const privateRes = existsSync(routesFile) ? JSON.parse(readFileSync(routesFile, 
 
 // Pages Functions with their own route (listed in _routes.json "include" but not private).
 const FUNCTIONS = { "/mcp": "functions/mcp.js", "/bell": "functions/bell.js" };
-// /bell reads Workers KV; locally CPT_BELL_JSON=<file> stands in for it (unset: /bell answers 404 as without the binding).
+// /bell reads Workers KV; locally CPT_BELL_JSON=<file> stands in for it (unset: /bell answers 204 as without the binding).
 const BELL = process.env.CPT_BELL_JSON ? { get: async (k, type) => { const t = readFileSync(process.env.CPT_BELL_JSON, "utf8"); return type === "json" ? JSON.parse(t) : t; } } : undefined;
 const ASSETS = { fetch: async u => {
   const f = join(ROOT, decodeURIComponent(new URL(u).pathname));

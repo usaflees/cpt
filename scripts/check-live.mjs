@@ -78,11 +78,11 @@ try {
   if (r.status !== 200 || !(j.result?.structuredContent?.close_usd > 0)) problems.push(`/mcp tools/call get_coin_stats: HTTP ${r.status}, ${JSON.stringify(j).slice(0, 120)}`);
   else ok.push("/mcp tools/call");
 } catch (e) { problems.push(`/mcp tools/call: request failed (${e.message})`); }
-// Bell Brief edition from the Cloudflare cron Worker (functions/bell.js reads KV): 404 until the Worker and the
+// Bell Brief edition from the Cloudflare cron Worker (functions/bell.js reads KV): 204 until the Worker and the
 // BELL binding exist; once they do, JSON whose html is the home page section for the newest edition.
 try {
   const r = await fetch(BASE + "/bell", { headers: { "user-agent": "cryptopriceticker-check/1.0" } });
-  if (r.status === 404) ok.push("/bell (no Worker edition yet)");
+  if (r.status === 204) ok.push("/bell (no Worker edition yet)");
   else {
     const j = r.status === 200 ? await r.json() : null, ed = j?.editions?.[0];
     if (!ed?.cutoff || !String(j.html).includes(`data-cutoff="${ed.cutoff}"`)) problems.push(`/bell: HTTP ${r.status}, not an edition with its html`);

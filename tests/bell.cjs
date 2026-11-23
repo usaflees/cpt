@@ -1,5 +1,5 @@
 // Part of the QA suite (see tests/README.md). Bell Brief: after a bell the static home page doesn't show yet, the
-// page asks /bell (functions/bell.js) and swaps in the newer edition the Cloudflare cron Worker stored; a 404
+// page asks /bell (functions/bell.js) and swaps in the newer edition the Cloudflare cron Worker stored; a 204
 // (no Worker or binding yet) leaves the static edition and asks only once. Also checks functions/bell.js itself.
 // Usage: node tests/bell.cjs [base-url]
 const { chromium } = require('playwright');
@@ -8,12 +8,12 @@ const B = process.argv[2] || 'http://localhost:8788';
 const lib = f => import('file://' + path.join(__dirname, '..', f));
 (async () => {
   const issues = [];
-  // The Function: 404 without the binding or a value, 405 for POST, the stored JSON otherwise.
+  // The Function: 204 without the binding or a value, 405 for POST, the stored JSON otherwise.
   const { onRequest } = await lib('functions/bell.js');
   const req = m => new Request('https://x.test/bell', { method: m });
   const kv = v => ({ get: async () => v });
-  if ((await onRequest({ request: req('GET'), env: {}, waitUntil() {} })).status !== 404) issues.push('function: no binding should be 404');
-  if ((await onRequest({ request: req('GET'), env: { BELL: kv(null) }, waitUntil() {} })).status !== 404) issues.push('function: empty KV should be 404');
+  if ((await onRequest({ request: req('GET'), env: {}, waitUntil() {} })).status !== 204) issues.push('function: no binding should be 204');
+  if ((await onRequest({ request: req('GET'), env: { BELL: kv(null) }, waitUntil() {} })).status !== 204) issues.push('function: empty KV should be 204');
   if ((await onRequest({ request: req('POST'), env: { BELL: kv('{}') }, waitUntil() {} })).status !== 405) issues.push('function: POST should be 405');
   const ok = await onRequest({ request: req('GET'), env: { BELL: kv('{"a":1}') }, waitUntil() {} });
   if (ok.status !== 200 || (await ok.text()) !== '{"a":1}' || !/json/.test(ok.headers.get('content-type'))) issues.push('function: stored JSON not served');
@@ -33,13 +33,13 @@ const lib = f => import('file://' + path.join(__dirname, '..', f));
     return { p, calls, next, staticCutoff };
   };
 
-  // 1. No Worker yet: one request, static edition stays.
+  // 1. No Worker edition yet: one request, static edition stays.
   {
-    const { p, calls, staticCutoff } = await page(r => r.fulfill({ status: 404, contentType: 'application/json', body: '{"error":"no edition"}' }));
+    const { p, calls, staticCutoff } = await page(r => r.fulfill({ status: 204 }));
     const cut = await p.getAttribute('#bell-brief', 'data-cutoff');
-    if (calls.length !== 1) issues.push(`404: expected one /bell request, saw ${calls.length}`);
-    if (cut !== staticCutoff) issues.push('404: static edition replaced');
-    if (!/Publishing the/.test(await p.textContent('#bellNext'))) issues.push('404: no "Publishing" text after the bell');
+    if (calls.length !== 1) issues.push(`204: expected one /bell request, saw ${calls.length}`);
+    if (cut !== staticCutoff) issues.push('204: static edition replaced');
+    if (!/Publishing the/.test(await p.textContent('#bellNext'))) issues.push('204: no "Publishing" text after the bell');
     await p.close();
   }
   // 2. A newer edition in KV: swapped in, with the next bell's countdown.
@@ -60,13 +60,13 @@ const lib = f => import('file://' + path.join(__dirname, '..', f));
     if (calls.length !== 1) issues.push(`swap: expected one /bell request, saw ${calls.length}`);
     await p.close();
   }
-  // 3. Through the server: 404 without the KV binding or an edition, else an edition with its section (never the
+  // 3. Through the server: 204 without the KV binding or an edition, else an edition with its section (never the
   // home page or a 500).
   const r = await fetch(B + '/bell');
   if (r.status === 200) {
     const j = await r.json().catch(() => null), ed = j && j.editions && j.editions[0];
     if (!ed || !String(j.html).includes(`data-cutoff="${ed.cutoff}"`)) issues.push('server /bell: 200 without an edition and its html');
-  } else if (r.status !== 404) issues.push(`server /bell: HTTP ${r.status} (expected 404, or 200 with an edition)`);
+  } else if (r.status !== 204) issues.push(`server /bell: HTTP ${r.status} (expected 204, or 200 with an edition)`);
   console.log(`ISSUES (${issues.length}):`, issues.join(' | '));
   await b.close(); process.exitCode = issues.length ? 1 : 0;
 })();
