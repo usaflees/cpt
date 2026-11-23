@@ -128,10 +128,11 @@ function conversionTables(c) {
       </div>`;
 }
 
-// Coin badge: the coin's logo (from coin-icons/sprite.svg, see scripts/lib/sprite.mjs) or its ticker.
-// The page's own coin loads eagerly; badges in tables load lazily.
+// Coin badge: the coin's logo or its ticker. Badges in tables come from coin-icons/sprite.svg (see
+// scripts/lib/sprite.mjs) and load lazily; a coin page's own logo loads eagerly from its ~1 KB file, so a
+// first visit doesn't download the whole sprite for one logo.
 const avatarHtml = (c, eager = false) => c.logo
-  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img${c.mono ? ` class="mono-${c.mono}"` : ""} src="${SPRITE}#c-${slug(c.sym)}" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
+  ? `<span class="coin-avatar has-logo" aria-hidden="true"><img${c.mono ? ` class="mono-${c.mono}"` : ""} src="${eager ? `/coin-icons/${slug(c.sym)}.svg` : `${SPRITE}#c-${slug(c.sym)}`}" alt="" width="20" height="20"${eager ? "" : ' loading="lazy"'} decoding="async" /></span>`
   : `<span class="coin-avatar" aria-hidden="true">${esc(c.sym.slice(0, 4))}</span>`;
 
 const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green", "Terminal green"], ["slate", "Slate"], ["oled", "Pure black"], ["light", "Light"]];
