@@ -198,7 +198,7 @@ for (const p of pages) {
   if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
 }
 // Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
-const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
+const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://api.kraken.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
   "wss://data-stream.binance.vision", "wss://ws-feed.exchange.coinbase.com", "wss://ws.kraken.com",
   // Google Tag Manager + GA4, loaded by assets/consent.js after consent defaults are set
   "https://www.googletagmanager.com", "https://*.google-analytics.com", "https://*.analytics.google.com"];
