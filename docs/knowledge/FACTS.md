@@ -477,7 +477,7 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
   → Deep research only for decisions that need it; start a fresh chat per topic; put routine work in docs/QUEUE.md.
   _2026-11-09 · measured · `claude-research-cost` · [2026-11-09-indexing-automation.md](research/2026-11-09-indexing-automation.md)_
 - ℹ️ **Claude Code 2.1.321 fixed MCP OAuth requests sending secrets such as refresh tokens to another host when a server redirected them, and added Claude Fable 5.2 as the default Fable model.**
-  → Keep the owner's local Claude Code current; cloud threads update themselves.
+  → Keep the owner's local Claude Code current for the security fix.
   _2026-11-09 · official · `claude-code-2-1-321-mcp-oauth-fix` · [github.com](https://github.com/anthropics/claude-code/releases/tag/v2.1.321), [2026-11-23-open-source-releases.md](research/2026-11-23-open-source-releases.md)_
 - ℹ️ **A research subagent stopped at the 5-hour usage limit keeps the notes it already wrote; the task notification says it can be resumed with SendMessage after the reset instead of starting over.**
   → Have research subagents write notes to files as they go; resume rather than re-spawn.
@@ -505,7 +505,7 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
   _2026-10-26 · official · `claude-ultrathink-xhigh` · [claude-world.com](https://claude-world.com/articles/claude-code-november-2026-whats-new/), [github.com](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md)_
 - 👀 **MCP TypeScript SDK 2.4.0 (split packages @modelcontextprotocol/server and client) implements the stateless 2026-07-28 MCP spec: no initialize handshake or sessions, so each request stands alone. The older @modelcontextprotocol/sdk 1.x will not get that spec.**
   → A stateless MCP endpoint fits one Pages Function; draft PR #23 already hand-writes one at /mcp without the SDK. Use the SDK as the spec reference, and build on that PR rather than starting again.
-  _2026-10-23 · official · re-check by 2026-12-23 · `mcp-ts-sdk-v2-stateless` · [releasebot.io](https://releasebot.io/updates/modelcontextprotocol), [2026-11-23-open-source-releases.md](research/2026-11-23-open-source-releases.md)_
+  _2026-10-23 · reported · re-check by 2026-12-23 · `mcp-ts-sdk-v2-stateless` · [releasebot.io](https://releasebot.io/updates/modelcontextprotocol), [2026-11-23-open-source-releases.md](research/2026-11-23-open-source-releases.md)_
 - ℹ️ **Anthropic donated the Agent Skills standard (SKILL.md) to the Agentic AI Foundation (Linux Foundation); skills stay portable across tools.**
   → Keep repeated workflows as skills in .claude/skills/ (ship exists); a 'kb' or 'research' skill could follow.
   _2026-10-22 · official · `claude-agent-skills-aaif` · [anthropic.com](https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation)_
