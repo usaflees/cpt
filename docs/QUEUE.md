@@ -62,9 +62,9 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   heatmap, converter result or widgets; reserved space; loaded after the page), switch consent to Google's
   certified message for EEA/UK/CH, add the ad origins to the CSP and `seo-lint`, and rewrite every "no ads"
   statement (home, footers, FAQ, About, Trust, widgets page, `llms.txt`, brand kit, launch kit).
-- **PR #16 (quant SEO engine, `dist/` build, comparison and category pages).** Needs four owner decisions listed in
-  the PR, and `docs/INDEXING-PLAN.md` §E recommends holding new URL families until Google has indexed the current
-  pages.
+- **PR #16 (quant SEO engine, `dist/` build).** Comparison and category pages are now off by default
+  (`"newUrlFamilies": false`, INDEXING-PLAN §E). Going live still needs the Cloudflare secrets, Git auto-deploys off
+  and a decision on CoinGecko's terms for the open JSON/CSV (listed in the PR).
 - **News headlines and AI "why it moved" lines.** Need a licensed headline source, a Cloudflare Worker and an owner
   decision (research/2026-11-08).
 - **Exchange market-data terms.** Decide before the first ad is shown (research/2026-11-08; ads weaken the

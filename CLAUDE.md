@@ -16,6 +16,8 @@ guide, research). How sessions work here (cloud/Duet threads, feature recipe): `
 - Full QA: `bash tests/run.sh` (local Pages emulator) or `bash tests/run.sh <preview-url>`. Must end with `QA PASSED`.
   Accessibility needs axe-core; see the header of `tests/axe.cjs`.
 - Quick: `node scripts/build-coin-pages.mjs && node scripts/seo-lint.mjs` (0 errors) and `node tests/links.mjs`.
+- Quant engine (builds `dist/`, the repo root is not touched): `npm run build:offline && npm run verify` must end with
+  `VERIFY PASSED`; `npm run build` fetches a fresh snapshot and rewrites `data/` (commit that only on purpose).
 - SEO pass: `node scripts/seo-audit.mjs` before and after (reports what crawlers see on every page; seo-lint is the gate).
 - Learned something durable (a platform change, a measurement)? Add a line to `docs/knowledge/facts.jsonl` (format in
   the header of `scripts/kb.mjs`), run `node scripts/kb.mjs --write`, commit both. QA runs `kb.mjs --check`.
@@ -35,6 +37,9 @@ guide, research). How sessions work here (cloud/Duet threads, feature recipe): `
 ## Where the code misleads
 - `coin/`, `sector/`, `convert/`, `heatmap/`, `sitemap.xml`, `_redirects` and the coin list in `index.html` (between the
   `coin-index` markers) are generated. Edit `scripts/build-coin-pages.mjs` or `content/*.json`, then rebuild.
+- `dist/` is built by `scripts/build-seo-engine.mjs` from the repo root plus `public/` (extra `_headers`/`_redirects`,
+  `quant.css`, `quant.js`, `widget.js`) and `content/quant-config.json`. Its page text must stay observational: no advice
+  words (the verifier fails on them). In its `String.replace` calls use a function, never `"$1…"`: prices contain `$1`.
 - `assets/app.css` is layered: later sections override earlier ones. Add changes in the matching late section and check
   both dark and light themes and a 375 px viewport.
 - Strict CSP: no `on*` attributes and no inline scripts except the theme script the build inlines (allowed by its hash).

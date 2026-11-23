@@ -6,3 +6,7 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Output of npm run build (scripts/build-seo-engine.mjs) and its per-run IndexNow list.
+dist/
+data/changed-urls.json

@@ -8,8 +8,10 @@
 //
 // Keep the lists below and "include" in /_routes.json identical: scripts/seo-lint.mjs checks that they match,
 // and scripts/check-live.mjs requests each blocked path on the deployed site.
-const FOLDERS = ["/scripts", "/docs", "/content", "/tests", "/.claude", "/.github", "/functions"];
-const FILES = ["/claude.md", "/readme.md", "/security.md", "/.gitignore"];
+const FOLDERS = ["/scripts", "/docs", "/content", "/tests", "/.claude", "/.github", "/functions", "/public"];
+const FILES = ["/claude.md", "/readme.md", "/security.md", "/.gitignore", "/package.json",
+  // The quant engine's internal state (the public open data is /data/crypto-quant-snapshot.csv in dist/).
+  "/data/market-snapshot-cache.json", "/data/lastmod-ledger.json", "/data/changed-urls.json"];
 
 function isPrivate(rawPath) {
   let p = rawPath;
