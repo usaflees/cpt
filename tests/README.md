@@ -2,7 +2,7 @@
 
 `bash tests/run.sh` runs everything against a local Cloudflare Pages emulator; `bash tests/run.sh <url>` runs the
 browser and live checks against a deployed preview or production. It prints one line per check (plus the log of any
-check that fails; `--verbose` prints everything) and ends with `QA PASSED` or `QA FAILED`.
+check that fails; `--verbose` prints everything) and ends with `QA PASSED`, `QA FAILED`, or `QA INCOMPLETE` when a check could not run (axe-core missing; only `QA PASSED` is a pass).
 Needs Node 20+ and Playwright with Chromium (preinstalled in Claude Code cloud sessions).
 
 | File | Checks |
