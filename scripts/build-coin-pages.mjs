@@ -68,7 +68,8 @@ function usd(v) {
   if (v >= 1) return "$" + v.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
   if (v >= 0.01) return "$" + v.toFixed(4);
   if (v >= 0.0001) return "$" + v.toFixed(6);
-  return "$" + v.toFixed(8);
+  // Tiny prices keep three significant digits (MOG at 8.1e-8 read "$0.00000008").
+  return "$" + (v > 0 ? v.toFixed(Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(v))))) : "0.00");
 }
 function compact(v, prefix = "$") {
   if (v >= 1e12) return prefix + (v / 1e12).toFixed(2) + "T";
@@ -181,6 +182,7 @@ function topbar(withFeeds, withCurrency = withFeeds) {
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
           <a class="menu-item" href="/market/">📰 Weekly market report</a>
+          <a class="menu-item" href="/compare/">⚖️ Compare coins</a>
           <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
@@ -415,7 +417,7 @@ function coinPage(c) {
       </div>
       <div>
         <div class="chart-box" id="cpChart"></div>
-        <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span>${s}/USD</span></div>
+        <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span id="cpChartPair">${s}/USD</span></div>
       </div>
     </section>
 
@@ -469,7 +471,7 @@ function coinPage(c) {
       <div class="related-list">
           ${relatedLinks(nearby)}
       </div>
-      <h3>Top coins by market cap</h3>
+      <h3>More top coins</h3>
       <div class="related-list">
           ${relatedLinks(top)}
       </div>${compareLinksHtml(comparePairs, c.sym, esc, shortName)}
@@ -477,7 +479,7 @@ function coinPage(c) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -651,7 +653,7 @@ function sectorPage(x) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
     <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
   </footer>
 </body>
@@ -767,7 +769,7 @@ function convertPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -873,7 +875,7 @@ function heatmapPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>

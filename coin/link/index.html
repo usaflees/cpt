@@ -17,7 +17,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=c2de8fb9a0" as="style" />
+  <link rel="preload" href="/assets/app.css?v=686759c515" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -46,9 +46,9 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=c2de8fb9a0" />
+  <link rel="stylesheet" href="/assets/app.css?v=686759c515" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
-  <script src="/assets/app.js?v=7ca617e0ce" defer></script>
+  <script src="/assets/app.js?v=59570cd081" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
@@ -84,6 +84,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
           <a class="menu-item" href="/market/">📰 Weekly market report</a>
+          <a class="menu-item" href="/compare/">⚖️ Compare coins</a>
           <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
@@ -115,7 +116,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       </div>
       <div>
         <div class="chart-box" id="cpChart"></div>
-        <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span>LINK/USD</span></div>
+        <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span id="cpChartPair">LINK/USD</span></div>
       </div>
     </section>
 
@@ -258,7 +259,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <a href="/coin/dai/">DAI <span>Dai</span></a>
           <a href="/coin/xlm/">XLM <span>Stellar</span></a>
       </div>
-      <h3>Top coins by market cap</h3>
+      <h3>More top coins</h3>
       <div class="related-list">
           <a href="/coin/btc/">BTC <span>Bitcoin</span></a>
           <a href="/coin/usdt/">USDT <span>Tether</span></a>
@@ -269,7 +270,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
