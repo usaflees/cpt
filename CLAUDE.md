@@ -1,6 +1,7 @@
 # CryptoPriceTicker.com: notes for Claude
 
-Static site on Cloudflare Pages, deployed from `main` (repo root, no build step). The repo is **public**.
+Static site on Cloudflare Pages, deployed from `main` (repo root, no build step). The repo is **public** until the owner
+switches it to private; the served files are mirrored to the public `usaflees/CryptoPriceTicker` (DECISIONS 2026-11-23).
 New session? Run `node scripts/kb.mjs` (digest of the knowledge store: open owner actions, next builds, facts due for a
 re-check), then read `docs/knowledge/HANDOFF.md`. Roadmap: `docs/STRATEGY.md`. Knowledge base: `docs/knowledge/README.md` (playbook, decisions, current state, Opus 5.5
 guide, research). How sessions work here (cloud/Duet threads, feature recipe): `docs/knowledge/CLAUDE-CODE-WORKFLOW.md`.
@@ -46,7 +47,8 @@ guide, research). How sessions work here (cloud/Duet threads, feature recipe): `
   element, and reserve space for anything JavaScript fills in (layout shift).
 - `scripts/`, `tests/`, `_headers`, `.github/`, `assets/app.*`, `CLAUDE.md` are off-limits to the automated daily build and the data-refresh workflow
   (enforced by `seo-lint --base` on `claude/seo-*` branches and by `classify-change`).
-- Workflows are linted (seo-lint section 3c): SHA-pinned `actions/*` only, no secrets, no `${{ }}` inside `run:` scripts
+- Workflows are linted (seo-lint section 3c): SHA-pinned `actions/*` only, no secrets (one exception: the public mirror's
+  deploy key in `publish-public.yml`), no `${{ }}` inside `run:` scripts
   (use `env`), and only `data-refresh.yml` job `publish` may hold a write token. Who can publish: `docs/knowledge/ACCESS.md`.
 
 ## Decisions (details in docs/knowledge/DECISIONS.md)
