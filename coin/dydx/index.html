@@ -45,7 +45,7 @@ if (!embed && "documentPictureInPicture" in window) document.documentElement.cla
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
-  <script src="/assets/coins.js?v=84da10bbb5" defer></script>
+  <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=cf6aee704e" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -95,7 +95,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
         <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/dydx.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">dYdX (DYDX) price</h1></div>
-        <p class="hero-price is-stale" id="cpPrice">$0.0755</p>
+        <p class="hero-price is-stale" id="cpPrice">$0.0751</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#93</span>
@@ -117,7 +117,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <div class="stat-grid">
-      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$59.07M</div></div>
+      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$58.74M</div></div>
       <div class="metric-box"><div class="metric-label">24h volume (BN+KR)</div><div class="metric-val" id="cpVol">—</div></div>
       <div class="metric-box"><div class="metric-label">Circulating supply</div><div class="metric-val">782,702,000 DYDX</div></div>
       <div class="metric-box">
@@ -196,38 +196,38 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
         <div class="conv-side">
           <label class="metric-label" for="cvB">Converted to</label>
-          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.07547" />
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.07505" />
           <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="DYDX">DYDX · dYdX</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
         </div>
-        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 DYDX = $0.0755</strong> <span id="cvInverse"></span></p>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 DYDX = $0.0751</strong> <span id="cvInverse"></span></p>
       </div>
       <div class="conv-tables">
         <table class="history-table conv-table">
           <caption>DYDX to <span data-cv-other>USD</span></caption>
           <thead><tr><th scope="col" class="col-left">DYDX</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
           <tbody>
-            <tr><td class="col-left">10 DYDX</td><td data-cv-amt="10">$0.7547</td></tr>
-            <tr><td class="col-left">100 DYDX</td><td data-cv-amt="100">$7.547</td></tr>
-            <tr><td class="col-left">500 DYDX</td><td data-cv-amt="500">$37.735</td></tr>
-            <tr><td class="col-left">1,000 DYDX</td><td data-cv-amt="1000">$75.470</td></tr>
-            <tr><td class="col-left">5,000 DYDX</td><td data-cv-amt="5000">$377.350</td></tr>
-            <tr><td class="col-left">10,000 DYDX</td><td data-cv-amt="10000">$754.700</td></tr>
-            <tr><td class="col-left">50,000 DYDX</td><td data-cv-amt="50000">$3,773.50</td></tr>
-            <tr><td class="col-left">100,000 DYDX</td><td data-cv-amt="100000">$7,547.00</td></tr>
+            <tr><td class="col-left">10 DYDX</td><td data-cv-amt="10">$0.7505</td></tr>
+            <tr><td class="col-left">100 DYDX</td><td data-cv-amt="100">$7.505</td></tr>
+            <tr><td class="col-left">500 DYDX</td><td data-cv-amt="500">$37.525</td></tr>
+            <tr><td class="col-left">1,000 DYDX</td><td data-cv-amt="1000">$75.050</td></tr>
+            <tr><td class="col-left">5,000 DYDX</td><td data-cv-amt="5000">$375.250</td></tr>
+            <tr><td class="col-left">10,000 DYDX</td><td data-cv-amt="10000">$750.500</td></tr>
+            <tr><td class="col-left">50,000 DYDX</td><td data-cv-amt="50000">$3,752.50</td></tr>
+            <tr><td class="col-left">100,000 DYDX</td><td data-cv-amt="100000">$7,505.00</td></tr>
           </tbody>
         </table>
         <table class="history-table conv-table">
           <caption><span data-cv-other>USD</span> to DYDX</caption>
           <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">DYDX</th></tr></thead>
           <tbody>
-            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">13.250298 DYDX</td></tr>
-            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">132.502981 DYDX</td></tr>
-            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">662.514907 DYDX</td></tr>
-            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">1,325.03 DYDX</td></tr>
-            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">6,625.15 DYDX</td></tr>
-            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">13,250.3 DYDX</td></tr>
-            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">66,251.49 DYDX</td></tr>
-            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">132,503 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">13.32445 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">133.244504 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">666.222518 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">1,332.45 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">6,662.23 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">13,324.45 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">66,622.25 DYDX</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">133,245 DYDX</td></tr>
           </tbody>
         </table>
       </div>

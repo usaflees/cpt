@@ -45,7 +45,7 @@ if (!embed && "documentPictureInPicture" in window) document.documentElement.cla
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
-  <script src="/assets/coins.js?v=84da10bbb5" defer></script>
+  <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=cf6aee704e" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -117,7 +117,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <div class="stat-grid">
-      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$183.06B</div></div>
+      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$183.07B</div></div>
       <div class="metric-box"><div class="metric-label">24h volume (CB+KR)</div><div class="metric-val" id="cpVol">—</div></div>
       <div class="metric-box"><div class="metric-label">Circulating supply</div><div class="metric-val">183.25B USDT</div></div>
       <div class="metric-box">
@@ -196,7 +196,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
         <div class="conv-side">
           <label class="metric-label" for="cvB">Converted to</label>
-          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.99896" />
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.99902" />
           <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="USDT">USDT · Tether</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
         </div>
         <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 USDT = $0.9990</strong> <span id="cvInverse"></span></p>
@@ -207,27 +207,27 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <thead><tr><th scope="col" class="col-left">USDT</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
           <tbody>
             <tr><td class="col-left">10 USDT</td><td data-cv-amt="10">$9.990</td></tr>
-            <tr><td class="col-left">100 USDT</td><td data-cv-amt="100">$99.896</td></tr>
-            <tr><td class="col-left">500 USDT</td><td data-cv-amt="500">$499.480</td></tr>
-            <tr><td class="col-left">1,000 USDT</td><td data-cv-amt="1000">$998.960</td></tr>
-            <tr><td class="col-left">5,000 USDT</td><td data-cv-amt="5000">$4,994.80</td></tr>
-            <tr><td class="col-left">10,000 USDT</td><td data-cv-amt="10000">$9,989.60</td></tr>
-            <tr><td class="col-left">50,000 USDT</td><td data-cv-amt="50000">$49,948.00</td></tr>
-            <tr><td class="col-left">100,000 USDT</td><td data-cv-amt="100000">$99,896.00</td></tr>
+            <tr><td class="col-left">100 USDT</td><td data-cv-amt="100">$99.902</td></tr>
+            <tr><td class="col-left">500 USDT</td><td data-cv-amt="500">$499.510</td></tr>
+            <tr><td class="col-left">1,000 USDT</td><td data-cv-amt="1000">$999.020</td></tr>
+            <tr><td class="col-left">5,000 USDT</td><td data-cv-amt="5000">$4,995.10</td></tr>
+            <tr><td class="col-left">10,000 USDT</td><td data-cv-amt="10000">$9,990.20</td></tr>
+            <tr><td class="col-left">50,000 USDT</td><td data-cv-amt="50000">$49,951.00</td></tr>
+            <tr><td class="col-left">100,000 USDT</td><td data-cv-amt="100000">$99,902.00</td></tr>
           </tbody>
         </table>
         <table class="history-table conv-table">
           <caption><span data-cv-other>USD</span> to USDT</caption>
           <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">USDT</th></tr></thead>
           <tbody>
-            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">1.001041 USDT</td></tr>
-            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">10.010411 USDT</td></tr>
-            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">50.052054 USDT</td></tr>
-            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">100.104108 USDT</td></tr>
-            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">500.520541 USDT</td></tr>
-            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">1,001.04 USDT</td></tr>
-            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">5,005.21 USDT</td></tr>
-            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">10,010.41 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">1.000981 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">10.00981 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">50.049048 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">100.098096 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">500.490481 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">1,000.98 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">5,004.9 USDT</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">10,009.81 USDT</td></tr>
           </tbody>
         </table>
       </div>

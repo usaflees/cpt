@@ -45,7 +45,7 @@ if (!embed && "documentPictureInPicture" in window) document.documentElement.cla
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
-  <script src="/assets/coins.js?v=84da10bbb5" defer></script>
+  <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=cf6aee704e" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -95,7 +95,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
         <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/strk.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">Starknet (STRK) price</h1></div>
-        <p class="hero-price is-stale" id="cpPrice">$0.0332</p>
+        <p class="hero-price is-stale" id="cpPrice">$0.0328</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#78</span>
@@ -117,7 +117,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <div class="stat-grid">
-      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$135.40M</div></div>
+      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$133.53M</div></div>
       <div class="metric-box"><div class="metric-label">24h volume (CB+BN+KR)</div><div class="metric-val" id="cpVol">—</div></div>
       <div class="metric-box"><div class="metric-label">Circulating supply</div><div class="metric-val">4.08B STRK</div></div>
       <div class="metric-box">
@@ -196,38 +196,38 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
         <div class="conv-side">
           <label class="metric-label" for="cvB">Converted to</label>
-          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.03321" />
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.03275" />
           <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="STRK">STRK · Starknet</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
         </div>
-        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 STRK = $0.0332</strong> <span id="cvInverse"></span></p>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 STRK = $0.0328</strong> <span id="cvInverse"></span></p>
       </div>
       <div class="conv-tables">
         <table class="history-table conv-table">
           <caption>STRK to <span data-cv-other>USD</span></caption>
           <thead><tr><th scope="col" class="col-left">STRK</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
           <tbody>
-            <tr><td class="col-left">10 STRK</td><td data-cv-amt="10">$0.3321</td></tr>
-            <tr><td class="col-left">100 STRK</td><td data-cv-amt="100">$3.321</td></tr>
-            <tr><td class="col-left">500 STRK</td><td data-cv-amt="500">$16.605</td></tr>
-            <tr><td class="col-left">1,000 STRK</td><td data-cv-amt="1000">$33.210</td></tr>
-            <tr><td class="col-left">5,000 STRK</td><td data-cv-amt="5000">$166.050</td></tr>
-            <tr><td class="col-left">10,000 STRK</td><td data-cv-amt="10000">$332.100</td></tr>
-            <tr><td class="col-left">50,000 STRK</td><td data-cv-amt="50000">$1,660.50</td></tr>
-            <tr><td class="col-left">100,000 STRK</td><td data-cv-amt="100000">$3,321.00</td></tr>
+            <tr><td class="col-left">10 STRK</td><td data-cv-amt="10">$0.3275</td></tr>
+            <tr><td class="col-left">100 STRK</td><td data-cv-amt="100">$3.275</td></tr>
+            <tr><td class="col-left">500 STRK</td><td data-cv-amt="500">$16.375</td></tr>
+            <tr><td class="col-left">1,000 STRK</td><td data-cv-amt="1000">$32.750</td></tr>
+            <tr><td class="col-left">5,000 STRK</td><td data-cv-amt="5000">$163.750</td></tr>
+            <tr><td class="col-left">10,000 STRK</td><td data-cv-amt="10000">$327.500</td></tr>
+            <tr><td class="col-left">50,000 STRK</td><td data-cv-amt="50000">$1,637.50</td></tr>
+            <tr><td class="col-left">100,000 STRK</td><td data-cv-amt="100000">$3,275.00</td></tr>
           </tbody>
         </table>
         <table class="history-table conv-table">
           <caption><span data-cv-other>USD</span> to STRK</caption>
           <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">STRK</th></tr></thead>
           <tbody>
-            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">30.111412 STRK</td></tr>
-            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">301.114122 STRK</td></tr>
-            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">1,505.57 STRK</td></tr>
-            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">3,011.14 STRK</td></tr>
-            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">15,055.71 STRK</td></tr>
-            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">30,111.41 STRK</td></tr>
-            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">150,557 STRK</td></tr>
-            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">301,114 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">30.534351 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">305.343511 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">1,526.72 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">3,053.44 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">15,267.18 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">30,534.35 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">152,672 STRK</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">305,344 STRK</td></tr>
           </tbody>
         </table>
       </div>
@@ -252,8 +252,8 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <a href="/coin/jasmy/">JASMY <span>JasmyCoin</span></a>
           <a href="/coin/akt/">AKT <span>Akash Network</span></a>
           <a href="/coin/theta/">THETA <span>Theta Network</span></a>
-          <a href="/coin/op/">OP <span>Optimism</span></a>
           <a href="/coin/wif/">WIF <span>dogwifhat</span></a>
+          <a href="/coin/op/">OP <span>Optimism</span></a>
       </div>
       <h3>Top coins by market cap</h3>
       <div class="related-list">

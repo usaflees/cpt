@@ -45,7 +45,7 @@ if (!embed && "documentPictureInPicture" in window) document.documentElement.cla
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
-  <script src="/assets/coins.js?v=84da10bbb5" defer></script>
+  <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=cf6aee704e" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -95,7 +95,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
         <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/ltc.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">Litecoin (LTC) price</h1></div>
-        <p class="hero-price is-stale" id="cpPrice">$42.970</p>
+        <p class="hero-price is-stale" id="cpPrice">$42.700</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#19</span>
@@ -117,7 +117,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <div class="stat-grid">
-      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$3.34B</div></div>
+      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$3.32B</div></div>
       <div class="metric-box"><div class="metric-label">24h volume (CB+BN+KR)</div><div class="metric-val" id="cpVol">—</div></div>
       <div class="metric-box"><div class="metric-label">Circulating supply</div><div class="metric-val">77,773,000 LTC</div></div>
       <div class="metric-box">
@@ -196,38 +196,38 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
         <div class="conv-side">
           <label class="metric-label" for="cvB">Converted to</label>
-          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="42.97" />
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="42.7" />
           <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="LTC">LTC · Litecoin</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
         </div>
-        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 LTC = $42.970</strong> <span id="cvInverse"></span></p>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 LTC = $42.700</strong> <span id="cvInverse"></span></p>
       </div>
       <div class="conv-tables">
         <table class="history-table conv-table">
           <caption>LTC to <span data-cv-other>USD</span></caption>
           <thead><tr><th scope="col" class="col-left">LTC</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
           <tbody>
-            <tr><td class="col-left">1 LTC</td><td data-cv-amt="1">$42.970</td></tr>
-            <tr><td class="col-left">5 LTC</td><td data-cv-amt="5">$214.850</td></tr>
-            <tr><td class="col-left">10 LTC</td><td data-cv-amt="10">$429.700</td></tr>
-            <tr><td class="col-left">25 LTC</td><td data-cv-amt="25">$1,074.25</td></tr>
-            <tr><td class="col-left">50 LTC</td><td data-cv-amt="50">$2,148.50</td></tr>
-            <tr><td class="col-left">100 LTC</td><td data-cv-amt="100">$4,297.00</td></tr>
-            <tr><td class="col-left">500 LTC</td><td data-cv-amt="500">$21,485.00</td></tr>
-            <tr><td class="col-left">1,000 LTC</td><td data-cv-amt="1000">$42,970.00</td></tr>
+            <tr><td class="col-left">1 LTC</td><td data-cv-amt="1">$42.700</td></tr>
+            <tr><td class="col-left">5 LTC</td><td data-cv-amt="5">$213.500</td></tr>
+            <tr><td class="col-left">10 LTC</td><td data-cv-amt="10">$427.000</td></tr>
+            <tr><td class="col-left">25 LTC</td><td data-cv-amt="25">$1,067.50</td></tr>
+            <tr><td class="col-left">50 LTC</td><td data-cv-amt="50">$2,135.00</td></tr>
+            <tr><td class="col-left">100 LTC</td><td data-cv-amt="100">$4,270.00</td></tr>
+            <tr><td class="col-left">500 LTC</td><td data-cv-amt="500">$21,350.00</td></tr>
+            <tr><td class="col-left">1,000 LTC</td><td data-cv-amt="1000">$42,700.00</td></tr>
           </tbody>
         </table>
         <table class="history-table conv-table">
           <caption><span data-cv-other>USD</span> to LTC</caption>
           <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">LTC</th></tr></thead>
           <tbody>
-            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">0.0232721 LTC</td></tr>
-            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">0.232721 LTC</td></tr>
-            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">1.163603 LTC</td></tr>
-            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">2.327205 LTC</td></tr>
-            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">11.636025 LTC</td></tr>
-            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">23.27205 LTC</td></tr>
-            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">116.360251 LTC</td></tr>
-            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">232.720503 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">0.0234192 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">0.234192 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">1.17096 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">2.34192 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">11.709602 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">23.419204 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">117.096019 LTC</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">234.192037 LTC</td></tr>
           </tbody>
         </table>
       </div>
