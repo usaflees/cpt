@@ -567,6 +567,7 @@
     c.price = price;
     c.lastSource = source;
     c.exPrices[source] = price;
+    (c.exAt || (c.exAt = {}))[source] = Date.now(); // read by assets/agent.js to skip stale quotes
     if (o.change24h !== undefined && isFinite(o.change24h)) c.change24h = o.change24h;
     if (o.high24h > 0) c.high24h = Math.max(o.high24h, price);
     if (o.low24h > 0) c.low24h = Math.min(o.low24h, price);
