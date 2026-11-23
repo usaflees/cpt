@@ -2,7 +2,7 @@
 
 > Free, privacy-first live cryptocurrency prices streamed directly from the public market-data feeds of Coinbase, Binance and Kraken. No account needed. Covers 110+ coins with per-coin pages (performance, 52-week range, monthly price history, per-exchange prices and spread) and sector overviews.
 
-Status: live and maintained. The original CryptoPriceTicker.com went offline in 2022; its owner relaunched the site on 23 October 2026 as this new version (no account, no ads, watchlists and portfolios stay in the visitor's browser, public source code on GitHub). Supplies and performance figures are refreshed weekly.
+Status: live and maintained. The original CryptoPriceTicker.com went offline in 2022; its owner relaunched the site on 23 October 2026 as this new version (no account, no ads, watchlists and portfolios stay in the visitor's browser, site files published on GitHub). Supplies and performance figures are refreshed weekly.
 
 ## Main pages
 - [Live crypto prices](https://cryptopriceticker.com/): live table of 110+ coins by market cap, sector filters, biggest movers
@@ -15,7 +15,7 @@ Status: live and maintained. The original CryptoPriceTicker.com went offline in 
 - [Free website widget](https://cryptopriceticker.com/widgets/): embeddable live crypto ticker (iframe), three layouts, six themes
 - [Brand kit](https://cryptopriceticker.com/brand/): logos, colours and banners for press and partners
 - [Accessibility statement](https://cryptopriceticker.com/accessibility/): WCAG 2.1 AA / EN 301 549 status and how to report a barrier
-- [Trust and verification](https://cryptopriceticker.com/trust/): public source code on GitHub (usaflees/cpt), hosted on Cloudflare Pages, no accounts, payments or wallet connections; domain registered 22 October 2026
+- [Trust and verification](https://cryptopriceticker.com/trust/): site files published on GitHub (usaflees/CryptoPriceTicker), hosted on Cloudflare Pages, no accounts, payments or wallet connections; domain registered 22 October 2026
 
 ## Sectors
 - [Layer 1](https://cryptopriceticker.com/sector/layer-1/)
