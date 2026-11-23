@@ -195,7 +195,7 @@ for (const c of coins) {
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000 };
+const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000, "assets/chart.js": 8_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
@@ -205,6 +205,12 @@ for (const p of pages) {
   if (!existsSync(join(ROOT, p))) continue;
   const size = statSync(join(ROOT, p)).size;
   if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
+}
+// Every /assets/ link carries a real content hash; "?v=undefined" means the file is missing from the build's ASSETS list.
+for (const p of pages) {
+  if (!existsSync(join(ROOT, p))) continue;
+  const bad = readFileSync(join(ROOT, p), "utf8").match(/\/assets\/[\w.-]+\?v=(?![0-9a-f]{10}\b)[^"'\s>]*/);
+  if (bad) err(`cache: ${p} links ${bad[0]} (add the file to ASSETS in scripts/build-coin-pages.mjs)`);
 }
 // Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
 const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://api.kraken.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
