@@ -36,6 +36,9 @@ accounts around it.
   numbers, dates and plain names), a rebuild that must reproduce every generated page byte for byte, and `seo-lint`.
   Before this, one job did everything while holding the write token, and a generated page was accepted without
   comparing it with the build.
+- **The public mirror** (`publish-public.yml`, DECISIONS 2026-11-23) is the only workflow that reads a secret: the
+  deploy key `PUBLIC_MIRROR_KEY`, which can write to `usaflees/CryptoPriceTicker` and nothing else. Its job has a
+  read-only token for this repository, installs nothing, and hands the key to the one push step.
 - **`.github/CODEOWNERS`** gives every file to `@usaflees` (takes effect with the ruleset option in §3.2).
 - **The automated weekly task** may not touch `scripts/`, `tests/`, `.github/`, `_headers`, `assets/app.*`,
   `CLAUDE.md` (`seo-lint --base`, `classify-change`).

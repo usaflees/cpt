@@ -480,7 +480,7 @@ function coinPage(c) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/CryptoPriceTicker">Site files on GitHub</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -654,7 +654,7 @@ function sectorPage(x) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/CryptoPriceTicker">Site files on GitHub</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
     <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
   </footer>
 </body>
@@ -770,7 +770,7 @@ function convertPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/CryptoPriceTicker">Site files on GitHub</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -876,7 +876,7 @@ function heatmapPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/CryptoPriceTicker">Site files on GitHub</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>

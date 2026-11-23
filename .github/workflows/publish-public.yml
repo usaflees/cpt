@@ -1,0 +1,76 @@
+# Public mirror: copies the files the live site serves to the public repository usaflees/CryptoPriceTicker,
+# so this repository (code, knowledge store, plans, history) can be private while visitors can still check
+# the site's files on GitHub (DECISIONS 2026-11-23). scripts/build-public-mirror.mjs picks the files: exactly
+# what a browser can already download, nothing from scripts/, docs/, content/, tests/, .claude/ or .github/.
+#
+# Access (docs/knowledge/ACCESS.md): this repository's own token stays read-only. The push to the mirror uses a
+# deploy key that can write to that one public repository and nothing else, so even a stolen key cannot change
+# the live site. The key is the only secret any workflow here reads (seo-lint allows it in this job alone), it
+# reaches only the one step that pushes, and the job installs nothing.
+#
+# Set up once (owner): ssh-keygen -t ed25519 -N "" -f mirror_key; add mirror_key.pub to
+# usaflees/CryptoPriceTicker → Settings → Deploy keys with "Allow write access"; add mirror_key as the secret
+# PUBLIC_MIRROR_KEY in this repository (Settings → Secrets and variables → Actions); delete both files.
+# Until the secret exists the job reports that it skipped and passes.
+#
+# Runs on every push to main, and daily, because pushes made with GitHub's own token (weekly data refresh)
+# don't start other workflows. Run by hand: Actions → Publish public mirror → Run workflow.
+name: Publish public mirror
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "41 6 * * *" # daily, 06:41 UTC
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: publish-public
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Collect the served files
+        run: node scripts/build-public-mirror.mjs "$RUNNER_TEMP/site"
+      - name: Push them to the public repository
+        env:
+          MIRROR_KEY: ${{ secrets.PUBLIC_MIRROR_KEY }}
+          MIRROR_REPO: usaflees/CryptoPriceTicker
+        run: |
+          set -euo pipefail
+          if [ -z "$MIRROR_KEY" ]; then
+            echo "::notice::PUBLIC_MIRROR_KEY is not set, so nothing was published (setup steps at the top of this workflow)."
+            exit 0
+          fi
+          umask 077
+          dir="$RUNNER_TEMP/ssh"; mkdir -p "$dir"
+          printf '%s\n' "$MIRROR_KEY" > "$dir/key"
+          # GitHub's published ed25519 host key (fingerprint SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU).
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > "$dir/known_hosts"
+          export GIT_SSH_COMMAND="ssh -i $dir/key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$dir/known_hosts"
+          trap 'rm -rf "$dir"' EXIT
+          git clone --quiet --depth 1 "git@github.com:$MIRROR_REPO.git" "$RUNNER_TEMP/mirror"
+          cd "$RUNNER_TEMP/mirror"
+          # Replace the whole tree with this build, so files the site no longer serves disappear too.
+          git rm -r --quiet --ignore-unmatch . > /dev/null
+          cp -a "$RUNNER_TEMP/site/." .
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Public mirror already matches the live site's files."
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit --quiet -m "Publish the site's files ($(date -u +%Y-%m-%d))"
+          git push --quiet origin HEAD:main
+          echo "Published $(git show --stat --format= HEAD | tail -1)"
