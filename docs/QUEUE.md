@@ -43,7 +43,7 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   `assets/app.js`, `index.html`. Done when: 7 d gainers match the 7d column, choice persists, QA passes.
 
 ## Waiting on the owner
-- **Access lock-down settings (PR #17, then these).** Needs from the owner: the settings in
+- **Access lock-down settings (code live Nov 23, PR #17).** Needs from the owner: the settings in
   `docs/knowledge/ACCESS.md` §3 (ruleset on `main`, Actions limits, account 2FA and token review, fewer connectors
   on Claude sessions).
 - **Weekly market report page with a feed (makes the site a "regularly updated source").** Google's Preferred
