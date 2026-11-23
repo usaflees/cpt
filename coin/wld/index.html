@@ -45,7 +45,7 @@ if (!embed && "documentPictureInPicture" in window) document.documentElement.cla
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
-  <script src="/assets/coins.js?v=84da10bbb5" defer></script>
+  <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=8e40a3f795" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -95,7 +95,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
         <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/wld.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">World (WLD) price</h1></div>
-        <p class="hero-price is-stale" id="cpPrice">$0.2527</p>
+        <p class="hero-price is-stale" id="cpPrice">$0.2491</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#52</span>
@@ -117,7 +117,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <div class="stat-grid">
-      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$517.60M</div></div>
+      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$510.22M</div></div>
       <div class="metric-box"><div class="metric-label">24h volume (CB+BN+KR)</div><div class="metric-val" id="cpVol">—</div></div>
       <div class="metric-box"><div class="metric-label">Circulating supply</div><div class="metric-val">2.05B WLD</div></div>
       <div class="metric-box">
@@ -196,38 +196,38 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
         <div class="conv-side">
           <label class="metric-label" for="cvB">Converted to</label>
-          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.2527" />
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="0.2491" />
           <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="WLD">WLD · World</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
         </div>
-        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 WLD = $0.2527</strong> <span id="cvInverse"></span></p>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 WLD = $0.2491</strong> <span id="cvInverse"></span></p>
       </div>
       <div class="conv-tables">
         <table class="history-table conv-table">
           <caption>WLD to <span data-cv-other>USD</span></caption>
           <thead><tr><th scope="col" class="col-left">WLD</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
           <tbody>
-            <tr><td class="col-left">10 WLD</td><td data-cv-amt="10">$2.527</td></tr>
-            <tr><td class="col-left">100 WLD</td><td data-cv-amt="100">$25.270</td></tr>
-            <tr><td class="col-left">500 WLD</td><td data-cv-amt="500">$126.350</td></tr>
-            <tr><td class="col-left">1,000 WLD</td><td data-cv-amt="1000">$252.700</td></tr>
-            <tr><td class="col-left">5,000 WLD</td><td data-cv-amt="5000">$1,263.50</td></tr>
-            <tr><td class="col-left">10,000 WLD</td><td data-cv-amt="10000">$2,527.00</td></tr>
-            <tr><td class="col-left">50,000 WLD</td><td data-cv-amt="50000">$12,635.00</td></tr>
-            <tr><td class="col-left">100,000 WLD</td><td data-cv-amt="100000">$25,270.00</td></tr>
+            <tr><td class="col-left">10 WLD</td><td data-cv-amt="10">$2.491</td></tr>
+            <tr><td class="col-left">100 WLD</td><td data-cv-amt="100">$24.910</td></tr>
+            <tr><td class="col-left">500 WLD</td><td data-cv-amt="500">$124.550</td></tr>
+            <tr><td class="col-left">1,000 WLD</td><td data-cv-amt="1000">$249.100</td></tr>
+            <tr><td class="col-left">5,000 WLD</td><td data-cv-amt="5000">$1,245.50</td></tr>
+            <tr><td class="col-left">10,000 WLD</td><td data-cv-amt="10000">$2,491.00</td></tr>
+            <tr><td class="col-left">50,000 WLD</td><td data-cv-amt="50000">$12,455.00</td></tr>
+            <tr><td class="col-left">100,000 WLD</td><td data-cv-amt="100000">$24,910.00</td></tr>
           </tbody>
         </table>
         <table class="history-table conv-table">
           <caption><span data-cv-other>USD</span> to WLD</caption>
           <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">WLD</th></tr></thead>
           <tbody>
-            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">3.957262 WLD</td></tr>
-            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">39.572616 WLD</td></tr>
-            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">197.863079 WLD</td></tr>
-            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">395.726157 WLD</td></tr>
-            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">1,978.63 WLD</td></tr>
-            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">3,957.26 WLD</td></tr>
-            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">19,786.31 WLD</td></tr>
-            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">39,572.62 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">4.014452 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">40.14452 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">200.722601 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">401.445203 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">2,007.23 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">4,014.45 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">20,072.26 WLD</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">40,144.52 WLD</td></tr>
           </tbody>
         </table>
       </div>

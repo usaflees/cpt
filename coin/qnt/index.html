@@ -45,7 +45,7 @@ if (!embed && "documentPictureInPicture" in window) document.documentElement.cla
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
   <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
-  <script src="/assets/coins.js?v=84da10bbb5" defer></script>
+  <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=8e40a3f795" defer></script>
   <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -95,7 +95,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="coin-hero" aria-labelledby="coin-h">
       <div>
         <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img class="mono-dark" src="/coin-icons/qnt.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">Quant (QNT) price</h1></div>
-        <p class="hero-price is-stale" id="cpPrice">$165.380</p>
+        <p class="hero-price is-stale" id="cpPrice">$162.880</p>
         <div class="hero-meta">
           <span id="cpChange"><span class="chg-pill">—</span></span>
           <span class="tag-badge">#26</span>
@@ -117,7 +117,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <div class="stat-grid">
-      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$2.00B</div></div>
+      <div class="metric-box"><div class="metric-label">Market cap</div><div class="metric-val" id="cpMcap">$1.97B</div></div>
       <div class="metric-box"><div class="metric-label">24h volume (CB+BN+KR)</div><div class="metric-val" id="cpVol">—</div></div>
       <div class="metric-box"><div class="metric-label">Circulating supply</div><div class="metric-val">12,072,700 QNT</div></div>
       <div class="metric-box">
@@ -196,38 +196,38 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <button type="button" class="conv-swap" data-action="cv-swap" aria-label="Swap the two currencies">⇄</button>
         <div class="conv-side">
           <label class="metric-label" for="cvB">Converted to</label>
-          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="165.38" />
+          <div class="conv-field"><input id="cvB" type="number" inputmode="decimal" step="any" min="0" value="162.88" />
           <select id="cvTo" aria-label="Convert to"><optgroup label="Cryptocurrencies"><option value="QNT">QNT · Quant</option><option value="BTC">BTC · Bitcoin</option><option value="ETH">ETH · Ethereum</option><option value="SOL">SOL · Solana</option></optgroup><optgroup label="Currencies"><option value="USD" selected>USD · US dollar</option><option value="EUR">EUR · Euro</option><option value="GBP">GBP · British pound</option><option value="CAD">CAD · Canadian dollar</option><option value="AUD">AUD · Australian dollar</option><option value="JPY">JPY · Japanese yen</option><option value="INR">INR · Indian rupee</option><option value="CHF">CHF · Swiss franc</option><option value="CNY">CNY · Chinese yuan</option><option value="KRW">KRW · South Korean won</option><option value="BRL">BRL · Brazilian real</option><option value="MXN">MXN · Mexican peso</option><option value="TRY">TRY · Turkish lira</option><option value="ZAR">ZAR · South African rand</option><option value="NGN">NGN · Nigerian naira</option><option value="PHP">PHP · Philippine peso</option><option value="SGD">SGD · Singapore dollar</option><option value="HKD">HKD · Hong Kong dollar</option><option value="AED">AED · UAE dirham</option><option value="PLN">PLN · Polish złoty</option></optgroup></select></div>
         </div>
-        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 QNT = $165.380</strong> <span id="cvInverse"></span></p>
+        <p class="conv-rate"><strong id="cvRate" aria-live="polite">1 QNT = $162.880</strong> <span id="cvInverse"></span></p>
       </div>
       <div class="conv-tables">
         <table class="history-table conv-table">
           <caption>QNT to <span data-cv-other>USD</span></caption>
           <thead><tr><th scope="col" class="col-left">QNT</th><th scope="col"><span data-cv-other>USD</span></th></tr></thead>
           <tbody>
-            <tr><td class="col-left">1 QNT</td><td data-cv-amt="1">$165.380</td></tr>
-            <tr><td class="col-left">5 QNT</td><td data-cv-amt="5">$826.900</td></tr>
-            <tr><td class="col-left">10 QNT</td><td data-cv-amt="10">$1,653.80</td></tr>
-            <tr><td class="col-left">25 QNT</td><td data-cv-amt="25">$4,134.50</td></tr>
-            <tr><td class="col-left">50 QNT</td><td data-cv-amt="50">$8,269.00</td></tr>
-            <tr><td class="col-left">100 QNT</td><td data-cv-amt="100">$16,538.00</td></tr>
-            <tr><td class="col-left">500 QNT</td><td data-cv-amt="500">$82,690.00</td></tr>
-            <tr><td class="col-left">1,000 QNT</td><td data-cv-amt="1000">$165,380.00</td></tr>
+            <tr><td class="col-left">1 QNT</td><td data-cv-amt="1">$162.880</td></tr>
+            <tr><td class="col-left">5 QNT</td><td data-cv-amt="5">$814.400</td></tr>
+            <tr><td class="col-left">10 QNT</td><td data-cv-amt="10">$1,628.80</td></tr>
+            <tr><td class="col-left">25 QNT</td><td data-cv-amt="25">$4,072.00</td></tr>
+            <tr><td class="col-left">50 QNT</td><td data-cv-amt="50">$8,144.00</td></tr>
+            <tr><td class="col-left">100 QNT</td><td data-cv-amt="100">$16,288.00</td></tr>
+            <tr><td class="col-left">500 QNT</td><td data-cv-amt="500">$81,440.00</td></tr>
+            <tr><td class="col-left">1,000 QNT</td><td data-cv-amt="1000">$162,880.00</td></tr>
           </tbody>
         </table>
         <table class="history-table conv-table">
           <caption><span data-cv-other>USD</span> to QNT</caption>
           <thead><tr><th scope="col" class="col-left"><span data-cv-other>USD</span></th><th scope="col">QNT</th></tr></thead>
           <tbody>
-            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">0.00604668 QNT</td></tr>
-            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">0.0604668 QNT</td></tr>
-            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">0.302334 QNT</td></tr>
-            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">0.604668 QNT</td></tr>
-            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">3.02334 QNT</td></tr>
-            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">6.04668 QNT</td></tr>
-            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">30.233402 QNT</td></tr>
-            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">60.466804 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="1">1 USD</td><td data-cv-amt="1" data-cv-dir="rev">0.00613949 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="10">10 USD</td><td data-cv-amt="10" data-cv-dir="rev">0.0613949 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="50">50 USD</td><td data-cv-amt="50" data-cv-dir="rev">0.306974 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="100">100 USD</td><td data-cv-amt="100" data-cv-dir="rev">0.613949 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="500">500 USD</td><td data-cv-amt="500" data-cv-dir="rev">3.069745 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="1000">1,000 USD</td><td data-cv-amt="1000" data-cv-dir="rev">6.139489 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="5000">5,000 USD</td><td data-cv-amt="5000" data-cv-dir="rev">30.697446 QNT</td></tr>
+            <tr><td class="col-left" data-cv-label="10000">10,000 USD</td><td data-cv-amt="10000" data-cv-dir="rev">61.394892 QNT</td></tr>
           </tbody>
         </table>
       </div>
@@ -244,7 +244,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <a href="/coin/uni/">UNI <span>Uniswap</span></a>
           <a href="/coin/aave/">AAVE <span>Aave</span></a>
           <a href="/coin/wlfi/">WLFI <span>World Liberty Financial</span></a>
-          <a href="/coin/sky/">SKY <span>Sky (formerly Maker)</span></a>
+          <a href="/coin/ondo/">ONDO <span>Ondo Finance</span></a>
       </div>
       <h3>Similar market cap</h3>
       <div class="related-list">
