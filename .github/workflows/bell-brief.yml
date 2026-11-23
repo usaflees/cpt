@@ -3,8 +3,9 @@
 #
 # GitHub starts scheduled runs late (often several minutes), so the first run of each pair starts about 10 minutes
 # before the cutoff and scripts/build-bell.mjs waits for the exact cutoff; the second is a fallback in case the
-# first was skipped. Two crons per bell cover daylight saving (ET is UTC-4 in summer, UTC-5 in winter); the script
-# itself decides what is due (exit 3 = nothing to do) and never publishes the same edition twice.
+# first was skipped; a second fallback ~1.5 h later covers runs GitHub drops (20 Nov 2026: no morning run started at
+# all, and afternoon runs started up to 2.5 h late). Two crons per bell cover daylight saving (ET is UTC-4 in summer,
+# UTC-5 in winter); the script itself decides what is due (exit 3 = nothing to do) and never publishes the same edition twice.
 #
 # Only content/bell.json, index.html and the sitemaps may change; seo-lint, the link check and the knowledge-store
 # check must pass. No secrets, no AI: the sources are public U.S. federal releases and Coinbase's public candles.
@@ -15,10 +16,13 @@ on:
   schedule:
     - cron: "15 13,14 * * 1-5" # before the 9:25 ET cutoff (EDT / EST)
     - cron: "40 13,14 * * 1-5" # fallback
+    - cron: "10 15,16 * * 1-5" # second fallback (~11:10 ET; runs are often hours late or dropped)
     - cron: "55 19,20 * * 1-5" # before the 16:05 ET cutoff
     - cron: "20 20,21 * * 1-5" # fallback
+    - cron: "50 21,22 * * 1-5" # second fallback (~17:50 ET)
     - cron: "55 16,17 * * 1-5" # before 13:05 ET on early-close days
     - cron: "20 17,18 * * 1-5" # fallback
+    - cron: "50 18,19 * * 1-5" # second fallback (~14:50 ET)
   workflow_dispatch:
     inputs:
       edition:
