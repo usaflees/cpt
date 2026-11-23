@@ -186,7 +186,7 @@ for (const c of coins) {
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000 };
+const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000, "assets/chart.js": 8_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);

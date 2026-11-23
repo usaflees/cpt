@@ -1645,3 +1645,8 @@ html:not(.has-pip) [data-action="pip"] { display: none; }
 p.prose { max-width: 75ch; }
 .live-pop > summary.feeds-partial .pulse-dot { background: var(--warn, #f5a524); box-shadow: 0 0 8px var(--warn, #f5a524); }
 .live-pop > summary.feeds-down .pulse-dot { background: var(--down); box-shadow: 0 0 8px var(--down); animation: none; }
+
+/* Coin page chart ranges (assets/chart.js) */
+.chart-ranges { margin-bottom: 8px; }
+.chart-ranges .seg-btn { padding: 4px 12px; }
+.chart-ranges .seg-btn[aria-pressed="true"] { background: var(--accent-glow); color: var(--accent); }
