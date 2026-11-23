@@ -66,7 +66,7 @@ for (const [bot, ua] of Object.entries(CRAWLERS)) {
   } catch (e) { problems.push(`/coin/btc/ as ${bot}: request failed (${e.message})`); }
 }
 // The repository's working files are not served (functions/_middleware.js + _routes.json); the site still is.
-for (const path of ["/scripts/build-coin-pages.mjs", "/docs/STRATEGY.md", "/content/coin-stats.json", "/tests/run.sh", "/.claude/skills/ship/SKILL.md", "/.github/workflows/site-checks.yml", "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore"]) {
+for (const path of ["/scripts/build-coin-pages.mjs", "/docs/STRATEGY.md", "/content/coin-stats.json", "/tests/run.sh", "/.claude/skills/ship/SKILL.md", "/.github/workflows/site-checks.yml", "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore", "/.gitattributes"]) {
   await check(path, { status: 404 });
 }
 await check("/llms.txt");

@@ -39,7 +39,8 @@
       nextEl.textContent = `Publishing the ${name(passed)} edition: reload in a minute`;
       if (lastPassed !== passed.t) { lastPassed = passed.t; ring(); }
     } else if (passed) {
-      nextEl.textContent = `Newer edition out (${name(passed)}): reload to see it`;
+      // Publishing can run late (scheduled jobs start late or are skipped), so don't claim a new edition exists.
+      nextEl.textContent = `The ${name(passed)} edition was due at ${local(passed.t)}: reload to check for it`;
     } else if (upcoming) {
       nextEl.textContent = `Next: ${name(upcoming)} in ${span(upcoming.t - now)} (${local(upcoming.t)} your time)`;
     }

@@ -44,6 +44,13 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Live Nov 23 (`d42b7f1`, PR #17):** access lock-down. New [ACCESS.md](ACCESS.md): every
+  way the site can change, what the repo enforces, the settings only the owner can change, public vs private.
+  `data-refresh.yml` is now two jobs (read-only `refresh` makes a patch; `publish`, the only job with a write token,
+  re-checks it with `main`'s scripts and pushes); seo-lint section 3c lints every workflow; `classify-change` compares
+  `assets/coins.js` as text; `check-refresh` restricts what the stats file may contain; `.github/CODEOWNERS`.
+  Bell Brief links limited to each agency's own https site, BTC prices must be numbers. Local and preview QA PASSED,
+  40/40 live checks; the two-job refresh passed a GitHub dry run (Nov 16). Owner settings still open: ACCESS.md §3.
 - **Nov 16 (PR #15):** knowledge store `docs/knowledge/facts.jsonl` (98 sourced, dated facts; `node scripts/kb.mjs`
   digest at the start of every session, `--check` in QA, readable view FACTS.md); `scripts/seo-audit.mjs` (what
   crawlers see on every page); research `research/2026-11-16-seo-ai-search-and-claude.md`. Google AI Mode called the

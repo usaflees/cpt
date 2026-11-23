@@ -64,10 +64,12 @@
   // Single-tone logos (a white or a black mark) carry a class so app.css can flip them on a
   // background of the same tone: white XRP on the Light theme, black Stellar on the dark ones.
   const MONO = new Map(REGISTRY.filter(c => c.logo && c.mono).map(c => [c.sym, c.mono]));
-  // Pages draw every logo from one sprite (one request instead of one per coin; the hash is stamped by
-  // scripts/build-coin-pages.mjs). Widgets show a few coins inside other sites, so they keep the small files.
+  // Pages with many logos draw them from one sprite (one request instead of one per coin; the hash is
+  // stamped by scripts/build-coin-pages.mjs). Widgets and coin pages show only a few, so they use the
+  // per-coin files (~1 KB each) instead of the ~50 KB (compressed) sprite.
   const LOGO_SPRITE = "/coin-icons/sprite.svg?v=e4ff608e95";
-  const logoSrc = sym => IS_EMBED ? `/coin-icons/${sym.toLowerCase()}.svg` : `${LOGO_SPRITE}#c-${sym.toLowerCase()}`;
+  const FEW_LOGOS = IS_EMBED || PAGE === "coin";
+  const logoSrc = sym => FEW_LOGOS ? `/coin-icons/${sym.toLowerCase()}.svg` : `${LOGO_SPRITE}#c-${sym.toLowerCase()}`;
   const logoImg = (sym, size, cls, lazy) => {
     const c = [cls, MONO.has(sym) && `mono-${MONO.get(sym)}`].filter(Boolean).join(" ");
     return `<img${c ? ` class="${c}"` : ""} src="${logoSrc(sym)}" alt="" width="${size}" height="${size}"${lazy ? ' loading="lazy"' : ""} decoding="async" />`;
@@ -745,17 +747,21 @@
   let feedsPaused = false;
   function keepAlive(ex, connect) {
     let delay = 2000;
-    const feed = { ws: null };
+    const feed = { ws: null, retry: 0 };
     const open = () => {
-      if (feedsPaused) return;
+      // One socket per exchange: a retry scheduled before the page went into the back/forward cache must not
+      // open a second socket next to the one pageshow already opened.
+      clearTimeout(feed.retry);
+      if (feedsPaused || (feed.ws && feed.ws.readyState < 2)) return;
       let ws;
       try { ws = connect(); } catch (_) { return; }
       feed.ws = ws;
       ws.addEventListener("open", () => { delay = 2000; setBadge(ex, "LIVE", true); });
       ws.addEventListener("close", () => {
+        if (feed.ws !== ws) return;
         setBadge(ex, "RETRY", false);
         if (feedsPaused) return;
-        setTimeout(open, delay);
+        feed.retry = setTimeout(open, delay);
         delay = Math.min(delay * 2, 60000);
       });
     };
@@ -800,7 +806,7 @@
   // feeds; if the page comes back from the cache, they reconnect with a fresh REST snapshot.
   addEventListener("pagehide", () => {
     feedsPaused = true;
-    feeds.forEach(f => { if (f.ws && f.ws.readyState < 2) f.ws.close(); });
+    feeds.forEach(f => { clearTimeout(f.retry); if (f.ws && f.ws.readyState < 2) f.ws.close(); });
   });
   addEventListener("pageshow", e => {
     if (!e.persisted || !feedsPaused) return;
