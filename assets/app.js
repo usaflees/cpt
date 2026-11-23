@@ -20,6 +20,8 @@
   const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed so non-USD currencies work
   const BINANCE_REST = "https://data-api.binance.vision/api/v3";
   const COINBASE_REST = "https://api.exchange.coinbase.com";
+  const KRAKEN_REST = "https://api.kraken.com/0/public";
+  const KRAKEN_REST_NAME = { BTC: "XBT", DOGE: "XDG" }; // Kraken REST names that differ from the ticker
   const BINANCE_WS = "wss://data-stream.binance.vision/stream?streams=";
   const COINBASE_WS = "wss://ws-feed.exchange.coinbase.com";
   const KRAKEN_WS = "wss://ws.kraken.com/v2";
@@ -1386,7 +1388,7 @@
       $("cpChartNote").textContent = note;
       if (pair) pair.textContent = `${c.sym}/${quote}`;
     };
-    // Binance first (USDT pair); coins without a Binance market use Coinbase's 15-minute candles (USD pair).
+    // Binance first (USDT pair); coins without a Binance market use Coinbase's, then Kraken's, 15-minute candles (USD pair).
     if (c.feeds.includes("BN")) {
       try {
         const res = await fetch(`${BINANCE_REST}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=15m&limit=96`);
@@ -1404,6 +1406,19 @@
         const closes = (await res.json()).slice(0, 96).reverse().map(k => +k[4]);
         if (closes.length < 2) throw new Error("empty");
         return draw(closes, "Last 24h · 15-min closes · Coinbase", "USD");
+      } catch (_) { /* try Kraken */ }
+    }
+    if (c.feeds.includes("KR")) {
+      try {
+        const t = tickerOf(c, "KR");
+        const res = await fetch(`${KRAKEN_REST}/OHLC?pair=${KRAKEN_REST_NAME[t] || t}USD&interval=15`);
+        if (!res.ok) throw new Error(res.status);
+        // { error: [], result: { <pair>: [[time, open, high, low, close, vwap, volume, count], …], last } }, oldest first.
+        const body = await res.json();
+        const rows = body && body.result && Object.entries(body.result).find(([k]) => k !== "last");
+        const closes = rows ? rows[1].slice(-96).map(k => +k[4]) : [];
+        if (closes.length < 2 || closes.some(isNaN)) throw new Error("empty");
+        return draw(closes, "Last 24h · 15-min closes · Kraken", "USD");
       } catch (_) { /* live ticks only */ }
     }
     $("cpChartNote").textContent = "Live ticks since you opened this page";
