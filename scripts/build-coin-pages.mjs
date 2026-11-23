@@ -69,7 +69,8 @@ function usd(v) {
   if (v >= 0.01) return "$" + v.toFixed(4);
   if (v >= 0.0001) return "$" + v.toFixed(6);
   // Tiny prices keep three significant digits (MOG at 8.1e-8 read "$0.00000008").
-  return "$" + (v > 0 ? v.toFixed(Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(v))))) : "0.00");
+  if (!(v > 0) || !Number.isFinite(v)) return v === 0 ? "$0.00" : "—";
+  return "$" + v.toFixed(Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(v)))));
 }
 function compact(v, prefix = "$") {
   if (v >= 1e12) return prefix + (v / 1e12).toFixed(2) + "T";

@@ -213,7 +213,7 @@
     if (val >= 0.01) return sym + val.toFixed(4);
     if (val >= 0.0001) return sym + val.toFixed(6);
     // Tiny prices keep three significant digits (8 decimals left MOG with one).
-    return sym + val.toFixed(Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(val)))));
+    return sym + val.toFixed(val > 0 ? Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(val)))) : 8);
   }
 
   function fmtCompact(usd, curr) {
