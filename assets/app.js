@@ -964,9 +964,9 @@
     if (!names.length) return [];
     const res = await fetch(`${KRAKEN_REST}/Ticker?pair=${names.map(([, n]) => n + "USD").join(",")}`);
     const body = res.ok && (await res.json());
-    // One unknown pair fails the whole call: leave the rest to Coinbase.
+    // An unknown pair fails the whole call: then leave it to Coinbase.
     if (!body) return [];
-    if ((body.error || []).length) return (backupKrOff = true), [];
+    if ((body.error || []).length) return (backupKrOff = /EQuery/.test(body.error)), [];
     const r = body.result || {};
     return names.filter(([c, n]) => {
       // Older pairs answer as XXMRZUSD, newer ones as typed (KASUSD). Volume only where Kraken's already counts.
@@ -991,7 +991,7 @@
       const t0 = Date.now();
       const stale = Array.from(subscribed, s => state.coins.get(s))
         .filter(c => c && t0 - lastLive(c) > BACKUP_STALE_MS)
-        .sort((a, b) => (a.bkAt || 0) - (b.bkAt || 0)); // a coin that keeps failing can't hold a slot
+        .sort((a, b) => (a.bkAt || 0) - (b.bkAt || 0)); // failing coins can't hold a slot
       if (stale.length) {
         let done = [];
         const kr = backupKrOff ? [] : stale.filter(c => c.live && c.feeds.includes("KR")).slice(0, BACKUP_KR_MAX);
@@ -999,7 +999,7 @@
         const tried = stale.filter(c => c.feeds.includes("CB") && !done.includes(c.sym)).slice(0, BACKUP_CB_MAX);
         await backupCoinbase(tried, t0);
         kr.concat(tried).forEach(c => (c.bkAt = t0));
-        flush(); // patches prices in place: no table rebuild to interrupt typing
+        flush(); // in place: no table rebuild to interrupt typing
       }
     }
     setTimeout(backupPoll, BACKUP_EVERY_MS);
