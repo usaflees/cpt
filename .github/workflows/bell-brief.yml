@@ -48,6 +48,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 2
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
@@ -79,6 +80,8 @@ jobs:
       - name: Publish to main
         id: publish
         if: steps.bell.outputs.code == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -86,7 +89,8 @@ jobs:
           id=$(node -e "console.log(require('./content/bell.json').editions[0].id)")
           git add content/bell.json index.html sitemap.xml sitemap-pages.xml
           git commit -q -m "Bell Brief ${id} (automated)"
-          for i in 1 2 3; do git push origin HEAD:main && exit 0; git pull -q --rebase origin main; done
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for i in 1 2 3; do git push "$remote" HEAD:main && exit 0; git pull -q --rebase "$remote" main; done
           exit 1
 
       - name: Production check
@@ -105,4 +109,6 @@ jobs:
 
       - name: Tell IndexNow search engines
         if: steps.publish.outcome == 'success'
-        run: node scripts/indexnow.mjs ${{ steps.publish.outputs.old }}
+        env:
+          OLD: ${{ steps.publish.outputs.old }}
+        run: node scripts/indexnow.mjs "$OLD"

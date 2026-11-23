@@ -64,10 +64,12 @@
   // Single-tone logos (a white or a black mark) carry a class so app.css can flip them on a
   // background of the same tone: white XRP on the Light theme, black Stellar on the dark ones.
   const MONO = new Map(REGISTRY.filter(c => c.logo && c.mono).map(c => [c.sym, c.mono]));
-  // Pages draw every logo from one sprite (one request instead of one per coin; the hash is stamped by
-  // scripts/build-coin-pages.mjs). Widgets show a few coins inside other sites, so they keep the small files.
+  // Pages with many logos draw them from one sprite (one request instead of one per coin; the hash is
+  // stamped by scripts/build-coin-pages.mjs). Widgets and coin pages show only a few, so they use the
+  // per-coin files (~1 KB each) instead of the ~50 KB (compressed) sprite.
   const LOGO_SPRITE = "/coin-icons/sprite.svg?v=e4ff608e95";
-  const logoSrc = sym => IS_EMBED ? `/coin-icons/${sym.toLowerCase()}.svg` : `${LOGO_SPRITE}#c-${sym.toLowerCase()}`;
+  const FEW_LOGOS = IS_EMBED || PAGE === "coin";
+  const logoSrc = sym => FEW_LOGOS ? `/coin-icons/${sym.toLowerCase()}.svg` : `${LOGO_SPRITE}#c-${sym.toLowerCase()}`;
   const logoImg = (sym, size, cls, lazy) => {
     const c = [cls, MONO.has(sym) && `mono-${MONO.get(sym)}`].filter(Boolean).join(" ");
     return `<img${c ? ` class="${c}"` : ""} src="${logoSrc(sym)}" alt="" width="${size}" height="${size}"${lazy ? ' loading="lazy"' : ""} decoding="async" />`;
