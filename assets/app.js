@@ -2061,6 +2061,12 @@
     const s = document.createElement("script");
     s.src = agentSrc; s.defer = true; document.head.append(s);
   }
+  // On-device AI (assets/ondevice.js): coin pages, only in browsers with Chrome's built-in model or translator.
+  const odSrc = MODE === "coin" && document.querySelector('meta[name="cpt-ondevice"]')?.content;
+  if (odSrc && ("LanguageModel" in self || "Translator" in self)) {
+    const s = document.createElement("script");
+    s.src = odSrc; s.defer = true; document.head.append(s);
+  }
 
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
