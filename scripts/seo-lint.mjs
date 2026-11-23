@@ -98,7 +98,9 @@ for (const line of read("robots.txt").split("\n")) {
   const routes = JSON.parse(read("_routes.json")).include.map(r => r.replace(/\/\*$/, "").toLowerCase());
   const inRoutes = new Set(routes);
   for (const c of code) if (!inRoutes.has(c)) err(`_routes.json: missing ${c}, which functions/_middleware.js blocks`);
-  for (const r of inRoutes) if (!code.has(r)) err(`functions/_middleware.js: does not block ${r}, which _routes.json routes to it`);
+  // Routes served by a Function of their own (not blocked): each needs its file in functions/.
+  const SERVED = { "/mcp": "functions/mcp.js" };
+  for (const r of inRoutes) if (!code.has(r) && !(SERVED[r] && existsSync(join(ROOT, SERVED[r])))) err(`functions/_middleware.js: does not block ${r}, which _routes.json routes to it`);
   for (const must of ["/scripts", "/docs", "/content", "/tests", "/.claude", "/claude.md"]) if (!code.has(must)) err(`functions/_middleware.js: ${must} must stay blocked`);
 }
 
@@ -183,7 +185,7 @@ for (const c of coins) {
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000 };
+const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
