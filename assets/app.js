@@ -19,6 +19,7 @@
   const LAYOUTS = ["marquee", "grid", "single"];
   const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed so non-USD currencies work
   const BINANCE_REST = "https://data-api.binance.vision/api/v3";
+  const COINBASE_REST = "https://api.exchange.coinbase.com";
   const BINANCE_WS = "wss://data-stream.binance.vision/stream?streams=";
   const COINBASE_WS = "wss://ws-feed.exchange.coinbase.com";
   const KRAKEN_WS = "wss://ws.kraken.com/v2";
@@ -211,7 +212,8 @@
     if (val >= 1) return sym + NF3.format(val);
     if (val >= 0.01) return sym + val.toFixed(4);
     if (val >= 0.0001) return sym + val.toFixed(6);
-    return sym + val.toFixed(8);
+    // Tiny prices keep three significant digits (8 decimals left MOG with one).
+    return sym + val.toFixed(val > 0 ? Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(val)))) : 8);
   }
 
   function fmtCompact(usd, curr) {
@@ -740,6 +742,20 @@
     if (!el) return;
     el.textContent = `${ex}: ${text}`;
     el.classList.toggle("online", online);
+    feedHealth();
+  }
+
+  // The header dot turns amber when some started feeds are down and red when all are, so a frozen
+  // Coinbase or Kraken feed no longer hides behind a green "Live" (only the colour changes: no layout shift).
+  function feedHealth() {
+    const sum = document.querySelector(".live-pop > summary");
+    if (!sum) return;
+    const started = ["CB", "BN", "KR"].map(ex => $(`badge${ex}`)).filter(b => b && !/INIT$/.test(b.textContent));
+    if (!started.length) return;
+    const up = started.filter(b => b.classList.contains("online")).length;
+    sum.classList.toggle("feeds-partial", up > 0 && up < started.length);
+    sum.classList.toggle("feeds-down", up === 0);
+    sum.setAttribute("aria-label", up === started.length ? "Live feed status" : `Live feed status: ${up} of ${started.length} exchanges connected`);
   }
 
   // Reconnect with capped exponential backoff; reset after a healthy connection.
@@ -1363,16 +1379,34 @@
   let chartLoaded = false;
   async function loadCoinChart() {
     const c = state.coins.get(state.coinPageSym);
-    if (!c.feeds.includes("BN")) { $("cpChartNote").textContent = "Live ticks since you opened this page"; return; }
-    try {
-      const res = await fetch(`${BINANCE_REST}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=15m&limit=96`);
-      if (!res.ok) throw new Error(res.status);
-      const closes = (await res.json()).map(k => +k[4]);
-      if (closes.length < 2) throw new Error("empty");
+    const pair = $("cpChartPair");
+    const draw = (closes, note, quote) => {
       chartLoaded = true;
       $("cpChart").innerHTML = buildSparkline(closes, closes[closes.length - 1] >= closes[0], 600, 140, { fluid: true, label: `${c.name} price, last 24 hours` });
-      $("cpChartNote").textContent = "Last 24h · 15-min closes · Binance";
-    } catch (_) { $("cpChartNote").textContent = "Live ticks since you opened this page"; }
+      $("cpChartNote").textContent = note;
+      if (pair) pair.textContent = `${c.sym}/${quote}`;
+    };
+    // Binance first (USDT pair); coins without a Binance market use Coinbase's 15-minute candles (USD pair).
+    if (c.feeds.includes("BN")) {
+      try {
+        const res = await fetch(`${BINANCE_REST}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=15m&limit=96`);
+        if (!res.ok) throw new Error(res.status);
+        const closes = (await res.json()).map(k => +k[4]);
+        if (closes.length < 2) throw new Error("empty");
+        return draw(closes, "Last 24h · 15-min closes · Binance", "USDT");
+      } catch (_) { /* fall through to Coinbase */ }
+    }
+    if (c.feeds.includes("CB")) {
+      try {
+        const res = await fetch(`${COINBASE_REST}/products/${tickerOf(c, "CB")}-USD/candles?granularity=900`);
+        if (!res.ok) throw new Error(res.status);
+        // Newest first: [time, low, high, open, close, volume]; keep the last 24 hours, oldest first.
+        const closes = (await res.json()).slice(0, 96).reverse().map(k => +k[4]);
+        if (closes.length < 2) throw new Error("empty");
+        return draw(closes, "Last 24h · 15-min closes · Coinbase", "USD");
+      } catch (_) { /* live ticks only */ }
+    }
+    $("cpChartNote").textContent = "Live ticks since you opened this page";
   }
 
   function initCoinPage() {
