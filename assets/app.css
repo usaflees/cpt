@@ -1760,3 +1760,5 @@ body.is-overlay #embedShell { zoom: 1.35; }
 .cmp-lead{font-weight:600}
 .cmp-swatch{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px}
 .cmp-key{margin:8px 0 0;font-size:12.5px}
+.cmp-lead .chg-up{background:linear-gradient(var(--up-bg),var(--up-bg)),var(--bg-secondary)}
+.cmp-lead .chg-down{background:linear-gradient(var(--down-bg),var(--down-bg)),var(--bg-secondary)}
