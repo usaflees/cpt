@@ -185,13 +185,39 @@ async function handle(msg, env, origin) {
   return rpcError(id, -32601, `Method not found: ${method}`);
 }
 
+// ---------- Rate limit (best effort, per isolate) ----------
+// Each visitor (CF-Connecting-IP) gets 60 requests a minute, and 20 of them may be get_live_price, the only
+// tool that reaches the exchanges (its answers are also edge-cached for 20 s). Counters live in this isolate's
+// memory for one minute and are never written anywhere; a busy edge location runs several isolates, so this
+// caps runaway clients, not a determined one. A Cloudflare WAF rate-limiting rule is the hard limit.
+const LIMITS = { all: 60, live: 20 }, WINDOW = 60e3, MAX_BODY = 16_384;
+const hits = new Map();
+function overLimit(ip, kind, now = Date.now()) {
+  if (hits.size > 5000) for (const [k, v] of hits) if (now - v.at > WINDOW) hits.delete(k);
+  const key = kind + "|" + ip;
+  let h = hits.get(key);
+  if (!h || now - h.at > WINDOW) { h = { at: now, n: 0 }; hits.set(key, h); }
+  h.n++;
+  return h.n > LIMITS[kind] ? Math.ceil((h.at + WINDOW - now) / 1000) : 0;
+}
+const tooMany = (id, wait) => json(rpcError(id ?? null, -32000, `Too many requests: try again in ${wait} s.`), 429, { "retry-after": String(wait) });
+
 export async function onRequest({ request, env }) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (request.method !== "POST") return json(rpcError(null, -32000, "This MCP endpoint takes JSON-RPC over POST (Streamable HTTP, no sessions). Add https://cryptopriceticker.com/mcp to your AI app as a remote MCP connector."), 405, { allow: "POST, OPTIONS" });
   const origin = new URL(request.url).origin;
+  const ip = request.headers.get("cf-connecting-ip") || "unknown";
+  let wait = overLimit(ip, "all");
+  if (wait) return tooMany(null, wait);
+  if (+(request.headers.get("content-length") || 0) > MAX_BODY) return json(rpcError(null, -32600, "Request too large"), 413);
   let body;
-  try { body = await request.json(); } catch (e) { return json(rpcError(null, -32700, "Parse error"), 400); }
+  try {
+    const text = await request.text();
+    if (text.length > MAX_BODY) return json(rpcError(null, -32600, "Request too large"), 413);
+    body = JSON.parse(text);
+  } catch (e) { return json(rpcError(null, -32700, "Parse error"), 400); }
   if (Array.isArray(body)) return json(rpcError(null, -32600, "Batches are not supported"), 400);
+  if (body?.method === "tools/call" && body.params?.name === "get_live_price" && (wait = overLimit(ip, "live"))) return tooMany(body.id, wait);
   const out = await handle(body, env, origin);
   return out === null ? new Response(null, { status: 202, headers: CORS }) : json(out, 200, body?.method === "initialize" ? { "mcp-protocol-version": out.result?.protocolVersion || VERSIONS[0] } : {});
 }
