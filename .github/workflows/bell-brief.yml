@@ -12,17 +12,9 @@
 # Run by hand: Actions → Bell Brief → Run workflow (choose an edition to rebuild the latest one now).
 name: Bell Brief
 
+# Since 24 Nov 2026 the editions come from the Cloudflare cron Worker (scripts/bell-worker, served by functions/bell.js);
+# its first edition published on time, so this workflow's schedule is off (owner's yes, 24 Nov). Manual runs still work.
 on:
-  schedule:
-    - cron: "15 13,14 * * 1-5" # before the 9:25 ET cutoff (EDT / EST)
-    - cron: "40 13,14 * * 1-5" # fallback
-    - cron: "10 15,16 * * 1-5" # second fallback (~11:10 ET; runs are often hours late or dropped)
-    - cron: "55 19,20 * * 1-5" # before the 16:05 ET cutoff
-    - cron: "20 20,21 * * 1-5" # fallback
-    - cron: "50 21,22 * * 1-5" # second fallback (~17:50 ET)
-    - cron: "55 16,17 * * 1-5" # before 13:05 ET on early-close days
-    - cron: "20 17,18 * * 1-5" # fallback
-    - cron: "50 18,19 * * 1-5" # second fallback (~14:50 ET)
   workflow_dispatch:
     inputs:
       edition:
