@@ -15,8 +15,7 @@
   const KR = "https://api.kraken.com/0/public";
   const KR_NAME = { BTC: "XBT", DOGE: "XDG" }; // Kraken REST names that differ from the ticker
   const DAY = 864e5;
-  // bn: Binance interval and count; cb: Coinbase granularity in seconds (at most 300 candles per call);
-  // kr: Kraken interval in minutes (at most 720 candles per call).
+  // bn: Binance interval, count; cb: Coinbase seconds (max 300 candles); kr: Kraken minutes (max 720).
   const RANGES = {
     "1d": { ms: DAY, bn: ["15m", 96], cb: 900, kr: 15, name: "24h", step: "15-min" },
     "7d": { ms: 7 * DAY, bn: ["1h", 168], cb: 3600, kr: 60, name: "7 days", step: "hourly" },
@@ -70,7 +69,7 @@
   const usd = v => fmtPrice(v, "USD");
   const axisPrice = v => (v >= 1000 ? "$" + NF0.format(v) : usd(v));
   const HM = { hour: "numeric", minute: "2-digit" }, MD = { month: "short", day: "numeric" };
-  const TIME_FMT = { "1d": [HM, HM], "7d": [MD, { weekday: "short", ...MD, hour: "numeric" }], "30d": [MD, { ...MD, hour: "numeric" }], "1y": [{ month: "short", year: "2-digit" }, { ...MD, year: "numeric" }] };
+  const TIME_FMT = { "1d": [HM, HM], "7d": [MD, { weekday: "short", ...MD, hour: "numeric" }], "30d": [MD, { ...MD, hour: "numeric" }], "1y": [{ month: "short", year: "numeric" }, { ...MD, year: "numeric" }] };
   const fmtTime = (t, key, long) => new Date(t).toLocaleString(undefined, TIME_FMT[key][long ? 1 : 0]);
 
   // A 600 x 140 viewBox stretched to fit.
@@ -80,7 +79,8 @@
     const { closes, times } = d;
     const min = Math.min(...closes), max = Math.max(...closes), span = max - min || 1;
     const n = closes.length;
-    const yAt = v => PAD + (1 - (v - min) / span) * (H - 2 * PAD);
+    const flat = max === min;
+    const yAt = v => (flat ? H / 2 : PAD + (1 - (v - min) / span) * (H - 2 * PAD));
     const line = closes.map((v, i) => `${(i / (n - 1) * W).toFixed(1)},${yAt(v).toFixed(1)}`).join(" ");
     const area = `M0,${H} L${line.replace(/ /g, " L")} L${W},${H} Z`;
     const first = closes[0], last = closes[n - 1];
@@ -89,11 +89,11 @@
     const label = `${c.name} price over ${d.name}: from ${usd(first)} to ${usd(last)}, high ${usd(max)}, low ${usd(min)}`;
     box.innerHTML = `<div class="cx ${last >= first ? "cx-up" : "cx-down"}" role="img" aria-label="${esc(label)}">
       <div class="cx-plot"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${grid}<path class="cx-area" d="${area}"/><polyline class="cx-line" points="${line}"/></svg><div class="cx-cross" hidden><span class="cx-dot"></span></div><div class="cx-tip" hidden></div></div>
-      <div class="cx-y" aria-hidden="true"><span>${axisPrice(max)}</span><span>${axisPrice(min + span / 2)}</span><span>${axisPrice(min)}</span></div>
-      <div class="cx-x" aria-hidden="true"><span>${fmtTime(times[0], key)}</span><span>${fmtTime(times[mid], key)}</span><span>${fmtTime(times[n - 1], key)}</span></div>
+      <div class="cx-y" aria-hidden="true">${(flat ? ["", min, ""] : [max, min + span / 2, min]).map(v => `<span>${v === "" ? "" : axisPrice(v)}</span>`).join("")}</div>
+      <div class="cx-x" aria-hidden="true"><span>${fmtTime(times[0], key)}</span><span>${n > 2 ? fmtTime(times[mid], key) : ""}</span><span>${fmtTime(times[n - 1], key)}</span></div>
     </div>`;
 
-    // Hover or drag for the price and time of any point.
+    // Hover, drag or tap for any point's price and time (a flat line is centred).
     const plot = box.querySelector(".cx-plot"), cross = plot.querySelector(".cx-cross"), dot = plot.querySelector(".cx-dot"), tip = plot.querySelector(".cx-tip");
     const move = e => {
       const r = plot.getBoundingClientRect();
@@ -108,10 +108,10 @@
     };
     plot.addEventListener("pointermove", move);
     plot.addEventListener("pointerdown", move);
-    plot.addEventListener("pointerleave", () => { cross.hidden = tip.hidden = true; });
+    plot.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") cross.hidden = tip.hidden = true; });
     // No % on 24h: the ticker's 24h change already sits by the price.
     const chg = ((last - first) / first) * 100;
-    note.textContent = (key === "1d" ? "24h · " : `${chg >= 0 ? "+" : "−"}${Math.abs(chg).toFixed(2)}% over ${d.name} · `) + `${d.step} closes · ${d.label}`;
+    note.textContent = (key === "1d" ? "24h · " : `${chg >= 0 ? "+" : "−"}${Math.abs(chg).toFixed(2)}% over ${d.name} · `) + `${d.step} · ${d.label}`;
   }
 
   let want = "1d";
