@@ -64,10 +64,10 @@
     var run = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 1); })(fn, { timeout: 3000 }); };
     if (document.readyState === "complete") run(); else addEventListener("load", run, { once: true });
   }
-  // Cloudflare Web Analytics (cookieless, so no consent needed). Loaded here instead of by
-  // Cloudflare's auto-install, which rewrites every HTML response and strips its ETag, so
-  // Googlebot couldn't get 304s. The site token is public by design (it was in every page).
+  // Cloudflare Web Analytics (cookieless), loaded here so Cloudflare's auto-install can stay off:
+  // it rewrites HTML and strips the ETag. Live host only (previews fail its CORS check).
   function loadCfBeacon() {
+    if (location.hostname !== "cryptopriceticker.com") return;
     var b = document.createElement("script");
     b.defer = true;
     b.src = "https://static.cloudflareinsights.com/beacon.min.js";
