@@ -452,12 +452,13 @@
     const qty = state.bag[c.sym] || 0, cost = state.cost[c.sym] || 0;
     return qty > 0 && cost > 0 && c.price > 0 ? { usd: qty * (c.price - cost), pct: (c.price / cost - 1) * 100 } : null;
   };
-  const pnlText = p => (p ? `${p.usd >= 0 ? "+" : "−"}${fmtPrice(Math.abs(p.usd))} (${p.pct >= 0 ? "+" : "−"}${Math.abs(p.pct).toFixed(1)}%)` : "");
+  const pnlText = p => (p && getRate() ? `${p.usd >= 0 ? "+" : "−"}${fmtPrice(Math.abs(p.usd))} (${p.pct >= 0 ? "+" : "−"}${Math.abs(p.pct).toFixed(1)}%)` : "");
   const pnlClass = p => (p ? (p.usd >= 0 ? "bag-pnl txt-up" : "bag-pnl txt-down") : "bag-pnl");
 
   /* 7-day trend: 4-hour Binance candles, fetched lazily (4 at a time) for rows that scroll into view.
    * Coins without a Binance market fall back to the live ticks collected since the page opened. */
-  const change7d = c => (c.spark7 && c.spark7[0] > 0 ? ((c.price - c.spark7[0]) / c.spark7[0]) * 100 : null);
+  // Binance's rolling 7-day open (loadOpen7) when loaded, so the column and the 7-day movers agree; else the first 4-hour candle.
+  const change7d = c => (c.open7 > 0 ? ((c.price - c.open7) / c.open7) * 100 : c.spark7 && c.spark7[0] > 0 ? ((c.price - c.spark7[0]) / c.spark7[0]) * 100 : null);
   const pct7 = c => {
     const v = change7d(c);
     return v === null ? `<span class="muted">—</span>` : `<span class="${v >= 0 ? "txt-up" : "txt-down"}">${v >= 0 ? "+" : ""}${v.toFixed(2)}%</span>`;
@@ -1102,7 +1103,7 @@
               </div></div>
             <div class="form-group"><label for="wgCurr">4. Currency &amp; credit link</label>
               <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:6px">
-                <select id="wgCurr" class="form-select"><option value="USD">USD ($)</option><option value="BTC">BTC (₿)</option><option value="ETH">ETH (Ξ)</option><option value="SOL">SOL (◎)</option></select>
+                <select id="wgCurr" class="form-select"><option value="USD">USD ($)</option><option value="BTC">BTC (₿)</option><option value="ETH">ETH (Ξ)</option><option value="SOL">SOL (◎)</option>${DISPLAY_FIATS.map(f => `<option value="${f}">${f} (${FIAT_SIGN[f]})</option>`).join("")}</select>
                 <select id="wgAnchor" class="form-select" aria-label="Credit link text">
                   <option value="Live prices by CryptoPriceTicker.com">Live prices by CryptoPriceTicker.com</option>
                   <option value="Powered by CryptoPriceTicker.com">Powered by CryptoPriceTicker.com</option>
@@ -1846,6 +1847,7 @@
         .catch(() => { open7At = 0; });
     }
   }
+  setInterval(() => { if (MODE === "home" && state.moverTf === "7d" && !document.hidden) loadOpen7(); }, 10.5 * 60e3);
   function syncMoversTf() {
     document.querySelectorAll("[data-action=movers-tf]").forEach(b => { const on = b.dataset.tf === state.moverTf; b.classList.toggle("active", on); b.setAttribute("aria-pressed", on); });
     const lbl = $("moversTf");
@@ -1996,9 +1998,13 @@
       updateSummary(true);
     },
     "move-fav"(el) {
-      const syms = filteredSorted().map(c => c.sym), i = syms.indexOf(el.dataset.sym), j = i + +el.dataset.dir;
-      if (i < 0 || j < 0 || j >= syms.length) return;
-      [syms[i], syms[j]] = [syms[j], syms[i]];
+      // Swap with the neighbour shown on screen, but save the order of the whole watchlist (a search may hide some).
+      const shown = filteredSorted().map(c => c.sym), i = shown.indexOf(el.dataset.sym), j = i + +el.dataset.dir;
+      if (i < 0 || j < 0 || j >= shown.length) return;
+      const all = Array.from(state.watchlist).sort((a, b) => { const p = s => { const k = state.order.indexOf(s); return k < 0 ? 1e6 + (state.coins.get(s)?.rank || 0) : k; }; return p(a) - p(b); });
+      const a = all.indexOf(shown[i]), b = all.indexOf(shown[j]);
+      [all[a], all[b]] = [all[b], all[a]];
+      const syms = all;
       state.order = syms;
       store.set("cpt_order", syms);
       const sel = `[data-action="move-fav"][data-sym="${CSS.escape(el.dataset.sym)}"][data-dir="${el.dataset.dir}"]`;
@@ -2087,6 +2093,7 @@
     if (MODE === "home") renderTable();
     const c = state.coins.get(sym);
     if ($("md-holdval") && state.activeModalSym === sym) $("md-holdval").textContent = qty > 0 ? "= " + fmtPrice(qty * c.price) : "";
+    if ($("md-pnl") && state.activeModalSym === sym) { $("md-pnl").textContent = pnlText(pnlOf(c)); $("md-pnl").className = pnlClass(pnlOf(c)); }
     if (qty > 0 && input.id === "md-hold") showToast(`💼 Saved: ${qty} ${sym}. See it under “My bag”.`);
   });
 

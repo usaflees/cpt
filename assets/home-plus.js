@@ -35,7 +35,8 @@
     return out;
   }
   function drawGaps() {
-    if (!gapList || document.hidden) return;
+    // Don't rebuild under keyboard focus (it would drop focus and a screen reader's place).
+    if (!gapList || document.hidden || gapList.contains(document.activeElement)) return;
     const now = Date.now();
     const rows = [];
     state.coins.forEach(c => {
@@ -70,7 +71,11 @@
     return list.slice(0, 9).map(s => state.coins.get(s));
   }
   async function keepAwake() {
-    try { if ("wakeLock" in navigator && !document.hidden && tv) wake = await navigator.wakeLock.request("screen"); } catch (_) { wake = null; }
+    try {
+      if (!("wakeLock" in navigator) || document.hidden || !tv) return;
+      const lock = await navigator.wakeLock.request("screen");
+      if (tv) wake = lock; else lock.release().catch(() => {}); // TV closed while the request was pending
+    } catch (_) { wake = null; }
   }
   function tile(c) {
     const s = esc(c.sym);
@@ -108,6 +113,7 @@
       <p class="tv-tape" id="tvTape" aria-hidden="true">Connecting to the exchanges…</p>`;
     document.body.appendChild(tv);
     document.documentElement.classList.add("tv-on");
+    document.querySelectorAll("body > :not(.tv-board)").forEach(el => { el.inert = true; }); // Tab stays on the board
     $("tvExit").addEventListener("click", closeTv);
     $("tvFull").addEventListener("click", () => { const r = document.documentElement.requestFullscreen; if (r) document.documentElement.requestFullscreen().catch(() => {}); });
     if (!document.documentElement.requestFullscreen) $("tvFull").hidden = true;
@@ -122,6 +128,7 @@
     if (!tv) return;
     tv.remove(); tv = null;
     document.documentElement.classList.remove("tv-on");
+    document.querySelectorAll("body > [inert]").forEach(el => { el.inert = false; });
     clearInterval(clockTimer);
     if (wake) { wake.release().catch(() => {}); wake = null; }
     if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});

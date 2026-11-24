@@ -27,7 +27,7 @@
 
   async function getJson(url) { const r = await fetch(url); if (!r.ok) throw new Error(r.status); return r.json(); }
   async function closesFrom(start) {
-    if (cache && cache.from <= start) return cache.rows;
+    if (cache && cache.from <= start) return cache.rows.filter(r => r[0] >= start - DAY / 2);
     const rows = [];
     if (source === "Binance") {
       const pair = (c.tickers.BN || c.sym) + "USDT";
@@ -72,7 +72,7 @@
     if (!rows.length) return show(`<p class="tm-msg">— No ${source} daily price for ${c.sym} on or after ${nice(iso)}.</p>`);
     const first = rows[0];
     if ((first[0] - Date.parse(iso + "T00:00:00Z")) / DAY > 3) {
-      return show(`<p class="tm-msg">— ${source} has no ${c.sym} price for ${nice(iso)}. Its daily history starts on ${nice(day(first[0]))}; try that date or later.</p>`);
+      return show(`<p class="tm-msg">— ${source} has no ${c.sym} price for ${nice(iso)}. ${source === "Kraken" ? "Kraken's public daily history covers about the last two years" : "Its daily history there"} starts on ${nice(day(first[0]))}; try that date or later.</p>`);
     }
     if (!(c.price > 0) || !c.live) return show(`<p class="tm-msg">Waiting for the live ${c.sym} price…</p>`);
     const buy = first[1], units = amount / buy;
