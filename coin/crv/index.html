@@ -17,7 +17,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=9ad66d2e34" as="style" />
+  <link rel="preload" href="/assets/app.css?v=bc3d812b97" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -46,11 +46,11 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=9ad66d2e34" />
+  <link rel="stylesheet" href="/assets/app.css?v=bc3d812b97" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
-  <script src="/assets/app.js?v=cbc39dfd69" defer></script>
-  <script src="/assets/chart.js?v=067b63f198" defer></script>
-  <script src="/assets/flash.js?v=f62c4050a0" defer></script>
+  <script src="/assets/app.js?v=43a0ae3e92" defer></script>
+  <script src="/assets/chart.js?v=ae227060c9" defer></script>
+  <script src="/assets/flash.js?v=1fd3f5d99e" defer></script>
   <script src="/assets/timemachine.js?v=cf35c8bbcf" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
@@ -100,7 +100,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <a href="/sector/defi/">DeFi &amp; real-world assets</a> › <span aria-current="page">Curve DAO</span></nav>
 
     <section class="coin-hero" aria-labelledby="coin-h">
-      <div class="hero-head">
+      <div>
         <div class="coin-title"><span class="coin-avatar has-logo" aria-hidden="true"><img src="/coin-icons/crv.svg" alt="" width="20" height="20" decoding="async" /></span><h1 id="coin-h">Curve DAO (CRV) price</h1></div>
         <p class="hero-price is-stale" id="cpPrice">$0.1907</p>
         <div class="hero-meta">
@@ -109,8 +109,15 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <span class="tag-badge">DeFi</span>
           <span id="cpSource">Snapshot from November 23, 2026 — connecting to live feeds…</span>
         </div>
+        <p class="hero-facts">As of <time datetime="2026-11-22">November 22, 2026</time> (Binance daily close): Curve DAO closed at $0.1819, down 51.0% over one year, 58.8% below its 52-week high of $0.4411, ranked #63 by market cap of the 114 coins tracked here.</p>
+        <div class="hero-actions">
+          <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="CRV" aria-pressed="false">♡ Add to watchlist</button>
+          <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="CRV">🧩 Embed CRV widget</button>
+          <button type="button" class="action-btn" data-action="pip" data-sym="CRV">⧉ Pop out</button>
+          <a class="action-btn" href="/">All prices →</a>
+        </div>
       </div>
-      <div class="hero-chart">
+      <div>
         <div class="seg chart-ranges" role="group" aria-label="Chart range">
           <button type="button" class="seg-btn" data-range="1d" aria-pressed="true">24h</button>
           <button type="button" class="seg-btn" data-range="7d" aria-pressed="false">7d</button>
@@ -119,13 +126,6 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         </div>
         <div class="chart-box" id="cpChart"></div>
         <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span id="cpChartPair">CRV/USD</span></div>
-      </div>
-      <p class="hero-facts">As of <time datetime="2026-11-22">November 22, 2026</time> (Binance daily close): Curve DAO closed at $0.1819, down 51.0% over one year, 58.8% below its 52-week high of $0.4411, ranked #63 by market cap of the 114 coins tracked here.</p>
-      <div class="hero-actions">
-        <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="CRV" aria-pressed="false">♡ Add to watchlist</button>
-        <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="CRV">🧩 Embed CRV widget</button>
-        <button type="button" class="action-btn" data-action="pip" data-sym="CRV">⧉ Pop out</button>
-        <a class="action-btn" href="/">All prices →</a>
       </div>
     </section>
 
