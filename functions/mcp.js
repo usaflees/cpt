@@ -18,7 +18,7 @@ const SITE = "https://cryptopriceticker.com";
 const VERSIONS = ["2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"];
 const SECTORS = ["L1", "L2", "DePIN", "AI", "DeFi", "RWA", "Privacy", "Gaming", "Meme", "Stable"];
 const KRAKEN_REST = { BTC: "XBT", DOGE: "XDG" }; // Kraken's REST names that differ from the ticker
-const CORS = { "access-control-allow-origin": "*", "access-control-allow-methods": "POST, OPTIONS", "access-control-allow-headers": "content-type, mcp-protocol-version, mcp-session-id, authorization", "access-control-expose-headers": "mcp-protocol-version" };
+const CORS = { "access-control-allow-origin": "*", "access-control-allow-methods": "POST, OPTIONS", "access-control-allow-headers": "content-type, mcp-protocol-version, mcp-session-id, authorization", "access-control-expose-headers": "mcp-protocol-version, retry-after" };
 
 const page = sym => `${SITE}/coin/${sym.toLowerCase()}/`;
 const num = v => (typeof v === "number" && isFinite(v) ? v : null);
@@ -192,9 +192,19 @@ async function handle(msg, env, origin) {
 // caps runaway clients, not a determined one. A Cloudflare WAF rate-limiting rule is the hard limit.
 const LIMITS = { all: 60, live: 20 }, WINDOW = 60e3, MAX_BODY = 16_384;
 const hits = new Map();
+let swept = 0;
+// IPv6 visitors are counted by their /64, which one client controls whole.
+const visitor = ip => {
+  if (!ip.includes(":")) return ip;
+  const [head, tail = ""] = ip.split("::"), a = head ? head.split(":") : [], b = tail ? tail.split(":") : [];
+  const full = ip.includes("::") ? [...a, ...Array(Math.max(0, 8 - a.length - b.length)).fill("0"), ...b] : a;
+  return full.slice(0, 4).map(x => parseInt(x, 16) || 0).join(":") + "::/64";
+};
 function overLimit(ip, kind, now = Date.now()) {
-  if (hits.size > 5000) for (const [k, v] of hits) if (now - v.at > WINDOW) hits.delete(k);
-  const key = kind + "|" + ip;
+  // Sweep expired counters at most once a second; past 20,000 counters start over (a flood of addresses).
+  if (hits.size > 5000 && now - swept > 1000) { swept = now; for (const [k, v] of hits) if (now - v.at > WINDOW) hits.delete(k); }
+  if (hits.size > 20_000) hits.clear();
+  const key = kind + "|" + visitor(ip);
   let h = hits.get(key);
   if (!h || now - h.at > WINDOW) { h = { at: now, n: 0 }; hits.set(key, h); }
   h.n++;
@@ -212,9 +222,18 @@ export async function onRequest({ request, env }) {
   if (+(request.headers.get("content-length") || 0) > MAX_BODY) return json(rpcError(null, -32600, "Request too large"), 413);
   let body;
   try {
-    const text = await request.text();
-    if (text.length > MAX_BODY) return json(rpcError(null, -32600, "Request too large"), 413);
-    body = JSON.parse(text);
+    // Read at most MAX_BODY bytes, also when no Content-Length was sent (chunked).
+    const reader = request.body?.getReader(), parts = [];
+    let size = 0;
+    for (let r; reader && !(r = await reader.read()).done;) {
+      size += r.value.byteLength;
+      if (size > MAX_BODY) { reader.cancel().catch(() => {}); return json(rpcError(null, -32600, "Request too large"), 413); }
+      parts.push(r.value);
+    }
+    const bytes = new Uint8Array(size);
+    let at = 0;
+    for (const p of parts) { bytes.set(p, at); at += p.byteLength; }
+    body = JSON.parse(new TextDecoder().decode(bytes));
   } catch (e) { return json(rpcError(null, -32700, "Parse error"), 400); }
   if (Array.isArray(body)) return json(rpcError(null, -32600, "Batches are not supported"), 400);
   if (body?.method === "tools/call" && body.params?.name === "get_live_price" && (wait = overLimit(ip, "live"))) return tooMany(body.id, wait);
