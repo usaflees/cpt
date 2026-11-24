@@ -145,6 +145,7 @@ const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green"
 const themeButtons = THEMES.map(([t, label]) => `<button type="button" class="theme-btn" data-action="theme" data-theme-val="${t}" title="${label}" aria-label="Theme: ${label}"><span class="swatch sw-${t}"></span></button>`).join("");
 const currencyButtons = [["USD", "$"], ["BTC", "₿"], ["ETH", "Ξ"], ["SOL", "◎"]]
   .map(([c, s]) => `<button type="button" class="btn-toggle" data-action="curr" data-curr="${c}" aria-label="Prices in ${c}">${s}</button>`).join("");
+const fiatSelect = `<select class="fiat-select" aria-label="Prices in another currency"><option value="">Fiat</option><option value="EUR">€ EUR</option><option value="GBP">£ GBP</option><option value="CAD">C$ CAD</option><option value="AUD">A$ AUD</option><option value="JPY">¥ JPY</option><option value="INR">₹ INR</option><option value="BRL">R$ BRL</option><option value="KRW">₩ KRW</option></select>`;
 
 // Sector hubs (content/sectors.json) — a coin's breadcrumb points to the hub of its first sector.
 const sectors = JSON.parse(readFileSync(ROOT + "content/sectors.json", "utf8"));
@@ -173,7 +174,8 @@ function topbar(withFeeds, withCurrency = withFeeds) {
         </div>
       </details>
 ` : ""}${withCurrency ? `
-      <div class="btn-group" role="group" aria-label="Price currency">${currencyButtons}</div>` : ""}
+      <div class="btn-group" role="group" aria-label="Price currency">${currencyButtons}</div>
+      ${fiatSelect}` : ""}
       <details class="pop menu-pop">
         <summary aria-label="Menu">☰</summary>
         <div class="pop-panel menu-list">
@@ -390,6 +392,7 @@ function coinPage(c) {
   <script src="/assets/app.js" defer></script>
   <script src="/assets/chart.js" defer></script>
   <script src="/assets/flash.js" defer></script>
+  <script src="/assets/timemachine.js" defer></script>
   <script src="/assets/consent.js" defer></script>
 </head>
 <body data-page="coin" data-sym="${s}">
@@ -452,6 +455,16 @@ function coinPage(c) {
     <section class="page-section" aria-labelledby="ex-h">
       <h2 id="ex-h">${s} price on each exchange</h2>
       <div id="coinDetail" style="display:flex;flex-direction:column;gap:12px"></div>
+    </section>
+
+    <section class="page-section tm" aria-labelledby="tm-h">
+      <h2 id="tm-h">What would ${s} be worth now?</h2>
+      <form class="tm-form" id="tmForm">
+        <label for="tmAmt">Amount (USD)<input id="tmAmt" type="number" min="1" step="any" value="100" inputmode="decimal" /></label>
+        <label for="tmDate">Bought on<input id="tmDate" type="date" min="2015-01-01" max="${updated}" value="${new Date(Date.parse(updated) - 365 * 86400e3).toISOString().slice(0, 10)}" /></label>
+        <button type="submit" class="action-btn btn-accent">Calculate</button>
+      </form>
+      <div class="tm-out" id="tmOut" aria-live="polite"><p class="tm-msg">Pick an amount and a past date. The box fetches ${s}'s daily closes and shows what it would be worth at today's live price, and its low and high points along the way.</p></div>
     </section>
 
     <section class="page-section prose" aria-labelledby="about-h">
@@ -1040,9 +1053,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js", "chart.js"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js", "chart.js", "home-plus.js", "timemachine.js"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css|agent\.js|ondevice\.js|chart\.js)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css|agent\.js|ondevice\.js|chart\.js|home-plus\.js|timemachine\.js)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;

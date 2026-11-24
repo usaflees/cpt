@@ -24,6 +24,7 @@
   for Google Tag Manager/GA4 with "Cookie settings" in the footer.
 - **Motion (Nov 9):** rolling-digit prices (coin hero, pop-out), rows that glide on sort/filter, spring quick view, scroll-driven section rise, spinning logo ring on coin pages, market-mood glow on the home hero; all off with reduced motion.
 - **Coin Race (/race/, Nov 11):** 2–6 coins race live from 24 h ago, 1 h ago or "Start now"; shareable race links.
+- **Nov 24 features:** fiat display currencies (8), holdings profit vs average buy price, column choice, own watchlist order, movers 24 h / 7 d, live exchange price gaps (home), Market TV (`/?tv=1`), Time Machine (coin pages), stream overlay (`/embed/?overlay=1`).
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
   embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
@@ -33,6 +34,7 @@ Lighthouse figures: mobile, production, Nov 2 after PRs #3–#4 (home is noisy r
 | Check | Result |
 | --- | --- |
 | Lighthouse mobile, live home after GTM-on-consent (Nov 12) | 91–94 performance, TBT 300–380 ms |
+| Lighthouse mobile, production, Nov 24 after the eight-feature release (perf / a11y / best practices / SEO) | Home 93–95 / 100 / 100 / 100 (LCP 1.7 s, CLS ≤ 0.001) · Bitcoin 98 / 100 / 100 / 100 (LCP 1.8–2.0 s) |
 | Lighthouse mobile, live site (performance / SEO) | Home 95–98/100 · Bitcoin 100/100 · Converter, heatmap, widgets, about 100/100 · AI sector 99/100 · OKB 96/100 · Brand kit 95/100 |
 | Lighthouse mobile, production, Nov 9 after the motion pass (perf / a11y / best practices / SEO) | Home 89–95 / 100 / 100 / 92 · Bitcoin 98–99 / 100 / 100 / 92 · Heatmap 98–100 / 96 → fixed / 100 / 92. SEO 92 = robots.txt `Content-Signal` line (DECISIONS) |
 | Home main thread, steady state (CDP) | ~110–130 ms per second, mostly price-flash paint; JS ~4 ms/s |

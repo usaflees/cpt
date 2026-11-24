@@ -15,7 +15,13 @@
 
   const SITE = "https://cryptopriceticker.com";
   const THEMES = ["neon", "kali", "green", "slate", "oled", "light"];
-  const CURRENCIES = ["USD", "BTC", "ETH", "SOL"];
+  // Display currencies: USD, the three rate coins, and fiat via Coinbase's public USD exchange rates.
+  const DISPLAY_FIATS = ["EUR", "GBP", "CAD", "AUD", "JPY", "INR", "BRL", "KRW"];
+  const CURRENCIES = ["USD", "BTC", "ETH", "SOL", ...DISPLAY_FIATS];
+  const FIAT_SIGN = { EUR: "€", GBP: "£", CAD: "C$", AUD: "A$", JPY: "¥", INR: "₹", BRL: "R$", KRW: "₩" };
+  const FIATS = ["USD", "EUR", "GBP", "CAD", "AUD", "JPY", "INR", "CHF", "CNY", "KRW", "BRL", "MXN", "TRY", "ZAR", "NGN", "PHP", "SGD", "HKD", "AED", "PLN"];
+  const FX_URL = "https://api.coinbase.com/v2/exchange-rates?currency=USD";
+  const fx = { USD: 1 }; // units of each fiat currency per 1 USD
   const LAYOUTS = ["marquee", "grid", "single"];
   const RATE_COINS = ["BTC", "ETH", "SOL"]; // always streamed so non-USD currencies work
   const BINANCE_REST = "https://data-api.binance.vision/api/v3";
@@ -93,9 +99,13 @@
     sortBy: "rank",
     sortAsc: true,
     moverMode: "gainers",
+    moverTf: store.get("cpt_movers_tf", "24h") === "7d" ? "7d" : "24h",
+    order: store.json("cpt_order", []), // the visitor's own watchlist order (symbols)
+    hiddenCols: new Set(store.json("cpt_cols", [])),
     pinnedSym: renamed(store.get("cpt_pin", "")),
     watchlist: new Set(store.json("cpt_watch", DEFAULT_WATCHLIST).map(renamed)),
     bag: migrateKeys(store.json("cpt_bag", {})),
+    cost: migrateKeys(store.json("cpt_cost", {})), // average buy price in USD per coin (optional)
     alerts: migrateKeys(store.json("cpt_alerts", {})),
     tickCount: 0,
     dirty: new Set(),
@@ -170,16 +180,19 @@
     }
     if (params.has("w") && params.has("b")) {
       const w = params.get("w").split(",").map(s => renamed(s.trim().toUpperCase())).filter(s => state.coins.has(s));
-      const b = {};
+      const b = {}, cost = {};
       params.get("b").split(",").forEach(pair => {
-        const [sym, qty] = pair.split(":");
+        const [sym, qty, buy] = pair.split(":");
         const s = renamed((sym || "").trim().toUpperCase());
         if (state.coins.has(s) && parseFloat(qty) > 0) b[s] = parseFloat(qty);
+        if (b[s] && parseFloat(buy) > 0) cost[s] = parseFloat(buy);
       });
       state.watchlist = new Set(w);
       state.bag = b;
+      state.cost = cost;
       store.set("cpt_watch", w);
       store.set("cpt_bag", b);
+      store.set("cpt_cost", cost);
       history.replaceState(null, "", location.pathname); // keep the private link out of the address bar
       setTimeout(() => showToast("💾 Watchlist and bag loaded from your sync link."), 300);
     }
@@ -187,24 +200,29 @@
 
   if (IS_EMBED) {
     document.body.classList.add("is-embed");
+    // Stream overlay (OBS and similar browser sources): transparent page, larger type, no hover effects.
+    if (params.get("overlay") === "1") document.body.classList.add("is-overlay");
     $("metaRobots")?.setAttribute("content", "noindex, indexifembedded");
   }
 
   /* ------------------------------------------------------------------
    * Formatting
    * ------------------------------------------------------------------ */
+  // USD value of one unit of the display currency; null while a fiat rate hasn't loaded (prices show "—").
   function getRate(curr = state.currency) {
     if (curr === "USD") return 1;
+    if (FIAT_SIGN[curr]) return fx[curr] ? 1 / fx[curr] : null;
     return state.coins.get(curr)?.price || 1;
   }
-  const currSymbol = (curr = state.currency) => ({ BTC: "₿", ETH: "Ξ", SOL: "◎" }[curr] || "$");
+  const currSymbol = (curr = state.currency) => ({ BTC: "₿", ETH: "Ξ", SOL: "◎", ...FIAT_SIGN }[curr] || "$");
 
   // Reused formatters: toLocaleString with options builds one per call, which adds up at ~10 ticks/s.
   const NF2 = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const NF3 = new Intl.NumberFormat("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
   function fmtPrice(usd, curr) {
-    if (usd === null || usd === undefined || isNaN(usd)) return "—";
-    const val = usd / getRate(curr);
+    const rate = getRate(curr);
+    if (usd === null || usd === undefined || isNaN(usd) || !rate) return "—";
+    const val = usd / rate;
     const sym = currSymbol(curr);
     if (val === 0) return sym + "0.00";
     if (val >= 1000) return sym + NF2.format(val);
@@ -216,8 +234,9 @@
   }
 
   function fmtCompact(usd, curr) {
-    if (!usd || isNaN(usd)) return "—";
-    const val = usd / getRate(curr);
+    const rate = getRate(curr);
+    if (!usd || isNaN(usd) || !rate) return "—";
+    const val = usd / rate;
     const sym = currSymbol(curr);
     if (val >= 1e12) return sym + (val / 1e12).toFixed(2) + "T";
     if (val >= 1e9) return sym + (val / 1e9).toFixed(2) + "B";
@@ -386,6 +405,11 @@
       mcap: c => c.mcap, vol24h: c => c.vol24h, bagVal: c => (state.bag[c.sym] || 0) * c.price
     }[state.sortBy] || (c => c.rank);
     list.sort((a, b) => (state.sortBy === "name" ? a.name.localeCompare(b.name) : key(a) - key(b)) * dir);
+    // Watchlist in the default sort: the visitor's own order first (▲▼ buttons), the rest by rank.
+    if (state.sector === "WATCH" && state.sortBy === "rank" && state.sortAsc) {
+      const pos = s => { const i = state.order.indexOf(s); return i < 0 ? 1e6 : i; };
+      list.sort((a, b) => pos(a.sym) - pos(b.sym) || a.rank - b.rank);
+    }
     return list;
   }
 
@@ -416,15 +440,26 @@
             <div class="bag-cell">
               <input type="number" step="any" min="0" class="bag-input" placeholder="0" value="${state.bag[c.sym] || ""}" data-sym="${s}" aria-label="How much ${s} you hold" />
               <span class="bag-val" id="bagval-${s}">${bagUsd > 0 ? fmtPrice(bagUsd) : ""}</span>
+              <input type="number" step="any" min="0" class="cost-input" placeholder="avg buy $" value="${state.cost[c.sym] || ""}" data-sym="${s}" aria-label="Your average buy price for ${s}, in US dollars" />
+              <span class="${pnlClass(pnlOf(c))}" id="bagpnl-${s}">${pnlText(pnlOf(c))}</span>
             </div>
           </td>
-          <td class="col-center col-more"><button type="button" class="more-btn${hasAlert ? " has-alert" : ""}" data-action="open-coin" data-sym="${s}" aria-label="${s} details: alerts, holdings and exchange prices">⋯</button></td>
+          <td class="col-center col-more">${state.sector === "WATCH" && state.sortBy === "rank" && state.sortAsc ? `<span class="ord-btns"><button type="button" class="ord-btn" data-action="move-fav" data-sym="${s}" data-dir="-1" aria-label="Move ${s} up">▲</button><button type="button" class="ord-btn" data-action="move-fav" data-sym="${s}" data-dir="1" aria-label="Move ${s} down">▼</button></span>` : ""}<button type="button" class="more-btn${hasAlert ? " has-alert" : ""}" data-action="open-coin" data-sym="${s}" aria-label="${s} details: alerts, holdings and exchange prices">⋯</button></td>
         </tr>`;
   }
 
+  // Unrealized profit against the visitor's average buy price (USD); null without both numbers.
+  const pnlOf = c => {
+    const qty = state.bag[c.sym] || 0, cost = state.cost[c.sym] || 0;
+    return qty > 0 && cost > 0 && c.price > 0 ? { usd: qty * (c.price - cost), pct: (c.price / cost - 1) * 100 } : null;
+  };
+  const pnlText = p => (p && getRate() ? `${p.usd >= 0 ? "+" : "−"}${fmtPrice(Math.abs(p.usd))} (${p.pct >= 0 ? "+" : "−"}${Math.abs(p.pct).toFixed(1)}%)` : "");
+  const pnlClass = p => (p ? (p.usd >= 0 ? "bag-pnl txt-up" : "bag-pnl txt-down") : "bag-pnl");
+
   /* 7-day trend: 4-hour Binance candles, fetched lazily (4 at a time) for rows that scroll into view.
    * Coins without a Binance market fall back to the live ticks collected since the page opened. */
-  const change7d = c => (c.spark7 && c.spark7[0] > 0 ? ((c.price - c.spark7[0]) / c.spark7[0]) * 100 : null);
+  // Binance's rolling 7-day open (loadOpen7) when loaded, so the column and the 7-day movers agree; else the first 4-hour candle.
+  const change7d = c => (c.open7 > 0 ? ((c.price - c.open7) / c.open7) * 100 : c.spark7 && c.spark7[0] > 0 ? ((c.price - c.spark7[0]) / c.spark7[0]) * 100 : null);
   const pct7 = c => {
     const v = change7d(c);
     return v === null ? `<span class="muted">—</span>` : `<span class="${v >= 0 ? "txt-up" : "txt-down"}">${v >= 0 ? "+" : ""}${v.toFixed(2)}%</span>`;
@@ -479,6 +514,7 @@
     if (capped) $("showAllBtn").textContent = `Show all ${all.length} coins`;
     const showBag = state.sector === "BAG";
     $("cryptoTable").classList.toggle("show-bag", showBag);
+    $("cryptoTable").classList.toggle("ordering", state.sector === "WATCH" && state.sortBy === "rank" && state.sortAsc);
     $("bagBanner").hidden = !showBag;
     $("tableBody").innerHTML = list.map(rowHtml).join("") ||
       `<tr><td colspan="11" class="col-center empty-row">${state.sector === "WATCH" ? "Your watchlist is empty — tap ☆ next to any coin to add it." : state.sector === "BAG" ? "No holdings yet — switch to All and tap ⋯ on a coin to add how much you hold." : "No coins match your search."}</td></tr>`;
@@ -493,7 +529,7 @@
 
   let lastMovers = 0, lastMood = 0, shownMood = 0.5;
   function updateSummary(force) {
-    let mcap = 0, vol = 0, bagTotal = 0, bagPnl = 0;
+    let mcap = 0, vol = 0, bagTotal = 0, bagPnl = 0, costPnl = 0, invested = 0;
     state.coins.forEach(c => {
       if (c.estimated) return; // "Load more pairs" coins have guessed market caps
       mcap += c.mcap || 0;
@@ -504,6 +540,8 @@
       if (qty > 0) {
         bagTotal += qty * c.price;
         bagPnl += qty * c.price * (c.change24h / 100);
+        const p = pnlOf(c);
+        if (p) { costPnl += p.usd; invested += qty * state.cost[c.sym]; }
       }
     });
     $("globalMcap").textContent = fmtCompact(mcap);
@@ -518,6 +556,11 @@
     const pnlEl = $("bagPnlVal");
     pnlEl.textContent = `${sign}${fmtPrice(Math.abs(bagPnl))} (${sign}${Math.abs(pct).toFixed(2)}%)`;
     pnlEl.style.color = bagPnl >= 0 ? "var(--up)" : "var(--down)";
+    const costEl = $("bagCostPnlVal");
+    if (costEl) {
+      costEl.textContent = invested > 0 ? pnlText({ usd: costPnl, pct: (costPnl / invested) * 100 }) : "—";
+      costEl.className = invested > 0 ? (costPnl >= 0 ? "txt-up" : "txt-down") : "";
+    }
     $("watchlistCountVal").textContent = `${state.watchlist.size} / ${Object.keys(state.alerts).length}`;
 
     // Market mood: the hero glow leans green or red with the share of live coins up over 24h
@@ -534,14 +577,17 @@
     // Movers cards re-render at most every 3s so they don't jump around under the cursor.
     if (!force && Date.now() - lastMovers < 3000) return;
     lastMovers = Date.now();
+    const wk = state.moverTf === "7d";
+    const mv = c => (wk ? (c.open7 > 0 ? (c.price / c.open7 - 1) * 100 : null) : c.change24h);
     const movers = Array.from(state.coins.values())
-      .filter(c => c.live && c.hasPage && !c.sectors.includes("Stable"))
-      .sort((a, b) => (state.moverMode === "gainers" ? b.change24h - a.change24h : a.change24h - b.change24h))
+      .filter(c => c.live && c.hasPage && !c.sectors.includes("Stable") && mv(c) !== null)
+      .sort((a, b) => (state.moverMode === "gainers" ? mv(b) - mv(a) : mv(a) - mv(b)))
       .slice(0, 6);
+    const pill7 = c => { const v = mv(c); return `<span class="chg-pill ${v >= 0 ? "chg-up" : "chg-down"}">${v >= 0 ? "+" : ""}${v.toFixed(2)}%</span>`; };
     $("moversList").innerHTML = movers.length ? movers.map(m => `<a class="mover-card" href="${coinUrl(m.sym)}">
           <span class="mc-head">${avatar(m.sym, "sm")}<span><strong>${esc(m.sym)}</strong><span class="mc-name">${esc(m.name)}</span></span></span>
           <span class="mc-price">${fmtPrice(m.price)}</span>
-          ${chgPill(m)}
+          ${wk ? pill7(m) : chgPill(m)}
         </a>`).join("") : Array.from({ length: 6 }, () => `<div class="mover-card skeleton" aria-hidden="true"></div>`).join("");
   }
 
@@ -673,6 +719,7 @@
 
     if (MODE === "home") {
       const now = Date.now();
+      if (window.CPT_HOME) window.CPT_HOME(dirty);
       $("tickCounter").textContent = state.tickCount.toLocaleString();
       dirty.forEach(sym => {
         const c = state.coins.get(sym);
@@ -688,7 +735,11 @@
         if (c.spark7 && (c.sparkDrawn === undefined || now - c.sparkDrawn > 10000)) { $(`spark-${sym}`).innerHTML = spark7(c); c.sparkDrawn = now; }
         setText($(`mcap-${sym}`), fmtCompact(c.mcap));
         setText($(`vol-${sym}`), fmtCompact(c.vol24h));
-        if (state.bag[sym] > 0) $(`bagval-${sym}`).textContent = fmtPrice(state.bag[sym] * c.price);
+        if (state.bag[sym] > 0) {
+          $(`bagval-${sym}`).textContent = fmtPrice(state.bag[sym] * c.price);
+          const pe = $(`bagpnl-${sym}`), p = pnlOf(c);
+          if (pe && p) { pe.textContent = pnlText(p); pe.className = pnlClass(p); }
+        }
         (tapeEls.get(sym) || []).forEach(el => { el.textContent = fmtPrice(c.price); });
       });
       updateSummary();
@@ -1127,7 +1178,7 @@
               </div></div>
             <div class="form-group"><label for="wgCurr">4. Currency &amp; credit link</label>
               <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:6px">
-                <select id="wgCurr" class="form-select"><option value="USD">USD ($)</option><option value="BTC">BTC (₿)</option><option value="ETH">ETH (Ξ)</option><option value="SOL">SOL (◎)</option></select>
+                <select id="wgCurr" class="form-select"><option value="USD">USD ($)</option><option value="BTC">BTC (₿)</option><option value="ETH">ETH (Ξ)</option><option value="SOL">SOL (◎)</option>${DISPLAY_FIATS.map(f => `<option value="${f}">${f} (${FIAT_SIGN[f]})</option>`).join("")}</select>
                 <select id="wgAnchor" class="form-select" aria-label="Credit link text">
                   <option value="Live prices by CryptoPriceTicker.com">Live prices by CryptoPriceTicker.com</option>
                   <option value="Powered by CryptoPriceTicker.com">Powered by CryptoPriceTicker.com</option>
@@ -1203,6 +1254,11 @@
         <div class="qv-hold-row">
           <input type="number" step="any" min="0" id="md-hold" class="bag-input" data-sym="${esc(sym)}" placeholder="0" value="${state.bag[sym] || ""}" />
           <span class="muted" id="md-holdval">${state.bag[sym] > 0 ? "= " + fmtPrice(state.bag[sym] * c.price) : ""}</span>
+        </div>
+        <label class="metric-label" for="md-cost">Average buy price in USD <span class="muted">(optional: shows your profit or loss)</span></label>
+        <div class="qv-hold-row">
+          <input type="number" step="any" min="0" id="md-cost" class="cost-input" data-sym="${esc(sym)}" placeholder="0" value="${state.cost[sym] || ""}" />
+          <span class="${pnlClass(pnlOf(c))}" id="md-pnl">${pnlText(pnlOf(c))}</span>
         </div>
       </div>` + coinDetailHtml(sym, "md") + `
       <div class="qv-foot">
@@ -1453,9 +1509,6 @@
   /* ------------------------------------------------------------------
    * Converter (coin pages and /convert/): any coin ⇄ any coin or fiat currency
    * ------------------------------------------------------------------ */
-  const FIATS = ["USD", "EUR", "GBP", "CAD", "AUD", "JPY", "INR", "CHF", "CNY", "KRW", "BRL", "MXN", "TRY", "ZAR", "NGN", "PHP", "SGD", "HKD", "AED", "PLN"];
-  const FX_URL = "https://api.coinbase.com/v2/exchange-rates?currency=USD";
-  const fx = { USD: 1 }; // units of each fiat currency per 1 USD
   const isCode = code => FIATS.includes(code) || state.coins.has(code);
   const pageCoin = PAGE === "coin" ? state.coinPageSym : null;
   const conv = {
@@ -1794,13 +1847,19 @@
 
   function applyCurrency(curr) {
     state.currency = curr;
-    store.set("cpt_curr", curr);
+    if (!IS_EMBED) store.set("cpt_curr", curr);
     document.querySelectorAll("[data-curr]").forEach(b => {
       const on = b.getAttribute("data-curr") === curr;
       b.classList.toggle("active", on);
       b.setAttribute("aria-pressed", on);
     });
+    document.querySelectorAll(".fiat-select").forEach(sel => { sel.value = FIAT_SIGN[curr] ? curr : ""; sel.classList.toggle("active", Boolean(FIAT_SIGN[curr])); });
+    // Fiat needs the exchange rates: prices show "—" until they arrive, then everything re-renders.
+    if (FIAT_SIGN[curr] && !fx[curr]) loadFx().then(() => { if (state.currency === curr) deferRender(rerender); });
   }
+  document.querySelectorAll(".fiat-select").forEach(sel => sel.addEventListener("change", () => {
+    applyCurrency(sel.value || "USD"); deferRender(rerender);
+  }));
 
   function rerender() {
     if (MODE === "home") renderTable();
@@ -1833,6 +1892,40 @@
     t.ready.catch(() => {});
   }
   const glideTable = () => glide(renderTable);
+
+  // 7-day movers: one Binance request (rolling 7-day window, up to 100 pairs each) for every coin with a
+  // Binance market, cached for 10 minutes; c.open7 is the price 7 days ago, so the change stays live.
+  let open7At = 0;
+  function loadOpen7() {
+    if (Date.now() - open7At < 10 * 60e3) return;
+    open7At = Date.now();
+    const pairs = Array.from(state.coins.values()).filter(c => c.feeds.includes("BN")).map(c => [tickerOf(c, "BN") + "USDT", c]);
+    for (let i = 0; i < pairs.length; i += 100) {
+      const chunk = pairs.slice(i, i + 100), bySym = new Map(chunk);
+      fetch(`${BINANCE_REST}/ticker?windowSize=7d&type=MINI&symbols=${encodeURIComponent(JSON.stringify(chunk.map(p => p[0])))}`)
+        .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then(rows => { rows.forEach(r => { const c = bySym.get(r.symbol); if (c && +r.openPrice > 0) c.open7 = +r.openPrice; }); updateSummary(true); })
+        .catch(() => { open7At = 0; });
+    }
+  }
+  setInterval(() => { if (MODE === "home" && state.moverTf === "7d" && !document.hidden) loadOpen7(); }, 10.5 * 60e3);
+  function syncMoversTf() {
+    document.querySelectorAll("[data-action=movers-tf]").forEach(b => { const on = b.dataset.tf === state.moverTf; b.classList.toggle("active", on); b.setAttribute("aria-pressed", on); });
+    const lbl = $("moversTf");
+    if (lbl) lbl.textContent = state.moverTf === "7d" ? "7 days" : "24h";
+  }
+  // Table columns the visitor hid (home menu); saved in this browser.
+  function applyCols() {
+    const t = $("cryptoTable");
+    if (!t) return;
+    ["c7", "spark", "mcap", "vol"].forEach(k => t.classList.toggle("no-" + k, state.hiddenCols.has(k)));
+    document.querySelectorAll("[data-col]").forEach(cb => { cb.checked = !state.hiddenCols.has(cb.dataset.col); });
+  }
+  document.querySelectorAll("[data-col]").forEach(cb => cb.addEventListener("change", () => {
+    if (cb.checked) state.hiddenCols.delete(cb.dataset.col); else state.hiddenCols.add(cb.dataset.col);
+    store.set("cpt_cols", Array.from(state.hiddenCols));
+    applyCols();
+  }));
 
   function deferRender(fn) {
     if (pendingRenders.has(fn)) return;
@@ -1958,6 +2051,26 @@
       else { state.sortBy = col; state.sortAsc = col === "rank" || col === "name"; }
       deferRender(glideTable);
     },
+    "movers-tf"(el) {
+      state.moverTf = el.dataset.tf;
+      store.set("cpt_movers_tf", state.moverTf);
+      syncMoversTf();
+      if (state.moverTf === "7d") loadOpen7();
+      updateSummary(true);
+    },
+    "move-fav"(el) {
+      // Swap with the neighbour shown on screen, but save the order of the whole watchlist (a search may hide some).
+      const shown = filteredSorted().map(c => c.sym), i = shown.indexOf(el.dataset.sym), j = i + +el.dataset.dir;
+      if (i < 0 || j < 0 || j >= shown.length) return;
+      const all = Array.from(state.watchlist).sort((a, b) => { const p = s => { const k = state.order.indexOf(s); return k < 0 ? 1e6 + (state.coins.get(s)?.rank || 0) : k; }; return p(a) - p(b); });
+      const a = all.indexOf(shown[i]), b = all.indexOf(shown[j]);
+      [all[a], all[b]] = [all[b], all[a]];
+      const syms = all;
+      state.order = syms;
+      store.set("cpt_order", syms);
+      const sel = `[data-action="move-fav"][data-sym="${CSS.escape(el.dataset.sym)}"][data-dir="${el.dataset.dir}"]`;
+      glide(() => { renderTable(); const again = document.querySelector(sel); if (again) again.focus(); });
+    },
     movers(el) {
       state.moverMode = el.dataset.mode;
       document.querySelectorAll("[data-action=movers]").forEach(b => {
@@ -1968,7 +2081,9 @@
     },
     "reset-bag"() {
       state.bag = {};
+      state.cost = {};
       store.set("cpt_bag", {});
+      store.set("cpt_cost", {});
       deferRender(renderTable);
       showToast("💼 Bag quantities cleared.");
     },
@@ -1980,8 +2095,8 @@
     },
     csv() {
       const q = v => `"${String(v).replace(/"/g, '""')}"`;
-      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Bag_Qty"]];
-      filteredSorted().forEach(c => rows.push([c.rank, q(c.sym), q(c.name), c.price, c.live ? c.change24h.toFixed(2) : "", Math.round(c.mcap), Math.round(c.vol24h), state.bag[c.sym] || 0]));
+      const rows = [["Rank", "Symbol", "Name", "Price_USD", "Change_24h_Pct", "Market_Cap_USD", "Volume_24h_USD", "Bag_Qty", "Avg_Buy_USD"]];
+      filteredSorted().forEach(c => rows.push([c.rank, q(c.sym), q(c.name), c.price, c.live ? c.change24h.toFixed(2) : "", Math.round(c.mcap), Math.round(c.vol24h), state.bag[c.sym] || 0, state.cost[c.sym] || ""]));
       const a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" }));
       a.download = `cryptopriceticker-${new Date().toISOString().slice(0, 10)}.csv`;
@@ -1992,7 +2107,7 @@
     sync() {
       ensureModals();
       const w = Array.from(state.watchlist).join(",");
-      const b = Object.entries(state.bag).map(([k, v]) => `${k}:${v}`).join(",");
+      const b = Object.entries(state.bag).map(([k, v]) => `${k}:${v}${state.cost[k] ? ":" + state.cost[k] : ""}`).join(",");
       $("syncUrlInput").value = `${location.origin}/?w=${encodeURIComponent(w)}&b=${encodeURIComponent(b)}`;
       openModal("syncModal");
     },
@@ -2020,6 +2135,16 @@
   });
 
   document.addEventListener("change", e => {
+    const costIn = e.target.closest(".cost-input[data-sym]");
+    if (costIn) {
+      const sym = costIn.dataset.sym, v = parseFloat(costIn.value);
+      if (v > 0) state.cost[sym] = v; else delete state.cost[sym];
+      store.set("cpt_cost", state.cost);
+      if (MODE === "home") deferRender(renderTable);
+      const c = state.coins.get(sym), pe = $("md-pnl");
+      if (pe && state.activeModalSym === sym) { pe.textContent = pnlText(pnlOf(c)); pe.className = pnlClass(pnlOf(c)); }
+      return;
+    }
     const input = e.target.closest(".bag-input[data-sym]");
     if (!input) return;
     const sym = input.dataset.sym;
@@ -2029,6 +2154,7 @@
     if (MODE === "home") renderTable();
     const c = state.coins.get(sym);
     if ($("md-holdval") && state.activeModalSym === sym) $("md-holdval").textContent = qty > 0 ? "= " + fmtPrice(qty * c.price) : "";
+    if ($("md-pnl") && state.activeModalSym === sym) { $("md-pnl").textContent = pnlText(pnlOf(c)); $("md-pnl").className = pnlClass(pnlOf(c)); }
     if (qty > 0 && input.id === "md-hold") showToast(`💼 Saved: ${qty} ${sym}. See it under “My bag”.`);
   });
 
@@ -2077,6 +2203,9 @@
     });
     $("cryptoTable").classList.toggle("compact-mode", state.compact);
     $("densityBtn").setAttribute("aria-pressed", state.compact);
+    applyCols();
+    syncMoversTf();
+    if (state.moverTf === "7d") loadOpen7();
     // Sector hub pages link here as /?sector=AI etc.
     const pre = params.get("sector");
     const chip = pre && document.querySelector(`[data-action=sector][data-sector="${CSS.escape(pre)}"]`);
@@ -2104,8 +2233,8 @@
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
-  // Read-only hooks for the modules loaded after this file (flash.js, race.js, chart.js).
-  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, buildSparkline, tickerOf, coinChart };
+  // Read-only hooks for the modules loaded after this file (flash.js, race.js, chart.js, home-plus.js, timemachine.js).
+  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, buildSparkline, tickerOf, coinChart, getRate, currSymbol };
   // WebMCP agent tools: only browsers with document.modelContext fetch assets/agent.js (hashed URL in
   // <meta name="cpt-agent">). The two setters below are its only write access.
   const agentSrc = document.querySelector('meta[name="cpt-agent"]')?.content;

@@ -14,42 +14,6 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   /embed/ transfers ≤ 15 KB of JS+CSS gzip, the three layouts and six themes look the same (screenshots before/after),
   widget tests and full QA pass, and the site's own pages are unchanged.
 
-## In progress (owner chat, Nov 23: building all eight in one session; the daily build skips these)
-- [ ] **Stream overlay preset for widgets.** What: `/embed/?overlay=1` gives a transparent background, larger type
-  and no credit-link hover effects, for OBS and similar browser sources; add a short "Use in a stream" paragraph and
-  the URL to `/widgets/`. Done when: the overlay renders on a transparent page at 1920×200, widget tests pass.
-
-- [ ] **Exchange gap board (Feature Lab #2, no new URL).** What: a home-page section under the movers listing the
-  live price gap between Coinbase, Binance and Kraken for each coin quoted on 2+ exchanges, widest first (top 8),
-  in basis points, with cheapest/dearest exchange; "—" until two exchanges report. Says gaps ignore fees and
-  transfer times. Uses `c.exPrices` the quick view already fills. Done when: the section updates live, costs under
-  5 ms/s main thread (measure), QA passes at 375 px in both themes.
-- [ ] **Time Machine on coin pages (Feature Lab #3, no new URL).** What: a "What would it be worth?" box on each coin
-  page: amount + date → value today, the lowest and highest point along the way, from Binance/Kraken/Coinbase daily
-  candles fetched in the browser on submit (none on load). Done when: BTC from 2018-01-01 matches the exchange's
-  daily closes, "—" when the coin has no data for that date, no layout shift, QA passes.
-- [ ] **Market TV mode (Feature Lab #4, no new URL).** What: `/?tv=1` (button in the home menu) turns the home page
-  into a full-screen board: watchlist as large live tiles, ticker tape, market-mood glow; Screen Wake Lock while
-  visible; Esc exits. `noindex` isn't needed (same URL, query only). Done when: works on a 1920×1080 and a 375 px
-  screen, wake lock released on exit, QA passes.
-
-- [ ] **Profit and loss for holdings (competitor research Nov 19).** What: in "My bag", an optional average buy
-  price (USD) per coin next to the amount; the table and the bag banner show unrealized profit in $ and % per coin
-  and in total, live. Saved in `localStorage` with the holdings, included in CSV export and the sync link. Files:
-  `assets/app.js`, `assets/app.css`. Done when: holding 1 BTC bought at $50,000 shows the right live profit; blank
-  buy price shows "—"; works at 375 px in both themes; QA passes.
-- [ ] **Fiat display currencies (competitor research Nov 19).** What: add EUR, GBP, CAD, AUD, JPY, INR, BRL, KRW to
-  the currency switch on the home table, movers, quick view and coin pages, using the FX rates the converter already
-  loads (`loadFx`); prices show "—" until rates load. Same URLs: a setting, not per-currency pages. Files:
-  `assets/app.js`, `assets/app.css`. Done when: EUR prices match USD × the loaded rate; the choice persists; QA passes.
-- [ ] **Choose columns and order the watchlist (competitor research Nov 19).** What: a "Columns" menu on the home
-  table (7d, 7-day chart, market cap, volume; saved in the browser), and a "Watchlist" view sortable by the
-  visitor's own order (move up/down buttons, keyboard accessible). Files: `assets/app.js`, `assets/app.css`, `index.html`.
-  Done when: hidden columns stay hidden after reload, the custom order survives reload, no layout shift, QA passes.
-- [ ] **Movers timeframe: 24 h or 7 d (competitor research Nov 19).** What: a two-button switch on "Biggest
-  movers"; 7 d uses the 7-day candles the table already loads (`c.spark7`), "—" until loaded. Files:
-  `assets/app.js`, `index.html`. Done when: 7 d gainers match the 7d column, choice persists, QA passes.
-
 ## Waiting on the owner
 - **Access lock-down settings (code live Nov 23, PR #17).** Needs from the owner: the settings in
   `docs/knowledge/ACCESS.md` §3 (ruleset on `main`, Actions limits, account 2FA and token review, fewer connectors
@@ -82,6 +46,7 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   "ad-free" argument under Binance's terms).
 
 ## Done
+- [x] 2026-11-24 **Eight features in one owner-chat release** (In progress Nov 23). Fiat display currencies (EUR, GBP, CAD, AUD, JPY, INR, BRL, KRW; picker beside $ ₿ Ξ ◎, also in the widget builder); holdings profit and loss (average buy price in My bag and quick view; CSV, sync link, backup); table column choice and the visitor's own watchlist order (▲▼); movers 24 h / 7 d (Binance rolling 7-day open, shared with the 7d column); exchange price gaps on the home page (quotes < 60 s, Binance USDT converted at Coinbase's USDT price); Market TV (`/?tv=1`, wake lock, Esc); Time Machine on coin pages (Binance, then Coinbase, then Kraken's last 720 days; BTC 2018-01-01 close $13,380.00 matches); stream overlay `/embed/?overlay=1`. New: `assets/home-plus.js`, `assets/timemachine.js`, `https://api.kraken.com` in connect-src. A review subagent's 8 findings were fixed before release.
 - [x] 2026-11-19 **Backup and restore.** Home menu "Back up my data" / "Restore from a backup file" (`assets/flash.js`): one JSON file with watchlist, holdings, alerts, alert settings and history, theme, currency, density and pin; caches and the cookie choice excluded; foreign files refused; asks before replacing. `tests/backup.cjs` (in `tests/run.sh`) covers export → clear → import.
 - [x] 2026-11-19 **PR #14 (wait-deploy false timeouts).** Already on main (4f72fc3 skips `assets/`); PR #14 closed as superseded.
 - [x] 2026-11-19 **One icon sprite on the home page.** Logos come from `coin-icons/sprite.svg`: home image requests 33 → 3 (coin logos 31 → 1), LCP 840 → 216 ms in one Chromium run, CLS unchanged (0.0044); logos identical on Neon, Light and OLED; local and preview QA passed.
