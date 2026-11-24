@@ -304,7 +304,7 @@
   }
 
   /* Backup and restore (home menu): one JSON file, nothing uploaded. Caches and the cookie choice stay put. */
-  const BACKUP_KEYS = ["cpt_watch", "cpt_bag", "cpt_alerts", "cpt_alert_repeat", "cpt_movealert", "cpt_bagalert",
+  const BACKUP_KEYS = ["cpt_watch", "cpt_bag", "cpt_cost", "cpt_cols", "cpt_order", "cpt_movers_tf", "cpt_alerts", "cpt_alert_repeat", "cpt_movealert", "cpt_bagalert",
     "cpt_alertlog", "cpt_theme", "cpt_curr", "cpt_compact", "cpt_pin"];
   const ls = (fn, ...a) => { try { return localStorage[fn](...a); } catch (_) { return null; } };
   function exportData() {

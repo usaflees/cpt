@@ -44,6 +44,9 @@ of where things stand and what the owner wants. Details are in the files it link
     (strict CSP).
 
 ## Latest work
+- **Live Nov 24 (`7704765f`):** eight queue features in one release (fiat currencies, holdings P&L, columns,
+  watchlist order, 7-day movers, exchange price gaps, Market TV, Time Machine, stream overlay). Local + preview QA
+  PASSED, 43/43 live checks, Lighthouse home 93–95. Details: QUEUE "Done", DECISIONS 2026-11-24.
 - **Live Nov 23 (`d42b7f1`, PR #17):** access lock-down. New [ACCESS.md](ACCESS.md): every
   way the site can change, what the repo enforces, the settings only the owner can change, public vs private.
   `data-refresh.yml` is now two jobs (read-only `refresh` makes a patch; `publish`, the only job with a write token,

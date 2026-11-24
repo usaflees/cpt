@@ -186,7 +186,11 @@ for (const c of coins) {
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-const BUDGET = { "assets/app.js": 115_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000, "assets/chart.js": 8_000 };
+// app.js 115 → 126 KB, app.css 80 → 86 KB (Nov 24, after merging the backup feed and agent hooks): fiat currencies,
+// holdings profit, column choice, watchlist order,
+// 7-day movers, exchange gaps and Market TV (their logic is in home-plus.js; app.* holds table code and styles).
+// app.css 86 → 87 KB (Nov 24, design review PR 34): coin chart price scale, time labels and readout styles.
+const BUDGET = { "assets/app.js": 126_000, "assets/app.css": 87_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000, "assets/chart.js": 8_000, "assets/home-plus.js": 9_000, "assets/timemachine.js": 7_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);

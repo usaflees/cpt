@@ -19,7 +19,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=9732295b00" as="style" />
+  <link rel="preload" href="/assets/app.css?v=9ad66d2e34" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -89,10 +89,11 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=9732295b00" />
+  <link rel="stylesheet" href="/assets/app.css?v=9ad66d2e34" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
-  <script src="/assets/app.js?v=da6241f8fc" defer></script>
-  <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
+  <script src="/assets/app.js?v=cbc39dfd69" defer></script>
+  <script src="/assets/flash.js?v=f62c4050a0" defer></script>
+  <script src="/assets/home-plus.js?v=e657a6428c" defer></script>
   <script src="/assets/bell.js?v=a2d16aecdc" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
@@ -129,6 +130,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <button type="button" class="btn-toggle" data-action="curr" data-curr="ETH">Ξ</button>
           <button type="button" class="btn-toggle" data-action="curr" data-curr="SOL">◎</button>
         </div>
+        <select class="fiat-select" aria-label="Prices in another currency"><option value="">Fiat</option><option value="EUR">€ EUR</option><option value="GBP">£ GBP</option><option value="CAD">C$ CAD</option><option value="AUD">A$ AUD</option><option value="JPY">¥ JPY</option><option value="INR">₹ INR</option><option value="BRL">R$ BRL</option><option value="KRW">₩ KRW</option></select>
         <details class="pop menu-pop">
           <summary aria-label="Menu">☰</summary>
           <div class="pop-panel menu-list">
@@ -146,7 +148,14 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
             <button type="button" class="menu-item" data-action="csv">📥 Download table (CSV)</button>
             <button type="button" class="menu-item" id="backupExport">🗄️ Back up my data (file)</button>
             <button type="button" class="menu-item" id="backupImport">♻️ Restore from a backup file</button>
+            <button type="button" class="menu-item" id="tvBtn">📺 Market TV (full screen)</button>
             <button type="button" class="menu-item" id="densityBtn" data-action="density" aria-pressed="false">📐 Compact rows</button>
+            <fieldset class="col-picks"><legend class="pop-title">Table columns</legend>
+              <label><input type="checkbox" data-col="c7" checked /> 7-day change</label>
+              <label><input type="checkbox" data-col="spark" checked /> 7-day chart</label>
+              <label><input type="checkbox" data-col="mcap" checked /> Market cap</label>
+              <label><input type="checkbox" data-col="vol" checked /> Volume</label>
+            </fieldset>
             <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
             <a class="menu-item" href="/market/">📰 Weekly market report</a>
             <a class="menu-item" href="/compare/">⚖️ Compare coins</a>
@@ -178,13 +187,23 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
 
       <section class="movers" aria-labelledby="movers-h">
         <div class="section-head">
-          <h2 id="movers-h">Biggest movers <span class="muted">· 24h</span></h2>
+          <h2 id="movers-h">Biggest movers <span class="muted">· <span id="moversTf">24h</span></span></h2>
           <div class="seg" role="group" aria-label="Show">
             <button type="button" class="seg-btn active" data-action="movers" data-mode="gainers" aria-pressed="true">Gainers</button>
             <button type="button" class="seg-btn" data-action="movers" data-mode="losers" aria-pressed="false">Losers</button>
           </div>
+          <div class="seg" role="group" aria-label="Time frame">
+            <button type="button" class="seg-btn active" data-action="movers-tf" data-tf="24h" aria-pressed="true">24h</button>
+            <button type="button" class="seg-btn" data-action="movers-tf" data-tf="7d" aria-pressed="false">7d</button>
+          </div>
         </div>
         <div class="mover-cards" id="moversList"><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div><div class="mover-card skeleton" aria-hidden="true"></div></div>
+      </section>
+
+      <section class="gaps" aria-labelledby="gaps-h">
+        <div class="section-head"><h2 id="gaps-h">Exchange price gaps <span class="muted">· live</span></h2></div>
+        <p class="gap-note">The same coin can cost a little more on one exchange than another. These are the widest gaps between Coinbase, Binance and Kraken right now, from quotes less than a minute old (Binance's USDT prices converted at Coinbase's USDT price). Fees and transfer times aren't included; this is a price comparison, not trading advice. <span class="muted">Updated <span id="gapTime">—</span></span></p>
+        <ol class="gap-list" id="gapList"><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li><li class="gap-row gap-wait" aria-hidden="true"><span class="gap-sym">—</span><span class="gap-mid"></span><span class="gap-pct">—</span></li></ol>
       </section>
 
       <!-- bell-brief:start (generated by scripts/build-coin-pages.mjs from content/bell.json — do not edit by hand) -->
@@ -269,8 +288,9 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <div class="bag-banner" id="bagBanner" hidden>
         <div><span class="stat-label">Total value</span><strong id="bagTotalVal">$0.00</strong></div>
         <div><span class="stat-label">24h change</span><strong id="bagPnlVal">$0.00</strong></div>
+        <div><span class="stat-label">Profit vs your buy price</span><strong id="bagCostPnlVal">—</strong></div>
         <div><span class="stat-label">Watchlist / alerts</span><strong id="watchlistCountVal">0 / 0</strong></div>
-        <p class="muted">Type how much you hold in the <em>Holdings</em> column. It's saved only in this browser.</p>
+        <p class="muted">Type how much you hold in the <em>Holdings</em> column, and your average buy price if you want your profit or loss. It's saved only in this browser.</p>
         <button type="button" class="action-btn" data-action="reset-bag">Clear holdings</button>
       </div>
 
@@ -285,7 +305,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
               <th scope="col" data-sort="price"><button type="button" class="th-sort" data-action="sort">Price</button></th>
               <th scope="col" data-sort="change24h"><button type="button" class="th-sort" data-action="sort">24h</button></th>
               <th scope="col" class="hide-mobile" data-sort="change7d"><button type="button" class="th-sort" data-action="sort">7d</button></th>
-              <th scope="col" class="col-center hide-mobile">Last 7 days</th>
+              <th scope="col" class="col-center hide-mobile col-spark">Last 7 days</th>
               <th scope="col" class="hide-mobile" data-sort="mcap"><button type="button" class="th-sort" data-action="sort">Market cap</button></th>
               <th scope="col" class="hide-tablet" data-sort="vol24h"><button type="button" class="th-sort" data-action="sort" title="24h spot volume on Coinbase, Binance and Kraken only">Volume (24h)</button></th>
               <th scope="col" class="col-bag" data-sort="bagVal"><button type="button" class="th-sort" data-action="sort">Holdings</button></th>
