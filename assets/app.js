@@ -612,6 +612,7 @@
     c.price = price;
     c.lastSource = source;
     c.exPrices[source] = price;
+    (c.exAt || (c.exAt = {}))[source] = Date.now();
     if (o.change24h !== undefined && isFinite(o.change24h)) c.change24h = o.change24h;
     if (o.high24h > 0) c.high24h = Math.max(o.high24h, price);
     if (o.low24h > 0) c.low24h = Math.min(o.low24h, price);
@@ -714,6 +715,7 @@
 
     if (MODE === "home") {
       const now = Date.now();
+      if (window.CPT_HOME) window.CPT_HOME(dirty);
       $("tickCounter").textContent = state.tickCount.toLocaleString();
       dirty.forEach(sym => {
         const c = state.coins.get(sym);
@@ -2162,7 +2164,7 @@
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
   // Read-only hooks for assets/flash.js (Newsflash and move alerts) and assets/race.js, loaded after this file.
-  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar };
+  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, getRate, currSymbol };
 
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

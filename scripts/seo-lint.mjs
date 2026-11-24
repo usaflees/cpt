@@ -183,8 +183,9 @@ for (const c of coins) {
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-// app.js 115 → 122 KB (Nov 23): fiat currencies, holdings profit, column choice, watchlist order and 7-day movers live in the core table code.
-const BUDGET = { "assets/app.js": 122_000, "assets/app.css": 80_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000 };
+// app.js 115 → 122 KB, app.css 80 → 84 KB (Nov 23): fiat currencies, holdings profit, column choice, watchlist order,
+// 7-day movers, exchange gaps and Market TV (their logic is in home-plus.js; app.* holds table code and styles).
+const BUDGET = { "assets/app.js": 122_000, "assets/app.css": 84_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/home-plus.js": 9_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
