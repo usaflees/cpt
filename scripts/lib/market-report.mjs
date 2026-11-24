@@ -179,7 +179,7 @@ export function buildMarketReport(h) {
         <div style="margin-top:10px;max-width:560px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-secondary);color:var(--text-secondary);display:grid;gap:10px">
           <p>A new report comes out every Monday. Paste this feed address into a feed reader app (Feedly, Inoreader, NetNewsWire or any other) and each week's report shows up there.</p>
           <p style="display:flex;gap:8px"><input type="text" class="sync-input" style="flex:1;min-width:0;margin:0" id="feedUrl" readonly aria-label="Feed address" value="${feedUrl}" /><button type="button" class="action-btn btn-accent" data-action="copy" data-target="feedUrl" data-msg="📋 Feed address copied.">📋 Copy</button></p>
-          <p>Or add it in one tap: <a href="https://feedly.com/i/subscription/feed%2Fhttps%3A%2F%2Fcryptopriceticker.com%2Fmarket%2Ffeed.xml" rel="noopener">Feedly</a> · <a href="https://www.inoreader.com/?add_feed=https%3A%2F%2Fcryptopriceticker.com%2Fmarket%2Ffeed.xml" rel="noopener">Inoreader</a></p>
+          <p>Or add it in one tap: <a href="https://feedly.com/i/subscription/feed%2F${encodeURIComponent(feedUrl)}" rel="noopener">Feedly</a> · <a href="https://www.inoreader.com/?add_feed=${encodeURIComponent(feedUrl)}" rel="noopener">Inoreader</a></p>
         </div>
       </details>
     </section>
