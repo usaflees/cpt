@@ -1,8 +1,8 @@
 # Bell Brief cron Worker (scripts/bell-worker/index.mjs). It writes the newest edition to the KV namespace bound as
 # BELL; the Pages project must bind the same namespace as BELL too (functions/bell.js reads it for /bell).
 #
-# One-time setup (owner, Cloudflare dashboard): create a KV namespace named cpt-bell and put its ID below, bind it
-# to the Pages project as BELL, then deploy from the repository root with:
+# One-time setup (done Nov 24, 2026): KV namespace cpt-bell (ID below) is bound
+# to the Pages project as BELL. Redeploy from the repository root with:
 #   npx wrangler deploy --config scripts/bell-worker/wrangler.toml
 # The namespace ID is not a secret (using it needs a Cloudflare API token). The Worker has no public route.
 name = "cpt-bell"
@@ -20,7 +20,7 @@ crons = ["26,36 13,14,15 * * MON-FRI", "6,16 17,18,19,20,21,22 * * MON-FRI"]
 
 [[kv_namespaces]]
 binding = "BELL"
-id = "REPLACE_WITH_THE_CPT_BELL_NAMESPACE_ID"
+id = "aa6885d59e5346568fe8b03db55a1440"
 
 [observability]
 enabled = true
