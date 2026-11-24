@@ -5,6 +5,7 @@
 //   _redirects              old tickers (e.g. /coin/ton/ → /coin/gram/)
 //   convert/index.html      the crypto converter page
 //   heatmap/index.html      the live market heatmap page
+//   market/index.html       the weekly market report, and market/feed.xml (scripts/lib/market-report.mjs)
 //   index.html              the "Live price pages" link list between the coin-index markers
 //   coin-icons/sprite.svg   every coin logo in one file (scripts/lib/sprite.mjs); its ?v= hash is
 //                           stamped into assets/app.js (LOGO_SPRITE) and the static coin badges
@@ -16,6 +17,8 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { ROOT, loadRegistry } from "./lib/registry.mjs";
+import { loadComparePairs, comparePages, compareLinksHtml } from "./lib/compare-pages.mjs";
+import { buildMarketReport } from "./lib/market-report.mjs";
 import { buildSprite } from "./lib/sprite.mjs";
 if (process.argv.length > 2) { console.error("Unknown argument(s): " + process.argv.slice(2).join(" ") + "\nUsage: node scripts/build-coin-pages.mjs   (no options; regenerates pages, sitemap, _redirects, hashes)"); process.exit(1); }
 
@@ -51,6 +54,7 @@ const bell = existsSync(bellPath) ? JSON.parse(readFileSync(bellPath, "utf8")) :
 const overrides = existsSync(ROOT + "content/seo-overrides.json") ? JSON.parse(readFileSync(ROOT + "content/seo-overrides.json", "utf8")) : {};
 const byCap = [...coins].sort((a, b) => b.supply * b.price - a.supply * a.price);
 const rankOf = new Map(byCap.map((c, i) => [c.sym, i + 1]));
+const comparePairs = loadComparePairs(coins); // content/compare-pairs.json
 
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 const slug = sym => sym.toLowerCase();
@@ -64,7 +68,9 @@ function usd(v) {
   if (v >= 1) return "$" + v.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
   if (v >= 0.01) return "$" + v.toFixed(4);
   if (v >= 0.0001) return "$" + v.toFixed(6);
-  return "$" + v.toFixed(8);
+  // Tiny prices keep three significant digits (MOG at 8.1e-8 read "$0.00000008").
+  if (!(v > 0) || !Number.isFinite(v)) return v === 0 ? "$0.00" : "—";
+  return "$" + v.toFixed(Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(v)))));
 }
 function compact(v, prefix = "$") {
   if (v >= 1e12) return prefix + (v / 1e12).toFixed(2) + "T";
@@ -178,6 +184,8 @@ function topbar(withFeeds, withCurrency = withFeeds) {
           <button type="button" class="menu-item" data-action="open-widget">🧩 Get a free website widget</button>
           <a class="menu-item" href="/widgets/">📐 Widget gallery &amp; docs</a>
           <a class="menu-item" href="/heatmap/">🟩 Market heatmap</a>
+          <a class="menu-item" href="/market/">📰 Weekly market report</a>
+          <a class="menu-item" href="/compare/">⚖️ Compare coins</a>
           <a class="menu-item" href="/race/">🏁 Coin Race</a>
           <a class="menu-item" href="/convert/">🔁 Crypto converter</a>
           <a class="menu-item" href="/about/">ℹ️ About &amp; data sources</a>
@@ -357,6 +365,8 @@ function coinPage(c) {
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
+  <meta name="cpt-agent" content="/assets/agent.js" />
+  <meta name="cpt-ondevice" content="/assets/ondevice.js" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -380,6 +390,7 @@ function coinPage(c) {
   <link rel="stylesheet" href="/assets/app.css" />
   <script src="/assets/coins.js" defer></script>
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/chart.js" defer></script>
   <script src="/assets/flash.js" defer></script>
   <script src="/assets/timemachine.js" defer></script>
   <script src="/assets/consent.js" defer></script>
@@ -410,8 +421,14 @@ function coinPage(c) {
         </div>
       </div>
       <div>
+        <div class="seg chart-ranges" role="group" aria-label="Chart range">
+          <button type="button" class="seg-btn" data-range="1d" aria-pressed="true">24h</button>
+          <button type="button" class="seg-btn" data-range="7d" aria-pressed="false">7d</button>
+          <button type="button" class="seg-btn" data-range="30d" aria-pressed="false">30d</button>
+          <button type="button" class="seg-btn" data-range="1y" aria-pressed="false">1y</button>
+        </div>
         <div class="chart-box" id="cpChart"></div>
-        <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span>${s}/USD</span></div>
+        <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span id="cpChartPair">${s}/USD</span></div>
       </div>
     </section>
 
@@ -475,15 +492,15 @@ function coinPage(c) {
       <div class="related-list">
           ${relatedLinks(nearby)}
       </div>
-      <h3>Top coins by market cap</h3>
+      <h3>More top coins</h3>
       <div class="related-list">
           ${relatedLinks(top)}
-      </div>
+      </div>${compareLinksHtml(comparePairs, c.sym, esc, shortName)}
     </nav>
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -657,7 +674,7 @@ function sectorPage(x) {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
     <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
   </footer>
 </body>
@@ -672,6 +689,10 @@ for (const x of sectors) {
   mkdirSync(sectorDir + x.slug, { recursive: true });
   writeFileSync(`${sectorDir}${x.slug}/index.html`, sectorPage(x));
 }
+
+// 1b2. Coin comparison pages (scripts/lib/compare-pages.mjs)
+const compare = comparePages(comparePairs, { SITE, coins, stats, rankOf, updated, esc, usd, compact, pctText, pctClass, longDate, shortName, avatarHtml, topbar, corrWord, firstFit, sectorNames: SECTOR_NAMES });
+const compareUrls = compare.write();
 
 // 1c. Converter page
 function convertPage() {
@@ -769,7 +790,7 @@ function convertPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -875,7 +896,7 @@ function heatmapPage() {
   </main>
 
   <footer class="container site-footer" style="padding-top:0">
-    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
+    <span><img class="footer-mark" src="/brand/mark.svg" width="18" height="18" alt="" /><a href="/">CryptoPriceTicker.com</a> — live multi-exchange crypto prices. No login, no ads. <a href="https://github.com/usaflees/cpt">Public source code</a>, hosted on Cloudflare Pages. <a href="/heatmap/">Heatmap</a> · <a href="/market/">Weekly report</a> · <a href="/compare/">Compare coins</a> · <a href="/convert/">Converter</a> · <a href="/widgets/">Free widgets</a> · <a href="/about/">About &amp; methodology</a> · <a href="/brand/">Brand kit</a> · <a href="/accessibility/">Accessibility</a> · <a href="/trust/">Trust &amp; safety</a> · <button type="button" class="link-btn" data-consent-open>Cookie settings</button></span>
   </footer>
 </body>
 </html>
@@ -911,8 +932,11 @@ const pageDate = path => (pageDates[path] || {}).date || updated;
 // The home page changes with each Bell Brief edition (ET date of its cutoff).
 const homeDate = [updated, bell?.editions?.[0] ? new Date(bell.editions[0].cutoff).toLocaleDateString("en-CA", { timeZone: "America/New_York" }) : null].filter(Boolean).sort().pop();
 
+// 1e. Weekly market report (/market/ and its Atom feed), from the same daily-close stats
+buildMarketReport({ SITE, esc, longDate, list, pctText, pctClass, usd, avatarHtml, topbar, slug, coins, stats, sectors, week: statsFile.updated });
+
 // 2. Sitemap
-const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...byCap.map(c => url(c.sym))];
+const urls = [`${SITE}/`, `${SITE}/heatmap/`, `${SITE}/market/`, `${SITE}/convert/`, `${SITE}/about/`, `${SITE}/widgets/`, `${SITE}/brand/`, `${SITE}/accessibility/`, `${SITE}/trust/`, `${SITE}/race/`, ...sectors.map(sectorUrl), ...compareUrls, ...byCap.map(c => url(c.sym))];
 writeFileSync(ROOT + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${STATIC_PAGES[u.slice(SITE.length)] ? pageDate(u.slice(SITE.length)) : u === `${SITE}/` ? homeDate : updated}</lastmod></url>`).join("\n")}
@@ -945,6 +969,7 @@ for (const c of coins) {
   if (ns && !taken.has(ns)) { taken.add(ns); redirects.push(`/coin/${ns} ${to} 301`, `/coin/${ns}/ ${to} 301`); }
   if (c.sym !== slug(c.sym)) redirects.push(`/coin/${c.sym} ${to} 301`, `/coin/${c.sym}/ ${to} 301`);
 }
+redirects.push(...compare.redirects());
 writeFileSync(ROOT + "_redirects", `# Generated by scripts/build-coin-pages.mjs — renamed tickers keep their old links working.
 # Docs: https://developers.cloudflare.com/pages/configuration/redirects/
 /coin / 301
@@ -1007,9 +1032,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "home-plus.js", "timemachine.js", "bell.js", "bell.css"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js", "chart.js", "home-plus.js", "timemachine.js"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|home-plus\.js|timemachine\.js|bell\.js|bell\.css)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css|agent\.js|ondevice\.js|chart\.js|home-plus\.js|timemachine\.js)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;
@@ -1035,5 +1060,5 @@ for (const f of [...htmlFiles, "sw.js"]) {
   if (next !== headers) writeFileSync(ROOT + "_headers", next);
 }
 
-console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter and heatmap, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
+console.log(`Built ${coins.length} coin pages, ${sectors.length} sector pages, the converter, heatmap and market report, sitemap.xml (${urls.length} URLs), _redirects (${redirects.length} rules) and the home-page coin list.`);
 if (!existsSync(ROOT + "og-image.jpg")) console.warn("⚠ og-image.jpg is missing");

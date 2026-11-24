@@ -1630,6 +1630,27 @@ body:not(.is-embed) .hero::before {
    the first paint, so the quick-link row never re-wraps after load). */
 html:not(.has-pip) [data-action="pip"] { display: none; }
 
+/* On-device AI on coin pages (assets/ondevice.js, added only in browsers with Chrome's built-in model or translator). */
+.ondevice-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.ondevice-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.ondevice-form .form-input { flex: 1 1 14em; min-width: 0; }
+.ondevice-answer { min-height: 1.5em; margin: 10px 0 0; white-space: pre-wrap; }
+.ondevice-answer:empty { display: none; }
+.ondevice-status:empty { display: none; }
+.ondevice-translate { margin-top: 18px; }
+.ondevice-translate .action-btn + .action-btn { margin-left: 0; }
+
+/* Audit fixes (Nov 2026). Running text in p.prose was uncapped (about 170 characters a line at 1440 px):
+   keep it near 75. The header dot shows feed health (app.js feedHealth). */
+p.prose { max-width: 75ch; }
+.live-pop > summary.feeds-partial .pulse-dot { background: var(--warn, #f5a524); box-shadow: 0 0 8px var(--warn, #f5a524); }
+.live-pop > summary.feeds-down .pulse-dot { background: var(--down); box-shadow: 0 0 8px var(--down); animation: none; }
+
+/* Coin page chart ranges (assets/chart.js) */
+.chart-ranges { margin-bottom: 8px; }
+.chart-ranges .seg-btn { padding: 4px 12px; }
+.chart-ranges .seg-btn[aria-pressed="true"] { background: var(--accent-glow); color: var(--accent); }
+
 /* Fiat display currency picker (topbar, next to $ ₿ Ξ ◎) */
 .fiat-select { height: 36px; padding: 0 8px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary); font: 600 13px var(--font-mono); cursor: pointer; }
 .fiat-select.active { color: var(--accent); border-color: var(--accent); }

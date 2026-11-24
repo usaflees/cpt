@@ -158,7 +158,7 @@
    * URL parameters: sync links, legacy widget links, embed config
    * ------------------------------------------------------------------ */
   state.currency = pick((params.get("curr") || (IS_EMBED ? "" : store.get("cpt_curr", ""))).toUpperCase(), CURRENCIES, "USD");
-  // First visit follows the device's light/dark setting; widgets default to dark unless their embed code says otherwise.
+  // First visit follows the device's light/dark setting; widgets are dark unless their embed code says otherwise.
   const prefersLight = () => Boolean(window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches);
   const systemTheme = !IS_EMBED && prefersLight() ? "light" : "neon";
   // ?theme=auto (widgets): light or Neon to match the visitor's device, and switch live when it changes.
@@ -216,7 +216,7 @@
   }
   const currSymbol = (curr = state.currency) => ({ BTC: "₿", ETH: "Ξ", SOL: "◎", ...FIAT_SIGN }[curr] || "$");
 
-  // Reused formatters: toLocaleString with options builds a new one on every call, which adds up at ~10 ticks/s.
+  // Reused formatters: toLocaleString with options builds one per call, which adds up at ~10 ticks/s.
   const NF2 = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const NF3 = new Intl.NumberFormat("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
   function fmtPrice(usd, curr) {
@@ -229,7 +229,8 @@
     if (val >= 1) return sym + NF3.format(val);
     if (val >= 0.01) return sym + val.toFixed(4);
     if (val >= 0.0001) return sym + val.toFixed(6);
-    return sym + val.toFixed(8);
+    // Tiny prices keep three significant digits (8 decimals left MOG with one).
+    return sym + val.toFixed(val > 0 ? Math.min(20, Math.max(8, 2 - Math.floor(Math.log10(val)))) : 8);
   }
 
   function fmtCompact(usd, curr) {
@@ -249,7 +250,7 @@
   const chgPill = (c, style = "") => `<span class="chg-pill ${chgClass(c)}"${style ? ` style="${style}"` : ""}>${fmtChange(c)}</span>`;
   const rangePct = c => Math.max(2, Math.min(98, ((c.price - c.low24h) / ((c.high24h - c.low24h) || 1)) * 100));
 
-  // Tick-based mini charts only once there are enough ticks to show a shape (a 2-point line looks like a trend).
+  // Tick charts need enough ticks to show a shape (a 2-point line looks like a trend).
   const liveTicks = c => (c.history.length >= 5 ? c.history : []);
 
   function buildSparkline(history, isUp, w = 88, h = 24, opts = {}) {
@@ -615,7 +616,7 @@
     c.price = price;
     c.lastSource = source;
     c.exPrices[source] = price;
-    (c.exAt || (c.exAt = {}))[source] = Date.now();
+    (c.exAt || (c.exAt = {}))[source] = Date.now(); // read by assets/agent.js to skip stale quotes
     if (o.change24h !== undefined && isFinite(o.change24h)) c.change24h = o.change24h;
     if (o.high24h > 0) c.high24h = Math.max(o.high24h, price);
     if (o.low24h > 0) c.low24h = Math.min(o.low24h, price);
@@ -760,7 +761,7 @@
     }
   }
 
-  // Timer-driven (not requestAnimationFrame) so the pinned tab title keeps updating in background tabs.
+  // Timer-driven (not requestAnimationFrame) so the pinned tab title updates in background tabs.
   setInterval(() => { flush(); updateTabTitle(); }, 200);
   document.addEventListener("visibilitychange", () => { if (!document.hidden && MODE === "home") renderTable(); });
 
@@ -791,6 +792,20 @@
     if (!el) return;
     el.textContent = `${ex}: ${text}`;
     el.classList.toggle("online", online);
+    feedHealth();
+  }
+
+  // The header dot turns amber when some started feeds are down and red when all are, so a frozen
+  // Coinbase or Kraken feed no longer hides behind a green "Live" (colour only: no layout shift).
+  function feedHealth() {
+    const sum = document.querySelector(".live-pop > summary");
+    if (!sum) return;
+    const started = ["CB", "BN", "KR"].map(ex => $(`badge${ex}`)).filter(b => b && !/INIT$/.test(b.textContent));
+    if (!started.length) return;
+    const up = started.filter(b => b.classList.contains("online")).length;
+    sum.classList.toggle("feeds-partial", up > 0 && up < started.length);
+    sum.classList.toggle("feeds-down", up === 0);
+    sum.setAttribute("aria-label", up === started.length ? "Live feed status" : `Live feed status: ${up} of ${started.length} exchanges connected`);
   }
 
   // Reconnect with capped exponential backoff; reset after a healthy connection.
@@ -798,17 +813,21 @@
   let feedsPaused = false;
   function keepAlive(ex, connect) {
     let delay = 2000;
-    const feed = { ws: null };
+    const feed = { ws: null, retry: 0 };
     const open = () => {
-      if (feedsPaused) return;
+      // One socket per exchange: a retry scheduled before the page went into the back/forward cache must not
+      // open a second socket next to the one pageshow already opened.
+      clearTimeout(feed.retry);
+      if (feedsPaused || (feed.ws && feed.ws.readyState < 2)) return;
       let ws;
       try { ws = connect(); } catch (_) { return; }
       feed.ws = ws;
       ws.addEventListener("open", () => { delay = 2000; setBadge(ex, "LIVE", true); });
       ws.addEventListener("close", () => {
+        if (feed.ws !== ws) return;
         setBadge(ex, "RETRY", false);
         if (feedsPaused) return;
-        setTimeout(open, delay);
+        feed.retry = setTimeout(open, delay);
         delay = Math.min(delay * 2, 60000);
       });
     };
@@ -821,12 +840,12 @@
   document.addEventListener("click", e => {
     const a = e.target.closest && e.target.closest("a.coin-cell, a.mover-card, .quick-results a");
     const av = a && a.querySelector(".coin-avatar");
-    // On a coin page the header logo already carries the name; two elements with it cancel the transition.
+    // On a coin page the header logo carries the name; two elements with it cancel the transition.
     if (av && !document.querySelector(".coin-title .coin-avatar")) av.style.viewTransitionName = "coin-logo";
   }, true);
   addEventListener("pageshow", () => document.querySelectorAll('.coin-avatar[style*="view-transition-name"]').forEach(el => { el.style.viewTransitionName = ""; }));
-  // A cross-document transition is skipped when the navigation is interrupted (a second click, a fast back, a closed tab).
-  // The browser then rejects its promises; handle them so a skipped animation isn't reported as an uncaught error.
+  // An interrupted navigation skips the cross-document transition and rejects its promises: catch them so a
+  // skipped animation isn't reported as an uncaught error.
   const settleTransition = e => { const vt = e.viewTransition; if (vt) [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => p && p.catch(() => {})); };
   addEventListener("pageswap", settleTransition); // the incoming page's side is in theme-init.js (it must run before first render)
 
@@ -853,7 +872,7 @@
   // feeds; if the page comes back from the cache, they reconnect with a fresh REST snapshot.
   addEventListener("pagehide", () => {
     feedsPaused = true;
-    feeds.forEach(f => { if (f.ws && f.ws.readyState < 2) f.ws.close(); });
+    feeds.forEach(f => { clearTimeout(f.retry); if (f.ws && f.ws.readyState < 2) f.ws.close(); });
   });
   addEventListener("pageshow", e => {
     if (!e.persisted || !feedsPaused) return;
@@ -913,7 +932,7 @@
     keepAlive("CB", () => {
       const ws = new WebSocket(COINBASE_WS);
       coinbaseSocket = ws;
-      // ticker_batch (one update per product every 5s) instead of every trade: Binance already ticks each second.
+      // ticker_batch (one update per product per 5 s), not every trade: Binance already ticks each second.
       ws.onopen = () => ws.send(JSON.stringify({ type: "subscribe", product_ids: ids.concat(extraCoinbaseIds), channels: ["ticker_batch"] }));
       ws.onmessage = ev => {
         try {
@@ -979,6 +998,62 @@
     connectBinance(syms);
     connectCoinbase(syms);
     connectKraken(syms);
+    setTimeout(backupPoll, BACKUP_FIRST_MS);
+  }
+
+  // Backup feed: coins with no live tick for BACKUP_STALE_MS get a REST price, least recently tried first.
+  // Kraken (one call) only for coins with a live 24h change (its ticker has none), then Coinbase.
+  const COINBASE_REST = "https://api.exchange.coinbase.com";
+  const KRAKEN_REST = "https://api.kraken.com/0/public";
+  const KRAKEN_REST_NAME = { BTC: "XBT", DOGE: "XDG" }; // where Kraken REST differs
+  const BACKUP_FIRST_MS = 20e3, BACKUP_EVERY_MS = 45e3, BACKUP_STALE_MS = 40e3, BACKUP_CB_MAX = 6, BACKUP_KR_MAX = 30;
+  const lastLive = c => Math.max(0, ...Object.values(c.exAt || {}));
+  // A socket tick during the request wins over the older REST price.
+  const backupTick = (c, t0, price, src, o) => lastLive(c) <= t0 && (applyTick(c.sym, price, src, o), true);
+  async function backupKraken(coins, t0) {
+    const names = coins.map(c => { const t = tickerOf(c, "KR"); return [c, KRAKEN_REST_NAME[t] || t]; });
+    if (!names.length) return [];
+    const res = await fetch(`${KRAKEN_REST}/Ticker?pair=${names.map(([, n]) => n + "USD").join(",")}`);
+    const body = res.ok && (await res.json());
+    // An unknown pair fails the whole call: then leave it to Coinbase.
+    if (!body) return [];
+    if ((body.error || []).length) return (backupKrOff = /EQuery/.test(body.error)), [];
+    const r = body.result || {};
+    return names.filter(([c, n]) => {
+      // Older pairs answer as XXMRZUSD, newer ones as typed (KASUSD). Volume only where Kraken's already counts.
+      const t = r[n + "USD"] || r["X" + n + "ZUSD"] || r["X" + n + "USD"] || r[n + "ZUSD"];
+      const last = t && +t.c[0];
+      return last > 0 && backupTick(c, t0, last, "KR", { high24h: +t.h[1], low24h: +t.l[1], quoteVol: c.exVol.KR > 0 ? +t.v[1] * (+t.p[1] || last) : 0 });
+    }).map(([c]) => c.sym);
+  }
+  async function backupCoinbase(coins, t0) {
+    for (const c of coins) {
+      try {
+        const res = await fetch(`${COINBASE_REST}/products/${tickerOf(c, "CB")}-USD/stats`);
+        const m = res.ok && (await res.json()); // 24h open, high, low, last, volume
+        const last = m && +m.last, open = m && +m.open;
+        if (last > 0) backupTick(c, t0, last, "CB", { change24h: open > 0 ? ((last - open) / open) * 100 : undefined, high24h: +m.high, low24h: +m.low, quoteVol: +m.volume * last });
+      } catch (_) { /* next product */ }
+    }
+  }
+  let backupKrOff = false;
+  async function backupPoll() {
+    if (!feedsPaused && !document.hidden) {
+      const t0 = Date.now();
+      const stale = Array.from(subscribed, s => state.coins.get(s))
+        .filter(c => c && t0 - lastLive(c) > BACKUP_STALE_MS)
+        .sort((a, b) => (a.bkAt || 0) - (b.bkAt || 0)); // failing coins can't hold a slot
+      if (stale.length) {
+        let done = [];
+        const kr = backupKrOff ? [] : stale.filter(c => c.live && c.feeds.includes("KR")).slice(0, BACKUP_KR_MAX);
+        try { done = await backupKraken(kr, t0); } catch (_) { /* try Coinbase */ }
+        const tried = stale.filter(c => c.feeds.includes("CB") && !done.includes(c.sym)).slice(0, BACKUP_CB_MAX);
+        await backupCoinbase(tried, t0);
+        kr.concat(tried).forEach(c => (c.bkAt = t0));
+        flush(); // in place: no table rebuild to interrupt typing
+      }
+    }
+    setTimeout(backupPoll, BACKUP_EVERY_MS);
   }
 
   // Adds coins to the running feeds (the converter can pick any coin after the page has loaded).
@@ -1150,7 +1225,7 @@
     state.activeModalSym = null;
     state.widgetModalOpen = false;
     setPageInert(false);
-    // The table may have re-rendered while the sheet was open: refocus the same row's button if needed.
+    // The table may have re-rendered while the sheet was open: refocus the same row's button.
     let target = modalOpener;
     if (target && !document.contains(target) && target.dataset?.sym) {
       target = document.querySelector(`#row-${CSS.escape(target.dataset.sym)} [data-action="${target.dataset.action}"]`);
@@ -1407,25 +1482,12 @@
     $("cpMcap").textContent = fmtCompact(c.mcap);
     $("cpVol").textContent = fmtCompact(c.vol24h);
     $("cpRange").style.width = rangePct(c).toFixed(0) + "%";
-    // Until the 24h candles load (or for coins without them), draw live ticks only once there are enough to mean something.
-    if (!chartLoaded) $("cpChart").innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
+    // Until candles load (or without them), draw live ticks once there are enough to mean something.
+    if (!coinChart.loaded) $("cpChart").innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
     updateCoinDetail(c.sym, "cp");
   }
 
-  let chartLoaded = false;
-  async function loadCoinChart() {
-    const c = state.coins.get(state.coinPageSym);
-    if (!c.feeds.includes("BN")) { $("cpChartNote").textContent = "Live ticks since you opened this page"; return; }
-    try {
-      const res = await fetch(`${BINANCE_REST}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=15m&limit=96`);
-      if (!res.ok) throw new Error(res.status);
-      const closes = (await res.json()).map(k => +k[4]);
-      if (closes.length < 2) throw new Error("empty");
-      chartLoaded = true;
-      $("cpChart").innerHTML = buildSparkline(closes, closes[closes.length - 1] >= closes[0], 600, 140, { fluid: true, label: `${c.name} price, last 24 hours` });
-      $("cpChartNote").textContent = "Last 24h · 15-min closes · Binance";
-    } catch (_) { $("cpChartNote").textContent = "Live ticks since you opened this page"; }
-  }
+  const coinChart = { loaded: false }; // assets/chart.js sets it once exchange candles are drawn
 
   function initCoinPage() {
     const c = state.coins.get(state.coinPageSym);
@@ -1433,7 +1495,6 @@
     $("coinDetail").innerHTML = coinDetailHtml(c.sym, "cp");
     syncFavButton();
     updateCoinPage();
-    loadCoinChart();
     loadDepth(c.sym, "cp");
   }
 
@@ -1492,7 +1553,7 @@
       const digits = v >= 1 || v === 0 ? 2 : Math.min(8, 2 - Math.floor(Math.log10(v)));
       return v.toLocaleString("en-US", { style: "currency", currency: code, minimumFractionDigits: Math.min(2, digits), maximumFractionDigits: digits });
     }
-    // Six significant digits below 1,000 (339.098, not 339.097999), two decimals above, none from 100,000.
+    // Six significant digits below 1,000 (339.098, not 339.097999), two decimals above, none from 100k.
     const digits = v >= 100000 ? 0 : v >= 1000 ? 2 : Math.min(10, 5 - Math.floor(Math.log10(v || 1)));
     return v.toLocaleString("en-US", { maximumFractionDigits: digits }) + " " + code;
   }
@@ -1571,7 +1632,7 @@
    * ------------------------------------------------------------------ */
   const SECTOR_LABELS = { L1: "Layer 1", L2: "Layer 2", DePIN: "DePIN", AI: "AI", DeFi: "DeFi", RWA: "Real-world assets", Privacy: "Privacy", Gaming: "Gaming", Meme: "Memecoins", Stable: "Stablecoins" };
   const hm = { group: params.get("group") === "sector", balanced: params.get("size") !== "cap", stables: false, tiles: new Map(), laidOut: 0 };
-  // "Balanced" sizes boxes by √market cap: still ordered by size, but Bitcoin no longer hides the small coins.
+  // "Balanced" sizes boxes by √market cap: still ordered by size, but Bitcoin no longer hides small coins.
   const hmWeight = c => (hm.balanced ? Math.sqrt(c.mcap) : c.mcap);
   const HM_MIN_FLAT = 1400, HM_MIN_GROUP = 2200;
   function syncHeatmapUrl() {
@@ -2126,7 +2187,7 @@
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => { state.search = e.target.value; renderTable(); }, 120);
     });
-    // Phones: the long coin-page list starts collapsed (links stay in the page for crawlers; no JS = fully open).
+    // Phones: the coin-page list starts collapsed (links stay for crawlers; no JS = open).
     if (window.matchMedia("(max-width: 640px)").matches && $("coinIndex")) {
       $("coinIndex").classList.add("collapsed");
       const t = $("coinIndexToggle");
@@ -2163,7 +2224,7 @@
   }
 
   if (MODE === "home" || MODE === "coin" || MODE === "embed" || MODE === "convert" || MODE === "heatmap" || MODE === "race") {
-    // A page prerendered by the speculation rules connects only once the visitor actually opens it.
+    // A page prerendered by the speculation rules connects once the visitor opens it.
     if (document.prerendering) document.addEventListener("prerenderingchange", startFeeds, { once: true });
     else startFeeds();
   }
@@ -2172,8 +2233,32 @@
   /* ------------------------------------------------------------------
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
-  // Read-only hooks for assets/flash.js (Newsflash and move alerts) and assets/race.js, loaded after this file.
-  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, getRate, currSymbol };
+  // Read-only hooks for the modules loaded after this file (flash.js, race.js, chart.js, home-plus.js, timemachine.js).
+  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, buildSparkline, tickerOf, coinChart, getRate, currSymbol };
+  // WebMCP agent tools: only browsers with document.modelContext fetch assets/agent.js (hashed URL in
+  // <meta name="cpt-agent">). The two setters below are its only write access.
+  const agentSrc = document.querySelector('meta[name="cpt-agent"]')?.content;
+  if ((MODE === "home" || MODE === "coin") && agentSrc && typeof document.modelContext?.registerTool === "function") {
+    window.CPT.setWatch = (sym, on) => {
+      if (on) state.watchlist.add(sym); else state.watchlist.delete(sym);
+      store.set("cpt_watch", Array.from(state.watchlist));
+      if (MODE === "home") deferRender(glideTable); else syncFavButton();
+      refreshQuickActions();
+    };
+    window.CPT.setAlert = (sym, usd) => {
+      if (usd > 0) state.alerts[sym] = usd; else delete state.alerts[sym];
+      store.set("cpt_alerts", state.alerts);
+      refreshAlertUi(sym);
+    };
+    const s = document.createElement("script");
+    s.src = agentSrc; s.defer = true; document.head.append(s);
+  }
+  // On-device AI (assets/ondevice.js): coin pages, in browsers with Chrome's built-in model or translator.
+  const odSrc = MODE === "coin" && document.querySelector('meta[name="cpt-ondevice"]')?.content;
+  if (odSrc && ("LanguageModel" in self || "Translator" in self)) {
+    const s = document.createElement("script");
+    s.src = odSrc; s.defer = true; document.head.append(s);
+  }
 
   if (MODE !== "embed" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

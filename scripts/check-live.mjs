@@ -66,10 +66,18 @@ for (const [bot, ua] of Object.entries(CRAWLERS)) {
   } catch (e) { problems.push(`/coin/btc/ as ${bot}: request failed (${e.message})`); }
 }
 // The repository's working files are not served (functions/_middleware.js + _routes.json); the site still is.
-for (const path of ["/scripts/build-coin-pages.mjs", "/docs/STRATEGY.md", "/content/coin-stats.json", "/tests/run.sh", "/.claude/skills/ship/SKILL.md", "/.github/workflows/site-checks.yml", "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore"]) {
+for (const path of ["/scripts/build-coin-pages.mjs", "/docs/STRATEGY.md", "/content/coin-stats.json", "/tests/run.sh", "/.claude/skills/ship/SKILL.md", "/.github/workflows/site-checks.yml", "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore", "/.gitattributes"]) {
   await check(path, { status: 404 });
 }
 await check("/llms.txt");
+// Public MCP server (functions/mcp.js): GET is refused, a JSON-RPC tool call answers from the site's own stats.
+await check("/mcp", { status: 405 });
+try {
+  const r = await fetch(BASE + "/mcp", { method: "POST", headers: { "content-type": "application/json", "user-agent": "cryptopriceticker-check/1.0" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/call", params: { name: "get_coin_stats", arguments: { symbol: "BTC" } } }) });
+  const j = await r.json();
+  if (r.status !== 200 || !(j.result?.structuredContent?.close_usd > 0)) problems.push(`/mcp tools/call get_coin_stats: HTTP ${r.status}, ${JSON.stringify(j).slice(0, 120)}`);
+  else ok.push("/mcp tools/call");
+} catch (e) { problems.push(`/mcp tools/call: request failed (${e.message})`); }
 await check("/.well-known/security.txt");
 // The pages.dev copy of production must stay out of search results (rule in _headers).
 if (IS_PROD) {

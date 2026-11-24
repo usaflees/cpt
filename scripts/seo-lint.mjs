@@ -23,7 +23,8 @@ const decode = s => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&l
 // ---------- 1. Pages: titles, descriptions, H1, canonical, JSON-LD ----------
 const { coins } = loadRegistry();
 const sectorSlugs = JSON.parse(read("content/sectors.json")).map(x => x.slug);
-const pages = ["index.html", "convert/index.html", "heatmap/index.html", "about/index.html", "widgets/index.html", "brand/index.html", "accessibility/index.html", "trust/index.html", "race/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
+const pages = ["index.html", "convert/index.html", "heatmap/index.html", "market/index.html", "about/index.html", "widgets/index.html", "brand/index.html", "accessibility/index.html", "trust/index.html", "race/index.html", ...sectorSlugs.map(x => `sector/${x}/index.html`),
+  "compare/index.html", ...(JSON.parse(read("content/compare-pairs.json")).pairs || []).map(([a, b]) => `compare/${a.toLowerCase()}-vs-${b.toLowerCase()}/index.html`),
   ...coins.map(c => `coin/${c.sym.toLowerCase()}/index.html`)];
 const seen = { title: new Map(), description: new Map() };
 const CSP = (read("_headers").match(/Content-Security-Policy: ([^\n]*)/) || [])[1] || "";
@@ -98,7 +99,9 @@ for (const line of read("robots.txt").split("\n")) {
   const routes = JSON.parse(read("_routes.json")).include.map(r => r.replace(/\/\*$/, "").toLowerCase());
   const inRoutes = new Set(routes);
   for (const c of code) if (!inRoutes.has(c)) err(`_routes.json: missing ${c}, which functions/_middleware.js blocks`);
-  for (const r of inRoutes) if (!code.has(r)) err(`functions/_middleware.js: does not block ${r}, which _routes.json routes to it`);
+  // Routes served by a Function of their own (not blocked): each needs its file in functions/.
+  const SERVED = { "/mcp": "functions/mcp.js" };
+  for (const r of inRoutes) if (!code.has(r) && !(SERVED[r] && existsSync(join(ROOT, SERVED[r])))) err(`functions/_middleware.js: does not block ${r}, which _routes.json routes to it`);
   for (const must of ["/scripts", "/docs", "/content", "/tests", "/.claude", "/claude.md"]) if (!code.has(must)) err(`functions/_middleware.js: ${must} must stay blocked`);
 }
 
@@ -183,9 +186,10 @@ for (const c of coins) {
 // ---------- 5b. Performance budgets (keep today's Lighthouse scores from eroding one PR at a time) ----------
 // Raw bytes (Brotli shrinks them ~4-5x). Raising a budget is fine when the feature is worth it:
 // change the number here in the same PR and say why.
-// app.js 115 → 122 KB, app.css 80 → 84 KB (Nov 23): fiat currencies, holdings profit, column choice, watchlist order,
+// app.js 115 → 126 KB, app.css 80 → 86 KB (Nov 24, after merging the backup feed and agent hooks): fiat currencies,
+// holdings profit, column choice, watchlist order,
 // 7-day movers, exchange gaps and Market TV (their logic is in home-plus.js; app.* holds table code and styles).
-const BUDGET = { "assets/app.js": 122_000, "assets/app.css": 84_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/home-plus.js": 9_000, "assets/timemachine.js": 7_000 };
+const BUDGET = { "assets/app.js": 126_000, "assets/app.css": 86_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000, "assets/chart.js": 8_000, "assets/home-plus.js": 9_000, "assets/timemachine.js": 7_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
@@ -196,11 +200,15 @@ for (const p of pages) {
   const size = statSync(join(ROOT, p)).size;
   if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
 }
+// Every /assets/ link carries a real content hash; "?v=undefined" means the file is missing from the build's ASSETS list.
+for (const p of pages) {
+  if (!existsSync(join(ROOT, p))) continue;
+  const bad = readFileSync(join(ROOT, p), "utf8").match(/\/assets\/[\w.-]+\?v=(?![0-9a-f]{10}\b)[^"'\s>]*/);
+  if (bad) err(`cache: ${p} links ${bad[0]} (add the file to ASSETS in scripts/build-coin-pages.mjs)`);
+}
 // Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
-const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
+const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://api.kraken.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
   "wss://data-stream.binance.vision", "wss://ws-feed.exchange.coinbase.com", "wss://ws.kraken.com",
-  // Kraken REST: daily candles for the coin-page Time Machine (Kraken-only coins), CORS-allowed for this site
-  "https://api.kraken.com",
   // Google Tag Manager + GA4, loaded by assets/consent.js after consent defaults are set
   "https://www.googletagmanager.com", "https://*.google-analytics.com", "https://*.analytics.google.com"];
 for (const o of new Set(CSP.match(/(?:https|wss):\/\/[^ ;]+/g) || [])) {
