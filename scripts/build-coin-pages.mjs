@@ -1024,7 +1024,7 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
   const top = byCap.slice(0, 25);
   const dash = `<span class="muted">—</span>`;
   const rows = top.map((c, i) => `<tr class="snap-row"><td class="col-center col-star"></td><td class="col-center col-rank">${i + 1}</td>` +
-    `<td class="col-left col-coin"><a class="coin-cell" href="/coin/${slug(c.sym)}/">${avatarHtml(c)}<span class="coin-main"><span class="coin-name">${esc(c.name)}</span><span class="coin-sym-row"><span class="coin-sym">${esc(c.sym)}</span></span></span></a></td>` +
+    `<td class="col-left col-coin"><a class="coin-cell" href="/coin/${slug(c.sym)}/">${avatarHtml(c)}<span class="coin-main"><span class="coin-name">${esc(c.name)}</span><span class="coin-sym-row"><span class="coin-sym">${esc(c.sym)}</span><span class="ex-badge">…</span></span></span></a></td>` +
     `<td class="col-price is-stale">${usd(c.price)}</td><td class="col-chg"><span class="chg-pill">—</span></td><td class="hide-mobile">${dash}</td><td class="col-center hide-mobile col-spark"></td>` +
     `<td class="hide-mobile">${compact(c.price * c.supply * 1e6)}</td><td class="hide-tablet muted">—</td><td class="col-bag"></td><td class="col-center col-more"></td></tr>`).join("\n");
   const asOf = longDate(String(registryUpdated || updated).slice(0, 10));

@@ -1650,3 +1650,6 @@ p.prose { max-width: 75ch; }
 .chart-ranges { margin-bottom: 8px; }
 .chart-ranges .seg-btn { padding: 4px 12px; }
 .chart-ranges .seg-btn[aria-pressed="true"] { background: var(--accent-glow); color: var(--accent); }
+
+/* Home table snapshot rows (build-time, replaced by app.js): keep the live rows' height (7-day chart is 32 px). */
+.snap-row .col-spark::before { content: ""; display: inline-block; width: 110px; height: 32px; vertical-align: middle; }
