@@ -9,7 +9,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/market/" />
   <link rel="alternate" type="application/atom+xml" title="CryptoPriceTicker weekly market report" href="/market/feed.xml" />
-  <link rel="preload" href="/assets/app.css?v=bc3d812b97" as="style" />
+  <link rel="preload" href="/assets/app.css?v=9256c56ab5" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -39,9 +39,9 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=bc3d812b97" />
+  <link rel="stylesheet" href="/assets/app.css?v=9256c56ab5" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
-  <script src="/assets/app.js?v=43a0ae3e92" defer></script>
+  <script src="/assets/app.js?v=cbc39dfd69" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="market">
@@ -83,7 +83,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <section class="page-section" aria-labelledby="up-h">
-      <h2 id="up-h">Best performers this week</h2>
+      <h2 id="up-h">Top 10 by 7-day change</h2>
       <div class="table-wrap">
         <table class="history-table sector-table" id="risers">
           <caption class="sr-only">The ten coins with the largest 7-day change, excluding stablecoins</caption>
@@ -105,7 +105,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     </section>
 
     <section class="page-section" aria-labelledby="down-h">
-      <h2 id="down-h">Worst performers this week</h2>
+      <h2 id="down-h">Bottom 10 by 7-day change</h2>
       <div class="table-wrap">
         <table class="history-table sector-table" id="fallers">
           <caption class="sr-only">The ten coins with the biggest 7-day falls (or smallest gains), excluding stablecoins</caption>
@@ -151,7 +151,64 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <h2 id="ext-h">New 52-week highs and lows</h2>
       <p>Coins with a full year of data whose daily close between November 16, 2026 and November 22, 2026 was their highest or lowest of the last 52 weeks.</p>
       <p><strong>New highs:</strong> none this week.</p>
-      <p><strong>New lows:</strong> <a href="/coin/1inch/">1inch Network (1INCH)</a>, <a href="/coin/ada/">Cardano (ADA)</a>, <a href="/coin/algo/">Algorand (ALGO)</a>, <a href="/coin/ankr/">Ankr (ANKR)</a>, <a href="/coin/apt/">Aptos (APT)</a>, <a href="/coin/arkm/">Arkham (ARKM)</a>, <a href="/coin/atom/">Cosmos (ATOM)</a>, <a href="/coin/axs/">Axie Infinity (AXS)</a>, <a href="/coin/bnb/">BNB (BNB)</a>, <a href="/coin/bonk/">Bonk (BONK)</a>, <a href="/coin/crv/">Curve DAO (CRV)</a>, <a href="/coin/doge/">Dogecoin (DOGE)</a>, <a href="/coin/dot/">Polkadot (DOT)</a>, <a href="/coin/dydx/">dYdX (DYDX)</a>, <a href="/coin/egld/">MultiversX (EGLD)</a>, <a href="/coin/etc/">Ethereum Classic (ETC)</a>, <a href="/coin/fet/">Artificial Superintelligence Alliance (FET)</a>, <a href="/coin/fil/">Filecoin (FIL)</a>, <a href="/coin/floki/">FLOKI (FLOKI)</a>, <a href="/coin/flow/">Flow (FLOW)</a>, <a href="/coin/gala/">Gala (GALA)</a>, <a href="/coin/glm/">Golem (GLM)</a>, <a href="/coin/gram/">Gram (GRAM)</a>, <a href="/coin/hbar/">Hedera (HBAR)</a>, <a href="/coin/icp/">Internet Computer (ICP)</a>, <a href="/coin/imx/">Immutable (IMX)</a>, <a href="/coin/jasmy/">JasmyCoin (JASMY)</a>, <a href="/coin/ldo/">Lido DAO (LDO)</a>, <a href="/coin/lpt/">Livepeer (LPT)</a>, <a href="/coin/lrc/">Loopring (LRC)</a>, <a href="/coin/ltc/">Litecoin (LTC)</a>, <a href="/coin/mana/">Decentraland (MANA)</a>, <a href="/coin/manta/">Manta Network (MANTA)</a>, <a href="/coin/metis/">Metis (METIS)</a>, <a href="/coin/mew/">cat in a dogs world (MEW)</a>, <a href="/coin/mnt/">Mantle (MNT)</a>, <a href="/coin/op/">Optimism (OP)</a>, <a href="/coin/paxg/">PAX Gold (PAXG)</a>, <a href="/coin/popcat/">Popcat (POPCAT)</a>, <a href="/coin/rose/">Oasis (ROSE)</a>, <a href="/coin/sand/">The Sandbox (SAND)</a>, <a href="/coin/sei/">Sei (SEI)</a>, <a href="/coin/shib/">Shiba Inu (SHIB)</a>, <a href="/coin/sky/">Sky (SKY)</a>, <a href="/coin/snx/">Synthetix (SNX)</a>, <a href="/coin/sui/">Sui (SUI)</a>, <a href="/coin/turbo/">Turbo (TURBO)</a>, <a href="/coin/virtual/">Virtuals Protocol (VIRTUAL)</a>, <a href="/coin/wif/">dogwifhat (WIF)</a>, <a href="/coin/wld/">World (WLD)</a>, <a href="/coin/wlfi/">World Liberty Financial (WLFI)</a>, <a href="/coin/xlm/">Stellar (XLM)</a>, <a href="/coin/xrp/">XRP (XRP)</a>, <a href="/coin/zen/">Horizen (ZEN)</a> and <a href="/coin/zk/">ZKsync (ZK)</a>.</p>
+      <h3>New lows (55)</h3>
+      <div class="related-list">
+          <a href="/coin/1inch/">1INCH <span>1inch Network</span></a>
+          <a href="/coin/ada/">ADA <span>Cardano</span></a>
+          <a href="/coin/algo/">ALGO <span>Algorand</span></a>
+          <a href="/coin/ankr/">ANKR <span>Ankr</span></a>
+          <a href="/coin/apt/">APT <span>Aptos</span></a>
+          <a href="/coin/arkm/">ARKM <span>Arkham</span></a>
+          <a href="/coin/atom/">ATOM <span>Cosmos</span></a>
+          <a href="/coin/axs/">AXS <span>Axie Infinity</span></a>
+          <a href="/coin/bnb/">BNB <span>BNB</span></a>
+          <a href="/coin/bonk/">BONK <span>Bonk</span></a>
+          <a href="/coin/crv/">CRV <span>Curve DAO</span></a>
+          <a href="/coin/doge/">DOGE <span>Dogecoin</span></a>
+          <a href="/coin/dot/">DOT <span>Polkadot</span></a>
+          <a href="/coin/dydx/">DYDX <span>dYdX</span></a>
+          <a href="/coin/egld/">EGLD <span>MultiversX</span></a>
+          <a href="/coin/etc/">ETC <span>Ethereum Classic</span></a>
+          <a href="/coin/fet/">FET <span>Artificial Superintelligence Alliance</span></a>
+          <a href="/coin/fil/">FIL <span>Filecoin</span></a>
+          <a href="/coin/floki/">FLOKI <span>FLOKI</span></a>
+          <a href="/coin/flow/">FLOW <span>Flow</span></a>
+          <a href="/coin/gala/">GALA <span>Gala</span></a>
+          <a href="/coin/glm/">GLM <span>Golem</span></a>
+          <a href="/coin/gram/">GRAM <span>Gram</span></a>
+          <a href="/coin/hbar/">HBAR <span>Hedera</span></a>
+          <a href="/coin/icp/">ICP <span>Internet Computer</span></a>
+          <a href="/coin/imx/">IMX <span>Immutable</span></a>
+          <a href="/coin/jasmy/">JASMY <span>JasmyCoin</span></a>
+          <a href="/coin/ldo/">LDO <span>Lido DAO</span></a>
+          <a href="/coin/lpt/">LPT <span>Livepeer</span></a>
+          <a href="/coin/lrc/">LRC <span>Loopring</span></a>
+          <a href="/coin/ltc/">LTC <span>Litecoin</span></a>
+          <a href="/coin/mana/">MANA <span>Decentraland</span></a>
+          <a href="/coin/manta/">MANTA <span>Manta Network</span></a>
+          <a href="/coin/metis/">METIS <span>Metis</span></a>
+          <a href="/coin/mew/">MEW <span>cat in a dogs world</span></a>
+          <a href="/coin/mnt/">MNT <span>Mantle</span></a>
+          <a href="/coin/op/">OP <span>Optimism</span></a>
+          <a href="/coin/paxg/">PAXG <span>PAX Gold</span></a>
+          <a href="/coin/popcat/">POPCAT <span>Popcat</span></a>
+          <a href="/coin/rose/">ROSE <span>Oasis</span></a>
+          <a href="/coin/sand/">SAND <span>The Sandbox</span></a>
+          <a href="/coin/sei/">SEI <span>Sei</span></a>
+          <a href="/coin/shib/">SHIB <span>Shiba Inu</span></a>
+          <a href="/coin/sky/">SKY <span>Sky</span></a>
+          <a href="/coin/snx/">SNX <span>Synthetix</span></a>
+          <a href="/coin/sui/">SUI <span>Sui</span></a>
+          <a href="/coin/turbo/">TURBO <span>Turbo</span></a>
+          <a href="/coin/virtual/">VIRTUAL <span>Virtuals Protocol</span></a>
+          <a href="/coin/wif/">WIF <span>dogwifhat</span></a>
+          <a href="/coin/wld/">WLD <span>World</span></a>
+          <a href="/coin/wlfi/">WLFI <span>World Liberty Financial</span></a>
+          <a href="/coin/xlm/">XLM <span>Stellar</span></a>
+          <a href="/coin/xrp/">XRP <span>XRP</span></a>
+          <a href="/coin/zen/">ZEN <span>Horizen</span></a>
+          <a href="/coin/zk/">ZK <span>ZKsync</span></a>
+      </div>
     </section>
 
     <section class="page-section prose" aria-labelledby="past-h">
