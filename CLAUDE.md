@@ -33,7 +33,7 @@ guide, research). How sessions work here (cloud/Duet threads, feature recipe): `
 - Scripts reject unknown flags; read a script's header comment for its usage instead of trying `--help`.
 
 ## Where the code misleads
-- `coin/`, `sector/`, `compare/`, `convert/`, `heatmap/`, `sitemap.xml`, `_redirects` and the coin list in `index.html` (between the
+- `coin/`, `sector/`, `compare/`, `convert/`, `heatmap/`, `sitemap.xml`, `_redirects` the home table rows in `index.html` (`tableBody`) and the coin list in `index.html` (between the
   `coin-index` markers) are generated. Edit `scripts/build-coin-pages.mjs` or `content/*.json`, then rebuild.
 - `assets/app.css` is layered: later sections override earlier ones. Add changes in the matching late section and check
   both dark and light themes and a 375 px viewport.

@@ -1015,6 +1015,27 @@ const startLineEnd = html.indexOf("\n", start) + 1;
 const links = byCap.map(c => `          <a href="/coin/${slug(c.sym)}/">${esc(c.name)} (${esc(c.sym)})</a>`).join("\n");
 writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice(end));
 
+// 5. Home table snapshot: the top 25 rows as the first HTML, so crawlers and AI answer engines that
+// don't run scripts see names, prices, market caps and links. The markup matches the first render of
+// rowHtml() in assets/app.js (registry seed price marked is-stale, "—" until live data arrives), so the
+// live render replaces it without a visible jump. No data-sym: app.js only wires its own rows.
+{
+  const h = readFileSync(indexPath, "utf8");
+  const top = byCap.slice(0, 25);
+  const dash = `<span class="muted">—</span>`;
+  const rows = top.map((c, i) => `<tr class="snap-row"><td class="col-center col-star"></td><td class="col-center col-rank">${i + 1}</td>` +
+    `<td class="col-left col-coin"><a class="coin-cell" href="/coin/${slug(c.sym)}/">${avatarHtml(c)}<span class="coin-main"><span class="coin-name">${esc(c.name)}</span><span class="coin-sym-row"><span class="coin-sym">${esc(c.sym)}</span></span></span></a></td>` +
+    `<td class="col-price is-stale">${usd(c.price)}</td><td class="col-chg"><span class="chg-pill">—</span></td><td class="hide-mobile">${dash}</td><td class="col-center hide-mobile col-spark"></td>` +
+    `<td class="hide-mobile">${compact(c.price * c.supply * 1e6)}</td><td class="hide-tablet muted">—</td><td class="col-bag"></td><td class="col-center col-more"></td></tr>`).join("\n");
+  const asOf = longDate(String(registryUpdated || updated).slice(0, 10));
+  const next = h
+    .replace(/<tbody id="tableBody">[\s\S]*?<\/tbody>/, () => `<tbody id="tableBody">\n${rows}\n          </tbody>`)
+    .replace(/(<caption class="sr-only">Live cryptocurrency prices, ranked by market cap\.)[^<]*(<\/caption>)/,
+      (_, a, b) => `${a} Prices shown before live data loads are from ${asOf}. Select a column header to sort.${b}`);
+  if (!next.includes('class="snap-row"')) throw new Error("index.html: tableBody not found for the home table snapshot");
+  writeFileSync(indexPath, next);
+}
+
 // ---------- Cache busting: /assets/* URLs carry a content hash (?v=…) ----------
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,

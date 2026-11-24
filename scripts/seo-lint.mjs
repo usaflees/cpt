@@ -195,7 +195,9 @@ for (const [f, max] of Object.entries(BUDGET)) {
 for (const p of pages) {
   if (!existsSync(join(ROOT, p))) continue;
   const size = statSync(join(ROOT, p)).size;
-  if (size > 60_000) err(`budget: ${p} is ${size} bytes of HTML (budget 60000)`);
+  // The home page carries the top-25 table snapshot (~21 KB raw, ~3 KB Brotli) for crawlers.
+  const max = p === "index.html" ? 75_000 : 60_000;
+  if (size > max) err(`budget: ${p} is ${size} bytes of HTML (budget ${max})`);
 }
 // Every /assets/ link carries a real content hash; "?v=undefined" means the file is missing from the build's ASSETS list.
 for (const p of pages) {
