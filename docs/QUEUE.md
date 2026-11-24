@@ -14,6 +14,12 @@ Item format: `- [ ] Title. What: … Done when: … Needs: …` (keep each item 
   /embed/ transfers ≤ 15 KB of JS+CSS gzip, the three layouts and six themes look the same (screenshots before/after),
   widget tests and full QA pass, and the site's own pages are unchanged.
 
+- [ ] **"Price data by" badge for exchanges and coin projects (backlinks, Nov 24).** What: a short section on
+  /widgets/ ("For exchanges, coin projects and blogs") with a copy-paste footer badge: one small link
+  `Prices by CryptoPriceTicker.com` (text, plus an optional 88×31 SVG badge from `/brand/`) that links to the home
+  page or the coin's page, with a Copy button (existing `data-action="copy"`). Brand-only anchor text, no
+  `rel=nofollow` advice either way. Done when: the snippet copies, renders on dark and light backgrounds, QA passes.
+
 ## Waiting on the owner
 - **Access lock-down settings (code live Nov 23, PR #17).** Needs from the owner: the settings in
   `docs/knowledge/ACCESS.md` §3 (ruleset on `main`, Actions limits, account 2FA and token review, fewer connectors

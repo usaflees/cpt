@@ -9,7 +9,7 @@
     "/.github", "/.github/*",
     "/functions", "/functions/*",
     "/CLAUDE.md", "/README.md", "/SECURITY.md", "/.gitignore", "/.gitattributes",
-    "/mcp"
+    "/mcp", "/bell"
   ],
   "exclude": []
 }

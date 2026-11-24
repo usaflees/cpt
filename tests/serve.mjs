@@ -31,7 +31,9 @@ const routesFile = join(ROOT, "_routes.json");
 const privateRes = existsSync(routesFile) ? JSON.parse(readFileSync(routesFile, "utf8")).include.map(p => new RegExp("^" + p.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$", "i")) : [];
 
 // Pages Functions with their own route (listed in _routes.json "include" but not private).
-const FUNCTIONS = { "/mcp": "functions/mcp.js" };
+const FUNCTIONS = { "/mcp": "functions/mcp.js", "/bell": "functions/bell.js" };
+// /bell reads Workers KV; locally CPT_BELL_JSON=<file> stands in for it (unset: /bell answers 204 as without the binding).
+const BELL = process.env.CPT_BELL_JSON ? { get: async (k, type) => { const t = readFileSync(process.env.CPT_BELL_JSON, "utf8"); return type === "json" ? JSON.parse(t) : t; } } : undefined;
 const ASSETS = { fetch: async u => {
   const f = join(ROOT, decodeURIComponent(new URL(u).pathname));
   return existsSync(f) && statSync(f).isFile() ? new Response(readFileSync(f), { headers: { "content-type": TYPES[extname(f)] || "application/octet-stream" } }) : new Response("Not found", { status: 404 });
@@ -40,7 +42,7 @@ async function runFunction(file, req, res) {
   const mod = await import(pathToFileURL(join(ROOT, file)).href);
   const chunks = []; for await (const c of req) chunks.push(c);
   const request = new Request(`http://localhost:${PORT}${req.url}`, { method: req.method, headers: req.headers, body: ["GET", "HEAD"].includes(req.method) ? undefined : Buffer.concat(chunks) });
-  const r = await mod.onRequest({ request, env: { ASSETS }, waitUntil() {}, next: () => new Response("Not found", { status: 404 }) });
+  const r = await mod.onRequest({ request, env: { ASSETS, BELL }, waitUntil() {}, next: () => new Response("Not found", { status: 404 }) });
   res.writeHead(r.status, Object.fromEntries(r.headers));
   res.end(Buffer.from(await r.arrayBuffer()));
 }
