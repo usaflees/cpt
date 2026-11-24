@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=3d62e20d1e" as="style" />
+  <link rel="preload" href="/assets/app.css?v=638816ce98" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -44,10 +44,10 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=3d62e20d1e" />
+  <link rel="stylesheet" href="/assets/app.css?v=638816ce98" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
-  <script src="/assets/app.js?v=8e40a3f795" defer></script>
-  <script src="/assets/flash.js?v=f00fc0ddde" defer></script>
+  <script src="/assets/app.js?v=e4d55c9abd" defer></script>
+  <script src="/assets/flash.js?v=f62c4050a0" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="coin" data-sym="TAO">
@@ -73,6 +73,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       </details>
 
       <div class="btn-group" role="group" aria-label="Price currency"><button type="button" class="btn-toggle" data-action="curr" data-curr="USD" aria-label="Prices in USD">$</button><button type="button" class="btn-toggle" data-action="curr" data-curr="BTC" aria-label="Prices in BTC">₿</button><button type="button" class="btn-toggle" data-action="curr" data-curr="ETH" aria-label="Prices in ETH">Ξ</button><button type="button" class="btn-toggle" data-action="curr" data-curr="SOL" aria-label="Prices in SOL">◎</button></div>
+      <select class="fiat-select" aria-label="Prices in another currency"><option value="">Fiat</option><option value="EUR">€ EUR</option><option value="GBP">£ GBP</option><option value="CAD">C$ CAD</option><option value="AUD">A$ AUD</option><option value="JPY">¥ JPY</option><option value="INR">₹ INR</option><option value="BRL">R$ BRL</option><option value="KRW">₩ KRW</option></select>
       <details class="pop menu-pop">
         <summary aria-label="Menu">☰</summary>
         <div class="pop-panel menu-list">

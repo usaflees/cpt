@@ -139,6 +139,7 @@ const THEMES = [["neon", "Neon (brand)"], ["kali", "Kali (dark blue)"], ["green"
 const themeButtons = THEMES.map(([t, label]) => `<button type="button" class="theme-btn" data-action="theme" data-theme-val="${t}" title="${label}" aria-label="Theme: ${label}"><span class="swatch sw-${t}"></span></button>`).join("");
 const currencyButtons = [["USD", "$"], ["BTC", "₿"], ["ETH", "Ξ"], ["SOL", "◎"]]
   .map(([c, s]) => `<button type="button" class="btn-toggle" data-action="curr" data-curr="${c}" aria-label="Prices in ${c}">${s}</button>`).join("");
+const fiatSelect = `<select class="fiat-select" aria-label="Prices in another currency"><option value="">Fiat</option><option value="EUR">€ EUR</option><option value="GBP">£ GBP</option><option value="CAD">C$ CAD</option><option value="AUD">A$ AUD</option><option value="JPY">¥ JPY</option><option value="INR">₹ INR</option><option value="BRL">R$ BRL</option><option value="KRW">₩ KRW</option></select>`;
 
 // Sector hubs (content/sectors.json) — a coin's breadcrumb points to the hub of its first sector.
 const sectors = JSON.parse(readFileSync(ROOT + "content/sectors.json", "utf8"));
@@ -167,7 +168,8 @@ function topbar(withFeeds, withCurrency = withFeeds) {
         </div>
       </details>
 ` : ""}${withCurrency ? `
-      <div class="btn-group" role="group" aria-label="Price currency">${currencyButtons}</div>` : ""}
+      <div class="btn-group" role="group" aria-label="Price currency">${currencyButtons}</div>
+      ${fiatSelect}` : ""}
       <details class="pop menu-pop">
         <summary aria-label="Menu">☰</summary>
         <div class="pop-panel menu-list">
