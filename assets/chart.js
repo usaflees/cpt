@@ -1,12 +1,10 @@
-/* Coin page price chart: 24h, 7d, 30d and 1y ranges (coin pages only).
- * Loaded after assets/app.js, which exposes window.CPT. Candles come from Binance (USDT pair) first, then
- * Coinbase, then Kraken (USD pairs), straight from each exchange's public API in the browser. Until candles
- * load, or if no exchange answers, app.js keeps drawing the live ticks seen since the page opened. */
+/* Coin page price chart (24h, 7d, 30d, 1y), loaded after app.js (window.CPT). Candles: Binance (USDT), then
+ * Coinbase, then Kraken (USD), from each exchange's public API. Without them app.js draws live ticks. */
 (function () {
   "use strict";
   const api = window.CPT;
   if (!api || api.MODE !== "coin" || !api.coinChart) return;
-  const { state, buildSparkline, tickerOf, coinChart, fmtPrice } = api;
+  const { state, tickerOf, coinChart, fmtPrice, esc } = api;
   const $ = id => document.getElementById(id);
   const c = state.coins.get(state.coinPageSym);
   const box = $("cpChart"), note = $("cpChartNote"), pair = $("cpChartPair"), group = document.querySelector(".chart-ranges");
@@ -36,7 +34,7 @@
     ["BN", "Binance", "USDT", async r => (await getJson(`${BN}/uiKlines?symbol=${tickerOf(c, "BN")}USDT&interval=${r.bn[0]}&limit=${r.bn[1]}`)).map(k => [+k[0], +k[4]])],
     // Newest first: [time, low, high, open, close, volume].
     ["CB", "Coinbase", "USD", async r => (await getJson(`${CB}/products/${tickerOf(c, "CB")}-USD/candles?granularity=${r.cb}`)).map(k => [k[0] * 1e3, +k[4]]).reverse()],
-    // { error, result: { <pair>: [[time, open, high, low, close, vwap, volume, count], …], last } }, oldest first.
+    // { result: { <pair>: [[time, open, high, low, close, …], …], last } }, oldest first.
     ["KR", "Kraken", "USD", async r => {
       const t = tickerOf(c, "KR");
       const body = await getJson(`${KR}/OHLC?pair=${KR_NAME[t] || t}USD&interval=${r.kr}`);
@@ -59,12 +57,61 @@
         const days = (end - kept[0][0]) / DAY;
         // Coinbase returns at most 300 daily candles: say so instead of calling it a year.
         const name = key === "1y" && days < 330 ? `${Math.round(days)} days` : r.name;
-        const out = { closes: kept.map(k => k[1]), name, step: r.step, label, quote };
+        const out = { times: kept.map(k => k[0]), closes: kept.map(k => k[1]), name, step: r.step, label, quote };
         cache.set(key, out);
         return out;
       } catch (_) { /* next exchange */ }
     }
     return null;
+  }
+
+  // Axis: whole dollars from $1,000 up; the readout keeps full precision.
+  const NF0 = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+  const usd = v => fmtPrice(v, "USD");
+  const axisPrice = v => (v >= 1000 ? "$" + NF0.format(v) : usd(v));
+  const HM = { hour: "numeric", minute: "2-digit" }, MD = { month: "short", day: "numeric" };
+  const TIME_FMT = { "1d": [HM, HM], "7d": [MD, { weekday: "short", ...MD, hour: "numeric" }], "30d": [MD, { ...MD, hour: "numeric" }], "1y": [{ month: "short", year: "2-digit" }, { ...MD, year: "numeric" }] };
+  const fmtTime = (t, key, long) => new Date(t).toLocaleString(undefined, TIME_FMT[key][long ? 1 : 0]);
+
+  // A 600 x 140 viewBox stretched to fit.
+  const W = 600, H = 140, PAD = 6;
+
+  function draw(d, key) {
+    const { closes, times } = d;
+    const min = Math.min(...closes), max = Math.max(...closes), span = max - min || 1;
+    const n = closes.length;
+    const yAt = v => PAD + (1 - (v - min) / span) * (H - 2 * PAD);
+    const line = closes.map((v, i) => `${(i / (n - 1) * W).toFixed(1)},${yAt(v).toFixed(1)}`).join(" ");
+    const area = `M0,${H} L${line.replace(/ /g, " L")} L${W},${H} Z`;
+    const first = closes[0], last = closes[n - 1];
+    const mid = Math.round((n - 1) / 2);
+    const grid = [PAD, H / 2, H - PAD].map(y => `<line x2="${W}" y1="${y}" y2="${y}"/>`).join("");
+    const label = `${c.name} price over ${d.name}: from ${usd(first)} to ${usd(last)}, high ${usd(max)}, low ${usd(min)}`;
+    box.innerHTML = `<div class="cx ${last >= first ? "cx-up" : "cx-down"}" role="img" aria-label="${esc(label)}">
+      <div class="cx-plot"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${grid}<path class="cx-area" d="${area}"/><polyline class="cx-line" points="${line}"/></svg><div class="cx-cross" hidden><span class="cx-dot"></span></div><div class="cx-tip" hidden></div></div>
+      <div class="cx-y" aria-hidden="true"><span>${axisPrice(max)}</span><span>${axisPrice(min + span / 2)}</span><span>${axisPrice(min)}</span></div>
+      <div class="cx-x" aria-hidden="true"><span>${fmtTime(times[0], key)}</span><span>${fmtTime(times[mid], key)}</span><span>${fmtTime(times[n - 1], key)}</span></div>
+    </div>`;
+
+    // Hover or drag for the price and time of any point.
+    const plot = box.querySelector(".cx-plot"), cross = plot.querySelector(".cx-cross"), dot = plot.querySelector(".cx-dot"), tip = plot.querySelector(".cx-tip");
+    const move = e => {
+      const r = plot.getBoundingClientRect();
+      const i = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / (r.width || 1))) * (n - 1));
+      const pct = (i / (n - 1)) * 100;
+      cross.hidden = tip.hidden = false;
+      cross.style.left = pct + "%";
+      dot.style.top = (yAt(closes[i]) / H) * 100 + "%";
+      tip.textContent = `${usd(closes[i])} · ${fmtTime(times[i], key, true)}`;
+      tip.style.left = pct + "%";
+      tip.style.transform = `translateX(-${pct}%)`;
+    };
+    plot.addEventListener("pointermove", move);
+    plot.addEventListener("pointerdown", move);
+    plot.addEventListener("pointerleave", () => { cross.hidden = tip.hidden = true; });
+    // No % on 24h: the ticker's 24h change already sits by the price.
+    const chg = ((last - first) / first) * 100;
+    note.textContent = (key === "1d" ? "24h · " : `${chg >= 0 ? "+" : "−"}${Math.abs(chg).toFixed(2)}% over ${d.name} · `) + `${d.step} closes · ${d.label}`;
   }
 
   let want = "1d";
@@ -73,23 +120,16 @@
     if (group) group.querySelectorAll("[data-range]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.range === key)));
     if (!cache.has(key)) note.textContent = "Loading chart…";
     const d = await load(key);
-    if (want !== key) return; // a newer choice arrived while this one loaded
+    if (want !== key) return; // a newer choice arrived meanwhile
     if (!d) {
-      coinChart.loaded = false; // app.js draws live ticks on its next update
-      box.innerHTML = buildSparkline([], true, 600, 140, { fluid: true });
+      coinChart.loaded = false; // app.js draws live ticks
+      box.innerHTML = `<p class="chart-empty">Waiting for live prices…</p>`;
       if (pair) pair.textContent = `${c.sym}/USD`;
       note.textContent = key === "1d" ? "Live ticks since you opened this page" : `No ${RANGES[key].name} history from the exchanges right now · live ticks`;
       return;
     }
-    const { closes } = d;
-    const first = closes[0], last = closes[closes.length - 1];
-    const chg = ((last - first) / first) * 100;
     coinChart.loaded = true;
-    box.innerHTML = buildSparkline(closes, last >= first, 600, 140, {
-      fluid: true,
-      label: `${c.name} price over ${d.name}: from ${fmtPrice(first)} to ${fmtPrice(last)}, high ${fmtPrice(Math.max(...closes))}, low ${fmtPrice(Math.min(...closes))}`
-    });
-    note.textContent = `${chg >= 0 ? "+" : ""}${chg.toFixed(2)}% · ${d.name} · ${d.step} · ${d.label}`;
+    draw(d, key);
     if (pair) pair.textContent = `${c.sym}/${d.quote}`;
   }
 

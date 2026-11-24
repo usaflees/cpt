@@ -110,7 +110,13 @@ export function buildMarketReport(h) {
           </tbody>
         </table>
       </div>`;
-  const extremes = (label, syms) => `<p><strong>${label}:</strong> ${syms.length ? list(syms.map(coinLink)) : "none this week"}.</p>`;
+  // A tile per coin: a long sentence of 50 names was hard to scan.
+  const extremes = (label, syms) => syms.length
+    ? `<h3>${label} (${syms.length})</h3>
+      <div class="related-list">
+          ${syms.map(sym => `<a href="/coin/${slug(sym)}/">${esc(sym)} <span>${esc(name(sym))}</span></a>`).join("\n          ")}
+      </div>`
+    : `<p><strong>${label}:</strong> none this week.</p>`;
   const archive = weeks.slice(1).map(x => `<li id="week-${x.week}"><strong>Week to ${longDate(x.week)}.</strong> ${summary(x, false)}</li>`).join("\n        ");
 
   const title = "Weekly Crypto Market Report: Biggest Movers and Sectors";
@@ -171,12 +177,12 @@ export function buildMarketReport(h) {
     </section>
 
     <section class="page-section" aria-labelledby="up-h">
-      <h2 id="up-h">Best performers this week</h2>
+      <h2 id="up-h">Top 10 by 7-day change</h2>
       ${moverTable("risers", "The ten coins with the largest 7-day change, excluding stablecoins", w.gainers)}
     </section>
 
     <section class="page-section" aria-labelledby="down-h">
-      <h2 id="down-h">Worst performers this week</h2>
+      <h2 id="down-h">Bottom 10 by 7-day change</h2>
       ${moverTable("fallers", "The ten coins with the biggest 7-day falls (or smallest gains), excluding stablecoins", w.losers)}
     </section>
 

@@ -1040,7 +1040,7 @@
       <div class="bento-metrics">
         <div class="metric-box"><div class="metric-label">Cross-exchange spread</div><div class="metric-val" id="${p}-spread" style="color:var(--accent)">—</div></div>
         <div class="metric-box"><div class="metric-label">24h volume / market cap</div><div class="metric-val" id="${p}-turnover">—</div></div>
-        <div class="metric-box"><div class="metric-label">Order-book depth ±2%</div><div class="metric-val" id="${p}-depth" title="Measured from the Binance order book">${c.feeds.includes("BN") ? "…" : "n/a"}</div></div>
+        <div class="metric-box"><div class="metric-label">Order-book depth ±2%</div><div id="${p}-depth" class="metric-val${c.feeds.includes("BN") ? `" title="Measured from the Binance order book">…` : ` metric-note">Not on Binance`}</div></div>
       </div>
       <div style="background:var(--bg-primary);border:1px solid var(--border);padding:10px;border-radius:6px">
         <label class="metric-label" for="${p}-alert" style="display:block;margin-bottom:6px">🔔 Price alert (USD) — stored only in this browser; the page must stay open</label>
@@ -1426,8 +1426,8 @@
     $("cpMcap").textContent = fmtCompact(c.mcap);
     $("cpVol").textContent = fmtCompact(c.vol24h);
     $("cpRange").style.width = rangePct(c).toFixed(0) + "%";
-    // Until candles load (or without them), draw live ticks once there are enough to mean something.
-    if (!coinChart.loaded) $("cpChart").innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
+    // No candles (yet): draw live ticks once there are enough.
+    if (!coinChart.loaded && liveTicks(c).length) $("cpChart").innerHTML = buildSparkline(liveTicks(c), c.change24h >= 0, 600, 140, { fluid: true, label: `${c.name} live price ticks` });
     updateCoinDetail(c.sym, "cp");
   }
 

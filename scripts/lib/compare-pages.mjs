@@ -234,7 +234,7 @@ ${months.length ? `
 ` : ""}
     <nav class="page-section" aria-labelledby="more-h">
       <h2 id="more-h">More comparisons</h2>
-      <div class="related-list">
+      <div class="related-list pair-links">
           ${pairLinks(others.length ? others : pairs.filter(o => o !== p).slice(0, 6))}
       </div>
       <p style="margin-top:10px"><a href="/compare/">All ${pairs.length} coin comparisons →</a></p>

@@ -400,7 +400,7 @@ function coinPage(c) {
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › ${hub ? `<a href="/sector/${hub.slug}/">${esc(hub.name)}</a> › ` : ""}<span aria-current="page">${name}</span></nav>
 
     <section class="coin-hero" aria-labelledby="coin-h">
-      <div>
+      <div class="hero-head">
         <div class="coin-title">${avatarHtml(c, true)}<h1 id="coin-h">${esc(h1)}</h1></div>
         <p class="hero-price is-stale" id="cpPrice">${usd(c.price)}</p>
         <div class="hero-meta">
@@ -409,15 +409,8 @@ function coinPage(c) {
           ${c.sectors.map(x => `<span class="tag-badge">${esc(x)}</span>`).join(" ")}
           <span id="cpSource">Snapshot from ${longDate(updated)} — connecting to live feeds…</span>
         </div>
-        ${keyFacts(c, st, rankOf.get(c.sym), coins.length)}
-        <div class="hero-actions">
-          <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="${s}" aria-pressed="false">♡ Add to watchlist</button>
-          <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>
-          <button type="button" class="action-btn" data-action="pip" data-sym="${s}">⧉ Pop out</button>
-          <a class="action-btn" href="/">All prices →</a>
-        </div>
       </div>
-      <div>
+      <div class="hero-chart">
         <div class="seg chart-ranges" role="group" aria-label="Chart range">
           <button type="button" class="seg-btn" data-range="1d" aria-pressed="true">24h</button>
           <button type="button" class="seg-btn" data-range="7d" aria-pressed="false">7d</button>
@@ -426,6 +419,13 @@ function coinPage(c) {
         </div>
         <div class="chart-box" id="cpChart"></div>
         <div class="chart-caption"><span id="cpChartNote">Loading chart…</span><span id="cpChartPair">${s}/USD</span></div>
+      </div>
+      ${keyFacts(c, st, rankOf.get(c.sym), coins.length)}
+      <div class="hero-actions">
+        <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="${s}" aria-pressed="false">♡ Add to watchlist</button>
+        <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>
+        <button type="button" class="action-btn" data-action="pip" data-sym="${s}">⧉ Pop out</button>
+        <a class="action-btn" href="/">All prices →</a>
       </div>
     </section>
 

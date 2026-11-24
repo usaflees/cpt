@@ -1650,3 +1650,32 @@ p.prose { max-width: 75ch; }
 .chart-ranges { margin-bottom: 8px; }
 .chart-ranges .seg-btn { padding: 4px 12px; }
 .chart-ranges .seg-btn[aria-pressed="true"] { background: var(--accent-glow); color: var(--accent); }
+
+/* Coin page review (Nov 24). Phone order: name and price, chart, facts, actions; desktop keeps the chart in
+   its own column. The chart (assets/chart.js) has a price scale, time labels and a hover or drag readout. */
+.coin-hero { grid-template-areas: "head chart" "facts chart" "actions chart"; grid-template-rows: auto auto 1fr; align-items: start; }
+.coin-hero > .hero-head { grid-area: head; }
+.coin-hero > .hero-chart { grid-area: chart; min-width: 0; }
+.coin-hero > .hero-facts { grid-area: facts; margin-top: 0; }
+.coin-hero > .hero-actions { grid-area: actions; margin-top: 0; }
+@media (max-width: 860px) { .coin-hero { grid-template-areas: "head" "chart" "facts" "actions"; grid-template-rows: none; } }
+.chart-box { height: 196px; }
+.chart-empty { margin: 0; height: 100%; display: grid; place-items: center; font: 12px var(--font-mono); color: var(--text-muted); }
+.cx { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr) auto; gap: 4px 8px; height: 100%; }
+.cx-up { color: var(--up); }
+.cx-down { color: var(--down); }
+.cx-plot { position: relative; min-height: 0; touch-action: pan-y; cursor: crosshair; }
+.cx-plot line { stroke: var(--border); stroke-width: 1; stroke-dasharray: 2 4; vector-effect: non-scaling-stroke; }
+.cx-area { fill: currentColor; fill-opacity: .1; }
+.cx-line { fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.cx-y { display: flex; flex-direction: column; justify-content: space-between; text-align: right; }
+.cx-y, .cx-x { font: 11px/1.2 var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cx-x { display: flex; justify-content: space-between; gap: 8px; }
+.cx-cross { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed var(--text-muted); pointer-events: none; }
+.cx-dot { position: absolute; left: -4px; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 2px var(--bg-primary); transform: translateY(-50%); }
+.cx-tip { position: absolute; top: 2px; pointer-events: none; white-space: nowrap; padding: 3px 7px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); font: 600 12px/1.3 var(--font-mono); font-variant-numeric: tabular-nums; }
+.cx-cross[hidden], .cx-tip[hidden] { display: none; }
+/* Compare pages: "ETH vs SOL" over "Ethereum vs Solana", so neither line is cut off in a 170 px tile. */
+.pair-links a { flex-direction: column; justify-content: flex-start; gap: 2px; }
+.pair-links span { white-space: normal; overflow: visible; }
+.metric-val.metric-note { font-size: 12px; font-weight: 500; line-height: 1.35; color: var(--text-muted); }
