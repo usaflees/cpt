@@ -9,7 +9,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/market/" />
   <link rel="alternate" type="application/atom+xml" title="CryptoPriceTicker weekly market report" href="/market/feed.xml" />
-  <link rel="preload" href="/assets/app.css?v=c23f71da48" as="style" />
+  <link rel="preload" href="/assets/app.css?v=974452a3de" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -39,7 +39,7 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=c23f71da48" />
+  <link rel="stylesheet" href="/assets/app.css?v=974452a3de" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=cbc39dfd69" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -79,7 +79,15 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="hero" aria-labelledby="market-h" id="week-2026-11-22">
       <h1 id="market-h" class="hero-title">Weekly crypto market report</h1>
       <p class="hero-sub">In the seven days to November 22, 2026, Bitcoin fell 6.2% and Ethereum fell 6.0%. Of the 110 coins tracked here (stablecoins excluded), 6 rose and 104 fell; the median coin fell 8.0%. The best performer was <a href="/coin/mog/">Mog Coin (MOG)</a>, which rose 4.7%, and the worst was <a href="/coin/sky/">Sky (SKY)</a>, which fell 23.3%. By sector median, DePIN did best (-5.48%) and Gaming did worst (-12.45%). Among coins with a full year of data, none closed at a new 52-week high and 55 coins at a new 52-week low.</p>
-      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a> <a class="action-btn" href="/market/feed.xml">Subscribe (Atom feed)</a></p>
+      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a></p>
+      <details class="feed-sub">
+        <summary class="action-btn">🔔 Get this report every week</summary>
+        <div style="margin-top:10px;max-width:560px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-secondary);color:var(--text-secondary);display:grid;gap:10px">
+          <p>A new report comes out every Monday. Paste this feed address into a feed reader app (Feedly, Inoreader, NetNewsWire or any other) and each week's report shows up there.</p>
+          <p style="display:flex;gap:8px"><input type="text" class="sync-input" style="flex:1;min-width:0;margin:0" id="feedUrl" readonly aria-label="Feed address" value="https://cryptopriceticker.com/market/feed.xml" /><button type="button" class="action-btn btn-accent" data-action="copy" data-target="feedUrl" data-msg="📋 Feed address copied.">📋 Copy</button></p>
+          <p>Or add it in one tap: <a href="https://feedly.com/i/subscription/feed%2Fhttps%3A%2F%2Fcryptopriceticker.com%2Fmarket%2Ffeed.xml" rel="noopener">Feedly</a> · <a href="https://www.inoreader.com/?add_feed=https%3A%2F%2Fcryptopriceticker.com%2Fmarket%2Ffeed.xml" rel="noopener">Inoreader</a></p>
+        </div>
+      </details>
     </section>
 
     <section class="page-section" aria-labelledby="up-h">

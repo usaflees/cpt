@@ -897,7 +897,8 @@ writeFileSync(ROOT + "heatmap/index.html", heatmapPage());
 // Hand-written pages don't change with the weekly data, so their sitemap date must not either
 // (inflated freshness is a spam signal). content/page-dates.json stores a hash of each page's
 // content; the date moves to today only when that hash changes. Asset hashes and the inlined
-// theme script are ignored, so a CSS or JS release doesn't count as a content change.
+// theme script are ignored, so a CSS or JS release doesn't count as a content change; so is the site footer
+// (shared navigation, not page content).
 // /race/ is hand-written; its weekly-moves block is generated between markers (before the page hashes below,
 // so its sitemap date changes only when the numbers do).
 {
@@ -912,7 +913,7 @@ const pageDates = existsSync(pageDatesPath) ? JSON.parse(readFileSync(pageDatesP
 const today = new Date().toISOString().slice(0, 10);
 for (const [path, file] of Object.entries(STATIC_PAGES)) {
   if (!existsSync(ROOT + file)) continue;
-  const norm = readFileSync(ROOT + file, "utf8").replace(/\?v=[0-9a-f]+/g, "").replace(/<script>\/\*theme\*\/[\s\S]*?<\/script>|<script src="\/assets\/theme-init\.js"><\/script>/g, "");
+  const norm = readFileSync(ROOT + file, "utf8").replace(/\?v=[0-9a-f]+/g, "").replace(/<script>\/\*theme\*\/[\s\S]*?<\/script>|<script src="\/assets\/theme-init\.js"><\/script>|<footer[\s\S]*?<\/footer>/g, "");
   const hash = createHash("sha256").update(norm).digest("hex").slice(0, 16);
   if (!pageDates[path] || pageDates[path].hash !== hash) pageDates[path] = { hash, date: today };
 }
