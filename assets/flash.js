@@ -107,7 +107,7 @@
     const sorted = withChange.slice().sort((a, b) => b.change24h - a.change24h);
     const best = sorted[0], worst = sorted[sorted.length - 1];
     const btc = state.coins.get("BTC");
-    add("snapshot", null, `Over 24 hours, ${up} of ${withChange.length} coins are up. Biggest gain ${link(best)} ${pct(best.change24h)}, biggest fall ${link(worst)} ${pct(worst.change24h)}${btc && btc.live ? `; ${link(btc)} ${pct(btc.change24h)} at ${usd(btc.price)}` : ""}.`);
+    add("snapshot", null, `Over 24 hours, ${up} of ${withChange.length} coins with live data are up. Biggest gain ${link(best)} ${pct(best.change24h)}, biggest fall ${link(worst)} ${pct(worst.change24h)}${btc && btc.live ? `; ${link(btc)} ${pct(btc.change24h)} at ${usd(btc.price)}` : ""}.`);
   }
 
   function detect(coins, now) {
