@@ -185,7 +185,7 @@ for (const c of coins) {
 // change the number here in the same PR and say why.
 // app.js 115 → 122 KB, app.css 80 → 84 KB (Nov 23): fiat currencies, holdings profit, column choice, watchlist order,
 // 7-day movers, exchange gaps and Market TV (their logic is in home-plus.js; app.* holds table code and styles).
-const BUDGET = { "assets/app.js": 122_000, "assets/app.css": 84_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/home-plus.js": 9_000 };
+const BUDGET = { "assets/app.js": 122_000, "assets/app.css": 84_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/home-plus.js": 9_000, "assets/timemachine.js": 7_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);
@@ -199,6 +199,8 @@ for (const p of pages) {
 // Every third-party origin costs a connection, CSP surface and privacy; adding one is a deliberate choice.
 const ORIGINS = ["https://api.coinbase.com", "https://api.exchange.coinbase.com", "https://cloudflareinsights.com", "https://data-api.binance.vision", "https://static.cloudflareinsights.com",
   "wss://data-stream.binance.vision", "wss://ws-feed.exchange.coinbase.com", "wss://ws.kraken.com",
+  // Kraken REST: daily candles for the coin-page Time Machine (Kraken-only coins), CORS-allowed for this site
+  "https://api.kraken.com",
   // Google Tag Manager + GA4, loaded by assets/consent.js after consent defaults are set
   "https://www.googletagmanager.com", "https://*.google-analytics.com", "https://*.analytics.google.com"];
 for (const o of new Set(CSP.match(/(?:https|wss):\/\/[^ ;]+/g) || [])) {

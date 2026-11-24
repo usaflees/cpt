@@ -200,6 +200,8 @@
 
   if (IS_EMBED) {
     document.body.classList.add("is-embed");
+    // Stream overlay (OBS and similar browser sources): transparent page, larger type, no hover effects.
+    if (params.get("overlay") === "1") document.body.classList.add("is-overlay");
     $("metaRobots")?.setAttribute("content", "noindex, indexifembedded");
   }
 

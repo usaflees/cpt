@@ -1689,3 +1689,21 @@ html.tv-on, html.tv-on body { overflow: hidden; }
 .tv-chg { font: 700 clamp(14px, 1.8vw, 22px) var(--font-mono); }
 .tv-tape { margin: 0; font: 600 clamp(12px, 1.4vw, 16px) var(--font-mono); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 640px) { .gap-row { grid-template-columns: 52px minmax(0, 1fr) 58px; } }
+
+/* Time Machine (coin pages) */
+.tm-form { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; margin: 8px 0 12px; }
+.tm-form label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.tm-form input { min-height: 40px; width: 160px; max-width: 100%; padding: 0 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); font: 600 15px var(--font-mono); }
+.tm-out { min-height: 132px; display: grid; gap: 6px; align-content: start; }
+.tm-out p { margin: 0; }
+.tm-msg, .tm-line { color: var(--text-secondary); font-size: 14px; line-height: 1.55; max-width: 72ch; }
+.tm-big { font: 800 clamp(26px, 5vw, 36px)/1.1 var(--font-mono); }
+.tm-big span { font-size: .55em; }
+
+/* Stream overlay (/embed/?overlay=1): transparent for OBS browser sources, larger type, readable over video */
+html:has(body.is-overlay), body.is-overlay, body.is-overlay #embedShell { background: transparent !important; }
+body.is-overlay #embedShell { zoom: 1.35; }
+.is-overlay .embed-marquee-bar, .is-overlay .embed-card, .is-overlay .embed-single-card, .is-overlay .embed-footer-bar, .is-overlay .ticker-tape-wrap, .is-overlay .embed-brand-dock { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
+.is-overlay #embedShell { text-shadow: 0 1px 3px rgb(0 0 0 / .85), 0 0 1px rgb(0 0 0 / .9); }
+.is-overlay a, .is-overlay .embed-card { transition: none !important; }
+.is-overlay a:hover, .is-overlay .embed-card:hover { border-color: transparent !important; text-decoration: none !important; }

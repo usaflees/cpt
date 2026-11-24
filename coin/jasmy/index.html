@@ -15,7 +15,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=75307cdd9f" as="style" />
+  <link rel="preload" href="/assets/app.css?v=24c3a2d7c5" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -44,10 +44,11 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=75307cdd9f" />
+  <link rel="stylesheet" href="/assets/app.css?v=24c3a2d7c5" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
-  <script src="/assets/app.js?v=516a91bd74" defer></script>
+  <script src="/assets/app.js?v=f7f1f32f85" defer></script>
   <script src="/assets/flash.js?v=f62c4050a0" defer></script>
+  <script src="/assets/timemachine.js?v=78840e73bd" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
 </head>
 <body data-page="coin" data-sym="JASMY">
@@ -175,6 +176,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="page-section" aria-labelledby="ex-h">
       <h2 id="ex-h">JASMY price on each exchange</h2>
       <div id="coinDetail" style="display:flex;flex-direction:column;gap:12px"></div>
+    </section>
+
+    <section class="page-section tm" aria-labelledby="tm-h">
+      <h2 id="tm-h">What would JASMY be worth now?</h2>
+      <form class="tm-form" id="tmForm">
+        <label for="tmAmt">Amount (USD)<input id="tmAmt" type="number" min="1" step="any" value="100" inputmode="decimal" /></label>
+        <label for="tmDate">Bought on<input id="tmDate" type="date" min="2015-01-01" max="2026-11-23" value="2025-11-23" /></label>
+        <button type="submit" class="action-btn btn-accent">Calculate</button>
+      </form>
+      <div class="tm-out" id="tmOut" aria-live="polite"><p class="tm-msg">Pick an amount and a past date. The box fetches JASMY's daily closes and shows what it would be worth at today's live price, and its low and high points along the way.</p></div>
     </section>
 
     <section class="page-section prose" aria-labelledby="about-h">
