@@ -826,7 +826,6 @@ button.coin-cell { background: none; border: 0; color: inherit; text-align: left
 .faq details { border-top: 1px solid var(--border); }
 .faq details:first-of-type { border-top: 0; }
 .faq summary { cursor: pointer; font-weight: 700; color: var(--text-primary); }
-.faq details p { margin-top: 6px; }
 .coin-index { display: flex; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; }
 .coin-index a { color: var(--text-secondary); text-decoration: none; }
 .coin-index a:hover { color: var(--accent); }
@@ -1754,3 +1753,5 @@ body.is-overlay #embedShell { zoom: 1.35; }
 
 /* Home table snapshot rows (build-time, replaced by app.js): keep the live rows' height (7-day chart is 32 px). */
 .snap-row .col-spark::before { content: ""; display: inline-block; width: 110px; height: 32px; vertical-align: middle; }
+
+.feed-sub>summary{list-style:none;cursor:pointer;margin-top:10px}.feed-sub>summary::-webkit-details-marker{display:none}

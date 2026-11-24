@@ -173,7 +173,15 @@ export function buildMarketReport(h) {
     <section class="hero" aria-labelledby="market-h" id="week-${w.week}">
       <h1 id="market-h" class="hero-title">Weekly crypto market report</h1>
       <p class="hero-sub">${summary(w, true)}</p>
-      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a> <a class="action-btn" href="/market/feed.xml">Subscribe (Atom feed)</a></p>
+      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a></p>
+      <details class="feed-sub">
+        <summary class="action-btn">🔔 Get this report every week</summary>
+        <div style="margin-top:10px;max-width:560px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-secondary);color:var(--text-secondary);display:grid;gap:10px">
+          <p>A new report comes out every Monday. Paste this feed address into a feed reader app (Feedly, Inoreader, NetNewsWire or any other) and each week's report shows up there.</p>
+          <p style="display:flex;gap:8px"><input type="text" class="sync-input" style="flex:1;min-width:0;margin:0" id="feedUrl" readonly aria-label="Feed address" value="${feedUrl}" /><button type="button" class="action-btn btn-accent" data-action="copy" data-target="feedUrl" data-msg="📋 Feed address copied.">📋 Copy</button></p>
+          <p>Or add it in one tap: <a href="https://feedly.com/i/subscription/feed%2Fhttps%3A%2F%2Fcryptopriceticker.com%2Fmarket%2Ffeed.xml" rel="noopener">Feedly</a> · <a href="https://www.inoreader.com/?add_feed=https%3A%2F%2Fcryptopriceticker.com%2Fmarket%2Ffeed.xml" rel="noopener">Inoreader</a></p>
+        </div>
+      </details>
     </section>
 
     <section class="page-section" aria-labelledby="up-h">
