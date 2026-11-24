@@ -8,7 +8,7 @@
   <meta name="description" content="Bitcoin (BTC) vs Bitcoin Cash (BCH) side by side: market cap, 1-year performance, volatility, 52-week range and monthly closes from daily exchange data." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/compare/btc-vs-bch/" />
-  <link rel="preload" href="/assets/app.css?v=9256c56ab5" as="style" />
+  <link rel="preload" href="/assets/app.css?v=b1d5630c2d" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -38,7 +38,7 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=9256c56ab5" />
+  <link rel="stylesheet" href="/assets/app.css?v=b1d5630c2d" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=cbc39dfd69" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -93,24 +93,29 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <caption class="sr-only">Bitcoin and Bitcoin Cash compared: price, market cap, performance, range, volatility and correlation</caption>
           <thead><tr><th scope="col" class="col-left">Measure</th><th scope="col">Bitcoin (BTC)</th><th scope="col">Bitcoin Cash (BCH)</th></tr></thead>
           <tbody>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">Size</th></tr>
             <tr><th scope="row" class="col-left">Price (daily close)</th><td>$61,271.08</td><td>$199.600</td></tr>
-            <tr><th scope="row" class="col-left">Market cap</th><td>$1.25T</td><td>$4.15B</td></tr>
+            <tr><th scope="row" class="col-left">Market cap</th><td class="cmp-lead">$1.25T<span class="sr-only"> (leads)</span></td><td>$4.15B</td></tr>
             <tr><th scope="row" class="col-left">Market-cap rank</th><td>#1</td><td>#17</td></tr>
             <tr><th scope="row" class="col-left">Circulating supply</th><td>19,970,900 BTC</td><td>19,976,000 BCH</td></tr>
-            <tr><th scope="row" class="col-left">7 days</th><td><span class="chg-pill chg-down">-6.24%</span></td><td><span class="chg-pill chg-down">-5.31%</span></td></tr>
-            <tr><th scope="row" class="col-left">30 days</th><td><span class="chg-pill chg-down">-24.53%</span></td><td><span class="chg-pill chg-down">-29.35%</span></td></tr>
-            <tr><th scope="row" class="col-left">90 days</th><td><span class="chg-pill chg-down">-22.43%</span></td><td><span class="chg-pill chg-down">-26.35%</span></td></tr>
-            <tr><th scope="row" class="col-left">1 year</th><td><span class="chg-pill chg-down">-27.69%</span></td><td><span class="chg-pill chg-down">-64.15%</span></td></tr>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">Returns</th></tr>
+            <tr><th scope="row" class="col-left">7 days</th><td><span class="chg-pill chg-down">-6.24%</span></td><td class="cmp-lead"><span class="chg-pill chg-down">-5.31%</span><span class="sr-only"> (leads)</span></td></tr>
+            <tr><th scope="row" class="col-left">30 days</th><td class="cmp-lead"><span class="chg-pill chg-down">-24.53%</span><span class="sr-only"> (leads)</span></td><td><span class="chg-pill chg-down">-29.35%</span></td></tr>
+            <tr><th scope="row" class="col-left">90 days</th><td class="cmp-lead"><span class="chg-pill chg-down">-22.43%</span><span class="sr-only"> (leads)</span></td><td><span class="chg-pill chg-down">-26.35%</span></td></tr>
+            <tr><th scope="row" class="col-left">1 year</th><td class="cmp-lead"><span class="chg-pill chg-down">-27.69%</span><span class="sr-only"> (leads)</span></td><td><span class="chg-pill chg-down">-64.15%</span></td></tr>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">52-week range</th></tr>
             <tr><th scope="row" class="col-left">52-week high</th><td>$96,951.78<br><span class="muted">January 14, 2026</span></td><td>$654.500<br><span class="muted">January 3, 2026</span></td></tr>
             <tr><th scope="row" class="col-left">52-week low</th><td>$58,624.71<br><span class="muted">June 30, 2026</span></td><td>$190.400<br><span class="muted">June 24, 2026</span></td></tr>
-            <tr><th scope="row" class="col-left">Below 52-week high</th><td>36.8%</td><td>69.5%</td></tr>
-            <tr><th scope="row" class="col-left">30-day volatility (annualized)</th><td>46.8%</td><td>66.2%</td></tr>
-            <tr><th scope="row" class="col-left">Largest fall within the year</th><td>39.5%</td><td>70.9%</td></tr>
+            <tr><th scope="row" class="col-left">Below 52-week high</th><td class="cmp-lead">36.8%<span class="sr-only"> (leads)</span></td><td>69.5%</td></tr>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">Risk</th></tr>
+            <tr><th scope="row" class="col-left">30-day volatility (annualized)</th><td class="cmp-lead">46.8%<span class="sr-only"> (leads)</span></td><td>66.2%</td></tr>
+            <tr><th scope="row" class="col-left">Largest fall within the year</th><td class="cmp-lead">39.5%<span class="sr-only"> (leads)</span></td><td>70.9%</td></tr>
             <tr><th scope="row" class="col-left">Correlation with BTC (90 days)</th><td>1.00 (itself)</td><td>0.55</td></tr>
             <tr><th scope="row" class="col-left">Sector</th><td>Layer 1</td><td>Layer 1</td></tr>
           </tbody>
         </table>
       </div>
+      <p class="cmp-key muted"><span class="cmp-swatch" aria-hidden="true"></span> Shaded: the bigger market cap, the better return, the coin nearer its high, the steadier price and the smaller fall.</p>
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Binance, as of November 22, 2026. Market cap uses the snapshot price × circulating supply. Updated weekly.</p>
     </section>
 

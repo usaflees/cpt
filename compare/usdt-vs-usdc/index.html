@@ -8,7 +8,7 @@
   <meta name="description" content="Tether (USDT) vs USD Coin (USDC) side by side: market cap, 1-year performance, volatility, 52-week range and monthly closes from daily exchange data." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://cryptopriceticker.com/compare/usdt-vs-usdc/" />
-  <link rel="preload" href="/assets/app.css?v=9256c56ab5" as="style" />
+  <link rel="preload" href="/assets/app.css?v=b1d5630c2d" as="style" />
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="color-scheme" content="dark light" />
@@ -38,7 +38,7 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=9256c56ab5" />
+  <link rel="stylesheet" href="/assets/app.css?v=b1d5630c2d" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=cbc39dfd69" defer></script>
   <script src="/assets/consent.js?v=0bf5bf6910" defer></script>
@@ -93,17 +93,21 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           <caption class="sr-only">Tether and USD Coin compared: price, market cap, performance, range, volatility and correlation</caption>
           <thead><tr><th scope="col" class="col-left">Measure</th><th scope="col">Tether (USDT)</th><th scope="col">USD Coin (USDC)</th></tr></thead>
           <tbody>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">Size</th></tr>
             <tr><th scope="row" class="col-left">Price (daily close)</th><td>$0.9983</td><td>$1.002</td></tr>
             <tr><th scope="row" class="col-left">Market cap</th><td>$183.07B</td><td>$74.04B</td></tr>
             <tr><th scope="row" class="col-left">Market-cap rank</th><td>#3</td><td>#5</td></tr>
             <tr><th scope="row" class="col-left">Circulating supply</th><td>183.25B USDT</td><td>73.98B USDC</td></tr>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">Returns</th></tr>
             <tr><th scope="row" class="col-left">7 days</th><td><span class="chg-pill chg-down">-0.12%</span></td><td><span class="chg-pill chg-up">+0.13%</span></td></tr>
             <tr><th scope="row" class="col-left">30 days</th><td><span class="chg-pill chg-down">-0.04%</span></td><td><span class="chg-pill chg-up">+0.04%</span></td></tr>
             <tr><th scope="row" class="col-left">90 days</th><td><span class="chg-pill chg-down">-0.16%</span></td><td><span class="chg-pill chg-up">+0.14%</span></td></tr>
             <tr><th scope="row" class="col-left">1 year</th><td><span class="chg-pill chg-down">-0.11%</span></td><td><span class="chg-pill chg-up">+0.12%</span></td></tr>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">52-week range</th></tr>
             <tr><th scope="row" class="col-left">52-week high</th><td>$1.000<br><span class="muted">April 14, 2026</span></td><td>$1.002<br><span class="muted">November 20, 2026</span></td></tr>
             <tr><th scope="row" class="col-left">52-week low</th><td>$0.9976<br><span class="muted">November 20, 2026</span></td><td>$0.9994<br><span class="muted">April 14, 2026</span></td></tr>
             <tr><th scope="row" class="col-left">Below 52-week high</th><td>0.2%</td><td>0.1%</td></tr>
+            <tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">Risk</th></tr>
             <tr><th scope="row" class="col-left">30-day volatility (annualized)</th><td>0.8%</td><td>0.7%</td></tr>
             <tr><th scope="row" class="col-left">Largest fall within the year</th><td>0.3%</td><td>0.2%</td></tr>
             <tr><th scope="row" class="col-left">Correlation with BTC (90 days)</th><td>0.52</td><td>-0.52</td></tr>
@@ -111,6 +115,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
           </tbody>
         </table>
       </div>
+      
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from Kraken and Binance, as of November 22, 2026. Market cap uses the snapshot price × circulating supply. Updated weekly.</p>
     </section>
 
