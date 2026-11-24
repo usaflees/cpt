@@ -1,18 +1,6 @@
 {
- "updated": "2026-11-20T21:05:00.197Z",
+ "updated": "2026-11-24T00:50:02.260Z",
  "next": [
-  {
-   "edition": "open",
-   "date": "2026-11-23",
-   "at": "2026-11-23T14:25:00.000Z",
-   "early": false
-  },
-  {
-   "edition": "close",
-   "date": "2026-11-23",
-   "at": "2026-11-23T21:05:00.000Z",
-   "early": false
-  },
   {
    "edition": "open",
    "date": "2026-11-24",
@@ -36,9 +24,44 @@
    "date": "2026-11-25",
    "at": "2026-11-25T21:05:00.000Z",
    "early": false
+  },
+  {
+   "edition": "open",
+   "date": "2026-11-27",
+   "at": "2026-11-27T14:25:00.000Z",
+   "early": false
+  },
+  {
+   "edition": "close",
+   "date": "2026-11-27",
+   "at": "2026-11-27T18:05:00.000Z",
+   "early": true
   }
  ],
  "editions": [
+  {
+   "id": "2026-11-23-close",
+   "edition": "close",
+   "date": "2026-11-23",
+   "cutoff": "2026-11-23T21:05:00.000Z",
+   "generated": "2026-11-24T00:50:02.260Z",
+   "windowStart": "2026-11-23T14:25:00.000Z",
+   "earlyClose": false,
+   "btcAtCutoff": 61173.63,
+   "items": [
+    {
+     "feed": "cftc",
+     "source": "CFTC",
+     "topic": "",
+     "title": "CFTC Publishes Final Rule Concerning Data Reporting Requirements for Certain Event Contracts",
+     "link": "https://www.cftc.gov/PressRoom/PressReleases/9330-26",
+     "published": "2026-11-23T21:00:00.000Z",
+     "score": 9,
+     "btcChange": 0.03
+    }
+   ],
+   "sourcesFailed": []
+  },
   {
    "id": "2026-11-20-close",
    "edition": "close",

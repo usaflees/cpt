@@ -3,6 +3,31 @@
 Written from the owner's first Search Console exports (Page indexing and Crawl stats, to 9 Nov). The figures
 themselves stay out of this public repo; this file records what they mean and what to do.
 
+## Update 24 Nov: new exports (crawl stats to 17 Nov, Sitemaps, Bing Site Explorer, referring domains)
+- **Crawling is still flat:** 4–11 Googlebot requests a day since 4 Nov, 99% "Refresh" and under 1% "Discovery";
+  only ~7% of requests are HTML pages. About a fifth still fail: DNS errors on the old `mail.` and `secure.` hosts
+  and 404s for old addresses. Same picture as 9 Nov, so steps A3–A6 and B below are still the levers.
+- **Search Console still uses the 2021 sitemap submissions.** `https://…/sitemap.xml` was last *submitted* on
+  20 Dec 2021 (Google re-reads it: last processed 21 Nov, 132 URLs, while it lists 154 today), and an old
+  `http://cryptopriceticker.com/sitemap.xml` sitemap index from 30 Nov 2021 (160 URLs from the old script) is still
+  listed. **Do:** Sitemaps → open the `http://` entry → ⋮ → *Remove sitemap*; then submit `sitemap.xml`,
+  `sitemap-coins.xml`, `sitemap-sectors.xml` and `sitemap-pages.xml` again (step A3).
+- **Bing hasn't seen the new site.** Site Explorer lists 2 URLs (the home page over http and https), both
+  *Excluded*, last crawled 21 and 25 Sep 2026, before the relaunch; it also remembers `app.cryptopriceticker.com/account`
+  from the old script. The site is not blocking it (checked 24 Nov: Bingbot gets 200, `index, follow`, no
+  `X-Robots-Tag`; all four sitemaps serve 200 XML; the IndexNow key file is live). **Do, in Bing Webmaster Tools:**
+  1. *Sitemaps* → Submit sitemap → `https://cryptopriceticker.com/sitemap.xml`.
+  2. *URL Inspection* → `https://cryptopriceticker.com/` → *Live URL* → **Request indexing**; note the reason it
+     gives for "Excluded" and drop it in a chat.
+  3. *URL Submission* → paste the day-1 and day-2 URLs from section B (Bing takes more than 10 a day).
+- **Old hosts:** add `app.` to step A6's DNS list with `mail.` and `secure.` (Proxied records plus a redirect rule
+  to `https://cryptopriceticker.com/`), so crawlers get one 301 instead of DNS errors.
+- **Links:** the site has 0 referring domains. LiveCoinWatch has 500 in the same export, but 10 of them supply 74% of
+  its 34,385 links: small exchanges and coin projects that link site-wide (footers, price widgets on every market
+  page), plus Telegram, Bitcointalk and blogs. Our widget's credit link works the same way, so the cheapest first
+  links are widget embeds on small exchanges, coin projects and crypto blogs (queued: a "price data by" badge for
+  them on /widgets/), and the GitHub repo link (A7).
+
 ## What the exports say
 - **Only the home page is indexed.** Every other sitemap URL is "Discovered – currently not indexed": Google
   knows the address from the sitemap but has never fetched it. The three other excluded URLs are expected (the
