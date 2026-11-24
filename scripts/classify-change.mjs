@@ -62,9 +62,10 @@ if (changed.includes("assets/coins.js") && numbersOut(execSync(`git show ${fork}
   if (shape(sandbox.CPT_COINS) !== shape(loadRegistry().coins)) reasons.push("coin list, names, sectors, feeds or tickers changed in assets/coins.js");
 }
 
-// index.html: only the generated coin-index block may differ.
+// index.html: only the generated coin-index block, the home table snapshot rows and their dated caption may differ.
 if (changed.includes("index.html")) {
-  const strip = s => s.replace(/<!-- coin-index:start[\s\S]*?<!-- coin-index:end -->/, "");
+  const strip = s => s.replace(/<!-- coin-index:start[\s\S]*?<!-- coin-index:end -->/, "")
+    .replace(/<tbody id="tableBody">[\s\S]*?<\/tbody>/, "").replace(/ Prices shown before live data loads are from [^.<]*\./, "");
   const before = execSync(`git show ${fork}:index.html`, { cwd: ROOT, encoding: "utf8" });
   const after = execSync("cat index.html", { cwd: ROOT, encoding: "utf8" });
   if (unhash(strip(before)) !== unhash(strip(after))) reasons.push("index.html changed outside the generated coin list");
