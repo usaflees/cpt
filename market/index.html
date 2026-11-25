@@ -79,7 +79,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="hero" aria-labelledby="market-h" id="week-2026-11-22">
       <h1 id="market-h" class="hero-title">Weekly crypto market report</h1>
       <p class="hero-sub">In the seven days to November 22, 2026, Bitcoin fell 6.2% and Ethereum fell 6.0%. Of the 110 coins tracked here (stablecoins excluded), 6 rose and 104 fell; the median coin fell 8.0%. The best performer was <a href="/coin/mog/">Mog Coin (MOG)</a>, which rose 4.7%, and the worst was <a href="/coin/sky/">Sky (SKY)</a>, which fell 23.3%. By sector median, DePIN did best (-5.48%) and Gaming did worst (-12.45%). Among coins with a full year of data, none closed at a new 52-week high and 55 coins at a new 52-week low.</p>
-      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a></p>
+      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a> <a class="action-btn" href="#year">📊 Year rankings</a></p>
       <details class="feed-sub">
         <summary class="action-btn">🔔 Get this report every week</summary>
         <div style="margin-top:10px;max-width:560px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-secondary);color:var(--text-secondary);display:grid;gap:10px">
@@ -219,6 +219,161 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       </div>
     </section>
 
+    <section class="page-section prose" aria-labelledby="year-h" id="year">
+      <h2 id="year-h">Where each coin stands over the year</h2>
+      <p>Rankings from daily closes to November 22, 2026. The 52-week tables cover the 108 coins with a full year of data; the correlation and volatility tables cover every coin with those figures; stablecoins are listed separately. Each coin's own page has the full figures and dates. A fall of 50% needs a 100% rise to get back to where it started, so the last column shows the rise each coin would need to regain its 52-week high.</p>
+    </section>
+
+    <section class="page-section" aria-labelledby="farthest-from-high-h" id="farthest-from-high">
+      <h3 id="farthest-from-high-h"><a href="#farthest-from-high">Furthest below their 52-week high</a></h3>
+      <p class="prose">The coins whose November 22, 2026 close was furthest below their highest close of the past 52 weeks.</p>
+      <div class="table-wrap">
+        <table class="history-table sector-table" id="farthest-from-high-table">
+          <caption class="sr-only">Coins furthest below their 52-week high, with the date of the high and the rise needed to regain it</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th><th scope="col">Below high</th><th scope="col" class="hide-mobile">52-week high</th><th scope="col">Rise to regain</th></tr></thead>
+          <tbody>
+          <tr><td class="col-center muted">1</td><td class="col-left"><a href="/coin/flow/">Flow</a> <span class="muted">FLOW</span></td><td><span class="chg-pill chg-down">-93.75%</span></td><td class="hide-mobile">$0.2360<br><span class="muted">November 26, 2025</span></td><td>+1498.9%</td></tr>
+          <tr><td class="col-center muted">2</td><td class="col-left"><a href="/coin/lrc/">Loopring</a> <span class="muted">LRC</span></td><td><span class="chg-pill chg-down">-91.10%</span></td><td class="hide-mobile">$0.0670<br><span class="muted">December 13, 2025</span></td><td>+1024.2%</td></tr>
+          <tr><td class="col-center muted">3</td><td class="col-left"><a href="/coin/hnt/">Helium</a> <span class="muted">HNT</span></td><td><span class="chg-pill chg-down">-90.10%</span></td><td class="hide-mobile">$2.241<br><span class="muted">November 24, 2025</span></td><td>+910.5%</td></tr>
+          <tr><td class="col-center muted">4</td><td class="col-left"><a href="/coin/gala/">Gala</a> <span class="muted">GALA</span></td><td><span class="chg-pill chg-down">-83.90%</span></td><td class="hide-mobile">$0.007940<br><span class="muted">November 27, 2025</span></td><td>+521.3%</td></tr>
+          <tr><td class="col-center muted">5</td><td class="col-left"><a href="/coin/zk/">ZKsync</a> <span class="muted">ZK</span></td><td><span class="chg-pill chg-down">-83.87%</span></td><td class="hide-mobile">$0.0422<br><span class="muted">November 25, 2025</span></td><td>+520.0%</td></tr>
+          <tr><td class="col-center muted">6</td><td class="col-left"><a href="/coin/apt/">Aptos</a> <span class="muted">APT</span></td><td><span class="chg-pill chg-down">-83.77%</span></td><td class="hide-mobile">$2.344<br><span class="muted">November 24, 2025</span></td><td>+516.0%</td></tr>
+          <tr><td class="col-center muted">7</td><td class="col-left"><a href="/coin/bonk/">Bonk</a> <span class="muted">BONK</span></td><td><span class="chg-pill chg-down">-82.89%</span></td><td class="hide-mobile">$0.00001210<br><span class="muted">January 5, 2026</span></td><td>+484.5%</td></tr>
+          <tr><td class="col-center muted">8</td><td class="col-left"><a href="/coin/op/">Optimism</a> <span class="muted">OP</span></td><td><span class="chg-pill chg-down">-80.68%</span></td><td class="hide-mobile">$0.3669<br><span class="muted">January 13, 2026</span></td><td>+417.5%</td></tr>
+          <tr><td class="col-center muted">9</td><td class="col-left"><a href="/coin/rose/">Oasis</a> <span class="muted">ROSE</span></td><td><span class="chg-pill chg-down">-79.75%</span></td><td class="hide-mobile">$0.0215<br><span class="muted">January 21, 2026</span></td><td>+393.8%</td></tr>
+          <tr><td class="col-center muted">10</td><td class="col-left"><a href="/coin/sand/">The Sandbox</a> <span class="muted">SAND</span></td><td><span class="chg-pill chg-down">-79.62%</span></td><td class="hide-mobile">$0.1645<br><span class="muted">January 22, 2026</span></td><td>+390.8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-section" aria-labelledby="nearest-high-h" id="nearest-high">
+      <h3 id="nearest-high-h"><a href="#nearest-high">Closest to their 52-week high</a></h3>
+      <p class="prose">The coins whose latest close was nearest their highest close of the past 52 weeks (0% means the latest close was the high).</p>
+      <div class="table-wrap">
+        <table class="history-table sector-table" id="nearest-high-table">
+          <caption class="sr-only">Coins closest to their 52-week high</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th><th scope="col">Below high</th><th scope="col" class="hide-mobile">52-week high</th><th scope="col">1 year</th></tr></thead>
+          <tbody>
+          <tr><td class="col-center muted">1</td><td class="col-left"><a href="/coin/trx/">TRON</a> <span class="muted">TRX</span></td><td><span class="chg-pill chg-down">-18.61%</span></td><td class="hide-mobile">$0.3756<br><span class="muted">May 26, 2026</span></td><td><span class="chg-pill chg-up">+11.45%</span></td></tr>
+          <tr><td class="col-center muted">2</td><td class="col-left"><a href="/coin/inj/">Injective</a> <span class="muted">INJ</span></td><td><span class="chg-pill chg-down">-30.32%</span></td><td class="hide-mobile">$8.948<br><span class="muted">October 20, 2026</span></td><td><span class="chg-pill chg-up">+15.46%</span></td></tr>
+          <tr><td class="col-center muted">3</td><td class="col-left"><a href="/coin/xmr/">Monero</a> <span class="muted">XMR</span></td><td><span class="chg-pill chg-down">-30.61%</span></td><td class="hide-mobile">$711.530<br><span class="muted">January 14, 2026</span></td><td><span class="chg-pill chg-up">+33.70%</span></td></tr>
+          <tr><td class="col-center muted">4</td><td class="col-left"><a href="/coin/paxg/">PAX Gold</a> <span class="muted">PAXG</span></td><td><span class="chg-pill chg-down">-35.42%</span></td><td class="hide-mobile">$5,541.45<br><span class="muted">January 28, 2026</span></td><td><span class="chg-pill chg-down">-11.81%</span></td></tr>
+          <tr><td class="col-center muted">5</td><td class="col-left"><a href="/coin/rune/">THORChain</a> <span class="muted">RUNE</span></td><td><span class="chg-pill chg-down">-36.75%</span></td><td class="hide-mobile">$0.8000<br><span class="muted">September 30, 2026</span></td><td><span class="chg-pill chg-down">-16.64%</span></td></tr>
+          <tr><td class="col-center muted">6</td><td class="col-left"><a href="/coin/beam/">Beam</a> <span class="muted">BEAM</span></td><td><span class="chg-pill chg-down">-36.80%</span></td><td class="hide-mobile">$0.005527<br><span class="muted">November 1, 2026</span></td><td><span class="chg-pill chg-up">+6.82%</span></td></tr>
+          <tr><td class="col-center muted">7</td><td class="col-left"><a href="/coin/btc/">Bitcoin</a> <span class="muted">BTC</span></td><td><span class="chg-pill chg-down">-36.80%</span></td><td class="hide-mobile">$96,951.78<br><span class="muted">January 14, 2026</span></td><td><span class="chg-pill chg-down">-27.69%</span></td></tr>
+          <tr><td class="col-center muted">8</td><td class="col-left"><a href="/coin/jup/">Jupiter</a> <span class="muted">JUP</span></td><td><span class="chg-pill chg-down">-40.04%</span></td><td class="hide-mobile">$0.3749<br><span class="muted">October 9, 2026</span></td><td><span class="chg-pill chg-down">-4.38%</span></td></tr>
+          <tr><td class="col-center muted">9</td><td class="col-left"><a href="/coin/stx/">Stacks</a> <span class="muted">STX</span></td><td><span class="chg-pill chg-down">-40.84%</span></td><td class="hide-mobile">$0.4349<br><span class="muted">October 13, 2026</span></td><td><span class="chg-pill chg-down">-16.33%</span></td></tr>
+          <tr><td class="col-center muted">10</td><td class="col-left"><a href="/coin/bnb/">BNB</a> <span class="muted">BNB</span></td><td><span class="chg-pill chg-down">-41.00%</span></td><td class="hide-mobile">$948.470<br><span class="muted">January 14, 2026</span></td><td><span class="chg-pill chg-down">-32.89%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-section" aria-labelledby="largest-fall-h" id="largest-fall">
+      <h3 id="largest-fall-h"><a href="#largest-fall">Largest fall within the year</a></h3>
+      <p class="prose">The biggest drop from one daily close to a later, lower daily close within the past 52 weeks, and when it happened.</p>
+      <div class="table-wrap">
+        <table class="history-table sector-table" id="largest-fall-table">
+          <caption class="sr-only">Coins with the largest fall between daily closes within the year</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th><th scope="col">Largest fall</th><th scope="col" class="hide-mobile">From</th><th scope="col" class="hide-mobile">To</th></tr></thead>
+          <tbody>
+          <tr><td class="col-center muted">1</td><td class="col-left"><a href="/coin/flow/">Flow</a> <span class="muted">FLOW</span></td><td><span class="chg-pill chg-down">-94.00%</span></td><td class="hide-mobile">November 26, 2025</td><td class="hide-mobile">November 20, 2026</td></tr>
+          <tr><td class="col-center muted">2</td><td class="col-left"><a href="/coin/hnt/">Helium</a> <span class="muted">HNT</span></td><td><span class="chg-pill chg-down">-92.50%</span></td><td class="hide-mobile">November 24, 2025</td><td class="hide-mobile">August 14, 2026</td></tr>
+          <tr><td class="col-center muted">3</td><td class="col-left"><a href="/coin/lrc/">Loopring</a> <span class="muted">LRC</span></td><td><span class="chg-pill chg-down">-91.20%</span></td><td class="hide-mobile">December 13, 2025</td><td class="hide-mobile">November 21, 2026</td></tr>
+          <tr><td class="col-center muted">4</td><td class="col-left"><a href="/coin/strk/">Starknet</a> <span class="muted">STRK</span></td><td><span class="chg-pill chg-down">-85.20%</span></td><td class="hide-mobile">November 26, 2025</td><td class="hide-mobile">August 18, 2026</td></tr>
+          <tr><td class="col-center muted">5</td><td class="col-left"><a href="/coin/gala/">Gala</a> <span class="muted">GALA</span></td><td><span class="chg-pill chg-down">-84.50%</span></td><td class="hide-mobile">November 27, 2025</td><td class="hide-mobile">November 21, 2026</td></tr>
+          <tr><td class="col-center muted">6</td><td class="col-left"><a href="/coin/apt/">Aptos</a> <span class="muted">APT</span></td><td><span class="chg-pill chg-down">-84.20%</span></td><td class="hide-mobile">November 24, 2025</td><td class="hide-mobile">November 20, 2026</td></tr>
+          <tr><td class="col-center muted">7</td><td class="col-left"><a href="/coin/zk/">ZKsync</a> <span class="muted">ZK</span></td><td><span class="chg-pill chg-down">-83.90%</span></td><td class="hide-mobile">November 25, 2025</td><td class="hide-mobile">November 22, 2026</td></tr>
+          <tr><td class="col-center muted">8</td><td class="col-left"><a href="/coin/bonk/">Bonk</a> <span class="muted">BONK</span></td><td><span class="chg-pill chg-down">-83.20%</span></td><td class="hide-mobile">January 5, 2026</td><td class="hide-mobile">November 21, 2026</td></tr>
+          <tr><td class="col-center muted">9</td><td class="col-left"><a href="/coin/s/">Sonic</a> <span class="muted">S</span></td><td><span class="chg-pill chg-down">-82.20%</span></td><td class="hide-mobile">November 25, 2025</td><td class="hide-mobile">June 25, 2026</td></tr>
+          <tr><td class="col-center muted">10</td><td class="col-left"><a href="/coin/op/">Optimism</a> <span class="muted">OP</span></td><td><span class="chg-pill chg-down">-80.90%</span></td><td class="hide-mobile">January 13, 2026</td><td class="hide-mobile">November 20, 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-section" aria-labelledby="least-tied-to-bitcoin-h" id="least-tied-to-bitcoin">
+      <h3 id="least-tied-to-bitcoin-h"><a href="#least-tied-to-bitcoin">Least tied to Bitcoin</a></h3>
+      <p class="prose">Correlation of each coin's daily moves with Bitcoin's over the last 90 days: 1 means moving in lockstep, 0 means no relation. The median across the 109 coins is 0.60; these are the lowest.</p>
+      <div class="table-wrap">
+        <table class="history-table sector-table" id="least-tied-to-bitcoin-table">
+          <caption class="sr-only">Coins whose daily moves had the lowest 90-day correlation with Bitcoin</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th><th scope="col">Correlation</th><th scope="col" class="hide-mobile">30d</th></tr></thead>
+          <tbody>
+          <tr><td class="col-center muted">1</td><td class="col-left"><a href="/coin/trx/">TRON</a> <span class="muted">TRX</span></td><td>0.09</td><td class="hide-mobile"><span class="chg-pill chg-down">-7.39%</span></td></tr>
+          <tr><td class="col-center muted">2</td><td class="col-left"><a href="/coin/qnt/">Quant</a> <span class="muted">QNT</span></td><td>0.27</td><td class="hide-mobile"><span class="chg-pill chg-down">-20.93%</span></td></tr>
+          <tr><td class="col-center muted">3</td><td class="col-left"><a href="/coin/nmr/">Numeraire</a> <span class="muted">NMR</span></td><td>0.28</td><td class="hide-mobile"><span class="chg-pill chg-down">-28.11%</span></td></tr>
+          <tr><td class="col-center muted">4</td><td class="col-left"><a href="/coin/sc/">Siacoin</a> <span class="muted">SC</span></td><td>0.28</td><td class="hide-mobile"><span class="chg-pill chg-down">-32.95%</span></td></tr>
+          <tr><td class="col-center muted">5</td><td class="col-left"><a href="/coin/hnt/">Helium</a> <span class="muted">HNT</span></td><td>0.30</td><td class="hide-mobile"><span class="chg-pill chg-down">-44.84%</span></td></tr>
+          <tr><td class="col-center muted">6</td><td class="col-left"><a href="/coin/sand/">The Sandbox</a> <span class="muted">SAND</span></td><td>0.33</td><td class="hide-mobile"><span class="chg-pill chg-down">-34.90%</span></td></tr>
+          <tr><td class="col-center muted">7</td><td class="col-left"><a href="/coin/pha/">Phala Network</a> <span class="muted">PHA</span></td><td>0.37</td><td class="hide-mobile"><span class="chg-pill chg-down">-44.11%</span></td></tr>
+          <tr><td class="col-center muted">8</td><td class="col-left"><a href="/coin/wlfi/">World Liberty Financial</a> <span class="muted">WLFI</span></td><td>0.37</td><td class="hide-mobile"><span class="chg-pill chg-down">-19.04%</span></td></tr>
+          <tr><td class="col-center muted">9</td><td class="col-left"><a href="/coin/egld/">MultiversX</a> <span class="muted">EGLD</span></td><td>0.39</td><td class="hide-mobile"><span class="chg-pill chg-down">-33.65%</span></td></tr>
+          <tr><td class="col-center muted">10</td><td class="col-left"><a href="/coin/beam/">Beam</a> <span class="muted">BEAM</span></td><td>0.41</td><td class="hide-mobile"><span class="chg-pill chg-up">+3.22%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-section" aria-labelledby="calmest-h" id="calmest">
+      <h3 id="calmest-h"><a href="#calmest">Calmest and wildest over 30 days</a></h3>
+      <p class="prose">Annualized volatility of daily moves over the last 30 days across 110 coins: lower means steadier prices. The calmest ten first, then the wildest ten.</p>
+      <div class="table-wrap">
+        <table class="history-table sector-table" id="calmest-table">
+          <caption class="sr-only">The ten coins with the lowest 30-day volatility</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th><th scope="col">Volatility</th><th scope="col" class="hide-mobile">30d</th></tr></thead>
+          <tbody>
+          <tr><td class="col-center muted">1</td><td class="col-left"><a href="/coin/paxg/">PAX Gold</a> <span class="muted">PAXG</span></td><td>29.3%</td><td class="hide-mobile"><span class="chg-pill chg-down">-10.61%</span></td></tr>
+          <tr><td class="col-center muted">2</td><td class="col-left"><a href="/coin/wlfi/">World Liberty Financial</a> <span class="muted">WLFI</span></td><td>39.6%</td><td class="hide-mobile"><span class="chg-pill chg-down">-19.04%</span></td></tr>
+          <tr><td class="col-center muted">3</td><td class="col-left"><a href="/coin/btc/">Bitcoin</a> <span class="muted">BTC</span></td><td>46.8%</td><td class="hide-mobile"><span class="chg-pill chg-down">-24.53%</span></td></tr>
+          <tr><td class="col-center muted">4</td><td class="col-left"><a href="/coin/trx/">TRON</a> <span class="muted">TRX</span></td><td>47.9%</td><td class="hide-mobile"><span class="chg-pill chg-down">-7.39%</span></td></tr>
+          <tr><td class="col-center muted">5</td><td class="col-left"><a href="/coin/1inch/">1inch Network</a> <span class="muted">1INCH</span></td><td>56.1%</td><td class="hide-mobile"><span class="chg-pill chg-down">-33.30%</span></td></tr>
+          <tr><td class="col-center muted">6</td><td class="col-left"><a href="/coin/bnb/">BNB</a> <span class="muted">BNB</span></td><td>56.4%</td><td class="hide-mobile"><span class="chg-pill chg-down">-24.34%</span></td></tr>
+          <tr><td class="col-center muted">7</td><td class="col-left"><a href="/coin/lpt/">Livepeer</a> <span class="muted">LPT</span></td><td>57.4%</td><td class="hide-mobile"><span class="chg-pill chg-down">-34.22%</span></td></tr>
+          <tr><td class="col-center muted">8</td><td class="col-left"><a href="/coin/shib/">Shiba Inu</a> <span class="muted">SHIB</span></td><td>58.7%</td><td class="hide-mobile"><span class="chg-pill chg-down">-27.51%</span></td></tr>
+          <tr><td class="col-center muted">9</td><td class="col-left"><a href="/coin/ankr/">Ankr</a> <span class="muted">ANKR</span></td><td>59.1%</td><td class="hide-mobile"><span class="chg-pill chg-down">-29.41%</span></td></tr>
+          <tr><td class="col-center muted">10</td><td class="col-left"><a href="/coin/okb/">OKB</a> <span class="muted">OKB</span></td><td>60.9%</td><td class="hide-mobile"><span class="chg-pill chg-down">-26.09%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="history-table sector-table" id="wildest-table">
+          <caption class="sr-only">The ten coins with the highest 30-day volatility</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th><th scope="col">Volatility</th><th scope="col" class="hide-mobile">30d</th></tr></thead>
+          <tbody>
+          <tr><td class="col-center muted">1</td><td class="col-left"><a href="/coin/beam/">Beam</a> <span class="muted">BEAM</span></td><td>173.1%</td><td class="hide-mobile"><span class="chg-pill chg-up">+3.22%</span></td></tr>
+          <tr><td class="col-center muted">2</td><td class="col-left"><a href="/coin/ena/">Ethena</a> <span class="muted">ENA</span></td><td>113.5%</td><td class="hide-mobile"><span class="chg-pill chg-down">-49.15%</span></td></tr>
+          <tr><td class="col-center muted">3</td><td class="col-left"><a href="/coin/uni/">Uniswap</a> <span class="muted">UNI</span></td><td>112.6%</td><td class="hide-mobile"><span class="chg-pill chg-down">-32.75%</span></td></tr>
+          <tr><td class="col-center muted">4</td><td class="col-left"><a href="/coin/pyth/">Pyth Network</a> <span class="muted">PYTH</span></td><td>111.2%</td><td class="hide-mobile"><span class="chg-pill chg-down">-26.98%</span></td></tr>
+          <tr><td class="col-center muted">5</td><td class="col-left"><a href="/coin/aster/">Aster</a> <span class="muted">ASTER</span></td><td>110.6%</td><td class="hide-mobile"><span class="chg-pill chg-down">-27.59%</span></td></tr>
+          <tr><td class="col-center muted">6</td><td class="col-left"><a href="/coin/near/">NEAR Protocol</a> <span class="muted">NEAR</span></td><td>108.8%</td><td class="hide-mobile"><span class="chg-pill chg-down">-36.35%</span></td></tr>
+          <tr><td class="col-center muted">7</td><td class="col-left"><a href="/coin/zec/">Zcash</a> <span class="muted">ZEC</span></td><td>108.3%</td><td class="hide-mobile"><span class="chg-pill chg-down">-32.49%</span></td></tr>
+          <tr><td class="col-center muted">8</td><td class="col-left"><a href="/coin/inj/">Injective</a> <span class="muted">INJ</span></td><td>106.8%</td><td class="hide-mobile"><span class="chg-pill chg-down">-19.96%</span></td></tr>
+          <tr><td class="col-center muted">9</td><td class="col-left"><a href="/coin/pepe/">Pepe</a> <span class="muted">PEPE</span></td><td>106.1%</td><td class="hide-mobile"><span class="chg-pill chg-down">-25.60%</span></td></tr>
+          <tr><td class="col-center muted">10</td><td class="col-left"><a href="/coin/ray/">Raydium</a> <span class="muted">RAY</span></td><td>104.5%</td><td class="hide-mobile"><span class="chg-pill chg-down">-27.10%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-section" aria-labelledby="stablecoin-pegs-h" id="stablecoin-pegs">
+      <h3 id="stablecoin-pegs-h"><a href="#stablecoin-pegs">Stablecoin peg check</a></h3>
+      <p class="prose">How far each US-dollar stablecoin's daily close strayed from $1.00 over the past 52 weeks, widest first.</p>
+      <div class="table-wrap">
+        <table class="history-table sector-table" id="stablecoin-pegs-table">
+          <caption class="sr-only">Lowest and highest daily close of each stablecoin over 52 weeks and the widest move away from one dollar</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th><th scope="col">Lowest close</th><th scope="col">Highest close</th><th scope="col">Widest from $1</th></tr></thead>
+          <tbody>
+          <tr><td class="col-center muted">1</td><td class="col-left"><a href="/coin/dai/">Dai</a> <span class="muted">DAI</span></td><td>$0.9947<br><span class="muted">June 1, 2026</span></td><td>$1.006<br><span class="muted">June 26, 2026</span></td><td>0.61%</td></tr>
+          <tr><td class="col-center muted">2</td><td class="col-left"><a href="/coin/fdusd/">First Digital USD</a> <span class="muted">FDUSD</span></td><td>$0.9959<br><span class="muted">November 14, 2026</span></td><td>$1.004<br><span class="muted">January 14, 2026</span></td><td>0.41%</td></tr>
+          <tr><td class="col-center muted">3</td><td class="col-left"><a href="/coin/usdt/">Tether</a> <span class="muted">USDT</span></td><td>$0.9976<br><span class="muted">November 20, 2026</span></td><td>$1.000<br><span class="muted">April 14, 2026</span></td><td>0.24%</td></tr>
+          <tr><td class="col-center muted">4</td><td class="col-left"><a href="/coin/usdc/">USD Coin</a> <span class="muted">USDC</span></td><td>$0.9994<br><span class="muted">April 14, 2026</span></td><td>$1.002<br><span class="muted">November 20, 2026</span></td><td>0.23%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="page-section prose" aria-labelledby="past-h">
       <h2 id="past-h">Earlier weeks</h2>
       <ul>
@@ -229,6 +384,8 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="page-section prose" aria-labelledby="how-h">
       <h2 id="how-h">How this report is made</h2>
       <p>Every Monday the site's data refresh downloads a year of daily closing prices (UTC) for each coin from Binance, Kraken or Coinbase and rebuilds this page from them. Changes compare the latest daily close with the close seven days earlier. Stablecoins are left out of the counts, the medians and the tables because they barely move. The report contains only these measured figures: no headlines, forecasts or opinions. Sources and methods are on the <a href="/about/">About page</a>; the <a href="/heatmap/">heatmap</a> shows the market live.</p>
+      <p>Quoting a figure from this page? Please link to it and give the date; each table above has its own link (click its heading).</p>
+      <p style="display:flex;gap:8px;max-width:640px"><input type="text" class="sync-input" style="flex:1;min-width:0;margin:0" id="citeText" readonly aria-label="Citation for this report" value="CryptoPriceTicker.com, &quot;Weekly crypto market report&quot;, daily closes to November 22, 2026, https://cryptopriceticker.com/market/" /><button type="button" class="action-btn" data-action="copy" data-target="citeText" data-msg="📋 Citation copied.">📋 Copy citation</button></p>
       <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
     </section>
   </main>
