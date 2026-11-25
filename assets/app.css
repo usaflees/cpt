@@ -1755,3 +1755,11 @@ body.is-overlay #embedShell { zoom: 1.35; }
 .snap-row .col-spark::before { content: ""; display: inline-block; width: 110px; height: 32px; vertical-align: middle; }
 
 .feed-sub>summary{list-style:none;cursor:pointer;margin-top:10px}.feed-sub>summary::-webkit-details-marker{display:none}
+/* Compare table: grouped rows, the leading side shaded (preview, Nov 24) */
+.cmp-group th{padding-top:14px;font:600 11px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+.cmp-lead,.cmp-swatch{background:var(--accent-glow)}
+.cmp-lead{font-weight:600}
+.cmp-swatch{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px}
+.cmp-key{margin:8px 0 0;font-size:12.5px}
+.cmp-lead .chg-up{background:linear-gradient(var(--up-bg),var(--up-bg)),var(--bg-secondary)}
+.cmp-lead .chg-down{background:linear-gradient(var(--down-bg),var(--down-bg)),var(--bg-secondary)}

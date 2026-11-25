@@ -152,7 +152,12 @@ ${body}
     const when = `<time datetime="${asOf}">${longDate(asOf)}</time>`;
     const pa = sa ? sa.close : a.price, pb = sb ? sb.close : b.price;
     const source = sa && sb ? (sa.source === sb.source ? sa.source : `${sa.source} and ${sb.source}`) : "exchange";
-    const row = (label, fa, fb) => `<tr><th scope="row" class="col-left">${label}</th><td>${fa}</td><td>${fb}</td></tr>`;
+    // lead: which side the row favours ("a", "b" or null); x and y are the numbers compared, hi = bigger is better.
+    const lead = (x, y, hi = true) => (isStable(a) && isStable(b) || typeof x !== "number" || typeof y !== "number" || x === y ? null : (x > y) === hi ? "a" : "b");
+    const cell = (v, on) => (on ? `<td class="cmp-lead">${v}<span class="sr-only"> (leads)</span></td>` : `<td>${v}</td>`);
+    const row = (label, fa, fb, l = null) => `<tr><th scope="row" class="col-left">${label}</th>${cell(fa, l === "a")}${cell(fb, l === "b")}</tr>`;
+    const group = label => `<tr class="cmp-group"><th scope="colgroup" colspan="3" class="col-left">${label}</th></tr>`;
+    const offHigh = s => (s ? (s.close - s.high52w) / s.high52w : null);
     const pill = v => `<span class="chg-pill ${pctClass(v)}">${pctText(v)}</span>`;
     const num = (s, k, f) => (s && typeof s[k] === "number" ? f(s[k]) : "—");
     const supplyText = c => (c.supply >= 1000 ? compact(c.supply * 1e6, "") : (c.supply * 1e6).toLocaleString("en-US", { maximumFractionDigits: 0 })) + " " + esc(c.sym);
@@ -160,19 +165,23 @@ ${body}
     const fromHigh = s => (s ? `${pts(((s.close - s.high52w) / s.high52w) * 100)}%` : "—");
     const sectorText = c => c.sectors.map(k => esc(sectorNames[k] || k)).join(", ");
     const rows = [
+      group("Size"),
       row("Price (daily close)", usd(pa), usd(pb)),
-      row("Market cap", compact(mcap(a)), compact(mcap(b))),
+      row("Market cap", compact(mcap(a)), compact(mcap(b)), lead(mcap(a), mcap(b))),
       row("Market-cap rank", `#${rankOf.get(a.sym)}`, `#${rankOf.get(b.sym)}`),
       row("Circulating supply", supplyText(a), supplyText(b)),
-      row("7 days", pill(sa?.change7d), pill(sb?.change7d)),
-      row("30 days", pill(sa?.change30d), pill(sb?.change30d)),
-      row("90 days", pill(sa?.change90d), pill(sb?.change90d)),
-      row("1 year", pill(sa?.change1y), pill(sb?.change1y)),
+      group("Returns"),
+      row("7 days", pill(sa?.change7d), pill(sb?.change7d), lead(sa?.change7d, sb?.change7d)),
+      row("30 days", pill(sa?.change30d), pill(sb?.change30d), lead(sa?.change30d, sb?.change30d)),
+      row("90 days", pill(sa?.change90d), pill(sb?.change90d), lead(sa?.change90d, sb?.change90d)),
+      row("1 year", pill(sa?.change1y), pill(sb?.change1y), lead(sa?.change1y, sb?.change1y)),
+      group("52-week range"),
       row("52-week high", sa ? `${usd(sa.high52w)}<br><span class="muted">${longDate(sa.high52wDate)}</span>` : "—", sb ? `${usd(sb.high52w)}<br><span class="muted">${longDate(sb.high52wDate)}</span>` : "—"),
       row("52-week low", sa ? `${usd(sa.low52w)}<br><span class="muted">${longDate(sa.low52wDate)}</span>` : "—", sb ? `${usd(sb.low52w)}<br><span class="muted">${longDate(sb.low52wDate)}</span>` : "—"),
-      row("Below 52-week high", fromHigh(sa), fromHigh(sb)),
-      row("30-day volatility (annualized)", num(sa, "volatility30d", v => v + "%"), num(sb, "volatility30d", v => v + "%")),
-      row("Largest fall within the year", num(sa, "maxDrawdown1y", v => pts(v) + "%"), num(sb, "maxDrawdown1y", v => pts(v) + "%")),
+      row("Below 52-week high", fromHigh(sa), fromHigh(sb), lead(offHigh(sa), offHigh(sb))),
+      group("Risk"),
+      row("30-day volatility (annualized)", num(sa, "volatility30d", v => v + "%"), num(sb, "volatility30d", v => v + "%"), lead(sa?.volatility30d, sb?.volatility30d, false)),
+      row("Largest fall within the year", num(sa, "maxDrawdown1y", v => pts(v) + "%"), num(sb, "maxDrawdown1y", v => pts(v) + "%"), lead(sa?.maxDrawdown1y, sb?.maxDrawdown1y)),
       row("Correlation with BTC (90 days)", corrCell(a, sa), corrCell(b, sb)),
       row("Sector", sectorText(a), sectorText(b))
     ].join("\n            ");
@@ -215,6 +224,7 @@ ${body}
           </tbody>
         </table>
       </div>
+      ${isStable(a) && isStable(b) ? "" : `<p class="cmp-key muted"><span class="cmp-swatch" aria-hidden="true"></span> Shaded: the bigger market cap, the better return, the coin nearer its high, the steadier price and the smaller fall.</p>`}
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from ${esc(source)}, as of ${longDate(asOf)}. Market cap uses the snapshot price × circulating supply. Updated weekly.</p>
     </section>
 ${months.length ? `

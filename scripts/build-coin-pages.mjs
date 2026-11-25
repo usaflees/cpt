@@ -415,7 +415,7 @@ function coinPage(c) {
       ${keyFacts(c, st, rankOf.get(c.sym), coins.length)}
       <div class="hero-actions">
         <button type="button" class="action-btn" id="cpFav" data-action="toggle-fav" data-sym="${s}" aria-pressed="false">♡ Add to watchlist</button>
-        <button type="button" class="action-btn btn-accent" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>
+        <button type="button" class="action-btn" data-action="open-widget" data-sym="${s}">🧩 Embed ${s} widget</button>
         <button type="button" class="action-btn" data-action="pip" data-sym="${s}">⧉ Pop out</button>
         <a class="action-btn" href="/">All prices →</a>
       </div>
