@@ -73,7 +73,7 @@ function computeBoards({ coins, stats, week }) {
   const corr = num("corrBtc90d").filter(r => r.c.sym !== "BTC");
   const vol = num("volatility30d");
   const fall = year.filter(r => typeof r.st.maxDrawdown1y === "number");
-  const stable = rows.filter(r => r.c.sectors.includes("Stable") && r.st.historyDays >= 365 && r.st.low52w > 0 && Math.abs(r.st.close - 1) < 0.1)
+  const stable = rows.filter(r => r.c.sectors.includes("Stable") && r.st.historyDays >= 365 && r.st.low52w > 0)
     .map(r => ({ ...r, dev: Math.max(Math.abs(r.st.high52w - 1), Math.abs(1 - r.st.low52w)) * 100 }));
   return {
     yearCount: year.length,
