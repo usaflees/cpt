@@ -58,6 +58,38 @@ function updateHistory(current) {
   return next;
 }
 
+// Where each coin stands over the year: cross-coin rankings of figures that the coin pages already state one coin
+// at a time (distance from the 52-week high, largest fall, 30-day volatility, 90-day correlation with Bitcoin,
+// stablecoin peg range). Current week only: not stored in the history file. Only coins whose stats end on the
+// report date count, and the 52-week tables need a full year of data, so every row covers the same span.
+const ROWS = 10;
+function computeBoards({ coins, stats, week }) {
+  const rows = coins.map(c => ({ c, st: stats[c.sym] })).filter(r => r.st && r.st.asOf === week);
+  const risky = rows.filter(r => !r.c.sectors.includes("Stable"));
+  const year = risky.filter(r => r.st.historyDays >= 365 && r.st.high52w > 0 && r.st.close > 0)
+    .map(r => ({ ...r, below: (r.st.close / r.st.high52w - 1) * 100, regain: (r.st.high52w / r.st.close - 1) * 100 }));
+  const by = (arr, f, dir = 1) => [...arr].sort((a, b) => dir * (f(a) - f(b)) || a.c.sym.localeCompare(b.c.sym));
+  const num = k => risky.filter(r => typeof r.st[k] === "number");
+  const corr = num("corrBtc90d").filter(r => r.c.sym !== "BTC");
+  const vol = num("volatility30d");
+  const fall = year.filter(r => typeof r.st.maxDrawdown1y === "number");
+  const stable = rows.filter(r => r.c.sectors.includes("Stable") && r.st.historyDays >= 365 && r.st.low52w > 0)
+    .map(r => ({ ...r, dev: Math.max(Math.abs(r.st.high52w - 1), Math.abs(1 - r.st.low52w)) * 100 }));
+  return {
+    yearCount: year.length,
+    farthest: by(year, r => r.below).slice(0, ROWS),
+    nearest: by(year, r => r.below, -1).slice(0, ROWS),
+    fall: by(fall, r => r.st.maxDrawdown1y).slice(0, ROWS),
+    independent: by(corr, r => r.st.corrBtc90d).slice(0, ROWS),
+    corrCount: corr.length,
+    medCorr: corr.length ? median(corr.map(r => r.st.corrBtc90d)) : null,
+    calm: by(vol, r => r.st.volatility30d).slice(0, ROWS),
+    wild: by(vol, r => r.st.volatility30d, -1).slice(0, ROWS),
+    volCount: vol.length,
+    stable: by(stable, r => r.dev, -1)
+  };
+}
+
 export function buildMarketReport(h) {
   const { SITE, esc, longDate, list, pctText, pctClass, usd, avatarHtml, topbar, slug, coins, stats, sectors, week } = h;
   if (!week) return null;
@@ -119,6 +151,52 @@ export function buildMarketReport(h) {
     : `<p><strong>${label}:</strong> none this week.</p>`;
   const archive = weeks.slice(1).map(x => `<li id="week-${x.week}"><strong>Week to ${longDate(x.week)}.</strong> ${summary(x, false)}</li>`).join("\n        ");
 
+  // Year rankings (see computeBoards). Each table has its own id so people can link straight to it.
+  const b = computeBoards({ coins, stats, week: w.week });
+  const pct1 = v => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}%`;
+  // Plain links, no logos: seven tables of logo cells would push the page past its HTML budget.
+  const coinCell = c => `<td class="col-left"><a href="/coin/${slug(c.sym)}/">${esc(name(c.sym))}</a> <span class="muted">${esc(c.sym)}</span></td>`;
+  const board = (id, caption, heads, arr, cells) => `<div class="table-wrap">
+        <table class="history-table sector-table" id="${id}-table">
+          <caption class="sr-only">${caption}</caption>
+          <thead><tr><th scope="col" class="col-center">#</th><th scope="col" class="col-left">Coin</th>${heads.map(([t, hide]) => `<th scope="col"${hide ? ' class="hide-mobile"' : ""}>${t}</th>`).join("")}</tr></thead>
+          <tbody>
+          ${arr.map((r, i) => `<tr><td class="col-center muted">${i + 1}</td>${coinCell(r.c)}${cells(r).map(([v, hide]) => `<td${hide ? ' class="hide-mobile"' : ""}>${v}</td>`).join("")}</tr>`).join("\n          ")}
+          </tbody>
+        </table>
+      </div>`;
+  const pill = v => `<span class="chg-pill ${pctClass(v)}">${pctText(v)}</span>`;
+  const boardSection = (id, h, intro, table) => `
+    <section class="page-section" aria-labelledby="${id}-h" id="${id}">
+      <h3 id="${id}-h"><a href="#${id}">${h}</a></h3>
+      <p class="prose">${intro}</p>
+      ${table}
+    </section>`;
+  const asOf = longDate(w.week);
+  const boards = !b.yearCount ? "" : `
+    <section class="page-section prose" aria-labelledby="year-h" id="year">
+      <h2 id="year-h">Where each coin stands over the year</h2>
+      <p>Rankings from daily closes to ${asOf}. The 52-week tables cover the ${b.yearCount} coins with a full year of data; the correlation and volatility tables cover every coin with those figures; stablecoins are listed separately. Each coin's own page has the full figures and dates. A fall of 50% needs a 100% rise to get back to where it started, so the last column shows the rise each coin would need to regain its 52-week high.</p>
+    </section>
+${boardSection("farthest-from-high", "Furthest below their 52-week high", `The coins whose ${asOf} close was furthest below their highest close of the past 52 weeks.`,
+  board("farthest-from-high", "Coins furthest below their 52-week high, with the date of the high and the rise needed to regain it", [["Below high"], ["52-week high", true], ["Rise to regain"]], b.farthest,
+    r => [[pill(r.below)], [`${usd(r.st.high52w)}<br><span class="muted">${longDate(r.st.high52wDate)}</span>`, true], [pct1(r.regain)]]))}
+${boardSection("nearest-high", "Closest to their 52-week high", "The coins whose latest close was nearest their highest close of the past 52 weeks (0% means the latest close was the high).",
+  board("nearest-high", "Coins closest to their 52-week high", [["Below high"], ["52-week high", true], ["1 year"]], b.nearest,
+    r => [[pill(r.below)], [`${usd(r.st.high52w)}<br><span class="muted">${longDate(r.st.high52wDate)}</span>`, true], [pill(r.st.change1y)]]))}
+${b.fall.length ? boardSection("largest-fall", "Largest fall within the year", "The biggest drop from one daily close to a later, lower daily close within the past 52 weeks, and when it happened.",
+  board("largest-fall", "Coins with the largest fall between daily closes within the year", [["Largest fall"], ["From", true], ["To", true]], b.fall,
+    r => [[pill(r.st.maxDrawdown1y)], [longDate(r.st.maxDrawdownFrom), true], [longDate(r.st.maxDrawdownTo), true]])) : ""}
+${b.independent.length ? boardSection("least-tied-to-bitcoin", "Least tied to Bitcoin", `Correlation of each coin's daily moves with Bitcoin's over the last 90 days: 1 means moving in lockstep, 0 means no relation. The median across the ${b.corrCount} coins is ${b.medCorr.toFixed(2)}; these are the lowest.`,
+  board("least-tied-to-bitcoin", "Coins whose daily moves had the lowest 90-day correlation with Bitcoin", [["Correlation"], ["30d", true]], b.independent,
+    r => [[r.st.corrBtc90d.toFixed(2)], [pill(r.st.change30d), true]])) : ""}
+${b.calm.length ? boardSection("calmest", "Calmest and wildest over 30 days", `Annualized volatility of daily moves over the last 30 days across ${b.volCount} coins: lower means steadier prices. The calmest ten first, then the wildest ten.`,
+  board("calmest", "The ten coins with the lowest 30-day volatility", [["Volatility"], ["30d", true]], b.calm, r => [[`${r.st.volatility30d}%`], [pill(r.st.change30d), true]]) + "\n      " +
+  board("wildest", "The ten coins with the highest 30-day volatility", [["Volatility"], ["30d", true]], b.wild, r => [[`${r.st.volatility30d}%`], [pill(r.st.change30d), true]])) : ""}
+${b.stable.length ? boardSection("stablecoin-pegs", "Stablecoin peg check", "How far each US-dollar stablecoin's daily close strayed from $1.00 over the past 52 weeks, widest first.",
+  board("stablecoin-pegs", "Lowest and highest daily close of each stablecoin over 52 weeks and the widest move away from one dollar", [["Lowest close"], ["Highest close"], ["Widest from $1"]], b.stable,
+    r => [[`${usd(r.st.low52w)}<br><span class="muted">${longDate(r.st.low52wDate)}</span>`], [`${usd(r.st.high52w)}<br><span class="muted">${longDate(r.st.high52wDate)}</span>`], [`${r.dev.toFixed(2)}%`]])) : ""}`;
+
   const title = "Weekly Crypto Market Report: Biggest Movers and Sectors";
   const description = "Weekly crypto market report: the best and worst coins, sector medians and new 52-week highs and lows, from exchange daily closes. Updated every Monday.";
   const jsonLd = {
@@ -173,7 +251,7 @@ export function buildMarketReport(h) {
     <section class="hero" aria-labelledby="market-h" id="week-${w.week}">
       <h1 id="market-h" class="hero-title">Weekly crypto market report</h1>
       <p class="hero-sub">${summary(w, true)}</p>
-      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a></p>
+      <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a> <a class="action-btn" href="#year">📊 Year rankings</a></p>
       <details class="feed-sub">
         <summary class="action-btn">🔔 Get this report every week</summary>
         <div style="margin-top:10px;max-width:560px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-secondary);color:var(--text-secondary);display:grid;gap:10px">
@@ -206,6 +284,7 @@ export function buildMarketReport(h) {
       ${extremes("New highs", w.highs)}
       ${extremes("New lows", w.lows)}
     </section>
+${boards}
 ${archive ? `
     <section class="page-section prose" aria-labelledby="past-h">
       <h2 id="past-h">Earlier weeks</h2>
@@ -217,6 +296,8 @@ ${archive ? `
     <section class="page-section prose" aria-labelledby="how-h">
       <h2 id="how-h">How this report is made</h2>
       <p>Every Monday the site's data refresh downloads a year of daily closing prices (UTC) for each coin from Binance, Kraken or Coinbase and rebuilds this page from them. Changes compare the latest daily close with the close seven days earlier. Stablecoins are left out of the counts, the medians and the tables because they barely move. The report contains only these measured figures: no headlines, forecasts or opinions. Sources and methods are on the <a href="/about/">About page</a>; the <a href="/heatmap/">heatmap</a> shows the market live.</p>
+      <p>Quoting a figure from this page? Please link to it and give the date; each table above has its own link (click its heading).</p>
+      <p style="display:flex;gap:8px;max-width:640px"><input type="text" class="sync-input" style="flex:1;min-width:0;margin:0" id="citeText" readonly aria-label="Citation for this report" value="${esc(`CryptoPriceTicker.com, "Weekly crypto market report", daily closes to ${longDate(w.week)}, ${pageUrl}`)}" /><button type="button" class="action-btn" data-action="copy" data-target="citeText" data-msg="📋 Citation copied.">📋 Copy citation</button></p>
       <p class="disclaimer">Not financial advice. Prices come from public exchange data and may be delayed or inaccurate.</p>
     </section>
   </main>
