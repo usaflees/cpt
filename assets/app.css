@@ -771,9 +771,7 @@ html:has(.modal-backdrop.open) { overflow: hidden; scrollbar-gutter: stable; }
   .search-box input:focus { width: 180px; }
 }
 
-/* ===================================================================
-   Accessibility, links & sortable headers
-   =================================================================== */
+/* Accessibility, links & sortable headers */
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
@@ -812,9 +810,7 @@ button.coin-cell { background: none; border: 0; color: inherit; text-align: left
   .ticker-tape-wrap { overflow-x: auto; }
 }
 
-/* ===================================================================
-   Content sections (home About/FAQ, coin pages, 404)
-   =================================================================== */
+/* Content sections (home About/FAQ, coin pages, 404) */
 .page-section {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -869,9 +865,7 @@ button.coin-cell { background: none; border: 0; color: inherit; text-align: left
 
 .history-table td, .history-table th { padding: 6px 12px; }
 
-/* ===================================================================
-   2026 redesign: calmer, friendlier layer on top of the base styles
-   =================================================================== */
+/* 2026 redesign: calmer, friendlier layer on top of the base styles */
 :root { --radius: 14px; --radius-sm: 10px; --shadow: 0 10px 30px rgba(0, 0, 0, 0.28); }
 [data-theme="light"] { --shadow: 0 10px 30px rgba(26, 18, 56, 0.10); }
 html, body { font-size: 14px; }
@@ -1346,11 +1340,7 @@ img.brand-logo.pulse-down.alt { animation-name: logoDown2; }
   .brand-stack .asset-tall img { max-width: 360px; margin: 0 auto; }
 }
 
-/* ------------------------------------------------------------------
- * Brand layer: neon hairlines, gold call to action, glowing cards.
- * Neon and Light define the brand tokens; the classic themes fall back
- * to their own accent so they keep their character.
- * ------------------------------------------------------------------ */
+/* Brand layer: neon hairlines, gold call to action, glowing cards. Neon and Light define the brand tokens; the classic themes fall back to their own accent so they keep their character. */
 [data-theme="kali"], [data-theme="green"], [data-theme="slate"], [data-theme="oled"] {
   --brand-line: linear-gradient(90deg, transparent, var(--accent), transparent);
   --brand-ring: linear-gradient(var(--border), var(--border));
@@ -1763,3 +1753,5 @@ body.is-overlay #embedShell { zoom: 1.35; }
 .cmp-key{margin:8px 0 0;font-size:12.5px}
 .cmp-lead .chg-up{background:linear-gradient(var(--up-bg),var(--up-bg)),var(--bg-secondary)}
 .cmp-lead .chg-down{background:linear-gradient(var(--down-bg),var(--down-bg)),var(--bg-secondary)}
+/* Compare table, phones: label over the two values (no sideways scroll). Only on /compare/, never in /embed/. */
+@media (max-width:560px){.compare-table,.compare-table thead,.compare-table tbody{display:block}.compare-table tr{display:grid;grid-template-columns:1fr 1fr}.compare-table thead th:first-child{display:none}.compare-table th,.compare-table td{white-space:normal;overflow-wrap:anywhere;position:static}.compare-table tbody th{grid-column:1/-1}.compare-table [scope=row]{background:none;border:0;padding:10px 12px 2px;font:600 12.5px var(--font-sans);text-transform:none;color:var(--text-secondary)}.compare-table td{padding:4px 12px 10px}.compare-table th:nth-child(2),.compare-table td:nth-of-type(1){text-align:left}}
