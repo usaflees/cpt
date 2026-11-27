@@ -2,7 +2,7 @@
 // Strategy is network-first for everything, so visitors always get the latest deploy;
 // the cache is only a fallback when the network is unavailable. Exchange APIs are never cached.
 const CACHE = "cpt-v3";
-const CORE = ["/", "/assets/app.css?v=a0aad645a1", "/assets/app.js?v=873589c945", "/assets/coins.js?v=2f6f199ef4", "/favicon.svg", "/brand/mark.svg", "/site.webmanifest"];
+const CORE = ["/", "/assets/app.css?v=a0aad645a1", "/assets/app.js?v=ad7f6ecdb3", "/assets/coins.js?v=2f6f199ef4", "/favicon.svg", "/brand/mark.svg", "/site.webmanifest"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
@@ -36,10 +36,11 @@ self.addEventListener("notificationclick", event => {
   event.notification.close();
   const url = new URL((event.notification.data && event.notification.data.url) || "/", self.location.origin);
   if (url.origin !== self.location.origin) return;
-  event.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(list => {
+  // Only tabs this worker controls can be moved; the move to the same page only changes the #, which the page reads.
+  event.waitUntil(self.clients.matchAll({ type: "window" }).then(list => {
     const tab = list.find(w => new URL(w.url).pathname === url.pathname);
     if (!tab) return self.clients.openWindow(url.href);
-    return tab.focus().then(w => (w && w.navigate ? w.navigate(url.href) : w)).catch(() => self.clients.openWindow(url.href));
+    return tab.focus().then(w => (url.hash && w ? w.navigate(url.href).catch(() => w) : w), () => self.clients.openWindow(url.href));
   }));
 });
 
