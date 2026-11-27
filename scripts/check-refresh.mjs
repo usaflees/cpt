@@ -6,7 +6,7 @@
 //   node scripts/check-refresh.mjs <git-base>      e.g. origin/main
 //
 // Exit 0: looks like a normal weekly refresh. Exit 1: don't publish; a human should look.
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { ROOT } from "./lib/registry.mjs";
 
@@ -31,13 +31,23 @@ if (stale.length) problems.push(`${stale.length} coins have older data than befo
 
 // The stats file is written from outside API responses and its values are printed into every coin page:
 // allow only numbers, dates and plain exchange names, so nothing in it can ever be markup or script.
+// The same holds for content/onchain.json (scripts/fetch-onchain.mjs, DefiLlama figures).
 const odd = [];
-(function walk(v, path) {
+function walk(v, path) {
   if (typeof v === "string") { if (!/^[A-Za-z0-9 .:+-]{1,32}$/.test(v)) odd.push(path); }
   else if (typeof v === "number") { if (!Number.isFinite(v)) odd.push(path); }
   else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) { if (!/^[A-Za-z0-9]+$/.test(k)) odd.push(`${path}.<key>`); else walk(x, `${path}.${k}`); }
   else if (v !== null && typeof v !== "boolean") odd.push(path);
-})(JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")), "stats");
+}
+walk(JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")), "stats");
+if (existsSync(ROOT + "content/onchain.json")) {
+  const chainAfter = JSON.parse(readFileSync(ROOT + "content/onchain.json", "utf8"));
+  walk(chainAfter, "onchain");
+  let chainBefore = {};
+  try { chainBefore = JSON.parse(execSync(`git show ${base}:content/onchain.json`, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] })).coins || {}; } catch { /* first run: no file in the base yet */ }
+  const chainLost = Object.keys(chainBefore).filter(s => !chainAfter.coins?.[s]);
+  if (chainLost.length > 5) problems.push(`${chainLost.length} coins lost their on-chain figures: ${chainLost.slice(0, 15).join(", ")}`);
+}
 if (odd.length) problems.push(`${odd.length} values are not a number, a date or a plain name: ${odd.slice(0, 5).join(", ")}`);
 
 if (problems.length) { console.log("check-refresh: FAILED\n- " + problems.join("\n- ")); process.exit(1); }

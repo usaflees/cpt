@@ -48,6 +48,8 @@ const entities = JSON.parse(readFileSync(ROOT + "content/coin-entities.json", "u
 // Per-coin performance figures from scripts/fetch-coin-stats.mjs (optional).
 const statsFile = existsSync(ROOT + "content/coin-stats.json") ? JSON.parse(readFileSync(ROOT + "content/coin-stats.json", "utf8")) : { coins: {} };
 const stats = statsFile.coins;
+// On-chain activity per coin from scripts/fetch-onchain.mjs (DefiLlama; optional, numbers and dates only).
+const onchainFile = existsSync(ROOT + "content/onchain.json") ? JSON.parse(readFileSync(ROOT + "content/onchain.json", "utf8")) : { coins: {} };
 const updated = [registryUpdated, statsFile.updated].filter(Boolean).sort().pop();
 // Bell Brief editions (scripts/build-bell.mjs), rendered on the home page.
 const bellPath = ROOT + "content/bell.json";
@@ -284,6 +286,74 @@ function statsSection(c, st) {
     </section>`;
 }
 
+// Where a coin's network goes by another name than the coin.
+const NETWORK_LABEL = { BNB: "BNB Chain", OKB: "X Layer", WLD: "World Chain", OP: "OP Mainnet" };
+// $48.7 billion, $100.8 million, $512,000: the size of the number, not its last dollar.
+function bigUsd(v) {
+  if (v >= 1e9) return `$${(v / 1e9).toFixed(v >= 1e11 ? 0 : 1)} billion`;
+  if (v >= 1e6) return `$${(v / 1e6).toFixed(v >= 1e8 ? 0 : 1)} million`;
+  return "$" + Math.round(v).toLocaleString("en-US");
+}
+const updown = (v, span) => `${v >= 0 ? "up" : "down"} ${Math.abs(v).toFixed(1)}% ${span}`;
+const isNum = v => typeof v === "number" && Number.isFinite(v);
+const isDay = v => typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v);
+
+// "On-chain activity": figures DefiLlama measures for the coin's network or app. Nothing renders without fresh
+// data (no fake data), and every value is checked to be a number or ISO date here before it reaches the page.
+function onchainSection(c, oc) {
+  if (!oc || !isNum(oc.tvl) || !isDay(oc.asOf) || Date.parse(updated) - Date.parse(oc.asOf) > 35 * 86400e3) return "";
+  const s = esc(c.sym), n = esc(shortName(c)), when = `<time datetime="${oc.asOf}">${longDate(oc.asOf)}</time>`;
+  const box = (label, val, sub = "") => `<div class="metric-box"><div class="metric-label">${label}</div><div class="metric-val">${val}</div>${sub ? `<div class="metric-label">${sub}</div>` : ""}</div>`;
+  const pill = v => `<span class="chg-pill ${pctClass(v)}">${pctText(v)}</span>`;
+  const cells = [box("Value locked (TVL)", bigUsd(oc.tvl))];
+  const said = [];
+  let note;
+  if (oc.kind === "network") {
+    const net = esc(NETWORK_LABEL[c.sym] || shortName(c));
+    const moves = [isNum(oc.tvlChange30d) && updown(oc.tvlChange30d, "over 30 days"), isNum(oc.tvlChange1y) && updown(oc.tvlChange1y, "over a year")].filter(Boolean);
+    said.push(`As of ${when}, apps on the ${net} network held ${bigUsd(oc.tvl)} of users' deposits (total value locked, or TVL)${moves.length ? `, ${moves.join(" and ")}` : ""}.`);
+    if (isNum(oc.tvlChange30d)) cells.push(box("TVL, 30 days", pill(oc.tvlChange30d)));
+    if (isNum(oc.tvlChange1y)) cells.push(box("TVL, 1 year", pill(oc.tvlChange1y)));
+    if (isNum(oc.tvlAth) && isDay(oc.tvlAthDate)) {
+      const below = ((oc.tvlAth - oc.tvl) / oc.tvlAth) * 100;
+      said.push(below < 0.5 ? "That is the highest DefiLlama has recorded for the network." : `The highest DefiLlama has recorded was ${bigUsd(oc.tvlAth)} on ${longDate(oc.tvlAthDate)}; TVL is ${below.toFixed(0)}% below that now.`);
+      cells.push(box("Record TVL", bigUsd(oc.tvlAth), longDate(oc.tvlAthDate)));
+    }
+    if (isNum(oc.stablecoins)) {
+      said.push(`${bigUsd(oc.stablecoins)} of dollar stablecoins are held on ${net}.`);
+      cells.push(box("Stablecoins on the network", bigUsd(oc.stablecoins)));
+    }
+    if (isNum(oc.dex30d)) {
+      said.push(`Its decentralized exchanges handled ${bigUsd(oc.dex30d)} of trades in the last 30 days${isNum(oc.dexChange30d) ? `, ${updown(oc.dexChange30d, "on the 30 days before")}` : ""}.`);
+      cells.push(box("DEX volume, 30 days", bigUsd(oc.dex30d), isNum(oc.dexChange30d) ? `${pctText(oc.dexChange30d)} on the previous 30` : ""));
+    }
+    note = `TVL counts tokens that users have deposited in apps on ${net}; it is not ${s}'s market cap.`;
+  } else if (oc.kind === "protocol") {
+    said.push(`As of ${when}, ${n}'s contracts held ${bigUsd(oc.tvl)} of users' deposits (total value locked, or TVL).`);
+    if (isNum(oc.fees30d)) {
+      const kept = !isNum(oc.revenue30d) ? "" : oc.revenue30d >= oc.fees30d ? ", all of which DefiLlama counts as protocol revenue"
+        : `, of which ${bigUsd(oc.revenue30d)} (${((oc.revenue30d / oc.fees30d) * 100).toFixed(0)}%) was kept by the protocol as revenue`;
+      said.push(`Over the last 30 days its users paid ${bigUsd(oc.fees30d)} in fees${kept}.`);
+      cells.push(box("Fees, 30 days", bigUsd(oc.fees30d)));
+      if (isNum(oc.revenue30d)) cells.push(box("Revenue, 30 days", bigUsd(oc.revenue30d)));
+    }
+    if (isNum(oc.fees1y)) {
+      said.push(`Fees over the past year came to ${bigUsd(oc.fees1y)}.`);
+      cells.push(box("Fees, 1 year", bigUsd(oc.fees1y)));
+    }
+    note = `TVL counts users' deposits in ${n}'s contracts; it is not ${s}'s market cap. Revenue is the part of fees the protocol keeps, as DefiLlama measures it.`;
+  } else return "";
+  return `
+    <section class="page-section" aria-labelledby="chain-h">
+      <h2 id="chain-h">${s} on-chain activity</h2>
+      <p class="prose">${said.join(" ")}</p>
+      <div class="stat-grid">
+        ${cells.join("\n        ")}
+      </div>
+      <p class="disclaimer" style="margin-top:8px">Figures from <a href="https://defillama.com/" rel="noopener">DefiLlama</a>, as of ${longDate(oc.asOf)}. Updated weekly. ${note}</p>
+    </section>`;
+}
+
 function relatedCoins(c) {
   const primary = c.sectors[0];
   const same = byCap.filter(o => o.sym !== c.sym && o.sectors.includes(primary)).slice(0, 8);
@@ -440,7 +510,7 @@ function coinPage(c) {
       <p class="disclaimer">Computed automatically from live exchange prices: measured moves, not news reports or advice.</p>
     </section>
 
-    ${statsSection(c, st)}
+    ${statsSection(c, st)}${onchainSection(c, onchainFile.coins[c.sym])}
 
     <section class="page-section" aria-labelledby="ex-h">
       <h2 id="ex-h">${s} price on each exchange</h2>
