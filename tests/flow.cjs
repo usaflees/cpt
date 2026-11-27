@@ -40,18 +40,22 @@ const seen = [];
   check(!sockets.some(u => /aggTrade/.test(u)), 'trade stream opened before the box came into view');
 
   await p.locator('#flowOut').scrollIntoViewIfNeeded();
-  await p.waitForFunction(() => /Buyers' share over 5 minutes by exchange/.test(document.getElementById('flowOut').textContent), null, { timeout: 25000 })
-    .catch(() => issues.push('buyers/sellers never filled in 25 s'));
+  // The 1-minute row fills once any exchange's trades cover a minute; 5 minutes needs one whose last 1,000 trades span that long.
+  await p.waitForFunction(() => /Last 1 minute[^]*\$[\d.]+/.test(document.querySelector('#flowOut tbody tr')?.textContent || ''), null, { timeout: 25000 })
+    .catch(() => issues.push('buyers/sellers 1-minute row never filled in 25 s'));
+  await p.waitForTimeout(2500);
   const flow = await p.evaluate(() => {
     const rows = [...document.querySelectorAll('#flowOut tbody tr')].map(r => r.textContent.replace(/\s+/g, ' ').trim());
     const shares = [...document.querySelectorAll('#flowOut .flow-bar')].map(e => e.getAttribute('aria-label'));
-    return { rows, shares, line: document.querySelector('#flowOut .tm-line')?.textContent || '' };
+    const bars = [...document.querySelectorAll('#flowOut tbody td:last-child')].map(td => [td.textContent.trim(), td.querySelector('i')?.style.width]);
+    return { rows, shares, bars, line: document.querySelector('#flowOut .tm-line')?.textContent || '' };
   });
   check(flow.rows.length === 3, `buyers/sellers rows: ${flow.rows.length}`);
   check(/Last 1 minute .*\$[\d.]+[KMB]?.*%/.test(flow.rows[0] || ''), `1-minute row: ${flow.rows[0]}`);
   check(flow.shares.every(s => /^(\d{1,3})% bought$|^No trades$/.test(s) && (!/\d/.test(s) || +s.match(/\d+/)[0] <= 100)), `shares: ${flow.shares.join(' | ')}`);
+  check(flow.bars.every(([t, w]) => w === undefined || (t.startsWith('—') ? w === '0%' : t.endsWith(w))), `bar width doesn't match the share: ${JSON.stringify(flow.bars)}`);
   const exs = (flow.line.match(/(Coinbase|Kraken|Binance) \d+%/g) || []);
-  check(exs.length >= 2, `fewer than 2 exchanges counted over 5 minutes: ${flow.line}`);
+  check(!/over 5 minutes/.test(flow.line) || exs.length >= 1, `5-minute line names no exchange: ${flow.line}`);
   seen.push(`flow: ${flow.rows[0]} | ${exs.join(', ')}`);
 
   await p.locator('#movesOut').scrollIntoViewIfNeeded();
@@ -67,6 +71,10 @@ const seen = [];
   await m.goto(B + '/coin/btc/'); await m.locator('#flowOut').scrollIntoViewIfNeeded();
   await m.locator('#movesOut').scrollIntoViewIfNeeded(); await m.waitForTimeout(6000);
   check(await m.evaluate(() => document.documentElement.scrollWidth - innerWidth) <= 0, 'sideways scroll at 375 px');
+  // Reserved height against what the boxes need once filled (min-height in app.css), reported so it can be tuned.
+  const hgt = async q => q.evaluate(() => ['flowOut', 'movesOut'].map(id => { const e = document.getElementById(id), r = e.cloneNode(true);
+    r.style.minHeight = '0'; e.after(r); const h = r.offsetHeight; r.remove(); return `${id} ${h}/${parseInt(getComputedStyle(e).minHeight)}px`; }).join(', '));
+  seen.push(`needed/reserved 1366: ${await hgt(p)}`, `375: ${await hgt(m)}`);
 
   console.log('ISSUES (' + issues.length + ')', issues.join('\n'), seen.length ? '| ' + seen.join(' | ') : '');
   process.exitCode = issues.length ? 1 : 0; await b.close();

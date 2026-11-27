@@ -31,8 +31,10 @@
   const c = state.coins.get(state.coinPageSym);
   if (!c) return;
   const HOUR = 3600e3, KR_REST = { BTC: "XBT", DOGE: "XDG" };
-  const source = c.feeds.includes("BN") ? "Binance" : c.feeds.includes("KR") ? "Kraken" : c.feeds.includes("CB") ? "Coinbase" : null;
-  if (!source) return;
+  // Tried in this order; the next one is used when a request fails or returns too little.
+  const sources = [["BN", "Binance"], ["KR", "Kraken"], ["CB", "Coinbase"]].filter(([ex]) => c.feeds.includes(ex)).map(x => x[1]);
+  if (!sources.length) return;
+  let source = sources[0];
   async function get(url) {
     const ctrl = new AbortController(), tm = setTimeout(() => ctrl.abort(), 12000);
     try { const r = await fetch(url, { signal: ctrl.signal }); if (!r.ok) throw new Error(r.status); return await r.json(); }
@@ -58,10 +60,14 @@
   const hourLabel = t => new Date(t).toLocaleTimeString([], { hour: "numeric", minute: new Date(t).getMinutes() ? "2-digit" : undefined });
 
   async function load() {
-    let rows;
-    try { rows = (await candles()).filter(r => r[0] + HOUR <= Date.now()); } catch (e) { rows = []; }
+    let rows = [];
+    for (const s of sources) {
+      source = s;
+      try { rows = (await candles()).filter(r => r[0] + HOUR <= Date.now()); } catch (e) { rows = []; }
+      if (rows.length >= 24 * 7) break;
+    }
     if (rows.length < 24 * 7) {
-      box.innerHTML = `<p class="tm-msg">Couldn't read enough of ${esc(c.sym)}'s hourly prices from ${source} just now. Reload the page to try again.</p>`;
+      box.innerHTML = `<p class="tm-msg">Couldn't read enough of ${esc(c.sym)}'s hourly prices from ${esc(sources.join(", "))} just now. Reload the page to try again.</p>`;
       return;
     }
     const days = Math.round((rows[rows.length - 1][0] - rows[0][0]) / 86400e3);
@@ -69,7 +75,7 @@
     const ok = g.hours.filter(h => h.avg !== null);
     const max = Math.max(...ok.map(h => h.avg));
     const hi = ok.reduce((a, b) => (b.avg > a.avg ? b : a)), lo = ok.reduce((a, b) => (b.avg < a.avg ? b : a));
-    const nowH = new Date().getHours();
+    const nowH = new Date(Math.floor(Date.now() / HOUR) * HOUR).getHours(); // the running candle, also in half-hour zones
     const bars = g.hours.map((h, i) => `<span class="moves-bar${i === nowH ? " is-now" : ""}" title="${esc(h.label)}: ${pct(h.avg)}"><i style="height:${h.avg === null ? 0 : Math.max(4, h.avg / max * 100).toFixed(1)}%"></i></span>`).join("");
     const ticks = [0, 6, 12, 18].map(i => `<span>${esc(g.hours[i].label || "")}</span>`).join("");
     const nowBar = g.hours[nowH];

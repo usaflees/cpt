@@ -193,7 +193,8 @@ for (const c of coins) {
 // app.css 87 → 88 KB (Nov 24, compare table preview): grouped rows and the shaded leading side.
 // app.css 88 → 90 KB (Nov 27): the plain-words filter line above the home table and the big-order cost box (logic in screener.js, which
 // loads only when the search box first gets focus, so it is not part of the home page's first load).
-const BUDGET = { "assets/app.js": 126_000, "assets/app.css": 90_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000, "assets/chart.js": 8_000, "assets/home-plus.js": 9_000, "assets/timemachine.js": 7_000, "assets/screener.js": 22_000, "assets/depth.js": 7_000, "assets/flow.js": 11_000, "assets/moves.js": 7_000 };
+// app.css 90 → 91 KB, flow.js 11 → 12 KB (Nov 27, review of buyers/sellers): reserved heights at phone width, run checks.
+const BUDGET = { "assets/app.js": 126_000, "assets/app.css": 91_000, "assets/coins.js": 25_000, "assets/consent.js": 6_000, "assets/flash.js": 20_000, "assets/bell.js": 6_000, "assets/bell.css": 6_000, "assets/race.js": 10_000, "assets/race.css": 5_000, "assets/agent.js": 14_000, "assets/ondevice.js": 14_000, "assets/chart.js": 8_000, "assets/home-plus.js": 9_000, "assets/timemachine.js": 7_000, "assets/screener.js": 22_000, "assets/depth.js": 7_000, "assets/flow.js": 12_000, "assets/moves.js": 7_000 };
 for (const [f, max] of Object.entries(BUDGET)) {
   const size = statSync(join(ROOT, f)).size;
   if (size > max) err(`budget: ${f} is ${size} bytes (budget ${max})`);

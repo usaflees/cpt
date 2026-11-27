@@ -467,7 +467,7 @@ function coinPage(c) {
 
     <section class="page-section tm" aria-labelledby="moves-h">
       <h2 id="moves-h">When does ${s} usually move?</h2>
-      <div class="tm-out moves-out" id="movesOut"><p class="tm-msg">Groups ${s}'s hourly moves over the last 30 days by the hour of the day on your own clock, so you can see when it tends to move most. It loads when this box comes into view.</p></div>
+      <div class="tm-out moves-out" id="movesOut"><p class="tm-msg">Groups ${s}'s hourly moves (up to the last 30 days) by the hour of the day on your own clock, so you can see when it tends to move most. It loads when this box comes into view.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="tm-h">
