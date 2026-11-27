@@ -49,12 +49,14 @@
       take(new RegExp(`(${MIN}|${MAX})\\s*\\$?\\s*${NUM}\\s*(?:in\\s*|of\\s*)?${W}`, "g"), (m, cmp, n, u) => setRange(field, cmp, num(n, u, dflt)));
     };
     const setRange = (field, cmp, v) => { if (!isFinite(v)) return false; set(field + (new RegExp(`^(?:${MAX})$`).test(cmp) ? "Max" : "Min"), v); };
-    money("mcap", "market ?cap(?:italization)?|mcap|m-cap|cap|valuation|valued at", 1e9);
-    money("vol", "(?:24 ?h\\s*)?(?:trading\\s*)?volume|vol|traded", 1e6);
+    // Size classes and "most traded" first, so "large caps under $5" reads $5 as a price, not a market cap.
     take(/\b(?:large|big|mega)[ -]?caps?\b|\bblue[ -]?chips?\b/g, () => set("mcapMin", 1e10));
     take(/\bmid[ -]?caps?\b/g, () => { set("mcapMin", 1e9); set("mcapMax", 1e10); });
     take(/\bsmall[ -]?caps?\b/g, () => set("mcapMax", 1e9));
     take(/\bmicro[ -]?caps?\b/g, () => set("mcapMax", 1e8));
+    take(/\b(?:most|highest|top|high|heavily)\s+(?:traded|volume)\b/g, () => { set("sortBy", "vol24h"); set("asc", false); });
+    money("mcap", "market ?cap(?:italization)?|mcap|m-cap|caps?|valuation|valued at", 1e9);
+    money("vol", "(?:24 ?h\\s*)?(?:trading\\s*)?volume|vol", 1e6);
     // Price
     take(new RegExp(`(?:price\\s*(?:is\\s*)?)?(${MIN}|${MAX}|cheaper than|pricier than)\\s*\\$\\s*${NUM}`, "g"), (m, cmp, n, u) => setRange("price", cmp.replace("cheaper than", "under").replace("pricier than", "over"), num(n, u)));
     take(new RegExp(`price\\s*(?:is\\s*)?(${MIN}|${MAX})\\s*${NUM}`, "g"), (m, cmp, n, u) => setRange("price", cmp, num(n, u)));
@@ -79,7 +81,6 @@
     take(/\btop\s+(\d{1,3})\s+(gainers?|winners?|losers?|decliners?)\b/g, (m, n, w) => { set("limit", +n); set("sortBy", "chg"); set("asc", /^(los|dec)/.test(w)); });
     take(/\b(?:(?:biggest|top|best)\s+)?(?:gainers?|winners?|pumpers?)\b/g, () => { set("sortBy", "chg"); set("asc", false); });
     take(/\b(?:(?:biggest|worst|top)\s+)?(?:losers?|decliners?|dumpers?)\b/g, () => { set("sortBy", "chg"); set("asc", true); });
-    take(/\b(?:most|highest|top)\s+(?:traded|volume)\b/g, () => { set("sortBy", "vol24h"); set("asc", false); });
     take(/\b(?:cheapest|lowest price)\b/g, () => { set("sortBy", "price"); set("asc", true); });
     take(/\b(?:most expensive|highest price|priciest)\b/g, () => { set("sortBy", "price"); set("asc", false); });
     take(/\b(?:smallest|tiniest)\b/g, () => { set("sortBy", "mcap"); set("asc", true); });
@@ -167,11 +168,18 @@
   input.addEventListener("focus", hint);
   input.addEventListener("blur", () => setTimeout(() => { if (!input.value.trim() && !note.contains(document.activeElement)) note.hidden = true; }, 200));
 
-  let current = null, refresh = 0, aiState = null;
+  let current = null, refresh = 0, aiState = null, wait7 = 0, lastLeft = [];
+  const have7 = () => { let k = 0; state.coins.forEach(c => { if (c.open7 > 0) k++; }); return k; };
   function apply(f, how) {
     current = f && { f, how };
     window.CPT_SCREEN = f ? { match: matcher(f), sortBy: f.sortBy, asc: !!f.asc, limit: f.limit } : null;
-    if (f && f.tf === "7d" && api.loadOpen7) { api.loadOpen7(); setTimeout(api.render, 2500); setTimeout(api.render, 6000); }
+    clearInterval(wait7);
+    // 7-day changes come from Binance after loadOpen7(): redraw as they arrive (checked each second, up to 20 s).
+    if (f && f.tf === "7d" && api.loadOpen7) {
+      api.loadOpen7();
+      let seen = have7(), n = 0;
+      wait7 = setInterval(() => { const k = have7(); if (k !== seen) { seen = k; api.render(); if (current) show(lastLeft); } if (++n >= 20) clearInterval(wait7); }, 1000);
+    }
     clearInterval(refresh);
     // Prices keep moving: re-check the filter every 30 s, unless the visitor is typing in the table.
     if (f) refresh = setInterval(() => { if (!document.hidden && !wrap.contains(document.activeElement)) api.render(); }, 30e3);
@@ -179,7 +187,9 @@
   function show(left) {
     if (!current) { note.hidden = !aiState; return; }
     const parts = describe(current.f).map(t => `<span class="screen-chip">${esc(t)}</span>`).join("");
-    const extra = left && left.length ? ` <span class="muted">Not used: ${esc(left.slice(0, 5).join(", "))}.</span>` : "";
+    lastLeft = left || [];
+    const loading7 = current.f.tf === "7d" && have7() < 10 ? ` <span class="muted">7-day changes are still loading.</span>` : "";
+    const extra = loading7 + (left && left.length ? ` <span class="muted">Not used: ${esc(left.slice(0, 5).join(", "))}.</span>` : "");
     note.innerHTML = `<span class="screen-label">${current.how === "ai" ? "Read by the AI in your browser, check it:" : "Filter:"}</span> ${parts}${extra} <button type="button" class="action-btn screen-clear">Clear</button>`;
     note.hidden = false;
   }
@@ -200,10 +210,14 @@
     clearTimeout(timer);
     // The status line is announced to screen readers, so it updates once typing pauses, not per key.
     if (r.f) timer = setTimeout(() => show(r.left), 250);
-    else if (words >= 3) timer = setTimeout(() => offerAi(q), 600);
+    else if (words >= 3) timer = setTimeout(() => offerAi(q), 350);
     else if (!q) hint();
     else note.hidden = true;
   });
+  // A click on a column header takes over the order from the filter's own sort.
+  document.addEventListener("click", e => {
+    if (current && current.f.sortBy && e.target.closest("[data-action=sort]")) { delete current.f.sortBy; apply(current.f, current.how); show(lastLeft); }
+  }, true);
   // Enter (Go on phone keyboards) with a filter active: close the keyboard and bring the filtered table into view.
   input.addEventListener("keydown", e => {
     if (e.key !== "Enter" || !current) return;
@@ -284,5 +298,7 @@
   }
   window.CPT_SCREEN_UI = true;
   // Loaded on the box's first focus: catch up with anything typed before this file arrived.
-  if (input.value.trim()) input.dispatchEvent(new Event("input")); else hint();
+  // The examples push the table down, so after a slow download (more than ~0.4 s since the tap) they wait for the next focus.
+  const me = document.currentScript && performance.getEntriesByName(document.currentScript.src)[0];
+  if (input.value.trim()) input.dispatchEvent(new Event("input")); else if (!me || performance.now() - me.startTime < 400) hint();
 })();

@@ -24,6 +24,9 @@ const CASES = {
   'small caps losing 10% or more': { tf: '24h', mcapMax: 1e9, chgMax: -10 },
   'market cap over 1000000000': { tf: '24h', mcapMin: 1e9 },
   'defi up less than 2%': { tf: '24h', sector: 'DeFi', chgMin: 0, chgMax: 2 },
+  'most traded under $1': { tf: '24h', sortBy: 'vol24h', asc: false, priceMax: 1 },
+  'large cap under $5': { tf: '24h', mcapMin: 1e10, priceMax: 5 },
+  'cap over 10b': { tf: '24h', mcapMin: 1e10 },
   'what is bitcoin': null
 };
 const norm = o => o && JSON.stringify(Object.keys(o).sort().reduce((a, k) => ((a[k] = o[k]), a), {}));

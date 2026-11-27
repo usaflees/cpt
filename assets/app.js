@@ -2200,7 +2200,7 @@
     }
     // Enter jumps straight to the best match's coin page.
     $("searchInput").addEventListener("keydown", e => {
-      const hit = e.key === "Enter" && !window.CPT_SCREEN && searchCoins(e.target.value, 1)[0];
+      const hit = e.key === "Enter" && !window.CPT_SCREEN && (window.CPT_SCREEN_UI || !/[\s%$<>]/.test(e.target.value.trim())) && searchCoins(e.target.value, 1)[0];
       if (hit) location.href = coinUrl(hit.sym);
     });
     $("cryptoTable").classList.toggle("compact-mode", state.compact);

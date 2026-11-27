@@ -47,7 +47,7 @@
   const pct = v => `${v < 0.005 ? "<0.01" : v.toFixed(v < 1 ? 2 : 1)}%`;
 
   async function book(ex) {
-    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 8000);
+    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 12000);
     try {
       const r = await fetch(BOOKS[ex].url(tickerOf(c, ex)), { signal: ctrl.signal });
       if (!r.ok) throw new Error(r.status);
