@@ -17,7 +17,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=147e70f603" as="style" />
+  <link rel="preload" href="/assets/app.css?v=a1671512a7" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -46,13 +46,15 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=147e70f603" />
+  <link rel="stylesheet" href="/assets/app.css?v=a1671512a7" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=f67e1ec9a9" defer></script>
   <script src="/assets/chart.js?v=067b63f198" defer></script>
   <script src="/assets/flash.js?v=1fd3f5d99e" defer></script>
   <script src="/assets/timemachine.js?v=cf35c8bbcf" defer></script>
   <script src="/assets/depth.js?v=6ca132be09" defer></script>
+  <script src="/assets/flow.js?v=88e297dc96" defer></script>
+  <script src="/assets/moves.js?v=f8e09b3623" defer></script>
   <script src="/assets/consent.js?v=ff680b0c20" defer></script>
 </head>
 <body data-page="coin" data-sym="AXS">
@@ -191,6 +193,11 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <div id="coinDetail" style="display:flex;flex-direction:column;gap:12px"></div>
     </section>
 
+    <section class="page-section tm" aria-labelledby="flow-h">
+      <h2 id="flow-h">Who's buying AXS right now, and who's selling?</h2>
+      <div class="tm-out flow-out" id="flowOut"><p class="tm-msg">Counts each AXS trade on Coinbase, Binance and Kraken by the side that crossed the spread, over the last 1, 5 and 15 minutes. It starts when this box comes into view.</p></div>
+    </section>
+
     <section class="page-section tm" aria-labelledby="depth-h">
       <h2 id="depth-h">What would a big AXS order cost?</h2>
       <form class="tm-form" id="depthForm">
@@ -199,6 +206,11 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
         <button type="submit" class="action-btn btn-accent">Check order books</button>
       </form>
       <div class="tm-out" id="depthOut" aria-live="polite"><p class="tm-msg">Reads AXS's live order books on Coinbase, Binance and Kraken and shows the average price a market order of this size would fill at, how far that is from the mid price, and how much is on offer within 2%. Exchange fees are not included.</p></div>
+    </section>
+
+    <section class="page-section tm" aria-labelledby="moves-h">
+      <h2 id="moves-h">When does AXS usually move?</h2>
+      <div class="tm-out moves-out" id="movesOut"><p class="tm-msg">Groups AXS's hourly moves over the last 30 days by the hour of the day on your own clock, so you can see when it tends to move most. It loads when this box comes into view.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="tm-h">

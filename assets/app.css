@@ -1768,3 +1768,13 @@ button.screen-chip:hover{outline:1px solid var(--accent)}
 .depth-scroll{overflow-x:auto;max-width:100%}
 .depth-table caption{text-align:left;padding:0 0 6px;font-size:13px;color:var(--text-secondary)}
 .depth-best{margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--accent-glow);font:600 11px var(--font-mono);white-space:nowrap}
+/* Buyers vs sellers (assets/flow.js) and when it moves (assets/moves.js) on coin pages; space reserved for the script */
+.flow-out{min-height:300px}.moves-out{min-height:250px}
+.flow-table caption{text-align:left;padding:0 0 6px;font-size:13px;color:var(--text-secondary)}
+.flow-bar{display:inline-block;vertical-align:middle;width:72px;height:8px;border-radius:4px;background:var(--down);overflow:hidden}
+.flow-bar i{display:block;height:100%;background:var(--up)}
+.moves-chart{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;align-items:end;height:120px;max-width:640px;margin:6px 0 2px}
+.moves-bar{height:100%;display:flex;align-items:flex-end}.moves-bar i{display:block;width:100%;border-radius:3px 3px 0 0;background:var(--accent);opacity:.55}
+.moves-bar.is-now i{opacity:1}
+.moves-ticks{display:grid;grid-template-columns:repeat(4,1fr);max-width:640px;font-size:12px;color:var(--text-secondary)}
+.moves-table summary{cursor:pointer;font-size:14px;color:var(--text-secondary);min-height:32px}
