@@ -70,7 +70,7 @@ const seen = [];
 
   // Arriving from an alert: a note above the box, the box scrolled into view, and an alert carries its coin page.
   const a = await (await b.newContext({ viewport: { width: 1366, height: 900 }, permissions: ['notifications'] })).newPage();
-  await a.goto(B + '/coin/btc/#from-alert'); await a.waitForTimeout(1500);
+  await a.goto(B + '/coin/btc/#from-alert'); await a.waitForTimeout(3500);
   const land = await a.evaluate(() => ({ note: document.querySelector('.flow-alert')?.textContent || '', top: document.getElementById('flow-h').getBoundingClientRect().top, hash: location.hash }));
   check(/opened this page from a BTC alert/.test(land.note) && land.top >= -30 && land.top < 300 && !land.hash, `alert landing: ${JSON.stringify(land)}`);
   // A tab already on the page: the tap only changes the #.

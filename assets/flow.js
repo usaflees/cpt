@@ -48,7 +48,11 @@
     if (location.hash !== "#from-alert") return;
     history.replaceState(null, "", location.pathname + location.search);
     if (!document.querySelector(".flow-alert")) box.insertAdjacentHTML("beforebegin", `<p class="tm-line flow-alert" role="status">You opened this page from a ${esc(c.sym)} alert. Below: who has been buying and who has been selling over the last few minutes.</p>`);
-    requestAnimationFrame(() => box.parentElement.scrollIntoView({ block: "start" }));
+    // Boxes above can still change height after the first scroll, so land again until the visitor scrolls.
+    let held = false;
+    const go = () => held || box.parentElement.scrollIntoView({ block: "start" });
+    ["wheel", "touchstart", "keydown"].forEach(e => addEventListener(e, () => { held = true; }, { once: true, passive: true }));
+    [0, 500, 1500, 3000].forEach(t => setTimeout(go, t));
   };
   fromAlert();
   addEventListener("hashchange", fromAlert);
