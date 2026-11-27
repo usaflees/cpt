@@ -203,6 +203,12 @@ ${b.stable.length ? boardSection("stablecoin-pegs", "Stablecoin peg check", "How
     "@context": "https://schema.org",
     "@graph": [
       { "@type": "WebPage", "@id": pageUrl, url: pageUrl, name: title, description, dateModified: w.week, isPartOf: { "@id": `${SITE}/#website` } },
+      // Each edition is a dated report with a named compiler (the byline under the H1): Google's Nov 2026 attribution
+      // guidance asks for clear sourcing and authorship, and the dates are the edition's, never the build's.
+      { "@type": "Article", "@id": `${pageUrl}#report`, mainEntityOfPage: { "@id": pageUrl }, headline: `Weekly crypto market report: the seven days to ${longDate(w.week)}`,
+        description, image: `${SITE}/og-image.jpg`, datePublished: w.week, dateModified: w.week,
+        author: { "@type": "Organization", "@id": `${SITE}/#org`, name: "CryptoPriceTicker.com", url: `${SITE}/` },
+        publisher: { "@type": "Organization", "@id": `${SITE}/#org`, name: "CryptoPriceTicker.com", url: `${SITE}/`, logo: { "@type": "ImageObject", url: `${SITE}/brand/mark-1024.png` } } },
       { "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "Live crypto prices", item: `${SITE}/` },
         { "@type": "ListItem", position: 2, name: "Weekly market report", item: pageUrl }
@@ -228,7 +234,8 @@ ${b.stable.length ? boardSection("stablecoin-pegs", "Stablecoin peg check", "How
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="${w.week}" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="Weekly crypto market report" />
   <meta property="og:description" content="${esc(description)}" />
@@ -250,6 +257,7 @@ ${b.stable.length ? boardSection("stablecoin-pegs", "Stablecoin peg check", "How
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Live crypto prices</a> › <span aria-current="page">Weekly market report</span></nav>
     <section class="hero" aria-labelledby="market-h" id="week-${w.week}">
       <h1 id="market-h" class="hero-title">Weekly crypto market report</h1>
+      <p class="disclaimer">Week to <time datetime="${w.week}">${longDate(w.week)}</time> · Compiled by CryptoPriceTicker.com from exchange daily closes · <a href="/about/">How the data is collected</a></p>
       <p class="hero-sub">${summary(w, true)}</p>
       <p class="hero-actions"><a class="action-btn btn-accent" href="/">⚡ Live prices</a> <a class="action-btn" href="#year">📊 Year rankings</a></p>
       <details class="feed-sub">
