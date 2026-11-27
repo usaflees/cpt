@@ -38,7 +38,8 @@ const seen = [];
   const urls = []; p.on('request', r => urls.push(r.url()));
   p.on('pageerror', e => issues.push(`pageerror: ${e.message}`));
   await p.goto(B + '/coin/btc/'); await p.waitForTimeout(2500);
-  check(!urls.some(u => /\/depth\?|\/book\?|public\/Depth/.test(u)), 'an order book was read before the box came into view');
+  // The stats panel reads Binance's book (limit=1000) on load; the walls box asks for limit=5000.
+  check(!urls.some(u => /\/depth\?.*limit=5000|\/book\?|public\/Depth/.test(u)), 'an order book was read before the box came into view');
   await p.locator('#wallsOut').scrollIntoViewIfNeeded();
   await p.waitForFunction(() => document.querySelectorAll('#wallsOut tbody tr').length >= 2, null, { timeout: 25000 })
     .catch(() => issues.push('walls table never filled in 25 s'));

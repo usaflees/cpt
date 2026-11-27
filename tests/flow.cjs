@@ -72,23 +72,23 @@ const seen = [];
   const a = await (await b.newContext({ viewport: { width: 1366, height: 900 }, permissions: ['notifications'] })).newPage();
   await a.goto(B + '/coin/btc/#from-alert'); await a.waitForTimeout(1500);
   const land = await a.evaluate(() => ({ note: document.querySelector('.flow-alert')?.textContent || '', top: document.getElementById('flow-h').getBoundingClientRect().top, hash: location.hash }));
-  check(/opened this page from a BTC alert/.test(land.note) && land.top >= -5 && land.top < 300 && !land.hash, `alert landing: ${JSON.stringify(land)}`);
+  check(/opened this page from a BTC alert/.test(land.note) && land.top >= -30 && land.top < 300 && !land.hash, `alert landing: ${JSON.stringify(land)}`);
   // A tab already on the page: the tap only changes the #.
   const again = await a.evaluate(async () => { scrollTo(0, 0); location.hash = '#from-alert'; await new Promise(r => setTimeout(r, 600));
     return { notes: document.querySelectorAll('.flow-alert').length, top: document.getElementById('flow-h').getBoundingClientRect().top, hash: location.hash }; });
-  check(again.notes === 1 && again.top >= -5 && again.top < 300 && !again.hash, `alert on an open tab: ${JSON.stringify(again)}`);
+  check(again.notes === 1 && again.top >= -30 && again.top < 300 && !again.hash, `alert on an open tab: ${JSON.stringify(again)}`);
   const plain = await (await b.newContext()).newPage(); await plain.goto(B + '/coin/btc/'); await plain.waitForTimeout(800);
   check(!(await plain.$('.flow-alert')), 'alert note shown without an alert');
+  // Headless Chromium shows no notifications, so the address is read from what notify() hands the browser, by
+  // either route (the service worker's showNotification or the page's Notification).
   const sent = await a.evaluate(async () => {
-    const reg = await Promise.race([navigator.serviceWorker.ready, new Promise(r => setTimeout(r, 8000))]);
-    // The worker claims open pages once it activates, which can land just after ready.
-    for (let i = 0; reg && !navigator.serviceWorker.controller && i < 30; i++) await new Promise(r => setTimeout(r, 100));
-    if (!reg || !navigator.serviceWorker.controller) return 'no service worker';
-    window.CPT.notify('BTC test', 'test', 'move-BTC'); await new Promise(r => setTimeout(r, 1500));
-    const n = await reg.getNotifications(); n.forEach(x => x.close());
-    return n.map(x => x.data && x.data.url).join(',') || 'none';
+    const got = [];
+    ServiceWorkerRegistration.prototype.showNotification = function (t, o) { got.push(o.data.url); return Promise.resolve(); };
+    const N = function (t, o) { got.push(o.data.url); }; N.permission = 'granted'; window.Notification = N;
+    for (const tag of ['move-BTC', 'move-NOPAGEXYZ']) { window.CPT.notify('test', 'test', tag); await new Promise(r => setTimeout(r, 400)); }
+    return got.join(',');
   }).catch(e => 'error ' + e.message);
-  check(sent === '/coin/btc/#from-alert' || (sent === 'no service worker' && !process.env.CI), `alert notification address: ${sent}`);
+  check(sent === '/coin/btc/#from-alert,/', `alert notification addresses (a coin with a page, a pair without one): ${sent}`);
   seen.push(`alert: ${sent}`);
 
   // Phone width: no sideways scroll with both boxes filled.

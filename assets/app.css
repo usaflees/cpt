@@ -1769,7 +1769,7 @@ button.screen-chip:hover{outline:1px solid var(--accent)}
 .depth-table caption{text-align:left;padding:0 0 6px;font-size:13px;color:var(--text-secondary)}
 .depth-best{margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--accent-glow);font:600 11px var(--font-mono);white-space:nowrap}
 /* Buyers vs sellers (assets/flow.js) and when it moves (assets/moves.js) on coin pages; space reserved for the script */
-.flow-out{min-height:280px}.moves-out{min-height:340px}@media(max-width:560px){.flow-out{min-height:390px}.moves-out{min-height:430px}.walls-out{min-height:560px}}.walls-out{min-height:420px}
+.flow-out{min-height:280px}.moves-out{min-height:340px}.walls-out{min-height:420px}@media(max-width:560px){.flow-out{min-height:390px}.moves-out{min-height:430px}.walls-out{min-height:500px}}
 .flow-table caption{text-align:left;padding:0 0 6px;font-size:13px;color:var(--text-secondary)}
 .flow-bar{display:inline-block;vertical-align:middle;width:72px;height:8px;border-radius:4px;background:var(--down);overflow:hidden}
 .flow-bar i{display:block;height:100%;background:var(--up)}

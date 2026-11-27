@@ -2,7 +2,7 @@
 // Strategy is network-first for everything, so visitors always get the latest deploy;
 // the cache is only a fallback when the network is unavailable. Exchange APIs are never cached.
 const CACHE = "cpt-v3";
-const CORE = ["/", "/assets/app.css?v=a0aad645a1", "/assets/app.js?v=ad7f6ecdb3", "/assets/coins.js?v=2f6f199ef4", "/favicon.svg", "/brand/mark.svg", "/site.webmanifest"];
+const CORE = ["/", "/assets/app.css?v=8ee57d0d4e", "/assets/app.js?v=ad7f6ecdb3", "/assets/coins.js?v=2f6f199ef4", "/favicon.svg", "/brand/mark.svg", "/site.webmanifest"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
