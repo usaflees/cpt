@@ -68,6 +68,21 @@ const seen = [];
   check(/America\/Chicago/.test(moves.text) && moves.now === 1, `time zone or current hour missing: ${moves.now}`);
   seen.push(`moves: ${(moves.text.match(/Over the last .*?\)\./) || [''])[0]}`);
 
+  // Arriving from an alert: a note above the box, the box scrolled into view, and an alert carries its coin page.
+  const a = await (await b.newContext({ viewport: { width: 1366, height: 900 }, permissions: ['notifications'] })).newPage();
+  await a.goto(B + '/coin/btc/#from-alert'); await a.waitForTimeout(1500);
+  const land = await a.evaluate(() => ({ note: document.querySelector('.flow-alert')?.textContent || '', top: document.getElementById('flow-h').getBoundingClientRect().top }));
+  check(/opened this page from a BTC alert/.test(land.note) && land.top >= -5 && land.top < 300, `alert landing: ${JSON.stringify(land)}`);
+  const sent = await a.evaluate(async () => {
+    const reg = await Promise.race([navigator.serviceWorker.ready, new Promise(r => setTimeout(r, 8000))]);
+    if (!reg || !navigator.serviceWorker.controller) return 'no service worker';
+    window.CPT.notify('BTC test', 'test', 'move-BTC'); await new Promise(r => setTimeout(r, 1500));
+    const n = await reg.getNotifications(); n.forEach(x => x.close());
+    return n.map(x => x.data && x.data.url).join(',') || 'none';
+  }).catch(e => 'error ' + e.message);
+  check(sent === '/coin/btc/#from-alert' || sent === 'no service worker', `alert notification address: ${sent}`);
+  seen.push(`alert: ${sent}`);
+
   // Phone width: no sideways scroll with both boxes filled.
   const m = await (await b.newContext({ viewport: { width: 375, height: 812 } })).newPage();
   await m.goto(B + '/coin/btc/'); await m.locator('#flowOut').scrollIntoViewIfNeeded();

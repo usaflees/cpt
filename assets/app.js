@@ -1325,10 +1325,12 @@
   }
 
   // System notification for alerts (only if the visitor allowed it when saving an alert).
+  // A tap opens the coin's page at its buyers/sellers box (sw.js notificationclick), or the home page.
   function notify(title, body, tag) {
     if (!("Notification" in window) || Notification.permission !== "granted") return;
-    const opts = { body, tag, icon: "/icon-192.png", badge: "/icon-192.png" };
-    const fallback = () => { try { new Notification(title, opts); } catch (_) {} };
+    const sym = String(tag || "").replace(/^move-/, ""), url = state.coins.has(sym) ? coinUrl(sym) + "#from-alert" : "/";
+    const opts = { body, tag, icon: "/icon-192.png", badge: "/icon-192.png", data: { url } };
+    const fallback = () => { try { new Notification(title, opts).onclick = () => { focus(); location.href = url; }; } catch (_) {} };
     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
       navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts)).catch(fallback);
     } else fallback();

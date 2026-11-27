@@ -42,6 +42,11 @@
   const KR_REST = { BTC: "XBT", DOGE: "XDG" };
   const feeds = c.feeds.filter(ex => NAME[ex]);
   if (!feeds.length) return;
+  // Arrived from a price alert (notify() in app.js): say so above the box and bring it into view.
+  if (location.hash === "#from-alert") {
+    box.insertAdjacentHTML("beforebegin", `<p class="tm-line flow-alert" role="status">You opened this page from a ${esc(c.sym)} alert. Below: who has been buying and who has been selling over the last few minutes.</p>`);
+    requestAnimationFrame(() => box.parentElement.scrollIntoView({ block: "start" }));
+  }
   const WINDOWS = [[60e3, "1 minute"], [300e3, "5 minutes"], [900e3, "15 minutes"]];
   const KEEP = 900e3, CAP = 60000;
   let trades, ids, cover, socks, timer, running = false, gen = 0; // gen: the run a socket or fetch is for
