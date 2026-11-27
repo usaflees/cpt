@@ -31,7 +31,8 @@ export const NETWORKS = {
   ATOM: "cosmos", TIA: "celestia", DOT: "polkadot", OKB: "okb", ETC: "ethereum-classic", ROSE: "oasis-network",
   TAO: "bittensor", KAS: "kaspa", HNT: "helium", AR: "arweave", ZEN: "zencash", THETA: "theta-token", FLUX: "zelcash"
 };
-// Coin symbol → DefiLlama protocol slug (checked against api.llama.fi/tvl/<slug> on 27 November 2026).
+// Coin symbol → DefiLlama protocol slug (each answered api.llama.fi/tvl/<slug> through a web fetch service on 27 November 2026; the network ids are
+// unconfirmed until the first weekly run, which lists any id with no match).
 export const PROTOCOLS = {
   AAVE: "aave", UNI: "uniswap", LDO: "lido", SKY: "sky", PENDLE: "pendle", JUP: "jupiter", RAY: "raydium",
   AERO: "aerodrome", ENA: "ethena", ONDO: "ondo-finance", CRV: "curve-finance", SNX: "synthetix",
@@ -48,7 +49,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function getJson(url) {
   await sleep(250); // DefiLlama asks clients to go easy; about 150 requests a week at this pace.
-  const res = await fetch(url, { headers: { "user-agent": "cryptopriceticker-onchain/1.0" } });
+  const res = await fetch(url, { headers: { "user-agent": "cryptopriceticker-onchain/1.0" }, signal: AbortSignal.timeout(20000) });
   if (!res.ok) throw new Error(`${res.status} ${url}`);
   return res.json();
 }
@@ -132,7 +133,7 @@ async function main() {
   const body = Object.keys(result).sort().map(s => `  ${JSON.stringify(s)}: ${JSON.stringify(result[s])}`).join(",\n");
   writeFileSync(OUT, `{\n "updated": ${JSON.stringify(updated)},\n "source": "DefiLlama",\n "coins": {\n${body}\n }\n}\n`);
   if (failed.length) console.log(`⚠ onchain: no figures this week for ${failed.join(", ")}`);
-  if (unmatched.length) console.log(`onchain: not in DefiLlama's chain list: ${unmatched.join(", ")}`);
+  if (unmatched.length) console.log(`⚠ onchain: not in DefiLlama's chain list: ${unmatched.join(", ")}`);
   console.log(`onchain: ${Object.keys(result).length} coins (${Object.values(result).filter(e => e.kind === "network").length} networks, ${Object.values(result).filter(e => e.kind === "protocol").length} apps), as of ${updated}`);
 }
 

@@ -406,7 +406,7 @@ Confidence: **official** (the platform's own docs), **measured** (on this site),
 
 ## data-sources (5)
 
-- ✅ **DefiLlama's free API (api.llama.fi, stablecoins.llama.fi, no key) gives chain TVL history, stablecoins per chain, DEX volume per chain, and per-protocol TVL, fees and revenue; token unlocks and ETF flows need its paid API. It answers GitHub Actions but returns 403 to the cloud session proxy and the Cloudflare MCP sandbox.**
+- ✅ **DefiLlama's free API (api.llama.fi, stablecoins.llama.fi, no key) gives chain TVL history, stablecoins per chain, DEX volume per chain, and per-protocol TVL, fees and revenue; token unlocks and ETF flows need its paid API. It returns 403 to the cloud session proxy and the Cloudflare MCP sandbox; whether it answers GitHub Actions is untested until the first weekly refresh.**
   → Coin pages get an on-chain activity section from scripts/fetch-onchain.mjs in the weekly data refresh (network coins and DeFi app tokens); test it with saved responses, not live calls, from a session.
   _2026-11-27 · measured · `defillama-free-api-onchain` · [api.llama.fi](https://api.llama.fi/v2/chains), [fetch-onchain.mjs](scripts/fetch-onchain.mjs)_
 - ✅ **api.kraken.com/0/public/OHLC answers browser requests from cryptopriceticker.com with access-control-allow-origin, and returns at most the last ~720 daily candles whatever 'since' says (XMR history started 2024-12-04 on Nov 24, 2026).**
