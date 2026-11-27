@@ -51,7 +51,7 @@
     // Boxes above can still change height after the first scroll, so land again until the visitor scrolls.
     let held = false;
     const go = () => held || box.parentElement.scrollIntoView({ block: "start" });
-    ["wheel", "touchstart", "keydown"].forEach(e => addEventListener(e, () => { held = true; }, { once: true, passive: true }));
+    ["wheel", "touchstart", "keydown", "pointerdown"].forEach(e => addEventListener(e, () => { held = true; }, { once: true, passive: true }));
     [0, 500, 1500, 3000].forEach(t => setTimeout(go, t));
   };
   fromAlert();

@@ -54,7 +54,9 @@ const seen = [];
   });
   const r1 = await read();
   // A band that holds the price says so; any other band's sign matches its side.
-  check(r1.rows.every(r => (r.lo <= r1.mid && r.hi >= r1.mid) ? r.d === 'at the price' : (r.side === 'Buy' ? /^−/ : /^\+/).test(r.d)), `distance column: ${r1.rows.map(r => r.side + ' ' + r.d).join(', ')}`);
+  // The caption's price is rounded, so a band edge within 0.01% of it can go either way.
+  const near = r => Math.min(Math.abs(r.lo - r1.mid), Math.abs(r.hi - r1.mid)) < r1.mid * 1e-4;
+  check(r1.rows.every(r => near(r) || ((r.lo <= r1.mid && r.hi >= r1.mid) ? r.d === 'at the price' : (r.side === 'Buy' ? /^−/ : /^\+/).test(r.d))), `distance column: ${r1.rows.map(r => r.side + ' ' + r.d).join(', ')}`);
   const nb = r1.rows.filter(r => r.side === 'Buy').length, ns = r1.rows.filter(r => r.side === 'Sell').length;
   check(nb >= 1 && nb <= 3 && ns >= 1 && ns <= 3 && r1.rows.every(r => r.lo > 0), `walls rows: ${r1.rows.map(r => r.txt).join(' | ')}`);
   check(r1.mid > 0 && r1.rows.every(r => (r.side === 'Buy' ? r.lo <= r1.mid : r.hi >= r1.mid) && r.lo > r1.mid * 0.979 && r.hi < r1.mid * 1.021), `walls outside 2% or on the wrong side of ${r1.mid}: ${r1.rows.map(r => r.txt).join(' | ')}`);
