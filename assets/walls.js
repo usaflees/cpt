@@ -128,7 +128,7 @@
     keep.forEach(k => { seenSince[k] = seenSince[k] || now; });
     const row = (x, side) => {
       const a = x.k * w, z = (x.k + 1) * w, d = ((side === "bids" ? z : a) / mid - 1) * 100;
-      return `<tr><th scope="row" class="col-left">${side === "bids" ? "Buy" : "Sell"}</th><td>${px(a)} to ${px(z)}</td><td>${d >= 0 ? "+" : "−"}${Math.abs(d).toFixed(2)}%</td>
+      return `<tr><th scope="row" class="col-left">${side === "bids" ? "Buy" : "Sell"}</th><td>${px(a)} to ${px(z)}</td><td>${a <= mid && z >= mid ? "at the price" : `${d >= 0 ? "+" : "−"}${Math.abs(d).toFixed(2)}%`}</td>
         <td>${usd(x.usd)}${x.x ? ` <span class="muted">(${x.x.toFixed(x.x < 10 ? 1 : 0)}×)</span>` : ""}</td><td>${esc(names(x.ex))}</td><td>${mmss(now - seenSince[side + x.k])}</td></tr>`;
     };
     const none = side => `<tr><th scope="row" class="col-left">${side}</th><td colspan="5" class="muted">No resting orders within reach.</td></tr>`;
