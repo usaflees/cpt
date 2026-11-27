@@ -1,18 +1,10 @@
-/* CryptoPriceTicker.com — plain-words filter for the home table.
+/* CryptoPriceTicker.com — plain-words filter for the home table ("AI coins down 5% this week").
  *
- * Type what you want to see into the home search box ("AI coins down 5% this week", "large caps up today",
- * "under $1 with volume over 50m", "top 10 losers") and the table shows only the coins that match, from the
- * same live exchange prices it already streams (window.CPT from assets/app.js). A line above the table says
- * exactly how the words were read, so every row can be checked against the filter.
- *
- * Reading the words: a small rule-based reader below, in every browser. When it can't read a sentence and the
- * browser has a built-in language model (Chrome's Prompt API), a button offers to read it with that model,
- * on the device, with a JSON Schema (responseConstraint) that only allows filter conditions. The model never
- * writes text for the page: its output becomes the same visible filter, labelled as read by on-device AI.
- * Nothing typed here leaves the browser, and nothing is stored.
- *
- * Hook into app.js: window.CPT_SCREEN = { match(coin), sortBy, asc, limit } while a filter is active, else null.
- * self.cptScreenParse is exposed for tests (tests/screener.cjs).
+ * A rule reader turns the sentence into a filter on the live numbers app.js streams (window.CPT), shown as chips
+ * above the table. Sentences it can't read can go, on a button press, to the browser's own language model
+ * (Chrome's Prompt API) with a JSON Schema that only allows filter conditions: the model writes no page text.
+ * Nothing typed leaves the browser or is stored. Hook into app.js: window.CPT_SCREEN = { match, sortBy, asc,
+ * limit } or null. self.cptScreenParse is for tests/screener.cjs.
  */
 (function () {
   "use strict";
