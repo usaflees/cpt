@@ -38,6 +38,7 @@ step "On-device AI (coin pages)";      run node tests/ondevice.cjs "$BASE"
 step "plain-words filter (home table)"; run node tests/screener.cjs "$BASE"
 step "big-order cost (coin pages)";   run node tests/depth.cjs "$BASE"
 step "buyers vs sellers, when it moves (coin pages)"; run node tests/flow.cjs "$BASE"
+step "order-book walls (coin pages)"; run node tests/walls.cjs "$BASE"
 step "accessibility";                 run node tests/axe.cjs "$BASE"
 step "every page: errors, CSP, failed requests"; run node tests/crawl.cjs "$BASE"
 [ -n "${SERVER:-}" ] && kill "$SERVER" 2>/dev/null

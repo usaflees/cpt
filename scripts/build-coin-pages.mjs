@@ -384,6 +384,7 @@ function coinPage(c) {
   <script src="/assets/flash.js" defer></script>
   <script src="/assets/timemachine.js" defer></script>
   <script src="/assets/depth.js" defer></script>
+  <script src="/assets/walls.js" defer></script>
   <script src="/assets/flow.js" defer></script>
   <script src="/assets/moves.js" defer></script>
   <script src="/assets/consent.js" defer></script>
@@ -463,6 +464,11 @@ function coinPage(c) {
         <button type="submit" class="action-btn btn-accent">Check order books</button>
       </form>
       <div class="tm-out" id="depthOut" aria-live="polite"><p class="tm-msg">Reads ${s}'s live order books on ${c.feeds.map(f => EXCHANGES[f]).join(", ").replace(/, ([^,]*)$/, " and $1")} and shows the average price a market order of this size would fill at, how far that is from the mid price, and how much is on offer within 2%. Exchange fees are not included.</p></div>
+    </section>
+
+    <section class="page-section tm" aria-labelledby="walls-h">
+      <h2 id="walls-h">Where are the big ${s} orders waiting?</h2>
+      <div class="tm-out walls-out" id="wallsOut"><p class="tm-msg">Adds up the resting buy and sell orders near the price on ${c.feeds.map(f => EXCHANGES[f]).join(", ").replace(/, ([^,]*)$/, " and $1")}, shows the biggest price bands on each side, and notes any that are pulled before the price reaches them. It starts when this box comes into view.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="moves-h">
@@ -1046,9 +1052,9 @@ writeFileSync(indexPath, html.slice(0, startLineEnd) + links + "\n" + html.slice
 // _headers caches /assets/* for a year as immutable, so every page (generated or hand-written) and
 // the service worker must point at the current hash. CI re-runs this script and fails on any diff,
 // so an edit to app.css/app.js/coins.js/theme-init.js can't ship without updated links.
-const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js", "chart.js", "home-plus.js", "timemachine.js", "screener.js", "depth.js", "flow.js", "moves.js"];
+const ASSETS = ["app.css", "app.js", "coins.js", "theme-init.js", "consent.js", "flash.js", "race.js", "race.css", "bell.js", "bell.css", "agent.js", "ondevice.js", "chart.js", "home-plus.js", "timemachine.js", "screener.js", "depth.js", "flow.js", "moves.js", "walls.js"];
 const ver = Object.fromEntries(ASSETS.map(f => [f, createHash("sha256").update(readFileSync(ROOT + "assets/" + f)).digest("hex").slice(0, 10)]));
-const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css|agent\.js|ondevice\.js|chart\.js|home-plus\.js|timemachine\.js|screener\.js|depth\.js|flow\.js|moves\.js)(\?v=[0-9a-f]+)?/g;
+const assetRe = /\/assets\/(app\.css|app\.js|coins\.js|theme-init\.js|consent\.js|flash\.js|race\.js|race\.css|bell\.js|bell\.css|agent\.js|ondevice\.js|chart\.js|home-plus\.js|timemachine\.js|screener\.js|depth\.js|flow\.js|moves\.js|walls\.js)(\?v=[0-9a-f]+)?/g;
 const htmlFiles = [];
 const walk = dir => readdirSync(ROOT + dir, { withFileTypes: true }).forEach(d => {
   if (d.name.startsWith(".") || d.name === "node_modules") return;
