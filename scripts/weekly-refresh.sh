@@ -13,11 +13,12 @@ step() {
 }
 step refresh node scripts/refresh-coins.mjs
 step stats   node scripts/fetch-coin-stats.mjs
+step onchain node scripts/fetch-onchain.mjs
 step build   node scripts/build-coin-pages.mjs
 step lint    node scripts/seo-lint.mjs
 step links   node tests/links.mjs
 # Warnings worth a line in the PR body (coins without feeds, missing supply, CoinLore disagreements, no candles).
-grep -hE "⚠|disagreed|Not in CoinLore" "$LOG"/refresh.log "$LOG"/stats.log 2>/dev/null | sed 's/^/note  /'
+grep -hE "⚠|disagreed|Not in CoinLore" "$LOG"/refresh.log "$LOG"/stats.log "$LOG"/onchain.log 2>/dev/null | sed 's/^/note  /'
 [ "$FAIL" = 0 ] || { echo "RESULT: failed (full logs in $LOG)"; exit 1; }
 CLASS="$(node scripts/classify-change.mjs "$BASE" 2>/dev/null)"; CODE=$?
 echo "diff  $(git diff --shortstat | sed 's/^ //')"
