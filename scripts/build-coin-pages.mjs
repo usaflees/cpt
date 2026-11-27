@@ -453,7 +453,7 @@ function coinPage(c) {
 
     <section class="page-section tm" aria-labelledby="flow-h">
       <h2 id="flow-h">Who's buying ${s} right now, and who's selling?</h2>
-      <div class="tm-out flow-out" id="flowOut"><p class="tm-msg">Counts each ${s} trade on ${c.feeds.map(f => EXCHANGES[f]).join(", ").replace(/, ([^,]*)$/, " and $1")} by the side that crossed the spread, over the last 1, 5 and 15 minutes. It starts when this box comes into view.</p></div>
+      <div class="tm-out flow-out" id="flowOut"><p class="tm-msg">Live ${s} trades load here.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="depth-h">
@@ -463,17 +463,17 @@ function coinPage(c) {
         <label for="depthSide">Side<select id="depthSide"><option value="buy">Buy</option><option value="sell">Sell</option></select></label>
         <button type="submit" class="action-btn btn-accent">Check order books</button>
       </form>
-      <div class="tm-out" id="depthOut" aria-live="polite"><p class="tm-msg">Reads ${s}'s live order books on ${c.feeds.map(f => EXCHANGES[f]).join(", ").replace(/, ([^,]*)$/, " and $1")} and shows the average price a market order of this size would fill at, how far that is from the mid price, and how much is on offer within 2%. Exchange fees are not included.</p></div>
+      <div class="tm-out" id="depthOut" aria-live="polite"><p class="tm-msg">Reads ${c.feeds.map(f => EXCHANGES[f]).join(", ").replace(/, ([^,]*)$/, " and $1")} order books. Exchange fees are not included.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="walls-h">
       <h2 id="walls-h">Where are the big ${s} orders waiting?</h2>
-      <div class="tm-out walls-out" id="wallsOut"><p class="tm-msg">Adds up the resting buy and sell orders near the price on ${c.feeds.map(f => EXCHANGES[f]).join(", ").replace(/, ([^,]*)$/, " and $1")}, shows the biggest price bands on each side, and notes any that are pulled before the price reaches them. It starts when this box comes into view.</p></div>
+      <div class="tm-out walls-out" id="wallsOut"><p class="tm-msg">Live ${s} order books load here.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="moves-h">
       <h2 id="moves-h">When does ${s} usually move?</h2>
-      <div class="tm-out moves-out" id="movesOut"><p class="tm-msg">Groups ${s}'s hourly moves (up to the last 30 days) by the hour of the day on your own clock, so you can see when it tends to move most. It loads when this box comes into view.</p></div>
+      <div class="tm-out moves-out" id="movesOut"><p class="tm-msg">${s}'s hourly moves load here.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="tm-h">
