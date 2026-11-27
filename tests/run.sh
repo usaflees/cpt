@@ -36,6 +36,7 @@ step "Bell Brief (/bell edition swap)"; run node tests/bell.cjs "$BASE"
 step "AI-agent tools (WebMCP)";      run node tests/agent.cjs "$BASE"
 step "On-device AI (coin pages)";      run node tests/ondevice.cjs "$BASE"
 step "plain-words filter (home table)"; run node tests/screener.cjs "$BASE"
+step "big-order cost (coin pages)";   run node tests/depth.cjs "$BASE"
 step "accessibility";                 run node tests/axe.cjs "$BASE"
 step "every page: errors, CSP, failed requests"; run node tests/crawl.cjs "$BASE"
 [ -n "${SERVER:-}" ] && kill "$SERVER" 2>/dev/null

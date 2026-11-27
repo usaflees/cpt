@@ -1763,3 +1763,8 @@ body.is-overlay #embedShell { zoom: 1.35; }
 .screen-note .action-btn{min-height:32px}
 button.screen-chip{border:0;cursor:pointer;min-height:28px}
 button.screen-chip:hover{outline:1px solid var(--accent)}
+/* Big-order cost box on coin pages (assets/depth.js) */
+.tm-form select{min-height:40px;padding:0 10px;border-radius:10px;border:1px solid var(--border);background:var(--bg-primary);color:var(--text-primary);font:600 15px var(--font-sans)}
+.depth-scroll{overflow-x:auto;max-width:100%}
+.depth-table caption{text-align:left;padding:0 0 6px;font-size:13px;color:var(--text-secondary)}
+.depth-best{margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--accent-glow);font:600 11px var(--font-mono);white-space:nowrap}

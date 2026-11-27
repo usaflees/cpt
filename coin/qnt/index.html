@@ -17,7 +17,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preload" href="/assets/app.css?v=81235b9fc7" as="style" />
+  <link rel="preload" href="/assets/app.css?v=147e70f603" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -46,12 +46,13 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=81235b9fc7" />
+  <link rel="stylesheet" href="/assets/app.css?v=147e70f603" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
   <script src="/assets/app.js?v=5d883a2536" defer></script>
   <script src="/assets/chart.js?v=067b63f198" defer></script>
   <script src="/assets/flash.js?v=1fd3f5d99e" defer></script>
   <script src="/assets/timemachine.js?v=cf35c8bbcf" defer></script>
+  <script src="/assets/depth.js?v=12e7170007" defer></script>
   <script src="/assets/consent.js?v=ff680b0c20" defer></script>
 </head>
 <body data-page="coin" data-sym="QNT">
@@ -188,6 +189,16 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
     <section class="page-section" aria-labelledby="ex-h">
       <h2 id="ex-h">QNT price on each exchange</h2>
       <div id="coinDetail" style="display:flex;flex-direction:column;gap:12px"></div>
+    </section>
+
+    <section class="page-section tm" aria-labelledby="depth-h">
+      <h2 id="depth-h">What would a big QNT order cost?</h2>
+      <form class="tm-form" id="depthForm">
+        <label for="depthAmt">Order size (USD)<input id="depthAmt" type="number" min="1" max="1000000000" step="any" value="10000" inputmode="decimal" /></label>
+        <label for="depthSide">Side<select id="depthSide"><option value="buy">Buy</option><option value="sell">Sell</option></select></label>
+        <button type="submit" class="action-btn btn-accent">Check order books</button>
+      </form>
+      <div class="tm-out" id="depthOut" aria-live="polite"><p class="tm-msg">Reads QNT's live order books on Coinbase, Binance and Kraken and shows the average price a market order of this size would fill at, how far that is from the mid price, and how much is on offer within 2%. Exchange fees are not included.</p></div>
     </section>
 
     <section class="page-section tm" aria-labelledby="tm-h">
