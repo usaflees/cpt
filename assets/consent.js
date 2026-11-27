@@ -11,7 +11,7 @@
 // - Embedded widgets never load it: they run on other people's websites.
 // - The choice is kept in this browser (localStorage "cpt_consent"); "Cookie settings" in the
 //   footer, or any element with data-consent-open, shows the banner again.
-// The site's CSP allows this file ('self') and Google's tag domains; see _headers.
+// The site's CSP allows this file ('self'), Google's tag domains and Cloudflare's beacon; see _headers.
 (function () {
   var GTM_ID = "GTM-PD9TXJX";
   // GA4 property, loaded directly with gtag.js (same consent rules). Don't also add a GA4 / Google
@@ -64,7 +64,17 @@
     var run = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 1); })(fn, { timeout: 3000 }); };
     if (document.readyState === "complete") run(); else addEventListener("load", run, { once: true });
   }
-  function start() { whenIdle(loadGtm); }
+  // Cloudflare Web Analytics (cookieless), loaded here so Cloudflare's auto-install can stay off:
+  // it rewrites HTML and strips the ETag. Live host only (previews fail its CORS check).
+  function loadCfBeacon() {
+    if (location.hostname !== "cryptopriceticker.com") return;
+    var b = document.createElement("script");
+    b.defer = true;
+    b.src = "https://static.cloudflareinsights.com/beacon.min.js";
+    b.setAttribute("data-cf-beacon", '{"token":"5e5a050cb40f4ecfa8a23042291a6765"}');
+    document.head.appendChild(b);
+  }
+  function start() { loadCfBeacon(); whenIdle(loadGtm); }
   if (document.prerendering) document.addEventListener("prerenderingchange", start, { once: true }); else start();
 
   // ---------- Banner ----------
