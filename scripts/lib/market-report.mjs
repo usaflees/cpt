@@ -206,9 +206,9 @@ ${b.stable.length ? boardSection("stablecoin-pegs", "Stablecoin peg check", "How
       // Each edition is a dated report with a named compiler (the byline under the H1): Google's Nov 2026 attribution
       // guidance asks for clear sourcing and authorship, and the dates are the edition's, never the build's.
       { "@type": "Article", "@id": `${pageUrl}#report`, mainEntityOfPage: { "@id": pageUrl }, headline: `Weekly crypto market report: the seven days to ${longDate(w.week)}`,
-        description, image: `${SITE}/og-image.jpg`, datePublished: `${w.week}T23:59:59Z`, dateModified: `${w.week}T23:59:59Z`,
-        author: { "@type": "Organization", name: "CryptoPriceTicker.com", url: `${SITE}/about/` },
-        publisher: { "@type": "Organization", name: "CryptoPriceTicker.com", url: `${SITE}/`, logo: { "@type": "ImageObject", url: `${SITE}/brand/mark-1024.png` } } },
+        description, image: `${SITE}/og-image.jpg`, datePublished: w.week, dateModified: w.week,
+        author: { "@type": "Organization", "@id": `${SITE}/#org`, name: "CryptoPriceTicker.com", url: `${SITE}/` },
+        publisher: { "@type": "Organization", "@id": `${SITE}/#org`, name: "CryptoPriceTicker.com", url: `${SITE}/`, logo: { "@type": "ImageObject", url: `${SITE}/brand/mark-1024.png` } } },
       { "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "Live crypto prices", item: `${SITE}/` },
         { "@type": "ListItem", position: 2, name: "Weekly market report", item: pageUrl }
@@ -235,7 +235,7 @@ ${b.stable.length ? boardSection("stablecoin-pegs", "Stablecoin peg check", "How
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta property="og:type" content="article" />
-  <meta property="article:published_time" content="${w.week}T23:59:59Z" />
+  <meta property="article:published_time" content="${w.week}" />
   <meta property="og:site_name" content="CryptoPriceTicker.com" />
   <meta property="og:title" content="Weekly crypto market report" />
   <meta property="og:description" content="${esc(description)}" />
