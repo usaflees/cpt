@@ -4,7 +4,7 @@
  * against USD), groups every resting order within 2% of the price into price bands about 0.1% wide, adds the
  * exchanges together (only as far from the price as every exchange's returned book reaches), and lists the three biggest bands on each side: the buy and sell "walls". It reads again
  * every 20 seconds (Coinbase, whose book is much bigger, every 2 minutes) while the box has been seen and the tab is
- * visible, and notes a wall that shrank by two thirds or more while the price was still away from it: pulled before
+ * visible, and notes a wall that shrank by two thirds or more while the price stayed away from it: pulled before
  * it could trade. Only what the books showed while this page was open; nothing is stored. self.cptWalls is for tests.
  */
 (function () {
@@ -33,7 +33,17 @@
     const med = sizes.length ? sizes[Math.floor(sizes.length / 2)] : 0;
     return all.sort((a, b) => b.usd - a.usd).slice(0, n).map(b => ({ ...b, x: med ? b.usd / med : null }));
   }
-  self.cptWalls = { width, bands, top };
+  // Walls from the last read that lost two thirds of their size while their band was still inside what the books
+  // reach, and while the price (lowest and highest seen since that read) stayed more than 0.25% away from them.
+  function pulledOf(prev, now, w, lo, hi, pLo, pHi) {
+    return prev.filter(p => {
+      const a = p.k * w, z = (p.k + 1) * w;
+      if (p.side === "bids" ? a < lo : z > hi) return false;
+      const gap = p.side === "bids" ? pLo / z - 1 : 1 - pHi / a;
+      return (now[p.side].get(p.k) || { usd: 0 }).usd < p.usd / 3 && gap * 100 > 0.25;
+    });
+  }
+  self.cptWalls = { width, bands, top, pulledOf };
 
   const api = window.CPT;
   const box = document.getElementById("wallsOut");
@@ -52,11 +62,13 @@
   };
   const feeds = c.feeds.filter(ex => SRC[ex]);
   if (!feeds.length) return;
-  const PCT = 2, MAXAGE = 300e3;
-  let books, read, w, seenSince, prev, events, gen = 0, running = false, seen = false;
+  const PCT = 2, MAXAGE = 300e3, MINREACH = 0.3;
+  let books = {}, read = {}, w = 0, seenSince, prev, events, hist, sampler, gen = 0, running = false, seen = false;
+  const ctrls = new Set();
 
   async function get(ex) {
     const ctrl = new AbortController(), tm = setTimeout(() => ctrl.abort(), 12000);
+    ctrls.add(ctrl);
     try {
       const r = await fetch(SRC[ex].url(tickerOf(c, ex)), { signal: ctrl.signal });
       if (!r.ok) throw new Error(r.status);
@@ -67,7 +79,7 @@
       // How far from the price the returned book reaches on each side, up to PCT.
       const reach = (l, f) => Math.min(PCT, Math.abs(f(+l[l.length - 1][0]) * 100));
       return { mid, bids: b.bids.filter(l => +l[0] >= lo), asks: b.asks.filter(l => +l[0] <= hi), rb: reach(b.bids, p => 1 - p / mid), ra: reach(b.asks, p => p / mid - 1) };
-    } finally { clearTimeout(tm); }
+    } finally { clearTimeout(tm); ctrls.delete(ctrl); }
   }
 
   const usd = v => v >= 1e9 ? `$${(v / 1e9).toFixed(2)}B` : v >= 1e6 ? `$${(v / 1e6).toFixed(2)}M` : v >= 1e3 ? `$${(v / 1e3).toFixed(0)}K` : `$${v.toFixed(0)}`;
@@ -75,13 +87,15 @@
   const clock = t => new Date(t).toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" });
   const mmss = ms => `${Math.floor(ms / 60e3)}:${String(Math.floor(ms / 1e3) % 60).padStart(2, "0")}`;
   const names = ex => Object.entries(ex).sort((a, b) => b[1] - a[1]).map(([e]) => SRC[e].name).join(", ");
+  const list = a => a.map(ex => SRC[ex].name).join(", ");
 
   async function tick(g) {
     const now = Date.now();
+    // A failed read also waits its turn, so a slow Coinbase book isn't fetched every 20 s.
     await Promise.all(feeds.map(ex => (now - (read[ex] || 0) >= SRC[ex].every - 500)
-      ? get(ex).then(b => { if (g === gen) { books[ex] = b; read[ex] = Date.now(); } }, () => {}) : null));
+      ? (read[ex] = now, get(ex).then(b => { if (g === gen) books[ex] = { ...b, t: Date.now() }; }, () => {})) : null));
     if (g !== gen) return;
-    for (const ex in books) if (Date.now() - read[ex] > MAXAGE) delete books[ex];
+    for (const ex in books) if (Date.now() - books[ex].t > MAXAGE) delete books[ex];
     draw();
     setTimeout(() => { if (g === gen) tick(g); }, 20e3);
   }
@@ -91,42 +105,56 @@
     if (!live.length) { box.innerHTML = `<p class="tm-msg">Couldn't read ${esc(c.sym)}'s order books just now. It tries again every 20 seconds.</p>`; return; }
     const mids = live.map(ex => books[ex].mid).sort((a, b) => a - b), mid = mids[Math.floor(mids.length / 2)];
     if (!w) w = width(mid);
-    const rb = Math.min(...live.map(ex => books[ex].rb)), ra = Math.min(...live.map(ex => books[ex].ra));
-    const now = Date.now(), b = bands(books, w, mid * (1 - rb / 100), mid * (1 + ra / 100));
-    const walls = { bids: top(b.bids, 3), asks: top(b.asks, 3) };
-    // A wall from the last read that lost two thirds of its size while the price was over 0.25% away from it.
+    // Each side adds up the books that reach at least MINREACH, as far as the shortest of them reaches.
+    const use = k => { const ok = live.filter(ex => books[ex][k] >= MINREACH); return ok.length ? ok : live; };
+    const useB = use("rb"), useA = use("ra");
+    const rb = Math.min(...useB.map(ex => books[ex].rb)), ra = Math.min(...useA.map(ex => books[ex].ra));
+    const lo = mid * (1 - rb / 100), hi = mid * (1 + ra / 100), pick = l => Object.fromEntries(l.map(ex => [ex, books[ex]]));
+    const b = { bids: bands(pick(useB), w, lo, Infinity).bids, asks: bands(pick(useA), w, 0, hi).asks };
+    const now = Date.now(), walls = { bids: top(b.bids, 3), asks: top(b.asks, 3) };
+    hist.push([now, mid]);
+    // Each wall is checked against the lowest and highest price since the oldest book it was measured from.
     for (const p of prev) {
-      const cur = (b[p.side].get(p.k) || { usd: 0 }).usd, edge = p.side === "bids" ? (p.k + 1) * w : p.k * w;
-      if (cur < p.usd / 3 && Math.abs(edge / mid - 1) * 100 > 0.25 && Object.keys(p.ex).every(ex => books[ex])) events.unshift({ t: now, side: p.side, k: p.k, usd: p.usd, ex: p.ex });
+      if (!Object.keys(p.ex).every(ex => (p.side === "bids" ? useB : useA).includes(ex))) continue;
+      const span = hist.filter(h => h[0] >= p.since).map(h => h[1]);
+      if (pulledOf([p], b, w, lo, hi, Math.min(...span), Math.max(...span)).length) events.unshift({ t: now, side: p.side, k: p.k, usd: p.usd, ex: p.ex });
     }
-    events = events.slice(0, 4);
-    prev = [...walls.bids.map(x => ({ ...x, side: "bids" })), ...walls.asks.map(x => ({ ...x, side: "asks" }))];
-    const keep = new Set(prev.map(x => x.side + x.k));
+    events = events.slice(0, 3);
+    const since = x => Math.min(...Object.keys(x.ex).map(ex => books[ex].t));
+    prev = [...walls.bids.map(x => ({ ...x, side: "bids", since: since(x) })), ...walls.asks.map(x => ({ ...x, side: "asks", since: since(x) }))];
+    // "Seen for" keeps counting while a band stays among its side's ten biggest.
+    const keep = new Set([...top(b.bids, 10).map(x => "bids" + x.k), ...top(b.asks, 10).map(x => "asks" + x.k)]);
     for (const k of Object.keys(seenSince)) if (!keep.has(k)) delete seenSince[k];
-    prev.forEach(x => { seenSince[x.side + x.k] = seenSince[x.side + x.k] || now; });
+    keep.forEach(k => { seenSince[k] = seenSince[k] || now; });
     const row = (x, side) => {
       const a = x.k * w, z = (x.k + 1) * w, d = ((side === "bids" ? z : a) / mid - 1) * 100;
       return `<tr><th scope="row" class="col-left">${side === "bids" ? "Buy" : "Sell"}</th><td>${px(a)} to ${px(z)}</td><td>${d >= 0 ? "+" : "−"}${Math.abs(d).toFixed(2)}%</td>
         <td>${usd(x.usd)}${x.x ? ` <span class="muted">(${x.x.toFixed(x.x < 10 ? 1 : 0)}×)</span>` : ""}</td><td>${esc(names(x.ex))}</td><td>${mmss(now - seenSince[side + x.k])}</td></tr>`;
     };
-    const pulled = events.map(e => `${usd(e.usd)} ${e.side === "bids" ? "buy" : "sell"} wall at ${px(e.k * w)} to ${px((e.k + 1) * w)} (${esc(names(e.ex))}) at ${esc(clock(e.t))}`).join("; ");
+    const none = side => `<tr><th scope="row" class="col-left">${side}</th><td colspan="5" class="muted">No resting orders within reach.</td></tr>`;
+    const pulled = events.map(e => `${usd(e.usd)} ${e.side === "bids" ? "buy" : "sell"} wall at ${px(e.k * w)} to ${px((e.k + 1) * w)} (${esc(names(e.ex))}), noticed at ${esc(clock(e.t))}`).join("; ");
+    const ts = live.map(ex => books[ex].t), t0 = Math.min(...ts), t1 = Math.max(...ts);
+    const left = live.length > Math.min(useB.length, useA.length) ? ` (a book that reaches less than ${MINREACH}% from the price on one side is left out of that side)` : "";
     box.innerHTML = `<div class="depth-scroll"><table class="history-table walls-table">
-        <caption>Biggest ${esc(c.sym)} orders from ${rb.toFixed(1)}% below to ${ra.toFixed(1)}% above ${px(mid)}, in bands ${px(w)} wide, updated ${esc(clock(now))}</caption>
+        <caption>Biggest ${esc(c.sym)} orders from ${rb.toFixed(1)}% below to ${ra.toFixed(1)}% above ${px(mid)}, in bands ${px(w)} wide; books read ${t1 - t0 > 5e3 ? `between ${esc(clock(t0))} and ` : "at "}${esc(clock(t1))}</caption>
         <thead><tr><th scope="col" class="col-left">Side</th><th scope="col">Price band</th><th scope="col">From price</th><th scope="col">Waiting</th><th scope="col">Exchanges</th><th scope="col">Seen for</th></tr></thead>
-        <tbody>${walls.asks.slice().reverse().map(x => row(x, "asks")).join("")}${walls.bids.map(x => row(x, "bids")).join("")}</tbody></table></div>
-      <p class="tm-line">${pulled ? `Pulled before the price got there (noticed at the time shown): ${pulled}.` : "No wall has been pulled while this page was open."}</p>
-      <p class="tm-line">"Waiting" adds up resting orders on ${esc(live.map(ex => SRC[ex].name).join(", "))}; the number in brackets is how many times the side's typical band it is. "Seen for" counts from when this page first saw the wall. Binance is in USDT, counted as dollars. Orders can be cancelled at any time, so a wall is not a promise; this is not a forecast.</p>`;
+        <tbody>${walls.asks.length ? walls.asks.slice().reverse().map(x => row(x, "asks")).join("") : none("Sell")}${walls.bids.length ? walls.bids.map(x => row(x, "bids")).join("") : none("Buy")}</tbody></table></div>
+      <p class="tm-line">${pulled ? `Pulled before the price got within 0.25%, while you've been watching: ${pulled}.` : "No wall has been pulled while you've been watching."}</p>
+      <p class="tm-line">"Waiting" adds up resting orders on ${esc(list(live))}${left}; the number in brackets is how many times the side's typical band it is. "Seen for" counts from when this tab first saw the wall and restarts when you come back to it. Binance is in USDT, counted as dollars. Orders can be cancelled at any time, so a wall is not a promise; this is not a forecast.</p>`;
   }
 
   function start() {
     if (running) return;
     running = true;
     const g = ++gen;
-    books = {}; read = {}; seenSince = {}; prev = []; events = []; w = 0;
-    box.innerHTML = `<p class="tm-msg">Reading ${esc(feeds.map(ex => SRC[ex].name).join(", "))} order books…</p>`;
+    seenSince = {}; prev = []; events = []; hist = [];
+    // The price every second from the page's live feed (last 5 minutes), so a wall the price traded through between
+    // reads isn't called pulled.
+    sampler = setInterval(() => { if (c.price > 0) hist.push([Date.now(), c.price]); while (hist.length && hist[0][0] < Date.now() - MAXAGE) hist.shift(); }, 1000);
+    if (!Object.keys(books).length) box.innerHTML = `<p class="tm-msg">Reading ${esc(list(feeds))} order books…</p>`;
     tick(g);
   }
-  function stop() { running = false; gen++; }
+  function stop() { running = false; gen++; clearInterval(sampler); ctrls.forEach(x => x.abort()); }
   document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else if (seen) start(); });
   const go = () => { seen = true; if (!document.hidden) start(); };
   if ("IntersectionObserver" in window) {
