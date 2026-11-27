@@ -1755,3 +1755,11 @@ body.is-overlay #embedShell { zoom: 1.35; }
 .cmp-lead .chg-down{background:linear-gradient(var(--down-bg),var(--down-bg)),var(--bg-secondary)}
 /* Compare table, phones: label over the two values (no sideways scroll). Only on /compare/, never in /embed/. */
 @media (max-width:560px){.compare-table,.compare-table thead,.compare-table tbody{display:block}.compare-table tr{display:grid;grid-template-columns:1fr 1fr}.compare-table thead th:first-child{display:none}.compare-table th,.compare-table td{white-space:normal;overflow-wrap:anywhere;position:static}.compare-table tbody th{grid-column:1/-1}.compare-table [scope=row]{background:none;border:0;padding:10px 12px 2px;font:600 12.5px var(--font-sans);text-transform:none;color:var(--text-secondary)}.compare-table td{padding:4px 12px 10px}.compare-table th:nth-child(2),.compare-table td:nth-of-type(1){text-align:left}}
+/* Plain-words filter above the home table (assets/screener.js) */
+.screen-note{scroll-margin-top:84px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 10px;padding:8px 12px;border:1px solid var(--border);border-radius:12px;background:var(--bg-secondary);font-size:13px;line-height:1.4}
+.screen-note[hidden]{display:none}
+.screen-label{font-weight:600;color:var(--text-secondary)}
+.screen-chip{padding:2px 9px;border-radius:999px;background:var(--accent-glow);color:var(--text-primary);font:600 12.5px var(--font-mono)}
+.screen-note .action-btn{min-height:32px}
+button.screen-chip{border:0;cursor:pointer;min-height:28px}
+button.screen-chip:hover{outline:1px solid var(--accent)}
