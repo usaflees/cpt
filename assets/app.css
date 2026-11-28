@@ -1768,11 +1768,15 @@ body.is-overlay #embedShell { zoom: 1.35; }
 main :not(pre) > code { overflow-wrap: anywhere; }
 .conv-tables { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .conv-tables td.col-left { white-space: normal; overflow-wrap: anywhere; }
-@media (max-width: 640px) { .conv-tables { grid-template-columns: 1fr; } }
-@media (max-width: 480px) { .related-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { body:not(.is-embed) .conv-tables { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { body:not(.is-embed) .related-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Compare index, phones: the pair name over its two 1-year changes, so the second coin isn't off-screen. */
+@media (max-width: 560px) { body:not(.is-embed) .pairs-table, body:not(.is-embed) .pairs-table thead, body:not(.is-embed) .pairs-table tbody { display: block; }
+  .pairs-table tr { display: grid; grid-template-columns: 1fr 1fr; } .pairs-table thead th:first-child { display: none; } .pairs-table thead th { grid-column: 1 / -1; text-align: left; }
+  .pairs-table td.col-left { grid-column: 1 / -1; white-space: normal; padding-bottom: 2px; } .pairs-table td { text-align: left; } }
 @media (pointer: coarse) { .site-footer { line-height: 2; } }
 @media (max-width: 640px) {
-  .hero-links { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 2px 28px 2px 0; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+  body:not(.is-embed) .hero-links { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 4px 28px 4px 4px; margin-left: -4px; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
   .hero-links::-webkit-scrollbar { display: none; }
   .hero-links > * { flex: none; }
 }

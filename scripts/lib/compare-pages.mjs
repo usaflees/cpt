@@ -293,9 +293,9 @@ ${months.length ? `
       <h2 id="list-h">All ${pairs.length} comparisons</h2>
       ${hubSummary}
       <div class="table-wrap">
-        <table class="history-table">
+        <table class="history-table pairs-table">
           <caption class="sr-only">Coin comparisons with each coin's 1-year change and how many times larger the bigger market cap is</caption>
-          <thead><tr><th scope="col" class="col-left">Comparison</th><th scope="col">1 year</th><th scope="col">1 year</th><th scope="col" class="hide-mobile">Market-cap multiple</th></tr></thead>
+          <thead><tr><th scope="col" class="col-left">Comparison</th><th scope="col" colspan="2">1-year change</th><th scope="col" class="hide-mobile">Market-cap multiple</th></tr></thead>
           <tbody>
           ${rows}
           </tbody>
