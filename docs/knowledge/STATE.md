@@ -27,6 +27,7 @@
 - **Motion (Nov 9):** rolling-digit prices (coin hero, pop-out), rows that glide on sort/filter, spring quick view, scroll-driven section rise, spinning logo ring on coin pages, market-mood glow on the home hero; all off with reduced motion.
 - **Coin Race (/race/, Nov 11):** 2–6 coins race live from 24 h ago, 1 h ago or "Start now"; shareable race links.
 - **Nov 24 features:** fiat display currencies (8), holdings profit vs average buy price, column choice, own watchlist order, movers 24 h / 7 d, live exchange price gaps (home), Market TV (`/?tv=1`), Time Machine (coin pages), stream overlay (`/embed/?overlay=1`).
+- **Nov 28 features (PR #41):** plain-words filter on the home table (`assets/screener.js`, loads on search focus; on-device AI only on a button press); coin pages add "What would a big order cost?" (`depth.js`), buyers vs sellers over 1/5/15 min (`flow.js`), "When does it usually move?" by hour on the visitor's clock (`moves.js`) and order-book walls within 2% (`walls.js`); move alerts open the coin page (`#from-alert`).
 - **Tools:** live heatmap (balanced or true market-cap sizing, by sector), converter (114 coins × 20 currencies),
   embeddable widget in three layouts and six themes plus "Auto" (follows the visitor's light/dark setting), quick coin search on every sub-page.
 
