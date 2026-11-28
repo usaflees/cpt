@@ -282,7 +282,7 @@ function statsSection(c, st) {
         </table>
       </div>
       <p class="disclaimer" style="margin-top:8px">Daily closes (UTC) from ${st.source}, as of ${longDate(st.asOf)}. Updated weekly.${c.sectors.includes("Stable") ? ` Every stablecoin's 52-week range is compared in the <a href="/market/#stablecoin-pegs">stablecoin peg check</a>.` : st.historyDays >= 365 ? ` See how ${s} ranks against every other coin in the <a href="/market/#year">year rankings</a>.` : ""}</p>
-      <p class="disclaimer" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">Quoting these figures? Please link this page and give the date. <input type="text" class="sync-input" style="flex:1;min-width:12em;margin:0" id="citeText" readonly aria-label="Citation for these figures" value="${esc(`CryptoPriceTicker.com, "${shortName(c)} (${c.sym}) price statistics", daily closes to ${longDate(st.asOf)}, ${SITE}/coin/${slug(c.sym)}/`)}" /><button type="button" class="action-btn" data-action="copy" data-target="citeText" data-msg="📋 Citation copied.">📋 Copy citation</button></p>
+      <p class="disclaimer" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">Quoting these figures? Please link this page and give the date. <textarea class="sync-input cite-text" rows="3" id="citeText" readonly aria-label="Citation for these figures">${esc(`CryptoPriceTicker.com, "${shortName(c)} (${c.sym}) price statistics", daily closes to ${longDate(st.asOf)}, ${SITE}/coin/${slug(c.sym)}/`)}</textarea><button type="button" class="action-btn" data-action="copy" data-target="citeText" data-msg="📋 Citation copied.">📋 Copy citation</button></p>
     </section>`;
 }
 

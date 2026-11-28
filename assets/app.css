@@ -1755,3 +1755,24 @@ body.is-overlay #embedShell { zoom: 1.35; }
 .cmp-lead .chg-down{background:linear-gradient(var(--down-bg),var(--down-bg)),var(--bg-secondary)}
 /* Compare table, phones: label over the two values (no sideways scroll). Only on /compare/, never in /embed/. */
 @media (max-width:560px){.compare-table,.compare-table thead,.compare-table tbody{display:block}.compare-table tr{display:grid;grid-template-columns:1fr 1fr}.compare-table thead th:first-child{display:none}.compare-table th,.compare-table td{white-space:normal;overflow-wrap:anywhere;position:static}.compare-table tbody th{grid-column:1/-1}.compare-table [scope=row]{background:none;border:0;padding:10px 12px 2px;font:600 12.5px var(--font-sans);text-transform:none;color:var(--text-secondary)}.compare-table td{padding:4px 12px 10px}.compare-table th:nth-child(2),.compare-table td:nth-of-type(1){text-align:left}}
+
+/* Design passes (Nov 28): measured at 375, 768 and 1280 px in dark and light. Tap targets reach 24 px (WCAG 2.2),
+   no text under 10 px, long notes stay near 75 characters a line, and the home shortcuts take one swipeable row on phones. */
+.star-btn, .more-btn { min-width: 28px; min-height: 28px; }
+.th-sort { min-height: 24px; }
+.ex-badge { font-size: 10px; }
+.hm-chg { font-size: max(10px, .62em); }
+.hm-price { font-size: max(10px, .5em); }
+.gap-note, .disclaimer { max-width: 75ch; }
+.cite-text { flex: 1 1 100%; margin: 0; resize: none; line-height: 1.4; field-sizing: content; }
+main :not(pre) > code { overflow-wrap: anywhere; }
+.conv-tables { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.conv-tables td.col-left { white-space: normal; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .conv-tables { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .related-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (pointer: coarse) { .site-footer { line-height: 2; } }
+@media (max-width: 640px) {
+  .hero-links { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 2px 28px 2px 0; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+  .hero-links::-webkit-scrollbar { display: none; }
+  .hero-links > * { flex: none; }
+}
