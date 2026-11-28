@@ -391,22 +391,24 @@
   function filteredSorted() {
     const all = recomputeRanks();
     updateCounts(all);
-    const q = state.search.trim().toLowerCase();
+    const q = state.search.trim().toLowerCase(), scr = window.CPT_SCREEN; // scr: plain-words filter (assets/screener.js)
     const list = all.filter(c => {
       if (state.sector === "WATCH" && !state.watchlist.has(c.sym)) return false;
       if (state.sector === "BAG" && !(state.bag[c.sym] > 0)) return false;
       if (SECTOR_KEYS.includes(state.sector) && !inSector(c, state.sector)) return false;
+      if (scr) return scr.match(c);
       if (q) return c.sym.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.sectors.some(s => s.toLowerCase().includes(q));
       return true;
     });
-    const dir = state.sortAsc ? 1 : -1;
+    const sortBy = scr?.sortBy || state.sortBy, dir = (scr?.sortBy ? scr.asc : state.sortAsc) ? 1 : -1;
     const key = {
       rank: c => c.rank, price: c => c.price, change24h: c => c.change24h, change7d: c => change7d(c) ?? -1e9,
       mcap: c => c.mcap, vol24h: c => c.vol24h, bagVal: c => (state.bag[c.sym] || 0) * c.price
-    }[state.sortBy] || (c => c.rank);
-    list.sort((a, b) => (state.sortBy === "name" ? a.name.localeCompare(b.name) : key(a) - key(b)) * dir);
+    }[sortBy] || (c => c.rank);
+    list.sort((a, b) => (sortBy === "name" ? a.name.localeCompare(b.name) : key(a) - key(b)) * dir);
+    if (scr?.limit) list.length = Math.min(list.length, scr.limit);
     // Watchlist in the default sort: the visitor's own order first (▲▼ buttons), the rest by rank.
-    if (state.sector === "WATCH" && state.sortBy === "rank" && state.sortAsc) {
+    if (!scr && state.sector === "WATCH" && state.sortBy === "rank" && state.sortAsc) {
       const pos = s => { const i = state.order.indexOf(s); return i < 0 ? 1e6 : i; };
       list.sort((a, b) => pos(a.sym) - pos(b.sym) || a.rank - b.rank);
     }
@@ -1323,10 +1325,12 @@
   }
 
   // System notification for alerts (only if the visitor allowed it when saving an alert).
+  // A tap opens the coin's page at its buyers/sellers box (sw.js notificationclick), or the home page.
   function notify(title, body, tag) {
     if (!("Notification" in window) || Notification.permission !== "granted") return;
-    const opts = { body, tag, icon: "/icon-192.png", badge: "/icon-192.png" };
-    const fallback = () => { try { new Notification(title, opts); } catch (_) {} };
+    const sym = String(tag || "").replace(/^move-/, ""), url = REGISTRY.some(x => x.sym === sym) ? coinUrl(sym) + "#from-alert" : "/";
+    const opts = { body, tag, icon: "/icon-192.png", badge: "/icon-192.png", data: { url } };
+    const fallback = () => { try { new Notification(title, opts).onclick = () => { focus(); if (url !== "/" || location.pathname !== "/") location.href = url; }; } catch (_) {} };
     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
       navigator.serviceWorker.ready.then(reg => reg.showNotification(title, opts)).catch(fallback);
     } else fallback();
@@ -2198,7 +2202,7 @@
     }
     // Enter jumps straight to the best match's coin page.
     $("searchInput").addEventListener("keydown", e => {
-      const hit = e.key === "Enter" && searchCoins(e.target.value, 1)[0];
+      const hit = e.key === "Enter" && !window.CPT_SCREEN && (window.CPT_SCREEN_UI || !/[\s%$<>]/.test(e.target.value.trim())) && searchCoins(e.target.value, 1)[0];
       if (hit) location.href = coinUrl(hit.sym);
     });
     $("cryptoTable").classList.toggle("compact-mode", state.compact);
@@ -2234,7 +2238,7 @@
    * Installable app: service worker (offline fallback only — always network-first) + install prompt
    * ------------------------------------------------------------------ */
   // Read-only hooks for the modules loaded after this file (flash.js, race.js, chart.js, home-plus.js, timemachine.js).
-  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, buildSparkline, tickerOf, coinChart, getRate, currSymbol };
+  if (MODE === "home" || MODE === "coin" || MODE === "race") window.CPT = { state, MODE, fmtPrice, esc, coinUrl, store, notify, showToast, beep, bumpAppBadge, avatar, buildSparkline, tickerOf, coinChart, getRate, currSymbol, change7d, loadOpen7, render: () => deferRender(glideTable) };
   // WebMCP agent tools: only browsers with document.modelContext fetch assets/agent.js (hashed URL in
   // <meta name="cpt-agent">). The two setters below are its only write access.
   const agentSrc = document.querySelector('meta[name="cpt-agent"]')?.content;
@@ -2253,6 +2257,9 @@
     const s = document.createElement("script");
     s.src = agentSrc; s.defer = true; document.head.append(s);
   }
+  // Plain-words filter for the home table (assets/screener.js), fetched the first time the search box gets focus.
+  const scrSrc = MODE === "home" && document.querySelector('meta[name="cpt-screener"]')?.content;
+  if (scrSrc) $("searchInput").addEventListener("focus", () => { const s = document.createElement("script"); s.src = scrSrc; document.head.append(s); }, { once: true });
   // On-device AI (assets/ondevice.js): coin pages, in browsers with Chrome's built-in model or translator.
   const odSrc = MODE === "coin" && document.querySelector('meta[name="cpt-ondevice"]')?.content;
   if (odSrc && ("LanguageModel" in self || "Translator" in self)) {

@@ -11,6 +11,7 @@
   <meta name="theme-color" content="#0c0822" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
   <meta name="cpt-agent" content="/assets/agent.js?v=859a9b39a2" />
+  <meta name="cpt-screener" content="/assets/screener.js?v=2142a052f3" />
   <meta name="color-scheme" content="dark light" />
 
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -19,7 +20,7 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Cloudflare Pages turns preload/preconnect links into 103 Early Hints automatically -->
-  <link rel="preload" href="/assets/app.css?v=182b73c00b" as="style" />
+  <link rel="preload" href="/assets/app.css?v=8ee57d0d4e" as="style" />
   <link rel="preconnect" href="https://data-api.binance.vision" crossorigin />
   <link rel="dns-prefetch" href="https://data-stream.binance.vision" />
   <link rel="dns-prefetch" href="https://ws-feed.exchange.coinbase.com" />
@@ -89,9 +90,9 @@ if (themes.indexOf(t) >= 0) document.documentElement.setAttribute("data-theme", 
 if (!embed && "documentPictureInPicture" in window) document.documentElement.classList.add("has-pip");
 addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [v.ready, v.finished, v.updateCallbackDone].forEach(function (p) { if (p) p.catch(function () {}); }); });
 })();</script>
-  <link rel="stylesheet" href="/assets/app.css?v=182b73c00b" />
+  <link rel="stylesheet" href="/assets/app.css?v=8ee57d0d4e" />
   <script src="/assets/coins.js?v=2f6f199ef4" defer></script>
-  <script src="/assets/app.js?v=cbc39dfd69" defer></script>
+  <script src="/assets/app.js?v=ad7f6ecdb3" defer></script>
   <script src="/assets/flash.js?v=1fd3f5d99e" defer></script>
   <script src="/assets/home-plus.js?v=e657a6428c" defer></script>
   <script src="/assets/bell.js?v=598aca3e44" defer></script>
@@ -110,7 +111,7 @@ addEventListener("pagereveal", function (e) { var v = e.viewTransition; if (v) [
       <a class="topbar-brand" href="/" aria-label="CryptoPriceTicker home"><img class="brand-logo" src="/brand/mark.svg" width="34" height="34" alt="" /><span class="brand-word">CryptoPriceTicker</span></a>
       <div class="search-box">
         <span class="search-icon" aria-hidden="true">🔍</span>
-        <input type="search" id="searchInput" placeholder="Search coins…" aria-label="Search coins by name, ticker or sector" autocomplete="off" />
+        <input type="search" id="searchInput" placeholder="Search or filter coins…" aria-label="Search coins by name, ticker or sector, or filter them in plain words" autocomplete="off" />
         <kbd class="search-kbd" aria-hidden="true">/</kbd>
       </div>
       <div class="topbar-actions">
