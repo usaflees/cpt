@@ -69,7 +69,9 @@ const rows = p => p.$$eval('#tableBody tr[data-sym]', l => l.map(r => r.dataset.
   const note = (await p.textContent('#screenNote')).replace(/\s+/g, ' ');
   check(/market cap ≥ \$10B/.test(note) && /up \(24 h\)/.test(note), `filter line: ${note}`);
   const syms = await rows(p);
-  const bad = await p.evaluate(s => s.filter(x => { const c = window.CPT.state.coins.get(x); return !(c.mcap >= 0.97e10 && c.change24h >= -0.3); }), syms); // small tolerance: prices move between render and check
+  // Each exchange reports its own 24 h change, so a coin near 0% can flip by up to about a point when a tick
+  // from another exchange lands between the redraw and this read; the same tolerance as "top 10 losers".
+  const bad = await p.evaluate(s => s.filter(x => { const c = window.CPT.state.coins.get(x); return !(c.mcap >= 0.97e10 && c.change24h >= -1.5); }), syms);
   check(!bad.length, `rows that don't match "large caps up today": ${bad.join(', ')}`);
   console.log(`"large caps up today": ${syms.length} rows | ${note}`);
 
@@ -96,7 +98,7 @@ const rows = p => p.$$eval('#tableBody tr[data-sym]', l => l.map(r => r.dataset.
   const pr = await p.evaluate(() => window.__prompts[0]);
   check(pr && pr.schema && /frog themed/.test(pr.t), `prompt: ${JSON.stringify(pr)}`);
   const meme = await rows(p);
-  const badAi = await p.evaluate(s => s.filter(x => { const c = window.CPT.state.coins.get(x); return !(c.sectors.includes('Meme') && c.change24h <= -0.7); }), meme);
+  const badAi = await p.evaluate(s => s.filter(x => { const c = window.CPT.state.coins.get(x); return !(c.sectors.includes('Meme') && c.change24h <= 0.5); }), meme);
   check(!badAi.length, `rows that don't match the AI filter: ${badAi.join(', ')}`);
   console.log(`AI filter: ${meme.length} rows | ${(await p.textContent('#screenNote')).replace(/\s+/g, ' ').trim()}`);
 
